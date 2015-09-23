@@ -17,6 +17,7 @@
     "express-session": "^1.11.3",
     "grunt": "0.4.5",
     "grunt-cli": "0.1.13",
+    "load-grunt-tasks": "^3.3.0",
     "morgan": "^1.6.1",
     "newrelic": "^1.22.1",
     "requestify": "^0.1.17",
