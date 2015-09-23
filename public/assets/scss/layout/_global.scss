@@ -1,0 +1,412 @@
+/* GLOBAL ===================================================== */
+
+/*-moz-user-select: -moz-none;-khtml-user-select: none;-webkit-user-select: none;-ms-user-select: none;user-select: none;
+*/
+
+html{
+	overflow-x: hidden;
+}
+
+body,html{
+	font-size: 100%;
+}
+
+body{
+	@include font-smoothing();
+	background: $bgColor;
+	background-image: url(https://mediadubtrackfm.s3.amazonaws.com/assets/images/backgrounds/mainbg.png);
+	background-color: #000;
+	font: 1em/1.25em $siteFont;
+	color: $siteColor;
+	width: 100%;
+	padding: 0;
+	overflow-x: hidden;
+
+	&.videoActive{
+		.main-page-container{
+			padding-bottom: 14em;
+		}
+	}
+}
+
+.backstretch{
+	@include transition(left 0.2s ease-in-out);
+}
+
+.main-page-container{
+	height: 100%;
+	padding: 2.7em 0 3em 0;
+	position: relative;
+	@include transition(all 0.2s ease-in-out);
+	overflow-x: hidden;
+}
+
+#warning{
+	position: fixed;
+	background: $bgAccentColor;
+	color: $bgColor;
+	padding: 1.25em;
+	top: 30%;
+	width: 31.25em;
+	left: 50%;
+	margin-left: -16.875em;
+	z-index: 999999;
+
+	&:after{
+		background: white;
+		content: "";
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		@include opacity(0.5);
+		@include border-radius(0.188em);
+		border: 0.375em solid white;
+		top: -0.375em;
+		left: -0.375em;
+		z-index: -1;
+	}
+
+	h3{
+		font-size: 1.4em;
+		margin: 0;
+		text-transform: uppercase;
+		font-weight: bold;
+	}
+
+	p{
+		margin: 0.625em 0;
+		font-size: 0.8em;
+		font-weight: bold;
+	}
+
+	button{
+		display: inline-block;
+		text-transform: uppercase;
+		margin: 1em 0.625em 0 0;
+		color: $bgAccentColor;
+		background: $bgColor;
+		padding: 0.45em 1em;
+	}
+}
+
+body.login{
+	background-image:url(../images/px_by_Gre3g.png)
+}
+
+body.roomview{
+	/*background:url(../images/black_linen_v2.png) repeat;*/
+	background: url(../images/dt_mainbg.png) repeat;
+	height: 100%;
+}
+
+body.roomview .dark-overlay{
+	background:none !important;
+}
+
+ul,ol{
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+/*::-webkit-scrollbar {
+	width: 0.45em;
+	position: relative;
+	right: 0;
+	z-index: 9999999;
+}
+ 
+::-webkit-scrollbar-track {
+	background: #000;
+}
+ 
+::-webkit-scrollbar-thumb {
+	background: #333 
+}
+::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(0,0,0,0.3); 
+}
+::-webkit-scrollbar-corner{
+	display: none;
+}*/
+
+/*scrollbar-base-color: #000;
+scrollbar-base-color: #000;
+scrollbar-3dlight-color: #000;
+scrollbar-highlight-color: #000;
+scrollbar-track-color: #333;
+scrollbar-arrow-color: #333;
+scrollbar-shadow-color: #111;
+scrollbar-dark-shadow-color: #111;*/
+
+@-moz-document url-prefix(http://),url-prefix(https://) {
+	scrollbar {
+		-moz-appearance: none !important;
+		background: #000 !important;
+	}
+
+	thumb,scrollbarbutton {
+		-moz-appearance: none !important;
+		background-color: #333 !important;
+	}
+
+	thumb:hover,scrollbarbutton:hover {
+		-moz-appearance: none !important;
+		background-color: #333 !important;
+	}
+
+	scrollbarbutton {
+		display: none !important;
+	}
+
+	scrollbar[orient="vertical"] {
+		min-width: 0.45em !important;
+	}
+}
+
+.no-fontface {
+	font-family: $fontStack;
+}
+
+.clearfix {
+	*zoom: 1;
+
+	&:after,
+	&:before{
+		display: table;
+		content: "";
+	}
+
+	&:after{
+		clear: both;
+	}
+}
+
+a{
+	text-decoration: none;
+
+	&:hover,
+	&:visited{
+		text-decoration: none;
+		color: $bgAccentColor;
+	}
+}
+
+select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+	font: 0.75em/1.25em $siteFont;
+}
+
+section#main{
+	height: 100%;
+
+	&.roomActive{
+		
+		& .dt_section{
+			padding-right: 20em;
+		}
+	}
+}
+
+b{
+	font-weight: bold;
+}
+
+.clear{
+	clear: both;
+}
+
+.right{
+	float: right;
+}
+
+.left{
+	float: left;
+}
+
+.white{
+	color: white;
+}
+
+.darkgrey{
+	color: #808080;
+}
+
+.cyan{
+	color: $bgOtherAccentColor;
+}
+
+.grey{
+	color: $siteColor;
+}
+
+.inline-block{
+	display: inline-block;
+}
+
+.logo{
+	font-size: 1.250em;
+	font-family: $siteAccentFont;
+	color: #ff00ff;
+}
+
+div.mousescroll{
+	overflow: hidden;
+
+	&:hover{
+		overflow-y: scroll;
+	}
+}
+
+.dark-overlay{
+	background:url(../images/bg-dark-trans.png) repeat;
+}
+
+.hidden{
+	display:none;
+}
+
+.screen,.screen_browser{
+}
+
+.screen_browser{
+}
+
+.no-bg{
+	background:none !important
+}
+
+.wrapper{
+	width: 48.75em; 
+	margin: 1.875em auto 0 auto;
+	
+	&.no-margin{
+		margin-top: 0!important; 
+		width: 37.5em;
+	}
+}
+
+.loading{
+	display: none;
+	top: 0;
+	left: 35%;
+	position: absolute;
+	z-index: 999999;
+	padding: 0.625em 1.250em;
+	font-family: $siteFont; 
+	font-size: 1.125em; 
+	color: $bgColor;
+	background: $bgOtherAccentColor;
+	zoom: 1;
+	@include opacity(0.7);
+	font-weight: bold;
+}
+
+span.comingSonn{
+	font-family: $siteFont; 
+	font-size: 0.625em;
+	font-weight: bold;
+	color: red;	
+	text-transform: none;
+	padding-left: 0.313em;
+}
+
+#ajax-content{
+	width: 100%; 
+	position: absolute; 
+	z-index: 99; 
+	top: 20%;
+
+	& a.close{
+		background:url(../images/create_newroom_closebutton.png) no-repeat 0 0; 
+		width: 28px;
+		height: 28px;
+		top: 0.313em;
+		right: 0.313em;
+		position: absolute;
+	}
+
+	& .ajax-loader{
+		width: 16.250em; 
+		margin: 0 auto; 
+		position: relative;
+	}
+}
+
+.share_btns{
+	position: fixed; 
+	top: 12.188em;
+	left: inherit;
+	margin: 0 0 0 -3.750em;
+
+	&.bottom{
+		top: 16.563em;
+	}
+}
+ 
+div.image {
+	cursor:pointer
+}
+
+.padding_10{
+	padding: 1.875em 1.563em 3.125em 0;
+}
+
+a.button_full{
+	width: 100%;
+	text-align: center;
+	padding: 0.188em 0; 
+	color: #0085EA;
+	margin-bottom: 0.313em;
+}
+
+a.button_comments_more{ 
+	width: 32.813em;
+}
+
+#bg_color{
+	display: inline-block;
+	width: 100px !important;
+	vertical-align: middle;
+} 
+
+.roomview .main_content, #main-ajax-user .main_content{
+	background: none !important;
+	border: 0 !important;
+}
+
+.avatar_bg{ 
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	overflow: hidden;
+
+	& .tabsContainer{
+		width: 400%;
+		height: 100%;
+		position: absolute;
+		top: 0;
+		left: 0;
+		@include transition-property(all);
+  		@include transition-duration(0.3s);
+  		@include transition-timing-function(ease-in);
+
+		& .tabItem{
+			padding-top: 1.875em;
+			width: 20em;
+			display: block;
+			float: left;
+			position: relative;
+			height: 100%;
+			overflow-y: scroll;
+		}
+	}
+}
+
+.avatar_cont{
+	padding: 0 0 0 0;
+}
+
+.cursor-pointer{
+	cursor: pointer;
+}

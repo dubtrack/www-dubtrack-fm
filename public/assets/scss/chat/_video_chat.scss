@@ -1,0 +1,84 @@
+#dubtrack-video-realtime{
+	position: fixed;
+	left: 0;
+	z-index: 999;
+	text-align: center;
+	width: 100%;
+	white-space: nowrap;
+	overflow: visible;
+	background: rgba(0,0,0,0.5);
+	bottom: -10em;
+	@include transition(bottom);
+	@include transition-duration(0.2s);
+	display: none;
+	overflow: visible;
+
+	.realtime-videos-container{
+		width: 100%;
+		text-align: center;
+		overflow-x: scroll;
+		overflow-y: hidden;
+		height: 203px;
+	}
+
+	&.active{
+		bottom: 2em;
+	}
+
+	.toggle_videos{
+		position: absolute;
+		width: 16em;
+		top: 0;
+		left: 50%;
+		margin-top: -2.7em;
+		margin-left: -8em;
+		background-color: $bgAccentColor;
+		color: #fff;
+		padding: 0.5em 0em;
+		font-size: 0.75em;
+		font-weight: bold;
+		cursor: pointer;
+		display: none;
+
+		@include respond-to(bp800){
+			display: block;
+		}
+
+		span{
+			margin-right: 0.5em;
+			display: inline-block;
+			vertical-align: middle;
+		}
+	}
+
+	.dtrealtime_videuser{
+		display: inline-block;
+		border: 3px solid #000;
+		position: relative;
+
+		&.OT_publisher .OT_edge-bar-item,
+		&.OT_subscriber .OT_edge-bar-item{
+			@include transition-duration(0.2s);
+		}
+
+		span{
+			&.OT_opentok{
+				display: none;
+			}
+		}
+
+		h1.OT_name{
+			font-size: 0.75em;
+			font-weight: bold;
+		}
+
+		button.OT_mute{
+			background-size: 9.5px 14px;
+			border-left: 0;
+			position: absolute;
+			right: 0em;
+			top: 0.2em;
+			@include box-shadow(none);
+		}
+	}
+}

@@ -1,0 +1,141 @@
+/* Begin Fontface Styling */
+// IcoMoon
+@font-face {
+	font-family: 'IcoMoon';
+	src:url($fontDir + 'IcoMoon/icomoon.woff?-tn0vt8');
+	src:url($fontDir + 'IcoMoon/icomoon.eot?#iefix-tn0vt8') format('embedded-opentype'),
+		url($fontDir + 'IcoMoon/icomoon.ttf?-tn0vt8') format('truetype'),
+		url($fontDir + 'IcoMoon/icomoon.woff?-tn0vt8') format('woff'),
+		url($fontDir + 'IcoMoon/icomoon.svg?-tn0vt8#IcoMoon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+	@include ico-style();
+}
+
+.icon-video-24:before {
+	content: "\e622";
+}
+.icon-Microphone:before {
+	content: "\e623";
+}
+.icon-pause:before {
+	content: "\e628";
+}
+.icon-disk:before {
+	content: "\e621";
+}
+.icon-pencil:before {
+	content: "\e620";
+}
+.icon-list:before {
+	content: "\e61f";
+}
+.icon-logout:before {
+	content: "\e624";
+}
+.icon-chat:before {
+	content: "\e61c";
+}
+.icon-chat2:before {
+	content: "\e625";
+}
+.icon-close:before {
+	content: "\e627";
+}
+.icon-arrow-up:before {
+	content: "\e606";
+}
+.icon-arrow-down:before {
+	content: "\e607";
+}
+.icon-play2:before {
+	content: "\e608";
+}
+.icon-history:before {
+	content: "\e60c";
+}
+.icon-soundcloud:before {
+	content: "\e612";
+}
+.icon-arrow-down2:before {
+	content: "\e61a";
+}
+.icon-dot:before {
+	content: "\e61b";
+}
+.icon-camera:before {
+	content: "\e61d";
+}
+.icon-arrow-right:before {
+	content: "\e600";
+}
+.icon-menu:before {
+	content: "\e601";
+}
+.icon-search:before {
+	content: "\e602";
+}
+.icon-plus-alt:before {
+	content: "\e603";
+}
+.icon-headphones:before {
+	content: "\e605";
+}
+.icon-play:before,
+.icon-play-circle:before {
+	content: "\e615";
+}
+.icon-plus:before {
+	content: "\e618";
+}
+.icon-flag:before {
+	content: "\e61e";
+}
+.icon-users:before {
+	content: "\e604";
+}
+.icon-trashcan:before {
+	content: "\e619";
+}
+.icon-chat:before {
+	content: "\e61c";
+}
+.icon-volume-off:before {
+	content: "\e609";
+}
+.icon-volume-down:before {
+	content: "\e60a";
+}
+.icon-volume-up:before {
+	content: "\e60b";
+}
+.icon-star-empty:before {
+	content: "\e60d";
+}
+.icon-star:before {
+	content: "\e60e";
+}
+.icon-heart-empty:before {
+	content: "\e60f";
+}
+.icon-heart:before {
+	content: "\e610";
+}
+.icon-arrow-right2:before {
+	content: "\e611";
+}
+.icon-remove-circle:before {
+	content: "\e613";
+}
+.icon-youtube:before {
+	content: "\e614";
+}
+.icon-facebook:before {
+	content: "\e616";
+}
+.icon-twitter:before {
+	content: "\e617";
+}

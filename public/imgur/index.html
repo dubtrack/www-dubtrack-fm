@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Dubtrack.fm - Imgur upload</title>
+		<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="style.css" />
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery.knob.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/jquery.ui.widget.js"></script>
+		<script src="js/jquery.iframe-transport.js"></script>
+		<script src="js/jquery.fileupload.js"></script>
+		<script src="app.js"></script>
+		<script src="gifie.js"></script>
+	</head>
+
+	<body>
+		<div class="container">
+			<div class="dubtrack-logo"><img src="http://www.dubtrack.fm/assets/images/media/pic_notfound.jpg" alt="Dubtrack.fm" /></div>
+		
+			<div class="image_upload">
+				<div class="fileinput-button">
+					<input id="fileupload" type="file" name="image" data-url="https://api.dubtrack.fm/user/image">
+					<button class="btn btn-default btn-lg btn-block">
+						<i class="glyphicon glyphicon-plus"></i>
+						Upload a file...
+					</button>
+				</div>
+
+				<button class="btn btn-default btn-lg btn-block" id="makegifie">
+					<i class="glyphicon glyphicon-facetime-video"></i>
+					Make a gif-selfie
+				</button>
+
+				<div id="image-container">
+				</div>
+				<input id="loader2" type="text" data-cursor="true" data-displayInput="false" data-readOnly="true">
+			</div>
+
+			<div class="group">
+				<h1>Make a gif-selfie with your webcam!</h1>
+
+				<h2 id="imgur-upload">Uploading to imgur...</h2>
+
+				<div id="error" class="alert alert-danger">
+					gifie does not work with your browser
+				</div>
+				
+				<button id="record" type="button" class="btn btn-default btn-lg btn-block">
+					<span class="glyphicon glyphicon-facetime-video"></span>
+					<span class="info">Record</span>
+				</button>
+			
+				<input id="countdown" type="text" data-max="200" data-displayInput="false" data-readOnly="true">
+				<input id="loader" type="text" data-cursor="true" data-displayInput="false" data-readOnly="true">
+			
+				<div>
+					<a id="gifLink" target="_blank">
+						<img id="gif" class="img-rounded">
+					</a>
+				</div>
+			
+				<div id="imgur">
+					<a class="btn btn-default" href="#">
+						<span class="glyphicon glyphicon-cloud-upload"></span>
+						<!-- Post anonymously to imgur //-->
+						Use Image as Avatar
+					</a>
+				</div>
+			</div>
+		</div>
+		<footer>
+			GIF Images on chat are hosted by <a href="https://imgur.com">https://imgur.com</a><br>
+			<!--source @ <a href="https://github.com/eirikb/gifie">https://github.com/eirikb/gifie</a>//-->
+		</footer>
+	</body>
+</html>

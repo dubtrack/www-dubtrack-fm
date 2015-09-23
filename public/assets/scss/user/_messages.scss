@@ -1,0 +1,324 @@
+#private-messages{
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	position: relative;
+
+	&.view-message-details{
+		.main-message-list{
+			left: -100%;
+		}
+
+		.message-details{
+			left: 0;
+		}
+	}
+
+	.loading{
+		font-size: 0.75em;
+		text-transform: uppercase;
+		top: 4em;
+	}
+
+	.user_selected_items,
+	.search-results .search-results-users{
+		.result-item{
+			@include clearfix2();
+			margin: 0.7em 0;
+			cursor: pointer;
+
+			img{
+				width: 1.7em;
+				height: 1.7em;
+				float: left;
+			}
+
+			span{
+				margin-left: 1em;
+				font-size: 0.85em;
+
+				b{
+					color: $bgAccentColor;
+				}
+			}
+		}
+	}
+
+	.private-message-details-info,
+	.private-message-info{
+		padding: 0 2.5em;
+		position: absolute;
+		width: 100%;
+		left: 0;
+		top: 5em;
+		text-align: center;
+		color: $siteAccentColor;
+		display: none;
+	}
+
+	.main-message-list,
+	.message-details{
+		position: absolute;
+		background: $bgOtherColor;
+		height: 100%;
+		width: 100%;
+		top: 0;
+		left: 0;
+		@include transition(left 0.25s);
+
+		input{
+			border: $standardBorder;
+			background: none;
+			display: block;
+			width: 100%;
+			background: none;
+			height: 2.6em;
+			padding: 0 3em 0 1em;
+			color: $siteColor;
+		}
+
+		.message-header{
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			padding: 0.5em 1em;
+			border-bottom: $standardBorder;
+			z-index: 99;
+			background: $bgOtherColor;
+
+			a{
+				color: $bgAccentColor;
+				font-size: 0.75em;
+				font-weight: bold;
+				text-transform: uppercase;
+			}
+
+			input{
+				padding: 0 2.8em 0 1em;
+			}
+
+			.icon-search,
+			.icon-plus-alt{
+				position: absolute;
+				left: 1.5em;
+				top: 0.85em;
+			}
+
+			.icon-plus-alt{
+				left: auto;
+				right: 1.5em;
+				cursor: pointer;
+			}
+		}
+
+		.message-list-wrapper{
+			padding: 3em 0 0 0;
+			position: relative;
+			height: 100%;
+
+			.message-list-wrapper-inner{
+				position: relative;
+				height: 100%;
+				overflow: hidden;
+			}
+		}
+
+		ul.message-list{
+			padding: 0;
+
+			li.message-item{
+				padding: 1em;
+				border-bottom: $standardBorder;
+				position: relative;
+				cursor: pointer;
+				min-height: 4.7em;
+				@include opacity(0.8);
+				@include transition(opacity 0.1s);
+
+				&:hover{
+					@include opacity(1);
+
+					.message-time{
+						display: block;
+					}
+				}
+
+				&.new-message{
+					&:before{
+						content: "";
+						position: absolute;
+						left: 0;
+						top: 0;
+						height: 100%;
+						width: 1px;
+						background: $bgAccentColor;
+					}
+				}
+
+				.media{
+					@include border-radius(50%);
+					width: 3em;
+					height: 3em;
+					overflow: hidden;
+
+					img{
+						width: 100%;
+					}
+				}
+
+				.message-content{
+					h3{
+						margin: 0.25em 0;
+						padding: 0;
+						font-size: 0.95em;
+						font-weight: bold;
+						color: $bgAccentColor;
+						overflow: hidden;
+					}
+
+					p{
+						font-size: 0.85em;
+						text-align: left;
+						margin: 0;
+						padding: 0;
+						color: #999;
+					}
+
+					img{
+						width: 100%;
+					}
+
+					.username-handle{
+						color: $bgOtherAccentColor;
+						font-weight: bold;
+					}
+				}
+
+				.message-time{
+					position: absolute;
+					right: 1em;
+					top: 0.1em;
+					color: #666;
+					font-size: 0.75em;
+				}
+			}
+		}
+	}
+
+	.main-message-list ul.message-list li.message-item{
+		.message-content{
+			overflow: hidden;
+
+			p{
+				white-space: nowrap;
+			}
+		}
+
+		.image-container{
+			@include clearfix2();
+			width: 3em;
+			height: 3em;
+			overflow: hidden;
+			float: left;
+			margin-right: 1em;
+			margin-bottom: 0.5em;
+
+			.media{
+				display: block;
+				width: 1.5em;
+				height: 1.5em;
+				float: left;
+			}
+		}
+
+		&.display-2-users{
+			.media{
+				width: 3em;
+				height: 3em;
+			}
+		}
+
+		&.display-3-users{
+			.media{
+				&:nth-of-type(2){
+					margin-left: 1.5em;
+				}
+			}
+		}
+
+		&.display-4-users{
+			.media{
+				&:nth-of-type(1){
+					margin-left: 0.75em;
+				}
+			}
+		}
+	}
+
+	.message-details{
+		left: 100%;
+
+		.message-list-wrapper{
+			padding: 3em 0 4.5em 0;
+		}
+
+		ul.message-list{
+
+			li.message-item{
+				padding-bottom: 1.5em;
+				@include opacity(1);
+				min-height: 4.5em;
+
+				&:last-of-type{
+					border-bottom: 0;
+				}
+
+				.message-content{
+					line-height: 1em;
+					padding-left: 0;
+
+					h3{
+						margin: 0;
+						padding: 0;
+						display: inline;
+						font-size: 0.85em;
+						color: $bgOtherAccentColor;
+					}
+
+					p{
+						font-size: 0.85em;
+						display: inline;
+					}
+				}
+
+				.media{
+					width: 2em;
+					height: 2em;
+					position: relative;
+					float: left;
+					margin-right: 1em;
+					margin-bottom: 0.5em;
+				}
+
+				.message-time{
+					display: none;
+					right: auto;
+					left: 1.8em;
+					top: auto;
+					font-size: 0.65em;
+					bottom: 0.1em;
+				}
+			}
+		}
+
+		.input-container{
+			position: absolute;
+			border-top: $standardBorder;
+			padding: 1em;
+			width: 100%;
+			bottom: 0;
+			left: 0;
+		}
+	}
+}

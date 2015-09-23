@@ -1,0 +1,85 @@
+
+.dubtrack-section{
+	display: none;
+}
+
+.main-col{
+	width: 37.500em;
+	display: inline-block;
+
+	& span{
+		&.room_name{
+			font-size: 1.125em; 
+			color: white; 
+			display: block;			
+		}
+
+		&.slash{
+			display: inline; 
+			color: #797979;			
+		}
+	}
+	
+	& .info{
+		display: block; 
+		font-size: 0.75em; 
+		color: #959595; 
+		padding: 1.250em 0 1.250em 8.750em;
+		font-family: $siteAccentFont; 
+	}
+
+	& .loading{
+		margin: 0 0 0 10.625em; 
+		top: 25em;
+	}
+
+	& .col-left{
+		float: left; 
+		width: 9.375em; 
+		margin: -1.250em 1.250em 0 0; 
+		text-align: center; 
+		min-width: 9.375em;
+
+		& .profile-pic{
+			@include box-shadow(5px 5px 5px 0px rgba(0, 0, 0, 0.5));
+			border: 0.625em solid white; 
+			display: inline-block; 
+			margin: 0 0 1.250em 0;
+		}
+	} 
+}
+
+.content-header{
+	padding: 0.5em 0 0 0;
+}
+
+.dt_section{
+	display: block;
+	padding-bottom: 5em;
+	padding-top: 2.5em; 
+
+	&.inactive{
+		display: none;
+
+		& #main_avatar_room{
+			display: none !important;
+		}
+	}
+}
+
+#dt_mainplayer{
+	display: block;
+	margin-right: 0 !important;
+	padding-right: 0 !important;
+	height: 100%;
+	padding-top: 1.250em !important;
+
+	&.inactive{
+		display: block !important;
+		position: absolute;
+		top: -106.250em;
+		width: 93.750em;
+		height: 75em;
+		overflow: hidden; 
+	}
+}

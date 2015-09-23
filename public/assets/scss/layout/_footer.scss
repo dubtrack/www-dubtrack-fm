@@ -1,0 +1,110 @@
+/* FOOTER ===================================================== */
+
+footer#footer_global{
+	position: fixed; 
+	bottom: 0; 
+	width: 100%; 
+	background: #111; 
+	text-align: left; 
+	text-transform: uppercase; 
+	z-index: 99;
+	
+	& a{
+		color: $bgOtherAccentColor; 
+		padding: 1em; 
+		display: inline-block; 
+		border-right: 1px #303030 solid;
+
+		&:hover{
+			background: $bgAccentColor; 
+			color: $bgColor;
+		}
+
+		.social{
+			position: relative;
+			text-indent: -99999px;
+			width: 1em;
+
+			&:before{ 
+				content: "";
+				position: absolute;
+				background: url(../images/loginDubtrack.png) no-repeat;
+				height: 17px;
+				width: 16px;
+				overflow: hidden;
+				top: 1em;
+				left: 1em;
+			}
+
+			&:hover:before{ 
+				background-position: 0 -1em;
+			}
+		}
+		&.facebook{
+			&:before{
+				background-position: -16px 0;
+			}
+
+			&:hover:before{
+				background-position: -16px -17px;	
+			}
+		}
+	}
+
+	& .container-fluid{
+		float: left; 
+		padding: 0;
+	}
+
+	& .nav-collapse{
+		float: right; 
+		color: $bgAccentColor;
+	}
+}
+
+#footer{
+	text-align: center; 
+	font-family: $fontStack; 
+	font-size: 0.875em; 
+	color: $bgOtherAccentColor; 
+	background:url(../images/denim-dark.png) repeat;  
+	padding: 1.250em 0 1.250em 0; 
+
+	&.no-padding{
+		padding: 0px;
+	}
+
+	& a{
+		color:inherit;
+		
+		a:hover{
+			color:inherit;
+		}
+	}
+
+	& ul{
+		padding:0 0 0 0.850em;
+	}
+
+	& li{
+		display: inline-block; 
+		padding: 0 0.625em;
+
+		&.logo{
+			font-size: 0.750em;
+		}
+	}
+}
+
+.footer_dark{
+	padding: 1.250em 0;
+}
+
+body.roomview #footer{
+	background: none;
+
+	& ul{
+		padding: 0 !important;
+	}
+}
+/* ============================================================ */

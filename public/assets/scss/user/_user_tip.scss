@@ -1,0 +1,68 @@
+#user_popover{
+	position: fixed;
+	z-index: 9999999;
+	background: $bgOtherColor;
+	border: 1px solid $bgAccentColor;
+	display: none;
+	min-width: 19em;
+
+	.usercontent{
+		cursor: pointer;
+		@include clearfix2();
+		padding: 1em;
+
+		header{
+			float: left;
+			margin: 0 0 0 1em;
+
+			h3{
+				margin: 0;
+			}
+
+			a{
+				color: #666;
+				margin: 0.5em 0 0 0;
+				display: block;
+			}
+		}
+
+		figure{
+			width: 3em;
+			@include border-radius(50%);
+			overflow: hidden;
+			float: left;
+
+			img{
+				width: 100%;
+			}
+		}
+	}
+
+	.actions{
+		clear: both;
+		@include clearfix2();
+		margin: 0.5em 0 0 0;
+
+		a{
+			float: left;
+			width: 15%;
+			display: block;
+			text-align: center;
+			outline: 1px solid $bgOtherColor;
+			padding: 0.5em 0;
+			font-weight: bold;
+			color: #000;
+			background: $bgAccentColor;
+
+			&.unmute,
+			&.mute{
+				width: 22%;
+			}
+
+			&.unsetmod,
+			&.setmod{
+				width: 33%;
+			}
+		}
+	}
+}

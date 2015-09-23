@@ -1,0 +1,430 @@
+#chat{
+	position: relative;
+	margin: 0;
+	padding: 2.7em 0 4em 0;
+	background: $bgOtherColor; 
+	z-index: 10;
+	width: 100%;
+	display: none;
+
+	@include respond-to(bp1150){
+		display: block;
+	}
+
+	.emojify{
+		vertical-align: bottom;
+	}
+
+	#new-messages-counter{
+		z-index: 99999;
+		cursor: pointer;
+		display: none;
+		position: absolute;
+		top: -1.8em;
+		padding: 0.2em 0;
+		left: 0;
+		width: 100%;
+		background: $bgAccentColor;
+		color: $bgColor;
+		text-align: center;
+		font-weight: bold;
+		font-size: 0.75em;
+		text-transform: uppercase;
+	}
+
+	.chat-commands{
+		position: absolute;
+		padding: 0.5em 0.8em;
+		text-transform: uppercase;
+		font-weight: bold;
+		color: $bgColor;
+		font-size: 1em;
+		left: 0;
+		top: 0;
+		text-align: center;
+		background: $bgOtherAccentColor;
+		z-index: 15;
+	}
+
+	& select#selectLang{
+		width: 100px;
+		height: 20px;
+		padding: 0;
+	}
+	
+	.chatLoading{
+		background: $bgAccentColor;
+		color: $bgColor;
+		font-weight: bold;
+		text-transform: uppercase;
+		position: absolute;
+		top: 3em;
+		left: 50%;
+		margin-left: -7em;
+		width: 14em;
+		text-align: center;
+		padding: 0.5em 0;
+		font-size: 0.75em;
+		z-index: 5;
+		display: none;
+	}
+
+	& .col-header{
+		padding:10px 10px 0 10px;
+	}
+
+	.chat_tools{
+		position: absolute;
+		top: 0;
+		right: 0;
+		padding: 0.5em 1em;
+		background: $bgOtherColor;
+		border-bottom: $standardBorder;
+		width: 100%;
+		z-index: 10;
+
+		.room-user-counter{
+			cursor: pointer;
+			background: $bgAccentColor;
+			color: $bgColor;
+			padding: 0.5em 0.6em 0.5em 0.5em;
+			display: block;
+			position: absolute;
+			height: 100%;
+			left: 0;
+			top: 0;
+			font-size: 0.75em;
+			line-height: 1.7em;
+			font-weight: bold;
+			@include opacity(0.4);
+			display: none;
+
+			@include respond-to(bp1150){
+				display: block;
+			}
+
+			&:before{
+				@include ico-style();
+				content: "\e604";
+				font-size: 1em;
+				margin-right: 0.5em;
+				vertical-align: middle;
+			}
+		}
+
+		a{
+			float: right;
+			font-size: 0.75em;
+			font-weight: bold;
+			text-transform: uppercase;
+			color: $siteColor;
+
+			&.chatSound{
+				&:after{
+					margin: 0 0 0 0.5em;
+					@include ico-style();
+					content: "\e60b";
+					font-size: 0.75em;
+				}
+
+				&.mute{
+					&:after{
+						content: "\e609";
+					}
+				}
+			}
+		}
+	}
+	
+	.chatLogin{
+		font-size: 12px;
+		display: block;
+		width: 320px;
+		padding: 10px 20px 5px 20px;
+		text-transform: uppercase;
+	}
+
+	.chat-container {
+		.pusher-chat-widget-input {
+			position: absolute;
+			width: 100%;
+			bottom: 0;
+			border-top: $standardBorder;
+			padding: 1em 3em 1em 1em;
+			background: $bgOtherColor;
+			z-index: 99999;
+
+			p{
+				margin: 0;
+				font-size: 0.75em;
+				font-weight: bold;
+			}
+
+			button {
+				position: absolute;
+				right: 1em;
+				bottom: 1em;
+				width: 2em;
+				height: 2em;
+				color: $bgColor;
+				padding: 0;
+				background: $bgAccentColor;
+				text-align: center;
+				@include border-radius(0);
+				@include box-shadow(none);
+			}
+
+			.icon-camera{
+				color: $bgAccentColor;
+				position: absolute;
+				right: 3.7em;
+				top: 1.5em;
+				cursor: pointer;
+			}
+
+			input {
+				border: $standardBorder;
+				background: none;
+				display: block;
+				width: 100%;
+				background: none;
+				height: 2.6em;
+				padding: 0 3em 0 1em;
+				color: $siteColor;	
+
+				&:focus {	
+					outline: 0;
+				}
+			}
+		}
+		
+		.chat-messages{
+			position: relative;
+			margin: 0;
+			padding: 0;
+			height: inherit;
+			overflow: hidden;
+			@include transition(height 0.1s);
+		}
+
+		& .owner-mod {
+			color:yellow;
+		}
+
+		& .currentDJ {
+			color:magenta;
+		}
+
+		ul.chat-main {
+			padding: 0;
+			width: 100%;
+			overflow: none;
+			position: relative;
+			z-index: 999;
+			
+			.system-warning {
+				color:#000;
+				background: magenta;
+			}
+
+			.info-msg {
+				color:#000;
+				background: cyan;
+			}
+			
+			li {
+				position: relative;
+				padding: 0 0 0 2.2em;
+				margin: 0 0.5em 0 0.5em;
+				display: block;
+				overflow: hidden;
+				@include clearfix2();
+
+				&:hover{
+					.activity-row{
+						.meta-info{
+							display: block;
+						}
+					}
+				}
+
+				&.chat-system-loading{
+					text-align: center;
+					text-transform: uppercase;
+					padding: 0.5em;
+					font-size: 0.75em;
+					color: $siteFontColor;
+					font-weight: bold;
+				}
+
+				&.chat-system-joined{
+					text-align: center;
+					font-size: 0.75em;
+					color: #666;
+					padding-right: 0;
+				}
+
+				&.system{
+					color: magenta;
+					text-transform: uppercase;
+					font-size: 0.6em;
+					line-height: 1.2em;
+					padding: 0.6em 1.5em;
+					font-weight: bold;
+					text-align: center;
+					@include opacity(0.7);
+				}
+
+				&.system-error{
+					color: red;
+					text-transform: uppercase;
+				}
+
+				.activity-row {
+					float: left;
+					margin: 0;
+					//background: $bgColor;
+					padding: 0.5em;
+					padding-bottom: 1em;
+					min-height: 2.2em;
+					position: relative;
+					overflow: hidden;
+
+					@include respond-to(bp1150){
+						width: 20.5em;
+					}
+
+					.meta-info{
+						@include opacity(0.3);
+						position: absolute;
+						bottom: 0.2em;
+						left: 0.5em;
+						display: none;
+
+						.username {
+							font-size: 0.6em;
+							color: $bgOtherAccentColor;
+							cursor: pointer;
+							font-weight: 700;
+							display: none;
+						}
+
+						.timeinfo{
+							font-size: 0.6em;
+						}
+						
+						.icon-dot{
+							display: none;
+							vertical-align: text-bottom;
+							font-size: 0.7em;
+						}
+					}
+
+					.text{
+						font-size: 0.75em;
+						display: block;
+
+						p{
+							line-height: 1.2em;
+							margin: 0 0 0.5em 0;
+
+							a.username,
+							a.username:hover,
+							a.username:visited{
+								color: $bgOtherAccentColor;
+							}
+
+							a.autolink{
+								word-break: break-all;
+								color: #005d99;
+
+								&:visited{
+									color: #005d99;
+								}
+
+								&:hover{
+									color: #009bff;
+								}
+							}
+						}
+
+						img{
+							width: 100%;
+							margin: 0.5em 0;
+						}
+
+						span.username-handle{
+							font-weight: 700;
+							color: $bgOtherAccentColor;
+						}
+					}
+				}
+
+				.image_row {
+					position: absolute;
+					left: 0;
+					top: 0.1em;
+					height: 2.2em;
+					width: 2.2em;
+
+					&:after{
+						content: "";
+						position: absolute;
+						right: 0;
+						top: 0;
+						width: 0;
+						height: 0;
+						border-top: 0px solid transparent;
+						border-bottom: 0.75em solid transparent;
+						border-right: 0.75em solid #111;
+					}
+
+					img {
+						width: 100%;
+					}
+				}
+
+				/*&.current-chat-user{
+					padding: 0 2.2em 0 0;
+
+					.image_row{
+						top: auto;
+						left: auto;
+						right: 0;
+						bottom: 0.1em;
+
+						&:after{
+							display: none;
+						}
+					}
+
+					.activity-row {
+						.text{
+							p{
+								a.username{
+									display: none;
+								}
+							}
+						}
+
+						.meta-info{
+							.icon-dot{
+								display: inline;
+							}
+
+							.username {
+								display: inline;
+							}
+						}
+					}
+				}*/
+			}
+		}
+
+		span.icon {
+			display:inline-block;
+			background:url('../images/chat_icon.png') right 1px no-repeat;
+			padding:0 25px 0 0;
+		}
+	}
+}

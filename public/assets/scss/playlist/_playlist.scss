@@ -1,0 +1,106 @@
+/* PLAYLIST =================================================== */
+
+#addToPlaylistFloatContainer{
+	background: $bgOtherColor;
+	border: $standardBorder; 
+	width: 15em; 
+	color: white; 
+	position: absolute; 
+	z-index: 9999; 
+	display: block;
+
+	&.playerBottomFixed{
+		position: fixed;
+	}
+
+	ul.playlist-list-action{
+		max-height: 10.8em;
+		overflow: hidden;
+		position: relative;
+		
+		> li{
+			text-transform: uppercase;
+			font-weight: bold;
+			font-size: 0.65em;
+			display: block;
+			cursor: pointer;
+			width: 100%;
+			background: $siteOtherAccentColor;
+			border-bottom: $standardBorder;
+			padding: 0.5em 0.7em;
+			@include opacity(0.7);
+
+			&:hover{
+				@include opacity(1);
+			}
+		}
+	}
+
+	.create-playlist-input{
+		position: relative;
+
+		input{
+			background: none;
+			height: 2.5em;
+			width: 100%;
+			border: 0;
+			border-bottom: $standardBorder;
+			color: $siteColor;
+			padding: 0 2.5em 0 0.5em;
+		}
+
+		span{
+			position: absolute;
+			right: 0;
+			padding: 0.4em;
+			text-align: center;
+			color: $bgColor;
+			background: $bgAccentColor;
+		}
+	}
+}
+
+#playlist-queue {
+    display:none;
+    position:fixed;
+    z-index:98;
+    left:0px;
+    top:38px;
+    width:300px;
+    padding:20px 0;
+    background:#000;
+    height:100%;
+    & a.hide {
+        cursor:pointer;
+        z-index:999;
+        position:absolute;
+        top:5px;
+        right:5px;
+        color:#fff;
+    }
+    & li {
+        border-bottom:1px solid #222;
+        padding:20px 15px;
+        & h4 {
+            font-weight:bold;
+        }
+        & a {
+            cursor:pointer;
+            font-weight:bold;
+            color:#fff;
+            &:hover {
+            	text-decoration:underline;
+            }
+        }
+        & b {
+            font-weight:bold;
+        }
+        & img {
+            width:60px;
+            float:left;
+            margin-right:10px;
+        }
+    }
+}
+
+/* ============================================================ */

@@ -1,0 +1,209 @@
+#main_player{
+	position: relative;
+	width: 100%;
+	padding: 0.4em;
+
+	&:after{
+		@include respond-to(bp1150){
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: $bgAccentColor;
+			z-index: 10;
+			@include opacity(0.4);
+		}
+	}
+
+	.player_sharing{
+		background: $bgOtherColor;
+		left: 0;
+		bottom: 0;
+		position: relative;
+		z-index: 999;
+		@include clearfix2();
+
+		span{
+			font-size: 1.2em;
+			display: block;
+			float: left;
+			margin: 0 0.2em;
+			padding: 0.75em;
+			cursor: pointer;
+
+			&:hover{
+				color: $bgAccentColor;
+			}
+		}
+	}
+
+	.player_container{
+		display: block;
+		padding: 0.75em;
+		height: 10em;
+		position: relative;
+		background: $bgColor;
+		z-index: 11;
+
+		@include respond-to(bp500){
+			height: 18em;
+		}
+
+		@include respond-to(bp600){
+			//float: left;
+			height: 25.45em;
+		}
+
+		&:hover{
+			.videoquality-el.show,
+			.refresh-el.show{
+				display: block;
+			}
+		}
+
+		#custom_iframe_embed{
+			display: none;
+			position: relative;
+			width: 100%;
+			height: 100%;
+		}
+
+		#custom_iframe_embed_error{
+			text-align: center;
+			padding: 0 1em;
+			text-transform: uppercase;
+			top: 50%;
+			font-weight: bold;
+			position: absolute;
+			width: 100%;
+			left: 0;
+			margin-top: -1em;
+			font-size: 1.2em;
+			display: none;
+		}
+
+		#custom_iframe_overlay{
+			width: 100%;
+			height: 100%;
+			background: none;
+			top: auto;
+			left: 0;
+			bottom: 4em;
+			position: absolute;
+			z-index: 9999999;
+		}
+
+		.playerElement{
+			position: relative;
+			width: 100%;
+			height: 100%;
+		}
+
+		.placeholder{
+			height: 10em;
+			display: none;
+			cursor: pointer;
+
+			h5{
+				margin: 2.5em 0 0 0;
+				padding: 0 2em;
+				font-size: 1.2em;
+				text-transform: uppercase;
+				font-weight: bold;
+				text-align: center;
+
+				@include respond-to(bp500){
+					margin: 6em 0 0 0;
+				}
+
+				@include respond-to(bp600){
+					margin: 9em 0 0 0;
+				}
+
+				span{
+					position: relative;
+					color: $bgAccentColor;
+					padding-right: 1em;
+
+					i{
+						display: block;
+						position: absolute;
+						top: 0.1em;
+						right: 0.3em;
+					}
+				}
+			}
+		}
+
+		.loading{
+			display: none;
+			text-transform: uppercase;
+			left: 50%;
+			width: 10em;
+			margin-left: -5em;
+			text-align: center;
+			@include user-select();
+		}
+
+		.skip-el{
+			cursor: pointer;
+			background: $bgAccentColor;
+			@include opacity(0.4);
+			display: none;
+			right: 0;
+			left: auto;
+			top: 0;
+			margin: 0;
+		}
+
+		.videoquality-el{
+			background: $bgOtherAccentColor;
+			left: 0;
+			bottom: 0;
+			top: auto;
+			margin: 0;
+			cursor: pointer;
+		}
+
+		.refresh-el{
+			background: $bgOtherAccentColor;
+			left: 0;
+			top: 0;
+			margin: 0;
+			cursor: pointer;
+		}
+	}
+}
+
+#volume-div {
+	width: 100%;
+	height: 0.2em;
+	margin: 1.2em 0.2em 1em 0;
+	background: #1e1e22;
+	border: 1px #1e1e22 solid;
+	display: block;
+	cursor: pointer;
+	@include border-radius(0.313em);
+	position: relative;
+
+	.ui-slider-handle {
+		@include border-radius(0.6em);
+		background: $bgAccentColor;
+		border: 0;
+		padding: 0;
+		height: 1.2em;
+		width: 1.2em;
+		top: -0.5em;
+		margin-left: -0.5em;
+		cursor: pointer;
+		display: block;
+		position: absolute;
+		@include box-shadow(inset 0px 0px 2px 0px rgba(0, 0, 0, 0.5));
+	}
+
+	.ui-slider-range-min {
+		background: #ff00ff;
+	}
+}

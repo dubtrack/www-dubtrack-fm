@@ -1,0 +1,772 @@
+#browser{
+	width: 100%; 
+	height: 85%;
+	bottom: -1.875em;
+	bottom: -150%;
+	left: 0;
+	margin: 0; 
+	display: block;
+	z-index: 9999;
+	position: fixed;
+	@include transition-property(bottom);
+  	@include transition-duration(0.2s);
+  	@include transition-timing-function(ease-in);
+	//background: #534f4f;
+	background: none;
+
+	@include respond-to(bp1150){
+	}
+
+	.ui-state-highlight{
+		height: 5.5em;
+		width: 100%;
+		background: #333;
+		@include opacity(1);
+	}
+
+	&.animate{
+		bottom: 2em;
+	}
+
+	& span{
+		&.preview{
+			cursor:pointer;
+		}
+		
+		&.title{
+			color: $bgOtherAccentColor;
+			font-family: $siteTitleFont;
+			display: block; 
+			width: auto; 
+			font-size: 1.2em;
+			margin: 0 0 0.2em 0;
+		}
+		
+		&.song-title{ 
+			width:250px; 
+			height:30px; 
+			overflow:hidden; 
+			font-size:18px;
+		}
+		&.next-inline{
+			height:30px;
+			display:inline-block; 
+			vertical-align:top; 
+			margin:0 10px 0 0;
+		}
+	}
+	&.help{
+		& .content-videos{
+			& .img_bg_trans{
+				@include opacity(1);
+			}
+		}
+	}
+
+	.create-playlist{
+		position: relative;
+
+		input{
+			background: none;
+			height: 2.5em;
+			width: 100%;
+			border: $standardBorder;
+			color: $siteColor;
+			padding: 0 2.5em 0 0.5em;
+		}
+
+		span{
+			position: absolute;
+			right: 0;
+			padding: 0.4em;
+			text-align: center;
+			color: $bgColor;
+			background: $bgAccentColor;
+		}
+	}
+
+	ul{
+		&.playlist-style{
+			width:100%;
+			padding-bottom: 10px;
+			overflow: hidden;
+			max-height: 21em;
+			position: relative;
+
+			li{
+				font-family: $siteFont;
+				text-transform: uppercase;
+				color: white; 
+				font-size: 0.75em;
+				padding: 0.5em; 
+				cursor: pointer; 
+				position: relative; 
+				border-top: 1px solid $bgColor;
+				border-right: 1px solid $bgColor;
+				border-left: 1px solid $bgColor;
+				background: $siteAccentColor;
+				font-weight: bold; 
+				@include opacity(0.7);
+				margin: 0.3em 0 0 0;
+				//@include transition-property(opacity);
+  				//@include transition-duration(0.3s);
+  				//@include transition-timing-function(ease-in);
+
+				&.my_tracks{
+					border-bottom: 1px solid #000;
+				}
+
+				&:hover{
+					@include opacity(0.9);
+
+					.add_to_queue,
+					.delete{
+						@include opacity(0.5);
+					}
+				}
+				
+				p{
+					font-family: $siteFont;
+					font-size: 0.65em; 
+					font-style: italic;
+					color: $siteFontColor;
+					margin: 0;
+				}
+				
+				.delete,
+				.add_to_queue{
+					font-size: 0.75em; 
+					color: $siteColor;
+					@include opacity(0);
+					//@include transition-property(opacity);
+					//@include transition-duration(0.1s);
+  					//@include transition-timing-function(ease);
+				}
+
+				.delete{
+					position: absolute; 
+					cursor: pointer; 
+					top: 2.5em; 
+					right: 0.5em; 
+					padding: 0;
+				}
+
+				.add_to_queue{
+					position: absolute; 
+					cursor: pointer; 
+					right: 0.5em;
+					top: 0.8em;
+					padding: 0;
+				}
+
+				& .playlist-selected{
+					background:url(../images/button_arrow.png) no-repeat; 
+					width:69px; 
+					height:69px; 
+					left:-52px; 
+					top:0px; 
+					position:absolute; 
+					z-index:99;
+				}
+			}
+		}
+	}
+	& .loading{
+		left:50%;
+		margin-left: -20px;
+		top:0;
+		text-transform: uppercase;
+		background: magenta;
+		color: #000;
+		padding: 5px 15px;
+		font-size: 12px;
+		@include border-radius(0);
+		font-weight: bold;
+	}
+
+	& .nano{
+		float: left;
+		width: 100%;
+		overflow: hidden;
+		height: 100%;
+
+		@include respond-to(bp1150){
+			width: 56em;
+		}
+	}
+
+	.content-videos{
+		width: 100%;
+		position: relative;
+		overflow: hidden;
+		height: 100%;
+
+		ul.browserPlaylistItems{
+			> li{
+				position: relative; 
+				padding: 0.5em;
+				font-size: 1.125em; 
+				margin: 0;
+				border-bottom: $standardBorder; 
+				list-style: none;
+				background: $bgColor;
+				display: block;
+				width: 100%;
+				overflow: visible;
+				//@include transition-property(opacity);
+	  			//@include transition-duration(0.2s);
+	  			//@include transition-timing-function(ease-in);
+	  			@include opacity(0.7);
+	  			@include clearfix2();
+
+				&:hover{
+					@include opacity(1);
+
+					#addToPlaylistFloatContainer,
+					.actions{
+						display: block;
+					}
+				}
+
+				.display-error,
+				.display-success{
+					display: block;
+					display: none;
+					position: absolute;
+					top: 0;
+					right: 0;
+					background: red;
+					z-index: 999;
+					color: white;
+					font-weight: bold;
+					font-size: 0.6em;
+					text-transform: uppercase;
+					padding: 0.5em 1em;
+				}
+
+				.display-success{
+					background: $bgOtherAccentColor;
+					color: #000;
+				}
+
+				&.removed{
+					background: #8B0000;
+
+					& .add_to_queue{
+						display: none;
+					}
+
+					& span.removed_info{
+						position: absolute;
+						font-size: 14px;
+						left: 0;
+						bottom: -1px;
+						display: block;
+						z-index: 99;
+						text-transform: uppercase;
+						font-weight: bold;
+						background: #000;
+						padding: 5px;
+					}
+
+					& .preview{
+						display: none;
+					}
+				}
+
+				&.playlist-item{
+					display: none;
+
+					.add_to_playlist{
+						display: none;
+					}
+				}
+
+				&.queue-item{
+					display: none;
+
+					.add_to_queue{
+						display: none;
+					}
+				}
+
+				&.history-item,
+				&.search-item{
+					.remove_icon{
+						display: none;
+					}
+				}
+
+				&.history-item{
+					display: none;
+				}
+
+				#addToPlaylistFloatContainer,
+				.actions{
+					@include respond-to(bp1150){
+						display: none;
+					}
+				}
+
+				.progress{
+					position: absolute;
+					width: 100%;
+					height: 3px;
+					top:0;
+					left: 0;
+					background: #000;
+					& .bg_current{
+						background: magenta;
+						display: block;
+						height: 3px;
+					}
+				}
+
+				input{
+					&.track_name_input{
+						font-size: 14px;
+						width: 80%;
+						margin: 0;
+						font-family: $siteFont;
+						@include border-radius(0);
+						background: none;
+						border: 1px #7D7D7D solid;
+						color: #fff;
+					}
+				}
+
+				span{
+					&.timeDisplay{
+						position: absolute;
+						bottom: auto;
+						top: 0;
+						left: 0;
+						padding: 0.125em 0.3em;
+						color: white;
+						font-weight: bold;
+						background: $bgAccentColor;
+						font-size: 0.65em;
+
+						@include respond-to(bp1150){
+							bottom: 0;
+							top: auto;
+						}
+					}
+				}
+
+				figure{
+					width: 4em;
+					height: 3em;
+					display: block;
+					overflow: hidden;
+					margin: 0 1em 0 0;
+
+					@include respond-to(bp600){
+						float: left;
+					}
+
+					@include respond-to(bp1150){
+						width: 5.188em;
+						height: 3.7em;
+					}
+
+					img{
+						width: 100%;
+					}
+				}
+
+				.actions{
+					position: absolute;
+					right: 1em;
+					top: 1em;
+
+					a{
+						@include opacity(0.5);
+						float: left;
+						text-align: center;
+						color: $siteColor;
+						font-size: 0.5em;
+						text-transform: uppercase;
+						margin-left: 1em;
+						position: relative;
+
+						span{
+							display: block;
+							font-size: 3em;
+							margin-bottom: 0.1em;
+
+							@include respond-to(bp1150){
+								font-size: 4em;
+							}
+						}
+
+						.spinner{
+							position: absolute;
+							top: 1em;
+							left: 0;
+							width: 100%;
+							display: none;
+
+							> div {
+								width: 1em;
+								height: 1em;
+								margin: 0 0.3em;
+								background: $bgAccentColor;
+							}
+						}
+
+						&.loading-action{
+							span{
+								&:before{
+									@include opacity(0);
+								}
+							}
+
+							.spinner{
+								display: block;
+							}
+						}
+					}
+				}
+
+				.content{
+					position:absolute; 
+					height:inherit; 
+					width:inherit; 
+					z-index:9;
+				}
+
+				& .img_bg_trans{
+					@include transition-delay(0.3s);
+					@include transition-property(all);
+	  				@include transition-duration(0.3s);
+	  				@include transition-timing-function(ease-in);
+					@include opacity(0.7);
+					margin-top: 5px;
+					float: right;
+					margin-right: 10px;
+				}
+
+				.description{
+					font-family: $siteFont;
+					margin-top: 0.5em;
+
+					@include respond-to(bp1150){
+						width: 33em;
+						float: left;
+						margin-top: 0.8em;
+					}
+
+					h2{
+						margin: 0;
+						font-size: 1em;
+					}
+
+					& p{
+						font-size:12px; 
+						color:cyan;
+						font-weight: bold;
+
+						& span{
+							color:$bgAccentColor; 
+							display:inline-block; 
+							margin:0;
+
+							&.preview{
+								cursor: pointer;
+							}
+
+							&.playedby,
+							&.dubs-display{
+								margin-left: 0.3em;
+								color: #fff;
+								font-weight: normal;
+
+								b{
+									font-weight: bold;
+								}
+
+								&:before{
+									content: " - ";
+								}
+							}
+						}
+					}
+				}
+
+				& .descriptionTracks{
+					width: 55%;
+				}
+			}
+		}
+	}
+	
+	.result-videos{
+		color:#fff; 
+		vertical-align:top;
+	}
+
+	.browser-content{
+		z-index: 2; 
+		width: 100%;
+		height: 100%;  
+		margin: 0 auto;
+		max-width: 73.750em;
+		background: url('../images/backgrounds/pattern-stripes.png') #333;
+        border: none;
+        position: relative;
+
+        @include respond-to(bp1150){
+        	border: 2px cyan solid;
+        }
+	}
+
+	.browser-content-header{
+		padding: 1em 1.5em 1em 1em; 
+		overflow: hidden;
+		color: #00FFFF; 
+		font-family: $siteTitleFont; 
+		background: $bgOtherColor;
+		position: absolute;
+		z-index: 999;
+		top: 0;
+		left: 0;
+		width: 100%;
+
+		& span.next-playlist{
+			color:#fff; 
+			width:500px; 
+			font-family: $siteAccentFont;
+			display:inline-block; 
+			vertical-align:middle; 
+			margin:0 0 0 0; 
+			height:31px;  
+			overflow:hidden; 
+			padding:5px 0 0 0;
+		}
+
+		.form{
+			text-align: left; 
+			width: 100%;
+
+			& a{
+				margin: 0; 
+				float: left;
+			}
+
+			& input[type=text]{
+				margin: 0; 
+				padding: 0 1em;
+				float: left;
+				border: 0;
+				outline: $standardBorder;
+				height: 2.65em;
+				color: white;
+				@include border-radius(0);
+				background: none;
+				width: auto;
+				width: 11em;
+
+				@include respond-to(bp1150){
+					width: 65.5em;
+				}
+			}
+
+			a{
+				&.br-btn{
+					width: 2em;
+					height: 2em;
+					padding: 0.25em 0;
+					display: block;
+					@include opacity(0.3);
+					outline: $standardBorder;
+					@include transition-property(all);
+	  				@include transition-duration(0.1s);
+	  				@include transition-timing-function(ease-in);
+
+					& span{
+						color: $siteColor;
+						font-size: 1.5em;
+						display: block;
+						text-align: center;
+					}
+					
+					&:hover{
+						@include opacity(0.6);
+					}
+				}
+
+				&.soundcloud-btn{
+					& span{
+					}
+				}
+
+				&.dubtrack-btn{
+					display: none;
+
+					& span{
+					}
+				}
+
+				&.active{
+					outline-color: $bgAccentColor;
+					@include opacity(1);
+
+					&:hover{
+						@include opacity(1);
+					}
+				}
+
+				&.search-btn{
+					color: white;
+					background: $bgAccentColor;
+					outline-color: $bgAccentColor;
+					padding: 0.4em 0.8em;
+
+					span{
+						line-height: 1em;
+						font-size: 0.8em;
+					}
+				}
+			}
+		}
+
+		.close{
+			position: absolute;
+			right: 0.5em;
+			top: 0.5em;
+			margin: 0;
+			display: block; 
+			color: $bgOtherAccentColor;
+			@include opacity(0.5);
+
+			&:hover{
+				@include opacity(0.8);
+			}
+
+			span{
+				font-size: 3em;
+			}
+		}
+	}
+	& input[type=text]{
+	}
+
+	& .sidebar{
+		width: 17.5em;
+		height: 100%;
+		position: absolute;
+		top: 0;
+		background: $bgOtherColor;
+		z-index: 9;
+		right: -100%;
+		padding: 5.063em 1em 1em 1em;
+
+		@include respond-to(bp1150){
+			right: 0;
+		}
+
+		& .nano{
+			float: none;
+			width: 100%;
+		}
+	}
+
+	& .browser-content-main{
+		position: relative;
+		width: 100%; 
+		height: 100%;
+		clear: both;
+		padding-top: 4.063em;
+		padding-bottom: 0.5em;
+	}
+}
+
+#queue-next img{
+	margin:15px 0 15px 0;
+	& img{
+		width:297px; 
+		margin:0 0 0 -10px;
+	}
+}
+
+.rotating_votes{
+	padding:3px 0;
+	& .song_rating{
+		/* The .clock div. Created dynamically by jQuery */
+		background-color:#252525;
+		height:50px;
+		width:50px;
+		position:relative;
+		overflow:hidden;
+		float:left;		
+		& .rotate{
+			/* There are two .rotate divs - one for each half of the background */
+			position:absolute;
+			width:50px;
+			height:50px;
+			top:0;
+			left:0;
+		}
+		& .backg, .front{
+			width:25px;
+			height:50px;
+			background-color:#252525;
+			position:absolute;
+			top:0;
+		}
+		& .backg{
+			&.left{ 
+				left:0; 
+			}
+			&.right_el{ 
+				left:24px; 
+			}
+		}
+		& .front{
+			&.left_el{
+				left:0;
+				z-index:10;
+			}
+		}
+		& .display{
+			/* Holds the number of seconds, minutes or hours respectfully */
+			position:absolute;
+			width:50px;
+			font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif;
+			z-index:20;
+			color:#F5F5F5;
+			font-size:12px;
+			text-align:center;
+			top:18px;
+			left:0;
+		}
+	}
+	& .rotate.right_el{
+		z-index:11;
+	}
+	& .orange{
+		& .backg.left_el{
+			background:url(../images/bg_orange.png) no-repeat left top;			
+		}
+		& .backg.right_el{
+			background:url(../images/bg_orange.png) no-repeat right top;
+		}
+	}
+	& .blue{
+		& .backg.left_el{
+			background:url(../images/bg_blue.png) no-repeat left top;
+		}
+		& .backg.right_el{
+			background:url(../images/bg_blue.png) no-repeat right top;
+		}
+	}
+	& .green{
+		& .backg.left_el{
+			background:url(../images/bg_green.png) no-repeat left top;
+		}
+		& .backg.right_el{
+			background:url(../images/bg_green.png) no-repeat right top;
+		}
+	}
+}

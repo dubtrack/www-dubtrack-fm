@@ -1,0 +1,253 @@
+.wall-post-list{
+	& li{
+		position:relative; 
+		clear:both; 
+		font-family: $siteFont !important; 
+		font-size: 0.75em !important; 
+		color:#000; 
+		margin:0 0 5px 0;
+		&:hover{
+			background:none !important;
+		}
+		&.replyEl{
+			.comment_content{
+				padding:2px 10px 2px 0;
+				& .bg_comment{
+					margin-top:2px;
+				}
+			}
+		}
+		& ul{
+			margin:5px 0 0 70px;
+			& li{
+				& .comment_content{
+					width:470px;
+					background: #C5C5C5;
+					& textarea{
+						width: 375px;
+					}
+					& .bg_comment{
+						background-image: url(../images/bg_comment_darker.png);
+					}
+				}
+				& .links{
+					right:5px;
+				}
+			}	  
+		}
+		& h2{
+			color:#fff;
+			position: absolute;
+			top:0;
+			left: 0;
+			z-index: 10;
+			padding: 5px 10px; 
+			margin:5px 0;
+			font-weight: 700;
+			background: #333;
+			margin: 0;
+		}
+		& .links-top-commments{
+			bottom:5px; 
+			position:absolute; 
+			right:5px; 
+			& a{
+				color:#0085ea; 
+			}
+		}
+		& .reply_a{
+			bottom:5px; 
+			right:5px; 
+			position:absolute;
+			& a{
+				color:cyan;
+			}
+		}
+		& .timestamp{
+			display:inline-block;
+			color:#666;
+		}
+		& .image{
+			width: 50px; 
+			height: 50px; 
+			overflow: hidden; 
+			display: inline-block;
+			margin-right:20px; 
+			vertical-align:top;
+			& img{
+				width: 50px; 
+				vertical-align:middle; 
+				margin:0;
+			}
+		}
+		& .message{
+			display:inline-block; 
+			vertical-align:top; 
+			max-width:480px; 
+			margin-left:15px;
+		}
+		& .links{
+			position:absolute;
+			top:5px; 
+			right:5px;
+			font-size:12px;
+			& a{
+				color:#0085ea;
+			}
+		}
+		& .comment_content{
+			background:#e5e5e5; 
+			position:relative; 
+			display:inline-block; 
+			vertical-align:top; 
+			padding:5px;
+			width:540px;
+			padding:30px 10px 30px 0;
+			& a{
+				.submit{
+					color:white; 
+					vertical-align:top; 
+					border:1px solid #bfbfbf; 
+					padding:3px 7px; 
+					display:inline-block; 
+					width:auto; 
+					margin:0px 0px 0px 10px; 
+					font-family: $siteAccentFont;
+					font-size: 0.85em;
+					background:#808080;
+					@include border-radius(0);
+				}
+			}
+			& button{
+				float: right;
+				margin-top: 2px;
+			}
+			& textarea{
+				width:430px; 
+				height:20px;
+				border:1px #ccc solid;
+				font-family: $siteFont !important; 
+				font-size: 0.75em !important; 
+			}
+		}
+		& .bg_comment{
+			background:url(../images/bg_comment.png) no-repeat; 
+			width:26px; 
+			height:24px; 
+			position:absolute; 
+			margin:-6px 0 0 -15px; 
+		}
+		& .dubs{
+			position: absolute;
+			bottom: 0px;
+			left: 0;
+			width: 100%;
+			height: 24px;
+			text-align: right;
+			@include box-shadow(inset 0 0.125em 0.625em -0.063em rgba(0, 0, 0, 0.7));
+			background:#333; 
+			font-size:12px;
+			& span.dubs_main{
+				display:inline-block;
+				text-align: center;
+				color: #fff;
+				padding: 5px;
+				font-weight: 700; 
+  				@include transition-duration(0.1s);
+  				@include transition-timing-function(linear);
+				min-width: 14px;
+			}
+			& a{
+				color:#fff;
+				display: inline-block;
+  				@include transition-duration(0.1s);
+  				@include transition-timing-function(linear);
+  				 
+				&.updub, &.downdub{
+					padding: 5px;
+					& span{
+						display: block;
+						text-indent: 9999px; 
+						position: relative; 
+						overflow: hidden; 
+						background:url(../images/player_controls_main.png) -51px 0; 
+						width: 14px; 
+						height: 13px;
+						@include transition-property(all);
+  						@include transition-duration(0.1s);
+  						@include transition-timing-function(ease-in);
+  						@include transition-delay(0.2s);
+					}
+				}
+				&.downdub{
+					& span{
+						background-position: -63px -28px; 
+						margin: 1px 0 0 0
+					}
+					&:hover{
+						background:magenta;
+						& span{
+							background-position: -63px -14px;
+						}
+					}
+				}
+				&.updub{
+					& span{	
+					}
+					&:hover{
+						background:cyan;
+						& span{
+							background-position: -51px -14px;	
+						}
+					}
+				}
+			}
+			& .right{
+				float: right;
+			}
+			& .left{
+				float: left;
+				padding: 6px 10px;
+			}
+		}
+	}
+}
+
+ul.wall_comments li a.remove{
+	color:#999 !important; 
+	right:30px;
+	color:#0085ea;
+}
+
+#create-wall-post{
+	width:auto;
+	margin:0 0 15px 55px;
+	& a{
+		&.submit{
+			color:white; 
+			border:1px solid #bfbfbf; 
+			padding:3px 7px; 
+			width:auto; 
+			margin:0px 0px 10px 10px;
+			vertical-align:top; 
+			display:inline-block;
+			font-family: $siteAccentFont;
+			font-size: 0.85em;
+			background:#808080;
+			@include border-radius(0);
+		}
+	}
+	& textarea{
+		padding:10px; 
+		margin:0 0 0 20px; 
+		width:380px; 
+		height:20px; 
+		border:0;
+		font-family: $siteFont !important; 
+		font-size: 0.75em !important; 
+		&:focus{
+			outline: none; 
+			border: none;
+		}
+	}
+}

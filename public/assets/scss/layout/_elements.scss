@@ -1,0 +1,551 @@
+/* FRIENDS LOADER ============================================= */
+ul,ol{
+	margin: 0;
+	padding: 0;
+}
+
+#friends_list {
+	@include box-shadow(0 0 0.313em 0.438em rgba(0, 0, 0, 0.2));
+	height: 25em;
+	overflow-y: scroll;
+
+	& a{	    
+		&.close {
+			background: url(../images/close_icon.png) right center no-repeat;
+			padding: 0 1em 0 0;
+			font-size: 1em;
+			position: absolute;
+			right: 0.313em;
+			top: 0.313em;
+			color: $siteAccentColor;
+			font-weight: normal;
+			@include opacity(0.9);
+			z-index: 99;
+			text-shadow: none;
+		}
+	}
+
+	& li{
+		border-bottom: $standardBorder;
+		padding: 0.438em 0.625em;
+		margin: 0;
+		cursor: pointer;
+
+		&:hover {
+			background: $siteAccentColor;
+		}
+
+		&.cyan{
+			color: $bgOtherAccentColor;
+
+			&:hover {
+				background:none;
+			}
+		}
+	}
+
+	& div.des {
+		display: inline-block;
+		vertical-align: top;
+
+		& a {
+			color: white;
+			
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+
+	& div.image {
+		width: 1.5em;
+		max-height: 1.5em;
+		margin-right: 0.5em;
+		overflow: hidden;
+		vertical-align: top;
+		display: inline-block;
+
+		& img {
+			height: 1.5em;
+		}
+	}
+}
+
+.dubtrack_overlay{
+	z-index: 999;
+	background: $bgColor;
+	width: 100%;
+	height: 100%;
+	@include opacity(0.7);
+	position: fixed;
+	top: 0;
+	left: 0;
+	display: none;
+}
+
+/* ============================================================ */
+
+/* USERNAME SELECTION ===================================================== */
+
+#at-username-autocomplete {
+	z-index: 99;
+	border: $standardBorder;
+	color: white;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+
+	& li {
+		background-color: $bgColor;
+		cursor: pointer;
+		margin: 0;
+		min-width: 9.375em;
+		padding: 0.125em 0.313em !important;
+
+		&:hover {
+		   color: #999;
+		}
+
+		&.active {
+			color: $siteAccentColor;
+			background: #FFFF00;
+		}
+	}
+}
+
+/* ============================================================ */
+
+/* AJAX ROOM LOADER ===================================================== */
+
+#ajaxloader_window {
+	position: relative;
+	width: 31.250em;
+	margin: 8.125em auto 0 auto;
+	min-height: 18.750em;
+	background: white;
+	padding: 1em;
+	@include border-radius(0.625em);
+
+	& form {
+		position:relative;
+	}
+
+	& textarea {
+		width: 31.250em;
+		height: 31.250em;
+		margin: 0.313em 0;
+	}
+
+	& .message {
+		color: red;
+
+		span.success {
+			color: green;
+		}
+	}
+
+	& a{
+		&.remove {
+			right: 0.313em;
+			top: 0.313em;
+			color: $bgColor;
+			cursor: pointer;
+			font-weight: bold;
+			z-index: 99;
+		}
+	}
+
+	& input {
+		width: 31.250em;
+		margin: $bgColor 0;
+
+		&.submit {
+			color: magenta;
+			padding: 0.188em 0.438em;
+			float: right;
+			width: auto;
+			margin: 0.625em 3.125em 0.625em 0.625em;
+			display: block;
+			font-family: $siteAccentFont;
+			font-size: 0.875em;
+			background: url(../images/blackopacity_roomlist.png) repeat;
+		}
+	}
+
+	& h2 {
+		font-family: $siteTitleFont;
+		font-size: 1.5em;
+		color: $bgOtherAccentColor;
+		clear: both;
+	}
+}
+
+.ajax_container{
+	position: absolute;
+	z-index: 99999;
+	width: 18.750em;
+	background: $bgColor;
+	padding: 0.313em 1em 1em 1em;
+	margin: 0;
+	font-family: $siteAccentFont;
+	font-size: 0.875em;
+
+	& a {
+		&.edit {
+			color: white;
+			display: block;
+			position: absolute;
+			bottom: 0.313em;
+			right: 0.625em;
+		}
+	}
+
+	& li {
+		display: block;
+		margin: 0.313em 0;
+
+		& b {
+			color: white;
+		}
+
+		&.cyan {
+		   color: cyan;
+		}
+	}
+
+	& h2 {
+		color: cyan;
+		font-size: 1.125em;
+	}
+}
+
+#ajaxloader_cont {
+	position: fixed;
+	display: none;
+	top: 0;
+	left: 0;
+	background: url('../images/bg_darktrans.png');
+	z-index: 299;
+	width: 100%;
+	height: 100%;
+}
+
+#ajax_tmp_loader{
+	display: none;
+}
+
+#ajax-load-user{
+	float: right
+}
+
+.spinner{
+	margin: 0;
+	width: 3em;
+	text-align: center;
+
+	> div {
+		width: 0.5em;
+		height: 0.5em;
+		background-color: #333;
+
+		border-radius: 100%;
+		display: inline-block;
+		-webkit-animation: bouncedelay 1.4s infinite ease-in-out;
+		animation: bouncedelay 1.4s infinite ease-in-out;
+		/* Prevent first frame from flickering when animation starts */
+		-webkit-animation-fill-mode: both;
+		animation-fill-mode: both;
+	}
+
+	.bounce1 {
+		-webkit-animation-delay: -0.32s;
+		animation-delay: -0.32s;
+	}
+
+	.bounce2 {
+		-webkit-animation-delay: -0.16s;
+		animation-delay: -0.16s;
+	}
+}
+
+@-webkit-keyframes bouncedelay {
+	0%, 80%, 100% {
+		-webkit-transform: scale(0.0);
+	}
+	40% {
+		-webkit-transform: scale(1.0);
+	}
+}
+
+@keyframes bouncedelay {
+	0%, 80%, 100% {
+		transform: scale(0.0);
+		-webkit-transform: scale(0.0);
+	} 40% {
+		transform: scale(1.0);
+		-webkit-transform: scale(1.0);
+	}
+}
+
+/* ============================================================ */
+
+.autocomplete-w1 { 
+	background: url(../images/shadow.png) no-repeat bottom right; 
+	position: absolute; 
+	top: 0; 
+	left: 0; 
+	margin: 0; 
+	/* IE6 fix: */ 
+	_background: none; 
+	_margin: 0; 
+	overflow-x: hidden;
+}
+
+.autocomplete {
+	background: white;
+	padding: 0.625em;
+	cursor: default;
+	text-align: left;
+	max-height: 9.375em;
+	overflow-y: auto;
+	overflow-x: hidden;
+	margin: -0.375em 0.375em 0.375em -0.375em;
+	_height: 21.875em;
+	_margin: 0;
+	_overflow-x: hidden;
+
+	& strong {
+		font-weight: normal;
+		color: #3399FF;
+	}
+
+	& div {
+		padding: 0.125em 0.125em;
+		white-space: nowrap;
+		color: #333;
+	}
+
+	& .selected {
+		background: #F0F0F0;
+	}
+}
+
+#main-loading{
+	@include opacity(0.7);
+	@include border-radius(0.5em);
+	padding: 3.5em 1em 1em 1em;
+	text-align: center;
+	display: block;
+	position: fixed;
+	background: $bgOtherAccentColor;
+	color: $bgColor;
+	font-weight: bold;
+	font-size: 0.95em;
+	top: 2.5em;
+	left: 50%;
+	width: 18em;
+	margin-left: -9em;
+	overflow: hidden;
+	text-transform: uppercase;
+	z-index: 999;
+
+	.spinner {
+		@include opacity(0.5);
+		position: absolute;
+		bottom: -5em;
+		margin-left: -10em;
+		left: 50%;
+  		width: 20em;
+  		height: 20em;
+  		background-color: $bgColor;
+  		@include border-radius(100%);
+  		border-radius: 100%; 
+  		-webkit-animation: scaleout 1.0s infinite ease-in-out;
+  		animation: scaleout 1.0s infinite ease-in-out;
+  		z-index: 1;
+	}
+
+	.loading-text{
+		position: relative;
+		z-index: 2;
+	}
+}
+
+ul.avatar-list {
+	margin: 0;
+	padding: 0 0 1em 0;
+	@include clearfix2();
+
+	li {
+		cursor:pointer;
+		border: 1px solid $bgColor;
+		//float: left;
+		display: inline-block;
+		background: $bgColor;
+		font-family: $siteAccentFont;
+		color: $siteColor;
+		text-align: center;
+		width: 4em;
+		overflow: hidden;
+		position: relative;
+
+		&.mod,
+		&.creator,
+		&.admin,
+		&.currentDJ{
+			&:after{
+				content: "MOD";
+				background: $bgAccentColor;
+				color: $bgColor;
+				font-weight: bold;
+				font-size: 0.65em;
+				position: absolute;
+				top: 4.8em;
+				left: 0;
+				width: 100%;
+				text-align: center;
+			}
+		}
+
+		&.admin{
+			&:after{
+				content: "ADMIN";
+			}
+		}
+
+		&.creator{
+			&:after{
+				content: "CREATOR";
+			}
+		}
+
+		&.currentDJ{
+			&:after{
+				content: "DJ";
+				background: $bgOtherAccentColor;
+			}
+		}
+
+		.dubDisplay{
+			position: absolute;
+			z-index: 99;
+			font-weight: bold;
+			color: $bgColor;
+			background: $bgOtherAccentColor;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			text-align: center;
+
+			& b{
+				display: block;
+				text-align: center;
+				margin-top: 1.5em;
+				color: $bgOtherColor;
+			}
+
+			& span{
+				font-size: 0.75em;
+				display: block;
+				text-align: center;
+			}
+		}
+
+		&.downdub{
+			border: 1px solid $bgAccentColor;
+		}
+
+		&.updub{
+			border: 1px solid $bgOtherAccentColor;
+		}
+
+		&.avatar-mod {
+			background: $bgOtherAccentColor;
+			color: $bgColor;
+
+			p.username {
+				color: $bgColor;
+			}
+		}
+
+		&.owner-mod {
+			background: yellow;
+			color: $bgColor;
+
+			p.username {
+				color: $bgColor;
+			}
+		}
+
+		&.inactive{
+			@include opacity(0.5);
+		}
+		
+		p.username {
+			color: #999;
+			font-size: 0.65em;
+			display: none;
+		}
+
+		.picture {
+			width: 100%;
+			height: 4em;;
+			overflow: hidden;
+
+			& img {
+				width: 100%;
+			}
+		}
+
+		.offline{
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			padding: 2px 0;
+			text-align: center;
+			background: magenta;
+			text-transform: uppercase;
+			font-weight: bold;
+			font-size: 10px;
+			color: #000;
+			width: 100%;
+		}
+
+		p {
+			&.dubs{
+				display: block;
+				color: #999;
+				font-size: 0.65em;
+				text-transform: uppercase;
+				margin: 0;
+				padding: 0.5em 0;
+
+				& span{
+					font-weight: bold;
+					color: white;
+				}
+			}
+		}
+	}
+}
+
+@-webkit-keyframes scaleout {
+  0% { -webkit-transform: scale(0.0) }
+  100% {
+    -webkit-transform: scale(1.0);
+    opacity: 0;
+  }
+}
+
+@keyframes scaleout {
+  0% { 
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 100% {
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+    opacity: 0;
+  }
+}

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Dubtrack.fm</title>
+	<meta name="description" content="Dubtrack.FM is a social DJ site where users can share and discover the latest and greatest by tuning in to user-generated playlist">
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+
+	<meta property="og:image" content="https://mediadubtrackfm.s3.amazonaws.com/assets/images/media/pic_notfound.jpg"/>
+	<meta property="og:title" content="Dubtrack.fm"/>
+	<meta property="og:url" content="http://www.dubtrack.fm/"/>
+	<meta property="og:site_name" content="Dubtrack.fm"/>
+	<meta property="og:type" content="website"/>
+	<meta property="og:description" content="Dubtrack.FM is a social DJ site where users can share and discover the latest and greatest by tuning in to user-generated playlist"/>
+
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:site" content="@dubtrack_fm">
+	<meta name="twitter:title" content="Dubtrack.fm">
+	<meta name="twitter:description" content="Dubtrack.FM is a social DJ site where users can share and discover the latest and greatest by tuning in to user-generated playlist">
+	<meta name="twitter:creator" content="@dubtrack_fm">
+	<meta name="twitter:image:src" content="https://mediadubtrackfm.s3.amazonaws.com/assets/images/media/pic_notfound.jpg">
+	<meta name="twitter:domain" content="Dubtrack.fm">
+
+	<link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+	<link rel="icon" type="image/png" href="/favicon-196x196.png" sizes="196x196">
+	<link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+	<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+	<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+	<meta name="msapplication-TileColor" content="#9f00a7">
+	<meta name="msapplication-TileImage" content="/mstile-144x144.png">
+	<!--[if lt IE 9]><script src="http://cdnjs.cloudflare.com/ajax/libs/es5-shim/2.0.8/es5-shim.min.js"></script><![endif]-->
+
+<% if(process.env.ENV == 'production'){ %>
+	<link rel="stylesheet" href="//mediadubtrackfm.s3.amazonaws.com/assets/css/main.css?v=<%= cache_busting %>" />
+	<link rel="stylesheet" type="text/css" href="//mediadubtrackfm.s3.amazonaws.com/assets/css/emojify.css">
+	<script type="text/javascript" src="//mediadubtrackfm.s3.amazonaws.com/assets/js/lib/modernizr-2.5.3.min.js"></script>
+<% } else { %>
+	<link rel="stylesheet" href="/assets/css/main.css" />
+	<link rel="stylesheet" type="text/css" href="/assets/css/emojify.css">
+	<script type="text/javascript" src="/assets/js/lib/modernizr-2.5.3.min.js"></script>
+<% } %>
+	<script type="text/javascript" src="//use.typekit.net/lpm1tnb.js"></script>
+	<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-46880090-1']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+</head>
+<body>
+	<nav id="main-menu-right">
+		<a href="#" class="close-menu">
+			<span class="icon-close"></span>
+		</a>
+		<section id="private-messages">
+			<div class="loading">loading...</div>
+			<div class="main-message-list" id="main-message-list">
+				<header class="message-header">
+					<div class="user_selected_items">
+					</div>
+
+					<input type="text" name="new-message-input" id="new-message-input" placeholder="New private message" />
+					<div class="search-results">
+						<div class="search-results-users"></div>
+					</div>
+					<span class="icon-plus-alt" id="create-new-message"></span>
+				</header>
+
+				<div class="private-message-info">
+					To create a new private message select the users by typing their name and clicking on <span class="icon-plus-alt"></span> (you can add up to 10 ppl per message)
+				</div>
+
+				<div class="message-list-wrapper">
+					<div class="message-list-wrapper-inner">
+						<ul class="message-list">
+						</ul>
+					</div>
+				</div>
+
+			</div>
+			<div class="message-details">
+				<header class="message-header">
+					<a href="#">Back</a>
+				</header>
+
+				<div class="private-message-details-info">
+					Enter your message bellow to start the conversation
+				</div>
+
+				<div class="message-list-wrapper">
+					<div class="message-list-wrapper-inner">
+						<ul class="message-list">
+						</ul>
+					</div>
+				</div>
+
+				<div class="input-container">
+					<input type="text" name="message-input" id="message-input" placeholder="Enter your message here..." />
+				</div>
+			</div>
+		</section>
+	</nav>
+	<nav id="main-menu-left">
+		<a href="#" class="close-menu">
+			<span class="icon-close"></span>
+		</a>
+		<a href="#" class="navigate room-active-link" id="main-room-active-link"><span class="current-room"></span> <i class="icon-play"></i></a>
+		<a href="/lobby" class="navigate lobby-link">Lobby</a>
+		<a href="#" class="topdubs-link">Top Dubs (coming soon)</a>
+		<a href="/login/logout" class="logout-link">Log out <span class="icon-logout"></span></a>
+	</nav>
+	<!--[if lt IE 8]>
+		<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+	<![endif]-->
+
+	<header id="header-global">
+		<button id="mobile-login">login</button>
+		<h1><span>Dubtrack.fm</span></h1>
+	</header>
+
+	<section class="main-page-container">
+		<section id="main-section">
+			<%-body -%>
+			<section id="room-list" class="dubtrack-section">
+				<div id="container-room-list">
+				</div>
+			</section>
+			<section id="profileMainSection" class="dubtrack-section">
+			</section>
+
+			<section id="main-room" class="dubtrack-section">
+				<menu id="mobile-room-menu">
+					<a href="#" class="player-button active" data-display="player">Player</a>
+					<a href="#" class="chat-button" data-display="chat">Chat</a>
+					<a href="#" class="users-button" data-display="users">Users<span class="info-counter mobile-users-counter"></span></a>
+				</menu>
+				<section class="left_section">
+					<section id="main_player">
+						<div class="player_container">
+							<div id="custom_iframe_embed">
+							</div>
+							<div id="custom_iframe_embed_error">
+								Invalid embed url
+							</div>
+							<div class="loading loading-el">
+							</div>
+							<div class="loading buferring-el">
+							</div>
+							<div class="loading videoquality-el">
+								Auto
+							</div>
+							<div class="loading refresh-el">
+								Refresh
+							</div>
+							<div class="loading skip-el">
+								Skip song
+							</div>
+							<div class="loading playbtn-el">
+								Play song
+							</div>
+							<div class="placeholder">
+								<h5>Click on the <span>play <i class="icon-play"></i></span> button to begin</h5>
+							</div>
+						</div>
+						<section class="player_sharing">
+							<span class="icon-facebook" onclick="Dubtrack.playerController.shareFacebook();"></span>
+							<span class="icon-twitter" onclick=Dubtrack.playerController.shareTwitter();></span>
+						</section>
+					</section>
+					<section id="room-comments">
+					</section>
+				</section>
+				<section class="right_section">
+					<div id="main_avatar_room">
+						<section id="avatar"></section>
+					</div>
+
+					<section id="chat">
+					</section>
+				</section>
+			</section>
+
+			<section id="player-controller">
+			</section>
+			<section id="browser">
+			</section>
+
+			<div id="main-loading">
+				<div class="loading-text">Loading...</div>
+				<div class="spinner"></div>
+			</div>
+		</section>
+	</section>
+
+	<div class="dubtrack_overlay"></div>
+
+	<script type="text/javascript" src="//www.google.com/jsapi"></script>
+	<script src="//cdn.pubnub.com/pubnub.min.js"></script>
+<% if(process.env.ENVIRONMENT == 'production'){ %>
+	<script type="text/javascript" src="//mediadubtrackfm.s3.amazonaws.com/assets/js/includes.min.js?v=<%= cache_busting %>"></script>
+	<script type="text/javascript" src="//mediadubtrackfm.s3.amazonaws.com/assets/js/dubtrack/lang/en_US.js?v=<%= cache_busting %>"></script>
+	<script type="text/javascript" src="//mediadubtrackfm.s3.amazonaws.com/assets/js/dubtrack.min.js?v=<%= cache_busting %>"></script>
+<% } else { %>
+	<script type="text/javascript">
+		window.DUBTRACK_API_URL = '<%= api_url %>';
+	</script>
+	<script type="text/javascript" src="/assets/js/includes.js"></script>
+	<script type="text/javascript" src="/assets/js/dubtrack/lang/en_US.js"></script>
+	<script type="text/javascript" src="/assets/js/dubtrack.js"></script>
+<% } %>
+	<script type="text/javascript">
+		function onYouTubeIframeAPIReady() {}
+		(function() {
+			Dubtrack.init();
+		}(jQuery, Dubtrack));
+	</script>
+</body>
+</html>

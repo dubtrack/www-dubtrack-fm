@@ -1,0 +1,515 @@
+#profileMainSection{
+	height: 100%;
+	position: relative;
+	margin: 3em auto 0 auto;
+	@include clearfix2();
+	width: 100%;
+	padding: 1em;
+
+	@include respond-to(bp1100){
+		padding: 0 21.875em 0 0;
+		width: 68em;
+		margin: 4em auto 0 auto;
+	}
+
+	.comingsoon{
+		padding: 1em;
+		text-transform: uppercase;
+		@include opacity(0.7);
+		text-align: center;
+	}
+
+	.profileView{
+		display: block;
+		padding: 0;
+		margin: 0;
+		@include border-radius(0.313em);
+		position: relative;
+		z-index: 10;
+		height: 100%;
+		background: #000;
+		@include clearfix2();
+
+		@include respond-to(bp1100){
+			margin: 0 0 0 1.875em;
+		}
+
+		.infoProfile{
+			position: absolute;
+			top: 0;
+			right: 0;
+			width: 100%;
+			background: #1A1A1A;
+			padding: 0;
+			z-index: 10;
+			height: 2.813em;
+			@include clearfix2();
+
+			h2{				
+				font-size: 1em;	
+				font-weight: 700;
+				float: left;
+				max-width: 10em;
+				margin: 0 0 0 7em;
+				position: relative;
+				min-width: 10em;
+
+				@include respond-to(bp600){
+					font-size: 1.5em;
+					margin: 0 0 0 8em;
+				}
+
+				&.edit_username{
+					span.usernameContainer{
+						visibility: hidden;
+					}
+
+					input{
+						display: block;
+					}
+
+					span.editUsername{
+						display: none;
+					}
+
+					span.saveUsername{
+						display: block;
+					}
+				}
+
+				span.editUsername,
+				span.saveUsername{
+					position: absolute;
+					color: #000;
+					padding: 0.3em;
+					top: 0;
+					right: -1em;
+					z-index: 99999;
+					background: $bgAccentColor;
+					font-size: 0.5em;
+					cursor: pointer;
+				}
+
+				span.saveUsername{
+					display: none;
+					top: 0.6em;
+					right: 0;
+				}
+
+				input{
+					position: absolute;
+					top: 0.4em;
+					left: 0;
+					width: 100%;
+					z-index: 9999;
+					display: none;
+					padding-right: 3em;
+				}
+
+				.check_username_info{
+					position: absolute;
+					top: -2em;
+					background: $bgOtherColor;
+					padding: 0.5em 1em;
+					font-size: 0.5em;
+					font-weight: bold;
+					display: none;
+
+					&.error{
+						color: red;
+					}
+				}
+
+				span.usernameContainer{
+					overflow: hidden;
+					display: block;
+					margin: 0.75em 0 0 0;
+
+					@include respond-to(bp600){
+						margin: 0.45em 0 0 0;
+					}
+				}
+			}
+			
+			button.message{
+				float: right;
+				margin: 1em 1em 0 0.125em;
+				font-size: 0.75em;
+
+				&.unfollow{
+					background: red;
+					color: $bgColor;
+					display: none;
+				}
+			}
+
+			& ul{
+				margin-left: 0.75em;
+				float: left;
+				border-left: 1px solid $bgColor;
+				@include clearfix2();
+
+				& li{
+					display: block;
+					float: left;
+					padding: 0.9em 0 0.063em 0;
+					border-right: 1px solid $bgColor;
+					height: 2.8em;
+					width: 2.8em;
+					text-align: center;
+					@include opacity(0.5);
+
+					&.last{
+						border-right: 0;
+					}
+
+					a{
+						span{
+							display: block;
+							font-size: 1em;
+							text-transform: uppercase;
+							color: $siteColor;
+						}
+					}
+				}
+			}
+		}
+		
+		.header{
+			@include clearfix2();
+
+			.pictureContainer{
+				margin: -1.875em 0 0 1.250em;
+				display: inline-block;
+				@include border-radius(0.125em);
+				z-index: 20;
+				position: relative;
+
+				a.updatePictureGif{
+					display: block;
+					position: absolute;
+					top: 0;
+					width: 100%;
+					left: 0;
+					padding: 0.3em;
+					text-align: center;
+					background: magenta;
+					color: $bgColor;
+					text-transform: uppercase;
+					font-size: 0.8em;
+					font-weight: bold;
+					line-height: 1.1em;
+					margin-top: 65%;
+
+					@include respond-to(bp600){
+						margin-top: 0;
+					}
+				}
+
+				img{
+					width: 5em;
+					background: $bgColor;
+					border: 0.4em solid magenta;
+
+					@include respond-to(bp600){
+						width: 9.375em;
+					}
+				}
+
+				span{
+					display: block;
+					text-align: left;
+					@include opacity(0.7);
+					margin: 1em 0 0 0.65em;
+					padding-left: 1.250em;
+				}
+			}
+			& .descriptionProfile{
+				display: inline-block;
+				width: 75%;
+				color: #fff;
+				margin-top: 45px;
+				& h2{
+					margin: 20px 0 0 30px;						
+					font-size: 24px;
+					font-weight: 700;
+					margin-top: 65px;
+					& span{
+						display: inline-block;
+						font-size: 12px;
+						margin: 8px 0px 0 5px;
+						color: #333;
+						& i{
+							background-color: #333;
+							height: 6px;
+							@include border-radius(0.188em);
+							width: 6px;
+							display: inline-block;
+							vertical-align: top;
+							margin: 5px 4px 0 0;
+						}
+						& b{
+							display: inline-block;
+						}
+						&.online{
+							color: cyan;
+							& i{
+								background: cyan;
+							}
+						}
+					}
+				}
+				& .content_bio{
+					margin: 20px 0 0 30px;	
+					position: relative;
+					& a{
+						&.readmore{
+							position: absolute;
+							right: 0;
+							bottom: -10px;
+						}
+					}
+				}
+			}
+		}
+		
+		.contentMainProfile{
+			position: relative;
+			margin: 30px 0 0 0;
+			width: 100%;
+			overflow: hidden;
+			@include clearfix2();
+
+			.tabLoading{
+				position: absolute;
+				left: 50%;
+				top:0;
+				top: 2.438em;
+				width: 9.375em;
+				margin-left: -4.688em;
+				background: $bgAccentColor;
+				color: $bgColor;
+				font-weight: bold;
+				text-align: center;
+				padding: 0.5em 0;
+				z-index: 99;
+				text-transform: uppercase;
+				display: none;
+			}
+
+			ul{
+				&.menu{
+					width: 100%;
+					text-transform: uppercase;
+					padding: 0;
+					margin: 0;
+					@include clearfix2();
+
+					li{
+						@include opacity(0.5);
+						@include transition-property(all);
+						@include transition-duration(0.3s);
+						@include transition-timing-function(ease-in);
+						display: block;
+						float: left;
+						width: 33.33%;
+						text-align: center;
+						padding: 0.65em 0;
+						cursor: pointer;
+						margin: 0;
+						overflow: hidden;
+						color: white;
+						font-size: 0.85em;
+						font-weight: bold;
+
+						&.active, &:hover{
+							@include opacity(1);					
+						}
+						&.active{
+						}
+					}
+				}
+			}
+			
+			span.progress{
+				width: 33.33%;
+				position: absolute;
+				height: 0.188em;
+				content: "";
+				@include opacity(0.7);	
+				background: $bgAccentColor;
+				top: 2.188em;
+				@include transition-property(all);
+				@include transition-duration(0.3s);
+				@include transition-timing-function(ease-in);
+			}
+
+			& .contentTab{
+				@include transition-property(all);
+				@include transition-duration(0.3s);
+				@include transition-timing-function(ease-in);
+				display: none;
+				&.active{
+					display: block;
+					position: relative;
+					top: 0;
+					background: #101010;
+					padding: 10px 0 20px 0;
+				}
+			}
+		}
+	}		
+	& .sidebarProfile{
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 250px;
+		height: 100%;
+		@include box-shadow(inset 0.313em 0px 0.313em -0.063em rgba(0, 0, 0, 0.2));
+		background: #313131;
+		z-index: 20;
+	}
+}
+
+#feedContent{
+	& > .wall-post-list{
+		width: 620px;
+		margin: 40px auto;
+		display: block;
+	}
+	
+	& .dub_list li.loadMoreComments{
+		&:hover{
+			color: #fff;
+		}
+	}
+	
+	& a.loadMoreWallPosts{
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		display: block;
+		font-weight: bold;
+		padding: 5px 0;
+		text-align: center;
+		background: magenta;
+		color: #000;
+		@include transition-property(all);
+		@include transition-duration(0.1s);
+		@include transition-timing-function(ease-in);
+		&:hover{
+			background: #000;
+			color: #fff;
+		}
+	}
+}
+
+#followersEl{
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	overflow: hidden;
+
+	.followingContainer{
+		width: 200%;
+		clear: both;
+		position: relative;
+		@include transition-property(all);
+  		@include transition-duration(0.3s);
+  		@include transition-timing-function(ease-in);
+	}
+
+	span{
+		display: block;
+		float: left;
+		width: 50%;
+		text-align: center;
+		padding: 1.2em 0 1em 0;
+		text-transform: uppercase;
+		margin: 0;
+		@include opacity(0.4);
+		font-weight: 600;
+		font-size: 0.75em;
+		@include transition-property(all);
+  		@include transition-duration(0.2s);
+  		@include transition-timing-function(ease-in);
+		cursor: pointer;
+		
+		&:hover, 
+		&.active{
+			@include opacity(1);
+		}
+	}
+
+	.avatarList{
+		padding: 0;
+		width: 50%;
+		display: block;
+		margin: 0;
+		list-style: none;
+		float: left;
+		@include clearfix2();
+
+		&.avatarFollowing{
+			float: right;
+		}
+		
+		li{
+			float: left;
+			width: 3.5em;
+			height: 3.5em;
+			overflow: hidden;
+
+			img{
+				width: 100%;
+			}
+		}
+	}
+}
+
+#profileSidebar{
+	z-index: 99;
+	overflow-y: scroll;
+	width: 100%;
+	overflow-x: hidden;
+	right: 0;
+	top: 0;
+	background: $bgColor;
+
+	@include respond-to(bp1100){
+		position: absolute;
+		height: 100%;
+		width: 21em;
+	}
+}
+
+#playlistContent{
+	& ul{
+		width: 100%;
+		& li{
+			position: relative;
+			@include transition-property(all);
+			@include transition-duration(0.1s);
+			@include transition-timing-function(ease-in);
+			display: block;
+			padding: 27px 5px 7px 5px;
+			margin:  0 20px;
+			cursor: pointer;
+			font-size: 14px;
+			border-bottom: 1px dashed #333;
+			&:hover{
+				background: #101010;
+			}
+			& span.totalTunes{
+				background: magenta;
+				color: #000;
+				font-weight: bold;
+				position: absolute;
+				right: 0;
+				bottom:0;
+				padding: 3px 7px;
+				font-size: 12px;
+			}
+		}
+	}
+}

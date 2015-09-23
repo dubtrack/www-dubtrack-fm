@@ -1,0 +1,11 @@
+#dt-upload{
+	& .uploadbox{
+		height: 40px;
+		width: 100%;
+		border: #333;
+		background: #101010;
+		& p{
+			padding: 10px 20px;
+		}		
+	}
+}

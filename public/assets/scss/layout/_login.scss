@@ -1,0 +1,90 @@
+/* LOGIN ====================================================== */
+
+
+#login{
+	width:910px;
+	margin:20px auto 20px auto; 
+	background:url(../images/landing_page_graphic.png) no-repeat 0 80px; 
+	padding:100px 0 0 0; 
+	& h1{
+		margin:0 0 0 30px; 
+		display:none;
+	}
+	& h2{
+		font-family:$siteTitleFont; 
+		color:#FF00FF;
+		font-size:68px; 
+		background:none;
+	}
+	& div.right{
+		text-align:right; 
+		margin:0 0 0 0;
+	}
+	& .description{
+		width:317px; 
+		display:inline-block; 
+		margin:0 0; 
+		text-align:left;
+		& p{
+			font-family:$siteAccentFont;
+			font-size:14px;
+			color:#B2B2B2;
+		}
+		& span.dt{
+			font-family:$siteAccentFont;
+			color:cyan;
+			}
+	}
+	& .moto{
+		margin:25px 0 0 0; 
+		color:#fff; 
+		font-size:24px;
+		text-aign:right; 
+		font-family:$siteAccentFont;
+	}
+	& .login{
+		display:inline-block; 
+		background:url(../images/landing_page_arrow_icon.png) no-repeat 0 center; 
+		padding:0 0 0 50px; 
+		text-align:right;
+		& a{
+			display:block; 
+			margin:8px 0; 
+			text-align:right; 
+			padding:0;
+		}
+	}
+	& .footer{
+		clear:both; 
+		font-family:$siteFont; 
+		color:#fff; 
+		font-size:11px; 
+		padding:150px 0 0 0; 
+		color:#808080;
+		& span{
+			display:block;
+		}
+		& ul{
+			& li{
+				display:inline-block;
+				& a{
+					color:#808080;
+					&:hover{
+						color:#fff; 
+						text-decoration:underline;
+					}
+				}
+				&:after{
+					content:' |';
+				}
+				&.last{
+					&:after{
+						content:'';
+					}
+				}
+			}
+		}
+	}
+}
+
+/* ============================================================ */

@@ -1,0 +1,51 @@
+#activeRoom{
+	& a{
+		color: #000;
+		font-weight: bold;
+		background: cyan;
+		padding: 10px 15px;
+		color: #000;
+		display: block;
+		&:hover{
+			color: #000;
+		}
+	}
+}
+
+#userNotifications{
+	& li{
+		padding: 10px;
+		overflow: hidden;
+		display: block;
+		border-bottom: 1px #1C1C1C solid;
+		position: relative;
+		& .image{
+			float: left;
+			width: 30px;
+			overflow: hidden;
+			& img{
+				width: 30px;
+			}
+		}
+		& .yt_img{
+			display: none;
+			& img{
+				width: 50px;
+			}
+		}
+		& .contentText{
+			float: right; 
+			width: 260px;
+			margin: 3px 0 0 0;
+			& span{
+				&.timeago{
+					position: absolute;
+					z-index: 9;
+					bottom: 5px;
+					right: 10px;
+					color: #333;
+				}
+			}
+		}
+	}
+}

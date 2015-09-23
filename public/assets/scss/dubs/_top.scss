@@ -1,0 +1,310 @@
+ul#top-dubs, .dub_list{
+}
+
+#top-dubs-container{
+}
+
+.dubpage_player{/*display:none*/}
+
+.play{
+	display:none; 
+	background:url(../images/playbutton_normalstate.png) no-repeat; 
+	width:24px; 
+	height:26px;
+	&:hover{
+		background-image:url(../images/playbutton_onhover.png);
+	}
+}
+
+.options {
+    text-align:left;
+    margin:0 20px 10px 30px;
+    & a {
+        @include border-radius(0.625em);
+        background:url(../images/blackopacity_roomlist.png) repeat;
+        color:#fff;
+        display:inline-block;
+        padding:2px 4px;
+        font-family: $siteAccentFont;
+        font-size: 0.85em;
+        &.active {
+     	   color:cyan;
+     	}
+    }
+    .btn-toolbar {
+        float: right;
+        margin-top: 4px;
+    }
+}
+
+.top-dubs-content{
+	width:600px;
+	margin:0 auto;
+	& #main-menu{
+		margin-left:-60px;
+	}
+	& a.loadMore{
+		display: block;
+		background: magenta;
+		color: #000;
+		font-size: 12px;
+		text-transform: uppercase;
+		padding: 5px;
+		text-align: center;
+		margin: 20px 0 0 0;
+		font-weight: bold;
+	}
+}
+
+#post {
+    text-align:left;
+    margin:0 0 10px 0;
+    width:540px;
+    padding:8px 15px;
+    font-family: $siteAccentFont;
+    @include border-radius(0.625em);
+    background:url(../images/blackopacity_roomlist.png) repeat;
+    & .header {
+        & .content {
+            display:inline-block;
+            vertical-align:middle;
+            margin:0 0 0 20px;
+            width:450px;
+            & p {
+                font-size:14px;
+                & a {
+                    color:cyan;
+                }
+            }
+        }
+        & .dubs {
+            display:inline-block;
+            vertical-align:middle;
+            font-size:24px;
+            color:#fff;
+            width:50px;
+            text-align:center;
+            & span {
+                display:block;
+            }
+        }
+        & h2 {
+            color:#fff;
+            font-size:18px;
+        }
+    }
+    & .post-content {
+        margin:15px 0;
+    }
+}
+
+#dubs_search {
+    float:right;
+    & .submit {
+        position:absolute;
+        z-index:99;
+        right:inherit;
+        top:inherit;
+        margin:-19px 0 0 135px;
+    }
+	& .input_text, #search_rooms {
+	    border:0;
+	    @include border-radius(0.625em);
+	    padding-right:40px;
+	    background:url(../images/blackopacity_roomlist.png) repeat;
+	    color:#fff;
+	    display:inline-block;
+	    margin:0 10px 0 0;
+	    padding:2px 4px;
+	    font-family: $siteAccentFont;
+	    font-size: 0.85em;	
+	    &:focus{
+		    outline: none;
+		    border: none;		    
+	    }
+	}
+}
+
+ul#top-dubs{
+	& .comments{
+		font-size:12px;
+		display:block;
+		background:url(../images/icon_comments_number.png) no-repeat; 
+		width:32px; 
+		height:28px;
+		text-align:center;
+		padding:9px 5px 5px 5px;
+		position: absolute;
+		right: 10px;
+		top:10px; 
+	}
+	& #comments ul li{
+		padding:0 !important;
+	}
+	& ul.comments_main{
+		margin:25px 0 0 0;
+		& li{
+			& .comment_content{
+				& .dubs{
+				}
+			}	
+		}
+	}
+	& li{
+		& .loadMoreComments{
+			color: #fff;
+		}
+		&.dub_cont{
+			text-align:left;
+			margin:0 0 10px 0; 
+			width:620px; 
+			padding:10px 15px 5px 15px;
+			font-family: $siteAccentFont;
+			@include border-radius(0.625em);
+			background:url(../images/blackopacity_roomlist.png) repeat; 
+			cursor: pointer;
+			position: relative;
+			&:hover{
+				& .img{
+				}
+				& .buttonsListen{
+					display:block;
+					@include opacity(1);
+					& a, & img{
+						@include opacity(1);
+					}
+				}	
+			}
+			& h2{
+				&.title{
+					color:#fff; 
+					font-size:18px;
+				}
+			}
+			& .container-ajax{
+			}
+			& .replyEl{
+				margin-bottom: 30px;
+			}
+			& .dubslist{
+				position: absolute;
+				top: 0;
+				left: 0;
+				background: magenta;
+				padding: 5px 10px;
+				color: #000;
+				font-weight: bold;
+				& span.total{
+					display: inline-block;
+					margin-right:5px; 	
+				}
+			}
+			& .playedInfo{
+				bottom: 5px;
+				right: 10px;
+				position: absolute;
+				z-index: 10;
+				color: #fff;
+				& a{
+					font-weight: bold;
+					color: inherit;
+				}
+			}
+			& .dubs{}
+			& .content{
+				display:inline-block; 
+				vertical-align:middle; 
+				margin:0 0 0 20px; 
+				width:380px;
+				& p{
+					font-size:14px;
+					& a{
+						color:cyan;
+					}
+				}
+			}
+			& .img{
+				display:inline-block; 
+				vertical-align:middle; 
+				width:103px; 
+				height: 56px;
+				margin:-10px 0 0 -15px;
+				& span{
+					margin: 10px 8px; 
+					display: inline-block
+				}
+				& img{
+					width:103px; 
+					height:76px;
+				}
+			}
+			& .buttonsListen{
+				display: none;
+				@include transition-property(all);
+  				@include transition-duration(0.2s);
+  				@include transition-timing-function(ease-in);
+  				@include opacity(0);
+				position: absolute;
+				top:0;
+				left: 0;
+				z-index: 20;
+				width: 100%;
+				height:75px;
+				text-align: center;
+				overflow: hidden;
+				margin: 0;
+				padding: 22px 0 0 0;
+				&:after{
+					z-index: 19;
+					background: #000;
+					width: 100%;
+					height: 100%;
+					content: "";
+					position: absolute;
+					top:0;
+					left: 0;
+					@include opacity(0.8);
+				}
+				& a, & img{
+					@include opacity(0);
+					@include transition-property(all);
+  					@include transition-duration(0.1s);
+  					@include transition-timing-function(ease-in);
+					@include transition-delay(0.2s); 
+				}
+				& a{
+					vertical-align:middle; 
+					display:inline-block; 
+					background:url(../images/icon_discuss.png) no-repeat; 
+					height:12px; 
+					padding:33px 0 0 0; 
+					font-size:12px;
+					color:#fff;
+					position: relative;
+					z-index: 22;
+					&.listen{
+						background-image:url(../images/icon_listen.png); 
+						width:34px;
+					}
+				}
+				& img{
+					width:auto; 
+					height:auto;
+					position: relative;
+					z-index: 22;
+				}
+			} 
+			& .loadingComments{
+				text-align: center;
+				width: 100%;
+				color: magenta;
+				font-size: 14px;
+				text-transform: uppercase;
+				margin: 15px 0 10px 0
+			}
+		}
+	}
+	& .wall-post-list{
+		min-height:0px;
+	}	
+}

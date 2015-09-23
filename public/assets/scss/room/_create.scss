@@ -1,0 +1,107 @@
+/* CREATE ROOM ================================================ */
+
+#create_room .message{
+	/*display:none*/
+}
+
+#roomFormUpdate{
+	position: absolute;
+	z-index: 999999;
+	top: 10em;
+	left: 50%;
+	width: 20em;
+	margin-left: -10em;
+	background: $bgColor;
+	border: 2px solid $bgAccentColor;
+
+	.closebtn{
+		position: absolute;
+		top: 0.2em;
+		right: 0.5em;
+		font-weight: bold;
+		font-size: 0.75em;
+		cursor: pointer;
+		color: #666;
+	}
+
+	.modal-header{
+		background: $bgOtherColor;
+		padding: 0.5em 1em;
+
+		& h3{	
+			margin: 0;
+			font-size: 0.85em;
+		}
+	}
+
+	#iframe-embed-preview{
+		h3{
+			text-align: center;
+			font-size: 0.95em;
+		}
+	}
+
+	.mid{
+		padding: 0 1em 1em 1em;
+
+		label{
+			display: none;
+
+			&.display-block{
+				display: block;
+				color: #666;
+				font-size: 0.75em;
+			}
+		}
+
+		#progress .bar {
+			height: 0.2em;
+			background: $bgAccentColor;
+		}
+
+		.help-block{
+			margin: 1em 0 0 0;
+			color: #666;
+			font-size: 0.75em;
+		}
+
+		#fileupload{
+			font-size: 0.75em;
+		}
+
+		input,
+		textarea,
+		select{
+			display: block;
+			border: $standardBorder;
+			background: none;
+			padding: 0.5em 1em;
+			width: 100%;
+			color: $siteColor;
+			margin: 0 0 0.5em 0;
+		}
+
+		select{
+			padding: 1em;
+			display: block;
+			font-size: 0.75em;
+			height: 2em;
+			width: 100%;
+		}
+	}
+
+	.modal-footer{
+		border-top: $standardBorder;
+		padding: 0.5em 1em;
+		//@include border-radius(0);
+		@include clearfix2();
+
+		button{
+			font-size: 0.75em;
+			margin-left: 0.5em;
+			float: right;
+		}
+	}
+}
+
+/* ============================================================ */

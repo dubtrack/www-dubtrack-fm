@@ -1,0 +1,64 @@
+#dropbox{
+	& span{
+		&.message{
+			display: block;
+			background: #000;
+			text-align: center;
+			padding: 30px 20px;
+			text-transform: uppercase;
+			@include opacity(0.8);
+			font-weight: bold;
+			@include transition-property(all);
+  			@include transition-duration(0.1s);
+  			@include transition-timing-function(ease-in);
+		}
+
+		&.dragOver{
+			background: magenta;
+			color: #000;
+		}
+	}
+	& li{
+		&:hover{
+			@include opacity(0.7);		
+		}
+
+		&.uploading{
+			@include opacity(0.6);
+
+			&:hover{
+				@include opacity(0.6);
+			}
+		}
+		&.done{
+			@include opacity(0.9);
+
+			& .dt-status{
+				background: cyan !important;
+				color: #000;
+			}	
+			&:hover{
+				@include opacity(0.9);		
+			}
+		}
+		&.error{
+			background: #8B0000;
+			& .dt-status{
+				background: #000;  
+			}
+			& .progress{
+				display: none;
+			}
+		}
+		& .dt-status{
+			position: absolute;
+			bottom: 0;
+			right: 0;
+			padding: 5px 10px;
+			background: magenta;
+			font-size: 12px;
+			font-weight: bold;
+			text-transform: uppercase;
+		}
+	}
+}

@@ -1,0 +1,168 @@
+Dubtrack.UserImagesBustings = {};
+Dubtrack.View.chatItem = Backbone.View.extend({
+	tagName: "li",
+
+	events : {
+		//"click a.navigate" : "navigateAvatar",
+		"click a.username" : "clickUsername"
+	},
+	
+	initialize:function () {
+		this.model.set( 'message', Dubtrack.helpers.text.convertHtmltoTags( this.model.get('message'), "Dubtrack.room.chat.scollBottomChat();" ));
+		this.model.set( 'message', Dubtrack.helpers.text.convertAttoLink( this.model.get('message') ));
+
+		var modelJson = this.model.toJSON();
+
+		modelJson.userImage = Dubtrack.config.apiUrl + '/user/' + modelJson.user._id + '/image';
+		if(modelJson.refreshVersion) modelJson.userImage = modelJson.userImage + "?v=" + modelJson.refreshVersion;
+
+		this.$el.html( _.template( Dubtrack.els.templates.chat.chatMessage , modelJson ) );
+
+		if(Dubtrack.UserImagesBustings[modelJson.user._id]){
+			this.$('.image_row img').attr('src', Dubtrack.UserImagesBustings[modelJson.user._id]);
+		}
+
+		console.log(Dubtrack.UserImagesBustings);
+
+		this.$el.addClass('user-' + modelJson.user._id);
+
+		if(Dubtrack.session && Dubtrack.session.id && Dubtrack.session.id == modelJson.user._id){
+			this.$el.addClass('current-chat-user');
+		}
+
+		Dubtrack.Events.bind('realtime:user-update-' + modelJson.user._id, this.updateUser, this);
+	},
+
+	render: function() {
+		var currentDate = new Date(this.model.get('time'));
+		this.$('.timeinfo').html('<time class="timeago" datetime="' + currentDate.toISOString() + '">' + currentDate.toLocaleString() + '</time>');
+		
+		this.$(".timeago").timeago();
+	},
+
+	updateTime: function(time){
+		var currentDate = new Date(time);
+		this.$(".timeago").timeago('update', currentDate.toISOString());
+	},
+	
+	navigateAvatar : function(e){
+		var $data = $(e.target).data();
+		
+		if("username" in $data) dubtrackMain.app.navigate("/" + $data.username, {trigger: true});
+		
+		return false;
+	},
+
+	updateUser : function(r){
+		if(r && r.img && r.img.url){
+			var user = this.model.get("user");
+
+			if(user){
+				Dubtrack.UserImagesBustings[user._id] = r.img.url;
+			}
+
+			this.$('.image_row img').attr('src', r.img.url);
+		}
+	},
+	
+	clickUsername : function(){
+		var user = this.model.get("user");
+
+		if(user){
+			Dubtrack.room.chat._messageInputEl.val( "@" + user.username + " ");
+			Dubtrack.room.chat._messageInputEl.focus();
+		}
+		
+		return false;
+	},
+	
+	beforeClose : function(){
+		this.$("time.timeago").timeago('dispose');
+	}
+});
+
+Dubtrack.View.systemChatItem = Backbone.View.extend({
+	tagName: "li",
+
+	attributes: {
+		"class": "system"
+	},
+
+	events : {
+	},
+	
+	initialize:function () {
+		this.$el.html( dubtrack_lang.global.loading );
+	},
+	
+	beforeClose : function(){
+	}
+});
+
+Dubtrack.View.chatLoadingItem = Dubtrack.View.systemChatItem.extend({
+	attributes: {
+		"class": "chat-system-loading"
+	}
+});
+
+Dubtrack.View.chatJoinItem = Dubtrack.View.systemChatItem.extend({
+	attributes: {
+		"class": "chat-system-joined"
+	},
+
+	initialize: function () {
+		var user = this.model.get('user');
+
+		this.$el.html( "@" + user.username + " joined the room" );
+	},
+});
+
+Dubtrack.View.chatSkipItem = Dubtrack.View.systemChatItem.extend({
+	initialize:function () {
+		this.$el.html( "song skipped by a moderator" );
+	},
+});
+
+Dubtrack.View.chatKickedItem = Dubtrack.View.systemChatItem.extend({
+	initialize: function () {
+		var user = this.model.get('kickedUser');
+
+		this.$el.html( "@" + user.username + " was kicked out of the room" );
+	},
+});
+
+Dubtrack.View.chatUnbannedItem = Dubtrack.View.systemChatItem.extend({
+	initialize: function () {
+		var user = this.model.get('kickedUser');
+
+		this.$el.html( "@" + user.username + " was unbanned from the room" );
+	},
+});
+
+Dubtrack.View.chatUnsetModItem = Dubtrack.View.systemChatItem.extend({
+	initialize: function () {
+		var user = this.model.get('modUser');
+
+		this.$el.html( "@" + user.username + " was removed as a moderator" );
+	},
+});
+
+Dubtrack.View.chatSetModItem = Dubtrack.View.systemChatItem.extend({
+	initialize: function () {
+		var user = this.model.get('modUser');
+
+		this.$el.html( "@" + user.username + " was made a moderator" );
+	},
+});
+
+Dubtrack.View.chatBannedItem = Dubtrack.View.systemChatItem.extend({
+	initialize: function () {
+		var user = this.model.get('kickedUser'),
+			message = "@" + user.username + " was banned from the room";
+
+		var time = parseInt(this.model.get('time'), 10);
+		if(time && time !== 0) message += " for " + time + " minutes";
+
+		this.$el.html( message );
+	},
+});

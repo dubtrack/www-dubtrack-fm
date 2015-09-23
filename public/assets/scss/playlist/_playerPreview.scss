@@ -1,0 +1,59 @@
+.playerPreview{
+	position: absolute;
+	top:20%;
+	background: #000;
+	z-index: 99999;
+	width: 20em;
+	margin-left: -10em;
+	min-height: 16.250em;
+	padding: 1.5em;
+	left: 50%;
+
+	@include respond-to(bp700){
+		width: 38.750em;
+		margin-left: -19.375em;
+	}
+
+	&:before{
+		width: 100%;
+		height: 100%;
+		@include border-radius(0.188em);
+		@include opacity(0.5);
+		background: #000;
+		border: 8px solid #000;
+		content: " ";
+		position: absolute;
+		left: -8px;
+		top: -8px; 
+	}
+
+	.wall-post-list{
+		height: auto !important;
+		min-height: 0 !important;
+	}
+	
+	.playerDubContainer{
+		background: #000;
+	}
+
+	.close{
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		z-index: 99;	
+		width: 37px;
+		height: 37px;
+		background: #000;
+		padding: 7px;
+		cursor: pointer;
+		@include opacity(1);
+		
+		& img{
+			@include opacity(0.2);
+
+			&:hover{
+				@include opacity(0.5);
+			}
+		}
+	}
+}

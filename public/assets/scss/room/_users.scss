@@ -1,0 +1,202 @@
+#main_avatar_room{
+	margin: 0;
+	width: 100%;
+	z-index: 11;
+	background: #111;
+	display: none;
+
+	@include respond-to(bp1150){
+		@include transition(left 0.1s ease-in);
+		position: absolute;
+		top: 0;
+		display: block;
+		left: 100%;
+	}
+
+	#avatar {
+		margin:0;
+		padding:0;
+		overflow: hidden;
+		position: relative;
+
+		.loadingAva{
+			position: absolute;
+			z-index: 999;
+			background: $bgAccentColor;
+			top: 3.1em;
+			left: 50%;
+			margin-left: -7em;
+			width: 14em;
+			font-size: 0.75em;
+			padding: 0.5em 0;
+			color: $bgColor;
+			text-align: center;
+			text-transform: uppercase;
+			font-weight: bold;
+			display: none;
+		}
+
+		.room_count {
+			font-family: $siteAccentFont;
+			color:#fff;
+			margin:0 0 10px 0;
+			vertical-align:top;
+			height:50px;
+			line-height:24px;
+			width:65px;
+			padding:15px 0 0 0;
+			font-size:24px;
+			color:#fff;
+			text-align:center;
+			border:2px #808080 solid;
+			overflow:hidden;
+			& span{
+				display:block;
+				font-size:14px;
+				&.small-inline {
+					font-size:14px;
+					display:inline;
+				}
+				&.large {
+					font-size:33px;
+				}
+			}
+		}
+	}
+
+	.avatar_tools{
+		position: absolute;
+		top:0;
+		left: 0;
+		text-align: center;
+		width: 100%;
+		border-bottom: $standardBorder;
+		z-index: 999;
+
+		.input-room-users-search{
+			position: absolute;
+			bottom: -2.75em;
+			right: 0;
+			width: 100%;
+			padding: 0.35em 0.5em;
+			background: $bgColor;
+			@include opacity(0.8);
+
+			i{
+				position: absolute;
+				top: 0.75em;
+				left: 0.85em;
+			}
+
+			input{
+				border: $standardBorder;
+				background: none;
+				color: $siteColor;
+				width: 100%;
+				margin: 0;
+				padding: 0.5em 0.5em 0.5em 3em;
+				min-height: 1.5em;
+				outline: 0;
+				@include border-radius(0.1875em);
+			}
+		}
+
+		a{
+			width: 100%;
+			display: block;
+			text-transform: uppercase;
+			color: #fff;
+			text-align: center;
+			padding: 0.5em 4em;
+			font-weight: bold;
+			background: $bgColor;
+			position: relative;
+
+			&.loadRoomAva{
+				display: none;
+
+				@include respond-to(bp1150){
+					display: block;
+				}
+
+				i{
+					font-style: normal;
+					font-size: 0.7em;
+					@include opacity(0.5);
+				}
+
+				span{
+					cursor: pointer;
+					background: $bgAccentColor;
+					color: $bgColor;
+					padding: 0.5em 0.6em 0.5em 0.5em;
+					display: block;
+					position: absolute;
+					height: 100%;
+					left: -7em;
+					top: 0;
+					font-size: 0.75em;
+					line-height: 1.9em;
+					font-weight: bold;
+					@include opacity(0.4);
+					@include transition(0.15s left 0.1s ease-in);
+
+					&:before{
+						@include ico-style();
+						content: "\e61c";
+						font-size: 1em;
+						margin-right: 0.5em;
+						vertical-align: middle;
+					}
+				}
+			}
+		}
+	}
+
+	#main-user-list-room{
+		margin: 3em 0 0 0;
+		position: relative;
+		overflow: hidden;
+
+		@include respond-to(bp1150){
+			margin: 5em 0 0 0;
+		}
+	}
+}
+
+#avatar_feature{
+	@include clearfix2();
+	margin: 0;
+	padding: 0;
+	position: relative;
+	border-bottom: 1px solid $bgAccentColor;
+
+	.room-feautre-title{
+		background: $bgAccentColor;
+		color: $bgColor;
+		padding: 0.5em 1em;
+		font-weight: bold;
+		font-size: 0.8em;
+		text-transform: uppercase;
+		position: relative;
+		@include opacity(0.4);
+
+		button.view-users{
+			display: block;
+			position: absolute;
+			right: 1em;
+			top: 0.5em;
+			font-size: 0.8em;
+		}
+	}
+
+	ul{
+		margin: 0;
+		padding: 0;
+
+		li{
+			width: 4.07em;
+			float: left;
+		}
+	}
+}
