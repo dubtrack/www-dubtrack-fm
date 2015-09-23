@@ -134,6 +134,12 @@
 		<h1><span>Dubtrack.fm</span></h1>
 	</header>
 
+	<% if(process.env.ENV != 'production'){ %>
+		<div id="dev-notice">
+			TESTING SERVER, DO NOT USE PERSONAL SOCIAL ACCOUNTS OR DISCLOSE CONFIDENTIAL INFORMATION. ALL DATA WILL BE PURGED DAILY
+		</div>
+	<% } %>
+
 	<section class="main-page-container">
 		<section id="main-section">
 			<%-body -%>

@@ -23,13 +23,28 @@
 	}
 }
 
+#dev-notice{
+	position: fixed;
+	left: 0;
+	width: 100%;
+	background: #ff0000;
+	color: #fff;
+	padding: 1.5rem 1rem;
+	padding: 0.5rem 1rem;
+	top: 3rem;
+	z-index: 99999;
+	text-align: center;
+	font-weight: bold;
+	font-size: 0.75rem;
+}
+
 #header-global{
-	position: fixed; 
-	top: 0; 
-	width: 100%; 
-	background: #111; 
-	text-align: left; 
-	text-transform: uppercase; 
+	position: fixed;
+	top: 0;
+	width: 100%;
+	background: #111;
+	text-align: left;
+	text-transform: uppercase;
 	z-index: 1001;
 	height: 3em;
 	//@include box-shadow(0 0 0.5em 0.063em rgba(0,0,0,0.7));
@@ -210,7 +225,7 @@
 					}
 				}
 
-				.user-messages-button{				
+				.user-messages-button{
 					@include border-top-left-radius(0.1875em);
 					@include border-bottom-left-radius(0.1875em);
 				}
@@ -242,7 +257,7 @@
 
 					span{
 						display: none;
-						
+
 						@include respond-to(bp600){
 							display: inline;
 						}
@@ -325,14 +340,14 @@
 	/*& a{
 		color: $bgOtherAccentColor;
 		float: left;
-		padding: 1em; 
-		display: block; 
-		border-right: $standardBorder; 
+		padding: 1em;
+		display: block;
+		border-right: $standardBorder;
 		position: relative;
 		font-size: 0.75em;
 
 		&:hover{
-			background: $bgAccentColor; 
+			background: $bgAccentColor;
 			color: $bgColor;
 		}
 
@@ -340,17 +355,17 @@
 			padding-right: 1.875em;
 
 			& span.roomCount{
-				background: $bgAccentColor; 
-				padding: 0.313em; 
-				display: block; 
-				content: ""; 
-				font-size: 0.688em; 
-				color: white; 
-				position: absolute; 
+				background: $bgAccentColor;
+				padding: 0.313em;
+				display: block;
+				content: "";
+				font-size: 0.688em;
+				color: white;
+				position: absolute;
 				width: 1.250em;
 				text-align: center;
 				z-index: 10;
-				right: 0; 
+				right: 0;
 				top: 0;
 			}
 		}
@@ -360,31 +375,31 @@
 		}
 
 		&.notifications:before{
-			background: url(../images/icon_notification_white.png) no-repeat; 
+			background: url(../images/icon_notification_white.png) no-repeat;
 			height: 15px;
 			width: 15px;
-			position: absolute; 
+			position: absolute;
 			content: "";
 		}
 
 		&.friends:before{
-			background: url(../images/firends_24.png) no-repeat; 
-			height: 15px; 
+			background: url(../images/firends_24.png) no-repeat;
+			height: 15px;
 			width: 15px;
-			position: absolute; 
+			position: absolute;
 			content: "";
 		}
 
 		& span.counter{
-			background: $bgAccentColor; 
-			padding: 0.313em; 
-			display: inline-block; 
-			content: ""; 
-			font-size: 0.625em; 
-			color: white; 
-			position: absolute; 
+			background: $bgAccentColor;
+			padding: 0.313em;
+			display: inline-block;
+			content: "";
+			font-size: 0.625em;
+			color: white;
+			position: absolute;
 			z-index: 10;
-			right: 0; 
+			right: 0;
 			top: 0;
 		}
 	}
@@ -394,23 +409,23 @@
 	}
 
 	& .nav-collapse{
-		float: right; 
-		color: $bgAccentColor; 
+		float: right;
+		color: $bgAccentColor;
 		padding-right: 1.250em;
 	}
 
 	& a.username{
-		padding: 0.625em 1em;  
+		padding: 0.625em 1em;
 		border-left: $standardBorder;
 
 		& span{
-			margin-top: 0.313em; 
+			margin-top: 0.313em;
 			display: inline-block;
 
 			&.image{
-				width: 1.5em; 
-				overflow: hidden; 
-				margin-right: 0.625em; 
+				width: 1.5em;
+				overflow: hidden;
+				margin-right: 0.625em;
 				margin-top: 0;
 			}
 		}
@@ -419,7 +434,7 @@
 			height: 1.5em;
 		}
 	}
-	
+
 	.headerSocial{
 		float: right;
 		display: block;
@@ -439,8 +454,8 @@
 }
 
 #header_login{
-	position: fixed; 
-	left: 50%; 
+	position: fixed;
+	left: 50%;
 	top: 3em;
 	z-index: 98;
 	text-transform: uppercase;
@@ -476,7 +491,7 @@
 
 		span{
 			display: none;
-			
+
 			@include respond-to(bp500){
 				display: inline;
 			}
@@ -485,23 +500,23 @@
 }
 
 .home-header{
-	margin: 0 0 0 11.250em; 
-	padding: 0 0 0.625em 0; 
+	margin: 0 0 0 11.250em;
+	padding: 0 0 0.625em 0;
 	position: relative;
 
 	& h2{
-		font-family: $siteAccentFont; 
-		font-size: 1.250em; 
-		color: white; 
-		display: inline-block; 
+		font-family: $siteAccentFont;
+		font-size: 1.250em;
+		color: white;
+		display: inline-block;
 		background: none;
 	}
 
 	a.clear{
-		position: absolute; 
-		right: inherit; 
-		top: inherit; 
-		margin: 0.5em 0 0 -1em; 
+		position: absolute;
+		right: inherit;
+		top: inherit;
+		margin: 0.5em 0 0 -1em;
 		cursor: pointer
 	}
 }
