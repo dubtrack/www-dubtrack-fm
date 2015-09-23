@@ -1,0 +1,9 @@
+{
+  "name":"www-dubtrack-fm",
+  "scripts":{
+    "postdeploy":"grunt",
+    "pr-predestroy":"npm install --save --save-exact grunt grunt-cli"
+  },
+  "env":{},
+  "addons":[]
+}
