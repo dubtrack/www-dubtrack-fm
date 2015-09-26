@@ -33,7 +33,6 @@
     "underscore": "^1.8.3"
   },
   "scripts": {
-    "postinstall": "grunt",
     "start": "node web.js"
   }
 }
