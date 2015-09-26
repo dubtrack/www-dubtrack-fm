@@ -222,6 +222,7 @@
 	<script type="text/javascript" src="//www.google.com/jsapi"></script>
 	<script src="//cdn.pubnub.com/pubnub.min.js"></script>
 	<script src="//content.jwplatform.com/libraries/YdjEPKIi.js"></script>
+	<script type="text/javascript" src="//www.google.com/jsapi"></script>
 <% if(process.env.ENVIRONMENT == 'production'){ %>
 	<script type="text/javascript" src="//mediadubtrackfm.s3.amazonaws.com/assets/js/includes.min.js?v=<%= cache_busting %>"></script>
 	<script type="text/javascript" src="//mediadubtrackfm.s3.amazonaws.com/assets/js/dubtrack/lang/en_US.js?v=<%= cache_busting %>"></script>
@@ -235,5 +236,11 @@
 	<script type="text/javascript" src="/assets/js/dubtrack.js"></script>
 <% } %>
 	<script type="text/javascript">Dubtrack.init();</script>
+	<script type="text/javascript">
+		function onYouTubeIframeAPIReady() {}
+		(function() {
+			Dubtrack.init();
+		}(jQuery, Dubtrack));
+	</script>
 </body>
 </html>
