@@ -43,7 +43,7 @@
 <% if(process.env.ENV == 'production'){ %>
 	<link rel="stylesheet" href="//mediadubtrackfm.s3.amazonaws.com/assets/css/main.css?v=<%= cache_busting %>" />
 	<link rel="stylesheet" type="text/css" href="//mediadubtrackfm.s3.amazonaws.com/assets/css/emojify.css">
-	<script type="text/javascript" src="//mediadubtrackfm.s3.amazonaws.com/assets/js/lib/modernizr-2.5.3.min.js"></script>
+	<script type="text/javascript" src="//mediadubtrackfm.s3.amazonaws.com/assets/js/lib/modernizr-2.5.3.min.js" async></script>
 <% } else { %>
 	<link rel="stylesheet" href="/assets/css/main.css" />
 	<link rel="stylesheet" type="text/css" href="/assets/css/emojify.css">
@@ -134,6 +134,12 @@
 		<h1><span>Dubtrack.fm</span></h1>
 	</header>
 
+	<% if(process.env.ENV != 'production'){ %>
+		<div id="dev-notice">
+			TESTING SERVER, DO NOT USE PERSONAL SOCIAL ACCOUNTS OR DISCLOSE CONFIDENTIAL INFORMATION. ALL DATA WILL BE PURGED DAILY
+		</div>
+	<% } %>
+
 	<section class="main-page-container">
 		<section id="main-section">
 			<%-body -%>
@@ -158,6 +164,8 @@
 							<div id="custom_iframe_embed_error">
 								Invalid embed url
 							</div>
+							<div id="room-main-player-container">
+							</div>
 							<div class="loading loading-el">
 							</div>
 							<div class="loading buferring-el">
@@ -174,6 +182,7 @@
 							<div class="loading playbtn-el">
 								Play song
 							</div>
+							<div class="loading error-el"></div>
 							<div class="placeholder">
 								<h5>Click on the <span>play <i class="icon-play"></i></span> button to begin</h5>
 							</div>
@@ -213,6 +222,8 @@
 	<script type="text/javascript" src="//www.google.com/jsapi"></script>
 	<script src="//content.jwplatform.com/libraries/YdjEPKIi.js"></script>
 	<script src="//cdn.pubnub.com/pubnub.min.js"></script>
+	<script src="//content.jwplatform.com/libraries/YdjEPKIi.js"></script>
+	<script type="text/javascript" src="//www.google.com/jsapi"></script>
 <% if(process.env.ENVIRONMENT == 'production'){ %>
 	<script type="text/javascript" src="//mediadubtrackfm.s3.amazonaws.com/assets/js/includes.min.js?v=<%= cache_busting %>"></script>
 	<script type="text/javascript" src="//mediadubtrackfm.s3.amazonaws.com/assets/js/dubtrack/lang/en_US.js?v=<%= cache_busting %>"></script>
@@ -225,6 +236,7 @@
 	<script type="text/javascript" src="/assets/js/dubtrack/lang/en_US.js"></script>
 	<script type="text/javascript" src="/assets/js/dubtrack.js"></script>
 <% } %>
+	<script type="text/javascript">Dubtrack.init();</script>
 	<script type="text/javascript">
 		function onYouTubeIframeAPIReady() {}
 		(function() {

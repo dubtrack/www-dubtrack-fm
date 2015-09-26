@@ -1,0 +1,9 @@
+{
+  "name":"www-dubtrack-fm",
+  "scripts":{
+    "postdeploy":"grunt",
+    "start": "node web.js"
+  },
+  "env":{},
+  "addons":[]
+}
