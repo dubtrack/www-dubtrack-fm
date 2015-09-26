@@ -30,12 +30,13 @@ Dubtrack.View.Player = Backbone.View.extend({
 		this.qualityElBtn = this.$('.videoquality-el');
 		this.refreshElBtn = this.$('.refresh-el');
 		this.skipElBtn = this.$('.skip-el');
-		this.errorElBtn = $('<div/>', { class : "loading" } ).html( dubtrack_lang.player.error ).css({"display" : "none"}).appendTo( dubtrackMain.config.playerContainer );
+		this.errorElBtn = this.$('.error-el').html(dubtrack_lang.player.error);
 		this.placeHolder = this.$('.placeholder');
 		this.customEmbedIframeDiv = this.$('#custom_iframe_embed');
 		this.customEmbedIframeErrorDiv = this.$('#custom_iframe_embed_error');
+		this.jwplayer_container = this.$('#room-main-player-container');
 
-		var activeQueueUrl = Dubtrack.config.urls.roomPlaylist.replace( ":id", this.model.id );
+		var activeQueueUrl = Dubtrack.config.urls.roomPlaylist.replace(':id', this.model.id );
 		this.actveQueueCollection = new Dubtrack.Collection.RoomActiveQueue();
 		this.actveQueueCollection.url = Dubtrack.config.apiUrl + activeQueueUrl;
 
@@ -65,25 +66,17 @@ Dubtrack.View.Player = Backbone.View.extend({
 		//build jwplayer
 		this.player_instance = jwplayer('room-main-player-container');
 
-		console.log(_.extend({
-			height: "100%",
-			controls: false,
-			autostart: 1,
-			onComplete: function() {
-				this.videoEnd();
-			}.bind(this),
-		}, player_object));
 		this.player_instance.setup(_.extend({
 			height: "100%",
 			controls: false,
-			autostart: 1,
-			onComplete: function() {
-				this.videoEnd();
-			}.bind(this),
+			autostart: 1
 		}, player_object));
 
 		this.player_instance.on('error', function() {
+			this.jwplayer_container.hide();
 			this.errorElBtn.show();
+			this.bufferingEl.hide();
+			this.loadingEl.hide();
 		}.bind(this));
 
 		this.player_instance.on('firstFrame', function() {
@@ -95,6 +88,8 @@ Dubtrack.View.Player = Backbone.View.extend({
 			this.loadingEl.hide();
 			this.playElBtn.hide();
 			this.bufferingEl.hide();
+			this.errorElBtn.hide();
+			this.jwplayer_container.show();
 		}.bind(this));
 
 		this.player_instance.on('pause', function() {
@@ -106,6 +101,12 @@ Dubtrack.View.Player = Backbone.View.extend({
 			this.loadingEl.hide();
 			this.bufferingEl.show();
 		}.bind(this));
+
+		this.player_instance.on('complete', function() {
+			this.videoEnd();
+		}.bind(this));
+
+		this.setVolume(Dubtrack.playerController.volume);
 	},
 
 	skipSong: function(){
@@ -228,6 +229,10 @@ Dubtrack.View.Player = Backbone.View.extend({
 		this.playElBtn.hide();
 		console.log('play current song');
 
+		if(is_mobile()){
+			if(this.player_instance) this.player_instance.play();
+		}
+
 		return false;
 	},
 
@@ -276,6 +281,8 @@ Dubtrack.View.Player = Backbone.View.extend({
 	},
 
 	refresh : function(){
+		this.errorElBtn.hide();
+
 		this.playing = false;
 
 		//reset variables
@@ -400,11 +407,11 @@ Dubtrack.View.Player = Backbone.View.extend({
 		var startTime = this.activeSong.get('startTime');
 
 		if(!_.isNumber(startTime) || startTime < 0){
-			this.activeSong.set({
-				'startTime': 0
-			});
+			startTime = Date.now() - (this.activeSong.get('played') / 1000);
 
-			startTime = 0;
+			this.activeSong.set({
+				'startTime': startTime
+			});
 		}
 
 		return startTime;
@@ -418,7 +425,7 @@ Dubtrack.View.Player = Backbone.View.extend({
 
 		var play_object = {
 			file: "https://www.youtube.com/watch?v=" + songInfo.fkid,
-			image: Dubtrack.config.urls.mediaBaseUrl + '/assets/images/media/pic_notfound.jpg'
+			image: 'http://images.dubtrack.fm/hhberclba/image/upload/c_fill,h_460,w_900/tiqxlzynh3rxrkwvzeak.jpg'
 		};
 
 		if(!this.player_instance) this.setPlayer(play_object);
@@ -439,11 +446,13 @@ Dubtrack.View.Player = Backbone.View.extend({
 		var play_object = {
 			file: url,
 			type: 'mp3',
-			image: Dubtrack.config.urls.mediaBaseUrl + '/assets/images/media/pic_notfound.jpg'
+			image: 'http://images.dubtrack.fm/hhberclba/image/upload/c_fill,h_460,w_900/tiqxlzynh3rxrkwvzeak.jpg'
 		};
 
 		if(!this.player_instance) this.setPlayer(play_object);
 		else this.player_instance.load(play_object);
+
+		this.refreshElBtn.addClass('show');
 	},
 
 	setTimer : function(start, length){
@@ -465,6 +474,8 @@ Dubtrack.View.Player = Backbone.View.extend({
 		var countDown = length - start,
 			minutesDown = Math.floor(countDown / 60),
 			secondsDown = parseInt( countDown - minutesDown * 60, 10);
+
+		if(minutesDown <= 0 && secondsDown <= 0) return this.videoEnd();
 
 		this.minEl.html("0".substring(minutesDown >= 10) + minutesDown);
 		this.secEl.html("0".substring(secondsDown >= 10) + secondsDown);
@@ -502,6 +513,8 @@ Dubtrack.View.Player = Backbone.View.extend({
 	},
 
 	setVolume : function(vol){
+		if(!this.player_instance) return;
+
 		if(vol <= 2) this.player_instance.setMute(true);
 		else this.player_instance.setMute(false);
 
@@ -519,7 +532,6 @@ Dubtrack.View.Player = Backbone.View.extend({
 
 		if(this.playerControls) this.playerControls.close();
 
-		dubtrackMain.config.playerMainContainer.html( $('<div/>', {'class' : 'player_container'} ) );
-		dubtrackMain.config.playerContainer = dubtrackMain.config.playerMainContainer.find('div.player_container');
+		if(this.player_instance) this.player_instance.remove();
 	}
 });
