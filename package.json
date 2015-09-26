@@ -33,9 +33,10 @@
     "underscore": "^1.8.3"
   },
   "engines": {
-    "node": ">0.10.8"
+    "node": "4.1.1"
   },
   "scripts": {
+    "postinstall": "grunt",
     "start": "node web.js"
   }
 }
