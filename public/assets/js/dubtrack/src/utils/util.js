@@ -131,6 +131,7 @@ Dubtrack.els.templates = {
 							'</div>',
 		
 		'profileView': '<div class="profileView">' +
+							'<div class="rewindProfile"><a href="#"><span class="icon-close"></span></a></div>' +
 							'<div class="infoProfile">' +
 								'<h2>' +
 									'<span class="usernameContainer"><%= username %></span>' +
