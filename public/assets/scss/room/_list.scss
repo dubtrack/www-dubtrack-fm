@@ -119,6 +119,8 @@
 			span{
 				display: block;
 				line-height: 1.4em;
+				text-overflow: ellipsis;
+    				overflow: hidden;
 
 				&.current-song{
 					font-size: 0.75em;
