@@ -51,6 +51,16 @@
 		height: 20px;
 		padding: 0;
 	}
+	.ChatDelete {
+		opacity: 0.5;
+		right: 0;
+		position: absolute;
+		font-size: 0.6em;
+		padding: 9px;
+		color: magenta;
+		cursor: pointer;
+		z-index: 1;
+	}
 	
 	.chatLoading{
 		background: $bgAccentColor;
@@ -289,9 +299,10 @@
 					min-height: 2.2em;
 					position: relative;
 					overflow: hidden;
+					width: calc(100% - 18px);
 
 					@include respond-to(bp1150){
-						width: 20.5em;
+						width: calc(20.5em - 18px);
 					}
 
 					.meta-info{
