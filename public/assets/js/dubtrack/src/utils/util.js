@@ -1,9 +1,4 @@
 // --------------------------------------------------------------------
-function rewindBrowser() {
-    window.history.back();
-    $('#browser').removeClass('animate');
-    $('.dubtrack_overlay').hide();
-};
 /**
  *	templates
  *
@@ -707,7 +702,7 @@ Dubtrack.els.templates = {
 									'<span class="icon-arrow-right2"></span>' +
 								'</a>' +
 							'</div>' +
-							'<a class="close" onclick="rewindBrowser()">' +
+							'<a href="#" class="close">' +
 								'<span class="icon-remove-circle"></span>' +
 							'</a>' +
 						'</div>' +
