@@ -665,7 +665,7 @@ w.Dubtrack = {
 					function(str) {
 						if (str.match(imageRegex)) {
 							var onErrorAction = "Dubtrack.helpers.image.imageError(this, '/assets/images/media/chat_image_load_error.png');" + imagloadFun;
-							str = '<a href="' + str + '" class="autolink" target="_blank"><img src="' + str + '" alt="' + str + '" onload="' + imagloadFun + '" onerror="' + onErrorAction + '" /></a>';
+							str = '<img src="' + str + '" alt="' + str + '" onclick="Dubtrack.helpers.text.shrinkImg(this)" onload="' + imagloadFun + '" onerror="' + onErrorAction + '" />';
 							return str;
 						} else {
 							str = '<a href="' + str + '" class="autolink" target="_blank">' + str + '</a>';
@@ -679,6 +679,16 @@ w.Dubtrack = {
 			convertAttoLink: function(text){
 				return text.replace(/(@[A-Za-z0-9_.]+)/g, '<span class="username-handle">$&</span>');
 			},
+
+                        shrinkImg: function(src){
+                                var img = $(src);
+
+                                if (img.width() === 20) {
+                                    img.animate({width: "100%", height: "100%"}, 500);
+                                } else {
+                                    img.animate({width: "20px", height: "20px"}, 500);
+                                }
+                        },
 		},
 
 		emoji: {
