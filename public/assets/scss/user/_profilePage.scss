@@ -25,7 +25,7 @@
 		margin: 0;
 		@include border-radius(0.313em);
 		position: relative;
-		z-index: 10;
+		z-index: 999;
 		height: 100%;
 		background: #000;
 		@include clearfix2();
@@ -33,7 +33,18 @@
 		@include respond-to(bp1100){
 			margin: 0 0 0 1.875em;
 		}
-
+		.rewindProfile {
+			position: absolute;
+			right: -18px;
+			top: -18px;
+			z-index: 999;
+			border: 5px solid magenta;
+			padding: 5px;
+			border-radius: 50%;
+			width: 36px;
+			height: 36px;
+			background-color: #111;
+		}
 		.infoProfile{
 			position: absolute;
 			top: 0;
