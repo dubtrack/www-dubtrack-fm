@@ -91,7 +91,7 @@
 
 		.roomImage{
 			overflow: hidden;
-			min-height: 10.375em;
+			max-height: 10.375em;
 			@include border-top-left-radius(0.625em);
 			@include border-top-right-radius(0.625em);
 			display: none;
