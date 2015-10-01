@@ -15,7 +15,8 @@ Dubtrack.View.Player = Backbone.View.extend({
 		"click .skip-el": "skipSong",
 		"click .playbtn-el": "playCurrentSong",
 		"click .refresh-el" : "reloadVideo",
-		"click .videoquality-el": "changeYTQuality"
+		"click .videoquality-el": "changeYTQuality",
+		//"click .hideVideo-el": "hideVideo"
 	},
 
 	initialize : function(){
@@ -29,6 +30,7 @@ Dubtrack.View.Player = Backbone.View.extend({
 		this.queueInfo = $('.queue-info');
 		this.qualityElBtn = this.$('.videoquality-el');
 		this.refreshElBtn = this.$('.refresh-el');
+		//this.hideVideoElBtn = this.$('.hideVideo-el');
 		this.skipElBtn = this.$('.skip-el');
 		this.errorElBtn = this.$('.error-el').html(dubtrack_lang.player.error);
 		this.placeHolder = this.$('.placeholder');
@@ -366,7 +368,9 @@ Dubtrack.View.Player = Backbone.View.extend({
 
 		return false;
 	},
-
+	hideVideo: function(){
+		//Incomplete hide video function.
+	},
 	videoEnd: function(){
 		this.refresh();
 		this.skipElBtn.hide();
