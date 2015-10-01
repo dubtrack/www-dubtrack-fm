@@ -84,6 +84,11 @@ Dubtrack.View.Room = Backbone.View.extend({
 		var url = Dubtrack.config.urls.roomUsers.replace( "{id}", this.model.id );
 		this.urlUsersRoom = Dubtrack.config.apiUrl + url;
 
+		if(!Dubtrack.loggedIn){
+			$("#create-room-div").hide();
+		} else {
+			$("#create-room-div").show();
+		}
 		if(Dubtrack.session && Dubtrack.session.get("_id") === this.model.get("userid")){
 			$("#create-room-div").hide();
 			$("#edit-room-div").show();
