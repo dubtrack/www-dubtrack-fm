@@ -16,10 +16,13 @@ Dubtrack.View.Player = Backbone.View.extend({
 		"click .playbtn-el": "playCurrentSong",
 		"click .refresh-el" : "reloadVideo",
 		"click .videoquality-el": "changeYTQuality",
-		//"click .hideVideo-el": "hideVideo"
+		"click .hideVideo-el": "hideVideo"
 	},
 
 	initialize : function(){
+		
+		var istoggleVideo = false;
+		
 		this.playing = false;
 
 		this.autoplayStarted = false;
@@ -30,7 +33,7 @@ Dubtrack.View.Player = Backbone.View.extend({
 		this.queueInfo = $('.queue-info');
 		this.qualityElBtn = this.$('.videoquality-el');
 		this.refreshElBtn = this.$('.refresh-el');
-		//this.hideVideoElBtn = this.$('.hideVideo-el');
+		this.hideVideoElBtn = this.$('.hideVideo-el');
 		this.skipElBtn = this.$('.skip-el');
 		this.errorElBtn = this.$('.error-el').html(dubtrack_lang.player.error);
 		this.placeHolder = this.$('.placeholder');
@@ -126,6 +129,7 @@ Dubtrack.View.Player = Backbone.View.extend({
 		this.skipElBtn.hide();
 		this.qualityElBtn.removeClass('show');
 		this.refreshElBtn.removeClass('show');
+		this.hideVideoElBtn.removeClass('show');
 
 		if(this.refreshTimeout) clearTimeout(this.refreshTimeout);
 
@@ -369,7 +373,16 @@ Dubtrack.View.Player = Backbone.View.extend({
 		return false;
 	},
 	hideVideo: function(){
-		//Incomplete hide video function.
+		var isOn;
+    		if (!istoggleVideo) {
+        		istoggleVideo = true;
+        		$('#room-main-player-container').hide();
+        		isOn = "on";
+    		} else {
+        		istoggleVideo = false;
+        		$('#room-main-player-container').show();
+        		isOn = "off";
+    		}
 	},
 	videoEnd: function(){
 		this.refresh();
@@ -437,6 +450,7 @@ Dubtrack.View.Player = Backbone.View.extend({
 
 		this.qualityElBtn.addClass('show');
 		this.refreshElBtn.addClass('show');
+		this.hideVideoElBtn.addClass('show');
 	},
 
 	buildSoundCloud : function(){
@@ -456,7 +470,6 @@ Dubtrack.View.Player = Backbone.View.extend({
 		if(!this.player_instance) this.setPlayer(play_object);
 		else this.player_instance.load(play_object);
 
-		this.refreshElBtn.addClass('show');
 	},
 
 	setTimer : function(start, length){
