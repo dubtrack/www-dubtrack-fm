@@ -518,7 +518,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 			tmpstr;
 
 
-		if(message.indexOf("/kick @") !== -1){
+		if(message.indexOf("/kick @") === 0){
 			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
 				username = str.replace("@", "");
 				return str;
@@ -528,7 +528,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 			return;
 		}
 
-		if(message.indexOf("/ban @") !== -1){
+		if(message.indexOf("/ban @") === 0){
 			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
 				username = str.replace("@", "");
 				return str;
@@ -538,7 +538,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 			return;
 		}
 
-		if(message.indexOf("/unban @") !== -1){
+		if(message.indexOf("/unban @") === 0){
 			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
 				username = str.replace("@", "");
 				return str;
@@ -548,7 +548,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 			return;
 		}
 
-		if(message.indexOf("/setmod @") !== -1){
+		if(message.indexOf("/setmod @") === 0){
 			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
 				username = str.replace("@", "");
 				return str;
@@ -558,7 +558,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 			return;
 		}
 
-		if(message.indexOf("/unsetmod @") !== -1){
+		if(message.indexOf("/unsetmod @") === 0){
 			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
 				username = str.replace("@", "");
 				return str;
@@ -568,7 +568,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 			return;
 		}
 
-		if(message.indexOf("/unmute @") !== -1){
+		if(message.indexOf("/unmute @") === 0){
 			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
 				username = str.replace("@", "");
 				return str;
@@ -578,7 +578,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 			return;
 		}
 
-		if(message.indexOf("/mute @") !== -1){
+		if(message.indexOf("/mute @") === 0){
 			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
 				username = str.replace("@", "");
 				return str;
@@ -588,7 +588,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 			return;
 		}
 
-		if(message.indexOf("/skip") !== -1){
+		if(message.indexOf("/skip") === 0){
 			this.skipSong();
 			return;
 		}
