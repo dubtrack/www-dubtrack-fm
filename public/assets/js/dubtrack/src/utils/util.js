@@ -458,7 +458,7 @@ Dubtrack.els.templates = {
 							'</div>',
 
 		'chatMessage': '<div class="stream-item-content">'+
-							'<div class="ChatDelete" onclick="$(this).closest(\'li\').remove();"><span class="icon-close"></span></div>' +
+							'<div class="chatDelete" onclick="$(this).closest(\'li\').remove();"><span class="icon-close"></span></div>' +
 							'<div class="image_row">' +
 								'<%= Dubtrack.helpers.image.getImage(user._id, user.username, false, true) %>' +
 							'</div>' +
