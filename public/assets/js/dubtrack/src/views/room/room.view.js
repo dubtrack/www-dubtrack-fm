@@ -84,6 +84,11 @@ Dubtrack.View.Room = Backbone.View.extend({
 		var url = Dubtrack.config.urls.roomUsers.replace( "{id}", this.model.id );
 		this.urlUsersRoom = Dubtrack.config.apiUrl + url;
 
+		if(!Dubtrack.loggedIn){
+			$("#create-room-div").hide();
+		} else {
+			$("#create-room-div").show();
+		}
 		if(Dubtrack.session && Dubtrack.session.get("_id") === this.model.get("userid")){
 			$("#create-room-div").hide();
 			$("#edit-room-div").show();
@@ -117,7 +122,11 @@ Dubtrack.View.Room = Backbone.View.extend({
 		this.$('.room-feautre-title span').html('Top users in ' + this.model.get('name'));
 
 		$("#main-room-active-link").attr("href", "/join/" + this.model.get("roomUrl")).css("display", "block").find("span.current-room").html(this.model.get("name"));
-
+		//Closing Profile
+		$(".rewindProfile a").attr("href", "/join/" + this.model.get("roomUrl"));
+		//Clsoing #Browser
+		$(".close").attr("href", "/join/" + this.model.get("roomUrl"));
+		
 		Dubtrack.helpers.cookie.set('dubtrack-room', this.model.get("roomUrl"), 60);
 		Dubtrack.helpers.cookie.set('dubtrack-room-id', this.model.get("_id"), 60);
 		

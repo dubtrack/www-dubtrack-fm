@@ -1,10 +1,8 @@
 // --------------------------------------------------------------------
-
 /**
  *	templates
  *
  */
-
 Dubtrack.els.templates = {
 	'messages' : {
 		'message' : '<div class="image-container">' +
@@ -128,6 +126,7 @@ Dubtrack.els.templates = {
 							'</div>',
 		
 		'profileView': '<div class="profileView">' +
+							'<div class="rewindProfile"><a href="#"><span class="icon-close"></span></a></div>' +
 							'<div class="infoProfile">' +
 								'<h2>' +
 									'<span class="usernameContainer"><%= username %></span>' +
@@ -457,6 +456,7 @@ Dubtrack.els.templates = {
 							'</div>',
 
 		'chatMessage': '<div class="stream-item-content">'+
+							'<div class="ChatDelete" onclick="$(this).closest(\'li\').remove();"><span class="icon-close"></span></div>' +
 							'<div class="image_row">' +
 								'<%= Dubtrack.helpers.image.getImage(user._id, user.username, false, true) %>' +
 							'</div>' +
