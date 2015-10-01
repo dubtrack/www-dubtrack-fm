@@ -88,6 +88,11 @@ Dubtrack.View.Player = Backbone.View.extend({
 		this.player_instance.on('firstFrame', function() {
 			this.player_instance.seek(this.getStarTime());
 			if(this.error_timeout) clearTimeout(this.error_timeout);
+
+			if(this.istoggleVideo){
+				$('#room-main-player-container').css('visibility', 'hidden');
+				$('#room-main-player-container iframe').css('visibility', 'hidden');
+			}
 		}.bind(this));
 
 		this.player_instance.on('play', function() {

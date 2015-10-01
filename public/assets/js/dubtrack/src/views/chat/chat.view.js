@@ -128,7 +128,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		this.newMessageCounter = 0;
 
 		self.createSound();
-		this.setDefaultSound( this.chatSoundFilter );
+		this.setDefaultSound( "mention" );
 		//this.loadScrolling();
 
 		//this.setMod();
@@ -431,7 +431,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 					Dubtrack.room.users &&
 					Dubtrack.room.users.getIfmuted(user._id) ) return;
 
-				if(this.lastItemEl && this.lastItemChatUser && user._id == this.lastItemChatUser._id){
+				if(this.lastItemEl && this.lastItemChatUser && user._id == this.lastItemChatUser._id && this.lastItemEl.$el.is(":visible")){
 					this.lastItemEl.$('.text').append('<p>' + chatModel.get('message') + '</p>');
 
 					this.lastItemEl.updateTime(chatModel.get('time'));
