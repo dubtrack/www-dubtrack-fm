@@ -351,7 +351,7 @@ Dubtrack.View.Message.MainListDetails = Dubtrack.View.Message.MainList.extend({
 	addMessage : function(model){
 		this.$('.private-message-details-info').hide();
 		/*if(this.last_model && this.last_view && this.last_model.get('userid') == model.get('userid')){
-			
+
 			if(this.main_items_loaded){
 				this.last_view.appendText(model.get('created'), model.get('message'), false);
 			}else{
@@ -411,7 +411,7 @@ Dubtrack.View.Message.MainListDetails = Dubtrack.View.Message.MainList.extend({
 	},
 
 	sendMessage : function(){
-		var message = $.trim(this.$('input#message-input').val());
+		var message = $('<div/>').text($.trim(this.$('input#message-input').val())).html();
 		if(message === "" || message === null) return;
 
 		this.$('input#message-input').val('');
@@ -510,7 +510,7 @@ Dubtrack.View.Message.MainListItem = Backbone.View.extend({
 
 		var currentDate = new Date(this.model.get('latest_message'));
 		this.$('.message-time').html('<time class="timeago" datetime="' + currentDate.toISOString() + '">' + currentDate.toLocaleString() + '</time>');
-		
+
 		this.$(".timeago").timeago();
 	}
 });
@@ -533,14 +533,14 @@ Dubtrack.View.Message.MainListDetailsItem = Dubtrack.View.Message.MainListItem.e
 
 		var currentDate = new Date(this.model.get('created'));
 		this.$('.message-time').html('<time class="timeago" datetime="' + currentDate.toISOString() + '">' + currentDate.toLocaleString() + '</time>');
-		
+
 		this.$(".timeago").timeago();
 	},
 
 	appendText : function(created, text, prepend){
 		var currentDate = new Date(created);
 		this.$('.message-time').html('<time class="timeago" datetime="' + currentDate.toISOString() + '">' + currentDate.toLocaleString() + '</time>');
-		
+
 		this.$(".timeago").timeago();
 
 		if(prepend) this.$('.message-content p').prepend(text + '<br>');

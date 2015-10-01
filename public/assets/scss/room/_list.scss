@@ -44,11 +44,11 @@
 		a{
 			&.join{
 				display: none;
-				font-family: $siteFont;  
-				font-size: 1.5em; 
-				color: white; 
-				padding: 1.5em 0; 
-				position: absolute; 
+				font-family: $siteFont;
+				font-size: 1.5em;
+				color: white;
+				padding: 1.5em 0;
+				position: absolute;
 				left: 0;
 				width: 100%;
 				top: 3em;
@@ -91,7 +91,7 @@
 
 		.roomImage{
 			overflow: hidden;
-			min-height: 10.375em;
+			height: 10.375em;
 			@include border-top-left-radius(0.625em);
 			@include border-top-right-radius(0.625em);
 			display: none;
@@ -119,6 +119,9 @@
 			span{
 				display: block;
 				line-height: 1.4em;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				overflow: hidden;
 
 				&.current-song{
 					font-size: 0.75em;
@@ -154,9 +157,9 @@
 
 		.user-info{
 			display: none;
-			bottom: 1em; 
+			bottom: 1em;
 			padding: 0.3em 1em;
-			right: 1em; 
+			right: 1em;
 			line-height: 1em;
 			font-size: 0.8em;
 			background: $siteAccentColor;
@@ -205,31 +208,31 @@
 
 #rooms-list{
 	padding:0 20px;
-	width:100%; 
-	margin:0 0 20px 0; 
-	height:660px; 
+	width:100%;
+	margin:0 0 20px 0;
+	height:660px;
 	min-height:660px;
 	& li{
 		font-family: $siteAccentFont;
-		width:280px; 
-		padding:0 0 30px 0; 
-		line-height:20px;  
-		position:relative; 
-		cursor:pointer; 
+		width:280px;
+		padding:0 0 30px 0;
+		line-height:20px;
+		position:relative;
+		cursor:pointer;
 		background:url(../images/blackopacity_roomlist.png) repeat;
 		@include border-radius(0.625em);
 		margin:5px 10px 5px 0;
 		float: left;
 		&:nth-child(even){
-			
+
 		}
 		&:nth-child(odd){
 			& .corner{
-				/*background:url(../images/bg_corner.png) no-repeat; 
-				width:24px; 
-				height:24px; 
-				position:absolute; 
-				top:0; 
+				/*background:url(../images/bg_corner.png) no-repeat;
+				width:24px;
+				height:24px;
+				position:absolute;
+				top:0;
 				left:0*/
 			}
 		}
@@ -253,17 +256,17 @@
 		}
 		& .list{
 			color:#000;
-			background: cyan; 
-			display:block;  
-			text-align:right; 
+			background: cyan;
+			display:block;
+			text-align:right;
 			padding:5px 7px;
 			position:absolute;
 			z-index: 10;
 			top:0;
 			left: 0;
 			& span{
-				display:block; 
-				font-size:12px; 
+				display:block;
+				font-size:12px;
 				color:#000;
 			}
 		}
@@ -273,45 +276,45 @@
 			vertical-align:top;
 			text-align:left;
 			& .name{
-				font-size:18px; 
-				color:#fff; 
+				font-size:18px;
+				color:#fff;
 				display:block;
 			}
 			& .slash{
-				display:inline; 
+				display:inline;
 				color:#797979;
 			}
 			& .song_dis{
 				width: 100%;
-				display:block; 
-				overflow:hidden; 
-				height:20px; 
-				font-size:14px; 
+				display:block;
+				overflow:hidden;
+				height:20px;
+				font-size:14px;
 				color:#505050
 			}
 		}
 		& .hosted{
-			z-index:8; 
-			bottom: 5px; 
-			right:5px; 
+			z-index:8;
+			bottom: 5px;
+			right:5px;
 			@include opacity(0.7);
-			position:absolute; 
+			position:absolute;
 			line-height:14px;
 			& b{
 				color: #fff;
 			}
 			& span{
-				display:inline-block; 
-				vertical-align:top; 
-				font-style:normal !important; 
+				display:inline-block;
+				vertical-align:top;
+				font-style:normal !important;
 				color:#fff;
 			}
 		}
 		& .friends{
-			position:absolute; 
-			bottom:5px; 
-			right:5px; 
-			color:#fff; 
+			position:absolute;
+			bottom:5px;
+			right:5px;
+			color:#fff;
 			font-size:14px;
 			& span{
 				display:inline-block;
@@ -320,29 +323,29 @@
 		}
 		& .join{
 			display: none;
-			font-family: $siteFont;  
-			font-size:24px; 
-			color:#fff; 
-			padding:25px 0; 
-			position:absolute; 
+			font-family: $siteFont;
+			font-size:24px;
+			color:#fff;
+			padding:25px 0;
+			position:absolute;
 			left: 0;
 			width: 100%;
 			top:62px;
-			margin: 0 -200px 0 0; 
+			margin: 0 -200px 0 0;
 			z-index:9;
 			& span{
 				position: relative;
 				z-index: 20;
-				color: #fff;	
+				color: #fff;
 				margin-left: 95px;
 			}
 			&:after{
-				background:url(../images/button_joinroom_arrow.png) right center no-repeat; 
+				background:url(../images/button_joinroom_arrow.png) right center no-repeat;
 				right: 70px;
 				top: 22px;
 				content: "";
 				width: 17px;
-				height: 26px; 
+				height: 26px;
 				position: absolute;
 				z-index: 10;
 			}
@@ -357,7 +360,7 @@
 				left: 0;
 				z-index: 8;
 			}
-			
+
 		}
 		&.by_user{
 			border:2px solid #999;

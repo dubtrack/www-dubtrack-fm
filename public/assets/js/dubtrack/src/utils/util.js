@@ -126,8 +126,9 @@ Dubtrack.els.templates = {
 									'</div>' +
 								'</div>' +
 							'</div>',
-		
+
 		'profileView': '<div class="profileView">' +
+							'<div class="rewindProfile"><a href="#"><span class="icon-close"></span></a></div>' +
 							'<div class="infoProfile">' +
 								'<h2>' +
 									'<span class="usernameContainer"><%= username %></span>' +
@@ -443,7 +444,7 @@ Dubtrack.els.templates = {
 									'<div id="new-messages-counter"><span class="messages-display"></span> <i class="icon-arrow-down2"></i>' +
 									'</div>' +
 									'<% if(Dubtrack.loggedIn) { %>' +
-										'<input id="chat-txt-message" name="message" type="text" placeholder= "'+ dubtrack_lang.chat.type_message +'" autocomplete="off">' +
+										'<input id="chat-txt-message" name="message" type="text" placeholder= "'+ dubtrack_lang.chat.type_message +'" autocomplete="off" maxlength="140">' +
 										'<span class="icon-camera"></span>' +
 										'<button class= "pusher-chat-widget-send-btn">' +
 											'<span class="icon-arrow-right2"></span>' +
@@ -457,6 +458,7 @@ Dubtrack.els.templates = {
 							'</div>',
 
 		'chatMessage': '<div class="stream-item-content">'+
+							'<div class="ChatDelete" onclick="$(this).closest(\'li\').remove();"><span class="icon-close"></span></div>' +
 							'<div class="image_row">' +
 								'<%= Dubtrack.helpers.image.getImage(user._id, user.username, false, true) %>' +
 							'</div>' +
@@ -478,7 +480,7 @@ Dubtrack.els.templates = {
 
 	'playlist': {
 		'previewContainer' : '<div class="close"><span class="icon-close"></span></div><div class="playerDubContainer"></div><div class="comments-container"></div>',
-		
+
 		'playlistContainer': '	<div class="create-playlist-input">' +
 									'<input type="text" placeholder="' + dubtrack_lang.playlist.create + '" class="playlist-input" id="playlist-input" />' +
 									'<span class="icon-plus"></span>' +
@@ -497,7 +499,7 @@ Dubtrack.els.templates = {
 								//'<%= total %> ' +
 								//dubtrack_lang.playlist.tunes +
 							'</p>',
-		
+
 		'playlistInfo': '<a href="#" class="playlist_type tt-wrapper"></a>' +
 						'<input type="text" class="playlist_filter" placeholder="' + dubtrack_lang.playlist.filter + '" value="" />',
 
@@ -526,6 +528,10 @@ Dubtrack.els.templates = {
 									'</p>' +
 								'</div>' +
 								'<div class="actions">' +
+									'<a href="#" class="set_song_to_top_queue">' +
+										'<span class="icon-arrow-up"></span>' +
+										'move to top' +
+									'</a>' +
 									'<a href="#" class="img_bg add_to_queue">' +
 										'<span class="icon-play-circle"></span>' +
 										dubtrack_lang.playlist.addToQueue +
@@ -582,14 +588,44 @@ Dubtrack.els.templates = {
 										dubtrack_lang.playlist.removePlaylist +
 									'</a>' +
 								'</div>',
+
+		'playlistRoomQueueItem': '<span class="display-error">' +
+								'</span>' +
+								'<span class="timeDisplay">' +
+									'<%= minute %>' +
+									':' +
+									'<%= second %>' +
+								'</span>' +
+								'<figure>' +
+									'<% if(images.thumbnail) {%>' +
+										'<img src="<%= images.thumbnail %>" alt="" />' +
+									'<% } else {%>' +
+										'<img src="' + Dubtrack.config.urls.mediaBaseUrl + '/assets/images/media/pic_notfound.jpg" alt="" />' +
+									'<% } %>' +
+								'</figure>' +
+								'<div class="description">' +
+									'<h2><%= name %></h2>' +
+									'<p>' +
+										'<span class="preview">' +
+											dubtrack_lang.playlist.preview +
+										'</span>' +
+										'<span class="playedby">Queued by <b><%= _user.username %></b></span>' +
+									'</p>' +
+								'</div>' +
+								'<div class="actions">' +
+									'<a class="img_bg add_to_playlist" href="#">' +
+										'<span class="icon-plus-alt"></span>' +
+										dubtrack_lang.playlist.addToPlaylist +
+										Dubtrack.config.loadingEls +
+									'</a>' +
+								'</div>',
 	},
-	
+
 	'layout': {
 		'header': '<div id="header_login">' +
-						dubtrack_lang.global.login +
-						': <a href="/login/facebook" class="facebook"><i class="icon-facebook"></i>' + dubtrack_lang.global.loginFB +
-						'</a>' +
-						'<a href="/login/twitter" class="twitter"><i class="icon-twitter"></i>' + dubtrack_lang.global.loginTW + '</a>' +
+						'<a href="/login" id="login-link">LOGIN</a>' +
+						' | ' +
+						'<a href="/signup" id="signup-link">CREATE ACCOUNT</a>' +
 					'</div>' +
 					'<ul class="main-menu">' +
 						'<li class="menu-expand">' +
@@ -712,7 +748,8 @@ Dubtrack.els.templates = {
 									'<span class="title">' + dubtrack_lang.player.playlists + '</span>' +
 									'<div id="playlists-scroll">' +
 										'<ul class="playlist-style">' +
-											'<li class="current_queue">' + dubtrack_lang.playlist.your_queue + '</li>' +
+											'<li class="current_queue">' + dubtrack_lang.playlist.your_queue + '<span class="clear-queue delete">clear</span></li>' +
+											'<li class="current_room_queue">' + dubtrack_lang.playlist.room_queue + '</li>' +
 											//'<li class="my_tracks">' + dubtrack_lang.playlist.my_tracks + '</li>' +
 										'</ul>' +
 									'<div>' +
@@ -728,6 +765,7 @@ Dubtrack.els.templates = {
 							'<div class="content-videos">' +
 								'<div class="result-videos">' +
 									'<div class="loading">' + dubtrack_lang.global.loading + '</div>' +
+									'<div class="clear-queue clear-queue-browser-bth">Clear my queue</div>' +
 									'<div id="results_video_api">' +
 										'<ul></ul>' +
 									'</div>' +
@@ -761,7 +799,7 @@ Dubtrack.els.templates = {
 										'</a>' +
 									'</li>' +
 									'<li class="copy">' +
-										'<span>&copy; 2014. DUBTRACK.FM</span>' +
+										'<span>&copy; 2015. DUBTRACK.FM</span>' +
 									'</li>' +
 								'</ul>' +
 							'</div>' +
@@ -831,6 +869,6 @@ Backbone.View.prototype.close = function () {
 	}
 	this.remove();
 	this.unbind();
-	
+
 	return false;
 };

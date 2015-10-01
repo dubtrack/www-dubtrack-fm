@@ -2,7 +2,7 @@
 	position: relative;
 	margin: 0;
 	padding: 2.7em 0 4em 0;
-	background: $bgOtherColor; 
+	background: $bgOtherColor;
 	z-index: 10;
 	width: 100%;
 	display: none;
@@ -51,7 +51,18 @@
 		height: 20px;
 		padding: 0;
 	}
-	
+
+	.ChatDelete {
+		@include opacity(0.5);
+		right: 0;
+		position: absolute;
+		font-size: 0.6em;
+		padding: 9px;
+		color: magenta;
+		cursor: pointer;
+		z-index: 1;
+	}
+
 	.chatLoading{
 		background: $bgAccentColor;
 		color: $bgColor;
@@ -135,7 +146,7 @@
 			}
 		}
 	}
-	
+
 	.chatLogin{
 		font-size: 12px;
 		display: block;
@@ -190,14 +201,14 @@
 				background: none;
 				height: 2.6em;
 				padding: 0 3em 0 1em;
-				color: $siteColor;	
+				color: $siteColor;
 
-				&:focus {	
+				&:focus {
 					outline: 0;
 				}
 			}
 		}
-		
+
 		.chat-messages{
 			position: relative;
 			margin: 0;
@@ -221,7 +232,7 @@
 			overflow: none;
 			position: relative;
 			z-index: 999;
-			
+
 			.system-warning {
 				color:#000;
 				background: magenta;
@@ -231,7 +242,7 @@
 				color:#000;
 				background: cyan;
 			}
-			
+
 			li {
 				position: relative;
 				padding: 0 0 0 2.2em;
@@ -289,9 +300,10 @@
 					min-height: 2.2em;
 					position: relative;
 					overflow: hidden;
+					width: calc(100% - 18px);
 
 					@include respond-to(bp1150){
-						width: 20.5em;
+						width: calc(20.5em - 18px);
 					}
 
 					.meta-info{
@@ -312,7 +324,7 @@
 						.timeinfo{
 							font-size: 0.6em;
 						}
-						
+
 						.icon-dot{
 							display: none;
 							vertical-align: text-bottom;
@@ -325,6 +337,7 @@
 						display: block;
 
 						p{
+							word-wrap: break-word;
 							line-height: 1.2em;
 							margin: 0 0 0.5em 0;
 
@@ -349,8 +362,9 @@
 						}
 
 						img{
-							width: 100%;
+							max-width: 100%;
 							margin: 0.5em 0;
+							display: block;
 						}
 
 						span.username-handle{
@@ -383,41 +397,6 @@
 						width: 100%;
 					}
 				}
-
-				/*&.current-chat-user{
-					padding: 0 2.2em 0 0;
-
-					.image_row{
-						top: auto;
-						left: auto;
-						right: 0;
-						bottom: 0.1em;
-
-						&:after{
-							display: none;
-						}
-					}
-
-					.activity-row {
-						.text{
-							p{
-								a.username{
-									display: none;
-								}
-							}
-						}
-
-						.meta-info{
-							.icon-dot{
-								display: inline;
-							}
-
-							.username {
-								display: inline;
-							}
-						}
-					}
-				}*/
 			}
 		}
 

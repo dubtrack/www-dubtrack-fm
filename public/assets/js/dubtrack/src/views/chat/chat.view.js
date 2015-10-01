@@ -1,15 +1,26 @@
+Dubtrack.Events.bind('realtime:chat-message',realtimeChatPing);
+$('body').prepend('<audio class="isRobot" preload="auto"><source src="/assets/music/Robot_blip-Marianne_Gagnon-120342607.mp3" type="audio/mpeg"></audio>');
+function realtimeChatPing(data) {
+		var realtimeChatUser = Dubtrack.session.get('username');
+		var realtimeChatData = data.message;
+		if (!realtimeChatData.indexOf('@'+realtimeChatUser)) {
+				var isRobot = document.querySelector('.isRobot');
+				isRobot.play();
+		}
+}
+
 Dubtrack.AvatarUsersRegistered = new Backbone.Collection();
 
 Dubtrack.View.chat = Backbone.View.extend({
 
 	renderSound : true,
-	
+
 	el : $('#chat'),
 
 	chatSoundFilter : 'none',
-	
+
 	_type_message : null,
-	
+
 	events : {
 		"keydown input#chat-txt-message": "keyPressAction",
 		"click button.pusher-chat-widget-send-btn": "sendMessage",
@@ -19,7 +30,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		"click .room-user-counter": "displayRoomUsers",
 		"click .pusher-chat-widget-input .icon-camera": "openGifCreator"
 	},
-	
+
 	initialize : function(){
 		this.chatEndPointUrl = Dubtrack.config.apiUrl + Dubtrack.config.urls.chat.replace(":id", Dubtrack.room.model.id);
 
@@ -88,38 +99,38 @@ Dubtrack.View.chat = Backbone.View.extend({
 
 	render : function(){
 		var self = this;
-		
+
 		//this.$el.attr( "id", "pusher_chat_widget" );
 
 		this.$el.html( _.template( Dubtrack.els.templates.chat.chatContainer, {} ) );
-		
+
 		this._messageInputEl = this.$('input#chat-txt-message');
 		this._messagesEl = this.$('ul.chat-main');
 		this.chatSoundHtmlEl = this.$('a.chatSound');
-			
+
 		this.renderSound = false;
 		this.chatSoundFilter = false;
-		
+
 		this.chatCmdEl = this.$(".chat-commands");
-		
+
 		this.loadingHistory = this.$(".chatLoading");
-		
+
 		this.globalNotificationsEl = this.$("ul.globalNotifications");
 		/*
 		$.each(history, function(){
 			if(this.type == "chat-message")
 				Chat.messageReceived(this);
 		});*/
-		
+
 		this.renderSound = true;
 		this.isScrolling = false;
 
 		this.newMessageCounter = 0;
-		
+
 		self.createSound();
 		this.setDefaultSound( this.chatSoundFilter );
 		//this.loadScrolling();
-		
+
 		//this.setMod();
 
 		$(window).resize(function(){
@@ -136,7 +147,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 				self.onChatScroll(scrollY, height);
 			}
 		});
-		
+
 		return this;
 	},
 
@@ -182,7 +193,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		var chatModel = new Dubtrack.Model.chat(r);
 		this.model.add(chatModel);
 	},
-	
+
 	displayChatHelp : function(){
 		if( !this.chatHelp ) this.chatHelp = new Dubtrack.View.helpModalMod();
 
@@ -190,7 +201,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 
 		return false;
 	},
-	
+
 	keyPressAction : function(e){
 		c = e.which ? e.which : e.keyCode;
 		if (c == 13){
@@ -198,10 +209,10 @@ Dubtrack.View.chat = Backbone.View.extend({
 			return false;
 		}
 	},
-	
+
 	setDefaultSound : function(filter){
 		this.chatSoundHtmlEl.removeClass("mute");
-		
+
 		switch(filter){
 			case "none":
 				this.renderSound = true;
@@ -225,14 +236,14 @@ Dubtrack.View.chat = Backbone.View.extend({
 				this.chatSoundHtmlEl.html( dubtrack_lang.chat.sound_on );
 			break;
 		}
-		
+
 		return false;
 	},
-		
+
 	setSound : function(){
-	
+
 		this.chatSoundHtmlEl.removeClass("mute");
-		
+
 		switch(this.chatSoundFilter){
 			case "none":
 				this.renderSound = true;
@@ -256,7 +267,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 				this.chatSoundHtmlEl.html( dubtrack_lang.chat.sound_on );
 			break;
 		}
-		
+
 		//DJ.global.sendPostRequest("room/main/saveUserData", {'var': 'chat_sound', 'value': Chat.chatSoundFilter}, null, null);
 		return false;
 	},
@@ -271,15 +282,15 @@ Dubtrack.View.chat = Backbone.View.extend({
 		if($('body').hasClass('videoActive') && $(window).width() > 800){
 			$h -= 200;
 		}
-		
+
 		this.$('.chat-messages').css('height', $h);
 		this.$('.chat-messages').perfectScrollbar('update');
 
 		this.scollBottomChat();
 	},
-	
+
 	displayHistory : function(){
-	
+
 		var self = this;
 		/*_.each( dubtrackMain.roomModel.get('chat_history'), function(item){
 			self.appendEl(item);
@@ -326,7 +337,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 				});
 
 				chatItem.$el.appendTo( this._messagesEl );
-				
+
 				this.playSound(false);
 			break;
 			case "user-join":
@@ -338,7 +349,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 				});
 
 				chatItem.$el.appendTo( this._messagesEl );
-				
+
 				this.playSound(false);
 			break;
 			case "user-kick":
@@ -350,7 +361,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 				});
 
 				chatItem.$el.appendTo( this._messagesEl );
-				
+
 				this.playSound(false);
 			break;
 			case "user-ban":
@@ -362,7 +373,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 				});
 
 				chatItem.$el.appendTo( this._messagesEl );
-				
+
 				this.playSound(false);
 			break;
 			case "user-unban":
@@ -374,7 +385,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 				});
 
 				chatItem.$el.appendTo( this._messagesEl );
-				
+
 				this.playSound(false);
 				break;
 			case "user-setmod":
@@ -386,7 +397,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 				});
 
 				chatItem.$el.appendTo( this._messagesEl );
-				
+
 				this.playSound(false);
 				break;
 			case "user-unsetmod":
@@ -398,7 +409,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 				});
 
 				chatItem.$el.appendTo( this._messagesEl );
-				
+
 				this.playSound(false);
 				break;
 			default:
@@ -431,13 +442,13 @@ Dubtrack.View.chat = Backbone.View.extend({
 					chatItem.$el.appendTo( this._messagesEl );
 					chatItem.render();
 				}
-				
+
 				//this.playSound( (data.body.indexOf("@" + this.usernameEl) != -1) );
 				//else this.playSound(false);
 				this.playSound(false);
 		}
 	},
-	
+
 	createSound : function(){
 		if(this.chatSound) return;
 
@@ -446,7 +457,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		var self = this;
 
 		soundManager.setup({
-			url: Dubtrack.config.urls.mediaBaseUrl + '/assets/swf/',
+			url: '/assets/swf/',
 			flashVersion: 9,
 			//preferFlash: false,
 			onready: function() {
@@ -471,7 +482,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 			this.$('.chat-messages').perfectScrollbar('update');
 		}
 	},
-		
+
 	playSound : function(mention){
 		//$('.avatar_' + Player.currentDJ).addClass("currentDJ");
 		//$(".avatar_" + DJ.DJRoom.iduser_owner).addClass("owner-mod");
@@ -486,30 +497,30 @@ Dubtrack.View.chat = Backbone.View.extend({
 				}
 			}
 		}
-				
+
 		//if(!this.isScrolling || this.idCounter < 15){
-		//this.chatEl.nanoScroller({ scroll: 'bottom' }); 
-		//}	
-	
+		//this.chatEl.nanoScroller({ scroll: 'bottom' });
+		//}
+
 	},
-		
+
 	systemMessageReceived : function(message){
 		if(message !== null && message !== ""){
-			
+
 			Chat._messagesEl.append(content);
 			this.playSound(false);
 		}
 	},
-		
+
 	genMessageInfo: function(message){
 		if(message !== null && message !== ""){
-			
+
 			this.playSound(false);
 		}
 	},
-	
+
 	sendMessage : function(){
-		var message = $.trim(this._messageInputEl.val());
+		var message = $('<div/>').text($.trim(this._messageInputEl.val())).html();
 		if(message === "" || message === null) return;
 
 		this._messageInputEl.val('');
@@ -592,7 +603,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 			this.skipSong();
 			return;
 		}
-		
+
 		chatModel = new Dubtrack.Model.chat({
 			user: Dubtrack.session.toJSON(),
 			message: message,
@@ -702,7 +713,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 				}else{
 					self.lastItemChatUser = false;
 					self.lastItemEl = false;
-					
+
 					chatItem.$el.html("user quitely unmuted");
 				}
 			}, this);
@@ -730,7 +741,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 				}else{
 					self.lastItemChatUser = false;
 					self.lastItemEl = false;
-					
+
 					chatItem.$el.html("user quitely muted");
 				}
 			}, this);

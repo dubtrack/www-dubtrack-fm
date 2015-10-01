@@ -25,13 +25,30 @@
 		margin: 0;
 		@include border-radius(0.313em);
 		position: relative;
-		z-index: 10;
+		z-index: 999;
 		height: 100%;
 		background: #000;
 		@include clearfix2();
 
 		@include respond-to(bp1100){
 			margin: 0 0 0 1.875em;
+		}
+
+		.rewindProfile {
+			position: absolute;
+			right: -18px;
+			top: -18px;
+			z-index: 999;
+			border: 5px solid magenta;
+			padding: 5px;
+			border-radius: 50%;
+			width: 36px;
+			height: 36px;
+			background-color: #111;
+
+			a{
+				color: #fff;
+			}
 		}
 
 		.infoProfile{
@@ -45,8 +62,8 @@
 			height: 2.813em;
 			@include clearfix2();
 
-			h2{				
-				font-size: 1em;	
+			h2{
+				font-size: 1em;
 				font-weight: 700;
 				float: left;
 				max-width: 10em;
@@ -130,7 +147,7 @@
 					}
 				}
 			}
-			
+
 			button.message{
 				float: right;
 				margin: 1em 1em 0 0.125em;
@@ -174,7 +191,7 @@
 				}
 			}
 		}
-		
+
 		.header{
 			@include clearfix2();
 
@@ -230,7 +247,7 @@
 				color: #fff;
 				margin-top: 45px;
 				& h2{
-					margin: 20px 0 0 30px;						
+					margin: 20px 0 0 30px;
 					font-size: 24px;
 					font-weight: 700;
 					margin-top: 65px;
@@ -260,7 +277,7 @@
 					}
 				}
 				& .content_bio{
-					margin: 20px 0 0 30px;	
+					margin: 20px 0 0 30px;
 					position: relative;
 					& a{
 						&.readmore{
@@ -272,7 +289,7 @@
 				}
 			}
 		}
-		
+
 		.contentMainProfile{
 			position: relative;
 			margin: 30px 0 0 0;
@@ -323,20 +340,20 @@
 						font-weight: bold;
 
 						&.active, &:hover{
-							@include opacity(1);					
+							@include opacity(1);
 						}
 						&.active{
 						}
 					}
 				}
 			}
-			
+
 			span.progress{
 				width: 33.33%;
 				position: absolute;
 				height: 0.188em;
 				content: "";
-				@include opacity(0.7);	
+				@include opacity(0.7);
 				background: $bgAccentColor;
 				top: 2.188em;
 				@include transition-property(all);
@@ -358,7 +375,7 @@
 				}
 			}
 		}
-	}		
+	}
 	& .sidebarProfile{
 		position: absolute;
 		top: 0;
@@ -377,13 +394,13 @@
 		margin: 40px auto;
 		display: block;
 	}
-	
+
 	& .dub_list li.loadMoreComments{
 		&:hover{
 			color: #fff;
 		}
 	}
-	
+
 	& a.loadMoreWallPosts{
 		position: absolute;
 		bottom: 0;
@@ -415,8 +432,8 @@
 		clear: both;
 		position: relative;
 		@include transition-property(all);
-  		@include transition-duration(0.3s);
-  		@include transition-timing-function(ease-in);
+			@include transition-duration(0.3s);
+			@include transition-timing-function(ease-in);
 	}
 
 	span{
@@ -431,11 +448,11 @@
 		font-weight: 600;
 		font-size: 0.75em;
 		@include transition-property(all);
-  		@include transition-duration(0.2s);
-  		@include transition-timing-function(ease-in);
+			@include transition-duration(0.2s);
+			@include transition-timing-function(ease-in);
 		cursor: pointer;
-		
-		&:hover, 
+
+		&:hover,
 		&.active{
 			@include opacity(1);
 		}
@@ -453,7 +470,7 @@
 		&.avatarFollowing{
 			float: right;
 		}
-		
+
 		li{
 			float: left;
 			width: 3.5em;

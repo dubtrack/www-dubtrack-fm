@@ -9,7 +9,7 @@ ul,ol{
 	height: 25em;
 	overflow-y: scroll;
 
-	& a{	    
+	& a{
 		&.close {
 			background: url(../images/close_icon.png) right center no-repeat;
 			padding: 0 1em 0 0;
@@ -50,7 +50,7 @@ ul,ol{
 
 		& a {
 			color: white;
-			
+
 			&:hover {
 				text-decoration: underline;
 			}
@@ -290,15 +290,15 @@ ul,ol{
 
 /* ============================================================ */
 
-.autocomplete-w1 { 
-	background: url(../images/shadow.png) no-repeat bottom right; 
-	position: absolute; 
-	top: 0; 
-	left: 0; 
-	margin: 0; 
-	/* IE6 fix: */ 
-	_background: none; 
-	_margin: 0; 
+.autocomplete-w1 {
+	background: url(../images/shadow.png) no-repeat bottom right;
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin: 0;
+	/* IE6 fix: */
+	_background: none;
+	_margin: 0;
 	overflow-x: hidden;
 }
 
@@ -360,7 +360,7 @@ ul,ol{
   		height: 20em;
   		background-color: $bgColor;
   		@include border-radius(100%);
-  		border-radius: 100%; 
+  		border-radius: 100%;
   		-webkit-animation: scaleout 1.0s infinite ease-in-out;
   		animation: scaleout 1.0s infinite ease-in-out;
   		z-index: 1;
@@ -482,7 +482,7 @@ ul.avatar-list {
 		&.inactive{
 			@include opacity(0.5);
 		}
-		
+
 		p.username {
 			color: #999;
 			font-size: 0.65em;
@@ -493,6 +493,7 @@ ul.avatar-list {
 			width: 100%;
 			height: 4em;;
 			overflow: hidden;
+			display: none;
 
 			& img {
 				width: 100%;
@@ -540,7 +541,7 @@ ul.avatar-list {
 }
 
 @keyframes scaleout {
-  0% { 
+  0% {
     transform: scale(0.0);
     -webkit-transform: scale(0.0);
   } 100% {

@@ -1,11 +1,11 @@
 Dubtrack.View.roomUsersItem = Backbone.View.extend({
 	tagName: 'li',
-	
+
 	events: {
 		//"click": "clickEvent",
 		//"click a.navigate": "clickEvent"
 	},
-	
+
 	initialize: function(){
 		this.$el.attr({
 			'rel' : this.model.get('dubs'),
@@ -24,9 +24,9 @@ Dubtrack.View.roomUsersItem = Backbone.View.extend({
 
 		this.pictureEl = this.$('.picture');
 		this.usernameEl = this.$('p.username');
-		
+
 		/*$diff_time = this.model.get("diff_mins");
-		
+
 		if($diff_time){
 			if( parseInt($diff_time) > 40 ){
 				this.$el.addClass('inactive');
@@ -56,7 +56,7 @@ Dubtrack.View.roomUsersItem = Backbone.View.extend({
 		if(!user || typeof user !== "object") Dubtrack.cache.users.get(this.model.get("userid"), this.renderUser, this);
 		else{
 			var userModel = Dubtrack.cache.users.add(user);
-			
+
 			this.renderUser(null, userModel);
 		}
 
@@ -75,22 +75,27 @@ Dubtrack.View.roomUsersItem = Backbone.View.extend({
 
 	renderUser: function(err, user){
 		this.user = user;
-		this.usernameEl.html( user.get("username") );
 
-		var userInfo = user.get('userInfo');
+		try{
+			this.usernameEl.html( user.get("username") );
 
-		//display user image
-		this.pictureEl.html( Dubtrack.helpers.image.getImage(user.id, user.get("username"), false, true));
+			var userInfo = user.get('userInfo');
 
-		//set username for search
-		this.$el.addClass('user-' + this.user.get('username').toLowerCase());
+			//display user image
+			this.pictureEl.html( Dubtrack.helpers.image.getImage(user.id, user.get("username"), false, true));
+
+			//set username for search
+			this.$el.addClass('user-' + this.user.get('username').toLowerCase());
+		}catch(ex){
+			this.$el.remove();
+		}
 	},
 
 	clickEvent: function(){
 		Dubtrack.app.navigate("/" + this.model.get('username'), {trigger: true});
 		return false;
 	},
-	
+
 	setOffline: function(){
 		this.$el.append( $('<div/>', {'class' : 'offline'}).html( dubtrack_lang.avatar.offline ) );
 	}

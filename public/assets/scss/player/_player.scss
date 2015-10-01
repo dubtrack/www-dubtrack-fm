@@ -57,6 +57,7 @@
 		}
 
 		&:hover{
+			.hideVideo-el.show,
 			.videoquality-el.show,
 			.refresh-el.show{
 				display: block;
@@ -173,6 +174,15 @@
 			top: 0;
 			margin: 0;
 			cursor: pointer;
+		}
+
+		.hideVideo-el{
+			background: cyan;
+			left: calc(100% - 10em);
+			top: calc(100% - 47px);
+			margin: 0;
+			cursor: pointer;
+			display: block;
 		}
 
 		.error-el{

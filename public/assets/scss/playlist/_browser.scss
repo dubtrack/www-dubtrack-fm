@@ -1,16 +1,16 @@
 #browser{
-	width: 100%; 
+	width: 100%;
 	height: 85%;
 	bottom: -1.875em;
 	bottom: -150%;
 	left: 0;
-	margin: 0; 
+	margin: 0;
 	display: block;
 	z-index: 9999;
 	position: fixed;
 	@include transition-property(bottom);
-  	@include transition-duration(0.2s);
-  	@include transition-timing-function(ease-in);
+		@include transition-duration(0.2s);
+		@include transition-timing-function(ease-in);
 	//background: #534f4f;
 	background: none;
 
@@ -32,26 +32,26 @@
 		&.preview{
 			cursor:pointer;
 		}
-		
+
 		&.title{
 			color: $bgOtherAccentColor;
 			font-family: $siteTitleFont;
-			display: block; 
-			width: auto; 
+			display: block;
+			width: auto;
 			font-size: 1.2em;
 			margin: 0 0 0.2em 0;
 		}
-		
-		&.song-title{ 
-			width:250px; 
-			height:30px; 
-			overflow:hidden; 
+
+		&.song-title{
+			width:250px;
+			height:30px;
+			overflow:hidden;
 			font-size:18px;
 		}
 		&.next-inline{
 			height:30px;
-			display:inline-block; 
-			vertical-align:top; 
+			display:inline-block;
+			vertical-align:top;
 			margin:0 10px 0 0;
 		}
 	}
@@ -96,21 +96,21 @@
 			li{
 				font-family: $siteFont;
 				text-transform: uppercase;
-				color: white; 
+				color: white;
 				font-size: 0.75em;
-				padding: 0.5em; 
-				cursor: pointer; 
-				position: relative; 
+				padding: 0.5em;
+				cursor: pointer;
+				position: relative;
 				border-top: 1px solid $bgColor;
 				border-right: 1px solid $bgColor;
 				border-left: 1px solid $bgColor;
 				background: $siteAccentColor;
-				font-weight: bold; 
+				font-weight: bold;
 				@include opacity(0.7);
 				margin: 0.3em 0 0 0;
 				//@include transition-property(opacity);
-  				//@include transition-duration(0.3s);
-  				//@include transition-timing-function(ease-in);
+					//@include transition-duration(0.3s);
+					//@include transition-timing-function(ease-in);
 
 				&.my_tracks{
 					border-bottom: 1px solid #000;
@@ -124,54 +124,59 @@
 						@include opacity(0.5);
 					}
 				}
-				
+
 				p{
 					font-family: $siteFont;
-					font-size: 0.65em; 
+					font-size: 0.65em;
 					font-style: italic;
 					color: $siteFontColor;
 					margin: 0;
 				}
-				
+
 				.delete,
 				.add_to_queue{
-					font-size: 0.75em; 
+					font-size: 0.75em;
 					color: $siteColor;
 					@include opacity(0);
 					//@include transition-property(opacity);
 					//@include transition-duration(0.1s);
-  					//@include transition-timing-function(ease);
+						//@include transition-timing-function(ease);
 				}
 
 				.delete{
-					position: absolute; 
-					cursor: pointer; 
-					top: 2.5em; 
-					right: 0.5em; 
+					position: absolute;
+					cursor: pointer;
+					top: 2.5em;
+					right: 0.5em;
 					padding: 0;
 				}
 
 				.add_to_queue{
-					position: absolute; 
-					cursor: pointer; 
+					position: absolute;
+					cursor: pointer;
 					right: 0.5em;
 					top: 0.8em;
 					padding: 0;
 				}
 
+				.clear-queue{
+					top: 0.1em;
+				}
+
 				& .playlist-selected{
-					background:url(../images/button_arrow.png) no-repeat; 
-					width:69px; 
-					height:69px; 
-					left:-52px; 
-					top:0px; 
-					position:absolute; 
+					background:url(../images/button_arrow.png) no-repeat;
+					width:69px;
+					height:69px;
+					left:-52px;
+					top:0px;
+					position:absolute;
 					z-index:99;
 				}
 			}
 		}
 	}
-	& .loading{
+	.loading,
+	.clear-queue-browser-bth{
 		left:50%;
 		margin-left: -20px;
 		top:0;
@@ -182,6 +187,13 @@
 		font-size: 12px;
 		@include border-radius(0);
 		font-weight: bold;
+	}
+
+	.clear-queue-browser-bth{
+		text-align: center;
+		cursor: pointer;
+		font-size: 14px;
+		display: none;
 	}
 
 	& .nano{
@@ -203,21 +215,21 @@
 
 		ul.browserPlaylistItems{
 			> li{
-				position: relative; 
+				position: relative;
 				padding: 0.5em;
-				font-size: 1.125em; 
+				font-size: 1.125em;
 				margin: 0;
-				border-bottom: $standardBorder; 
+				border-bottom: $standardBorder;
 				list-style: none;
 				background: $bgColor;
 				display: block;
 				width: 100%;
 				overflow: visible;
 				//@include transition-property(opacity);
-	  			//@include transition-duration(0.2s);
-	  			//@include transition-timing-function(ease-in);
-	  			@include opacity(0.7);
-	  			@include clearfix2();
+					//@include transition-duration(0.2s);
+					//@include transition-timing-function(ease-in);
+					@include opacity(0.7);
+					@include clearfix2();
 
 				&:hover{
 					@include opacity(1);
@@ -242,6 +254,10 @@
 					font-size: 0.6em;
 					text-transform: uppercase;
 					padding: 0.5em 1em;
+				}
+
+				.set_song_to_top_queue{
+					display: none;
 				}
 
 				.display-success{
@@ -287,6 +303,10 @@
 
 					.add_to_queue{
 						display: none;
+					}
+
+					.set_song_to_top_queue{
+						display: block;
 					}
 				}
 
@@ -430,17 +450,17 @@
 				}
 
 				.content{
-					position:absolute; 
-					height:inherit; 
-					width:inherit; 
+					position:absolute;
+					height:inherit;
+					width:inherit;
 					z-index:9;
 				}
 
 				& .img_bg_trans{
 					@include transition-delay(0.3s);
 					@include transition-property(all);
-	  				@include transition-duration(0.3s);
-	  				@include transition-timing-function(ease-in);
+						@include transition-duration(0.3s);
+						@include transition-timing-function(ease-in);
 					@include opacity(0.7);
 					margin-top: 5px;
 					float: right;
@@ -463,13 +483,13 @@
 					}
 
 					& p{
-						font-size:12px; 
+						font-size:12px;
 						color:cyan;
 						font-weight: bold;
 
 						& span{
-							color:$bgAccentColor; 
-							display:inline-block; 
+							color:$bgAccentColor;
+							display:inline-block;
 							margin:0;
 
 							&.preview{
@@ -500,32 +520,32 @@
 			}
 		}
 	}
-	
+
 	.result-videos{
-		color:#fff; 
+		color:#fff;
 		vertical-align:top;
 	}
 
 	.browser-content{
-		z-index: 2; 
+		z-index: 2;
 		width: 100%;
-		height: 100%;  
+		height: 100%;
 		margin: 0 auto;
 		max-width: 73.750em;
 		background: url('../images/backgrounds/pattern-stripes.png') #333;
-        border: none;
-        position: relative;
+				border: none;
+				position: relative;
 
-        @include respond-to(bp1150){
-        	border: 2px cyan solid;
-        }
+				@include respond-to(bp1150){
+					border: 2px cyan solid;
+				}
 	}
 
 	.browser-content-header{
-		padding: 1em 1.5em 1em 1em; 
+		padding: 1em 1.5em 1em 1em;
 		overflow: hidden;
-		color: #00FFFF; 
-		font-family: $siteTitleFont; 
+		color: #00FFFF;
+		font-family: $siteTitleFont;
 		background: $bgOtherColor;
 		position: absolute;
 		z-index: 999;
@@ -534,28 +554,28 @@
 		width: 100%;
 
 		& span.next-playlist{
-			color:#fff; 
-			width:500px; 
+			color:#fff;
+			width:500px;
 			font-family: $siteAccentFont;
-			display:inline-block; 
-			vertical-align:middle; 
-			margin:0 0 0 0; 
-			height:31px;  
-			overflow:hidden; 
+			display:inline-block;
+			vertical-align:middle;
+			margin:0 0 0 0;
+			height:31px;
+			overflow:hidden;
 			padding:5px 0 0 0;
 		}
 
 		.form{
-			text-align: left; 
+			text-align: left;
 			width: 100%;
 
 			& a{
-				margin: 0; 
+				margin: 0;
 				float: left;
 			}
 
 			& input[type=text]{
-				margin: 0; 
+				margin: 0;
 				padding: 0 1em;
 				float: left;
 				border: 0;
@@ -581,8 +601,8 @@
 					@include opacity(0.3);
 					outline: $standardBorder;
 					@include transition-property(all);
-	  				@include transition-duration(0.1s);
-	  				@include transition-timing-function(ease-in);
+						@include transition-duration(0.1s);
+						@include transition-timing-function(ease-in);
 
 					& span{
 						color: $siteColor;
@@ -590,7 +610,7 @@
 						display: block;
 						text-align: center;
 					}
-					
+
 					&:hover{
 						@include opacity(0.6);
 					}
@@ -636,7 +656,7 @@
 			right: 0.5em;
 			top: 0.5em;
 			margin: 0;
-			display: block; 
+			display: block;
 			color: $bgOtherAccentColor;
 			@include opacity(0.5);
 
@@ -674,7 +694,7 @@
 
 	& .browser-content-main{
 		position: relative;
-		width: 100%; 
+		width: 100%;
 		height: 100%;
 		clear: both;
 		padding-top: 4.063em;
@@ -685,7 +705,7 @@
 #queue-next img{
 	margin:15px 0 15px 0;
 	& img{
-		width:297px; 
+		width:297px;
 		margin:0 0 0 -10px;
 	}
 }
@@ -699,7 +719,7 @@
 		width:50px;
 		position:relative;
 		overflow:hidden;
-		float:left;		
+		float:left;
 		& .rotate{
 			/* There are two .rotate divs - one for each half of the background */
 			position:absolute;
@@ -716,11 +736,11 @@
 			top:0;
 		}
 		& .backg{
-			&.left{ 
-				left:0; 
+			&.left{
+				left:0;
 			}
-			&.right_el{ 
-				left:24px; 
+			&.right_el{
+				left:24px;
 			}
 		}
 		& .front{
@@ -747,7 +767,7 @@
 	}
 	& .orange{
 		& .backg.left_el{
-			background:url(../images/bg_orange.png) no-repeat left top;			
+			background:url(../images/bg_orange.png) no-repeat left top;
 		}
 		& .backg.right_el{
 			background:url(../images/bg_orange.png) no-repeat right top;
