@@ -6,7 +6,7 @@ Dubtrack.View.chatItem = Backbone.View.extend({
 		//"click a.navigate" : "navigateAvatar",
 		"click a.username" : "clickUsername"
 	},
-	
+
 	initialize:function () {
 		this.model.set( 'message', Dubtrack.helpers.text.convertHtmltoTags( this.model.get('message'), "Dubtrack.room.chat.scollBottomChat();" ));
 		this.model.set( 'message', Dubtrack.helpers.text.convertAttoLink( this.model.get('message') ));
@@ -22,8 +22,6 @@ Dubtrack.View.chatItem = Backbone.View.extend({
 			this.$('.image_row img').attr('src', Dubtrack.UserImagesBustings[modelJson.user._id]);
 		}
 
-		console.log(Dubtrack.UserImagesBustings);
-
 		this.$el.addClass('user-' + modelJson.user._id);
 
 		if(Dubtrack.session && Dubtrack.session.id && Dubtrack.session.id == modelJson.user._id){
@@ -36,20 +34,24 @@ Dubtrack.View.chatItem = Backbone.View.extend({
 	render: function() {
 		var currentDate = new Date(this.model.get('time'));
 		this.$('.timeinfo').html('<time class="timeago" datetime="' + currentDate.toISOString() + '">' + currentDate.toLocaleString() + '</time>');
-		
+
 		this.$(".timeago").timeago();
+
+		emojify.run(this.el);
 	},
 
 	updateTime: function(time){
 		var currentDate = new Date(time);
 		this.$(".timeago").timeago('update', currentDate.toISOString());
+
+		emojify.run(this.el);
 	},
-	
+
 	navigateAvatar : function(e){
 		var $data = $(e.target).data();
-		
+
 		if("username" in $data) dubtrackMain.app.navigate("/" + $data.username, {trigger: true});
-		
+
 		return false;
 	},
 
@@ -64,7 +66,7 @@ Dubtrack.View.chatItem = Backbone.View.extend({
 			this.$('.image_row img').attr('src', r.img.url);
 		}
 	},
-	
+
 	clickUsername : function(){
 		var user = this.model.get("user");
 
@@ -72,10 +74,10 @@ Dubtrack.View.chatItem = Backbone.View.extend({
 			Dubtrack.room.chat._messageInputEl.val( "@" + user.username + " ");
 			Dubtrack.room.chat._messageInputEl.focus();
 		}
-		
+
 		return false;
 	},
-	
+
 	beforeClose : function(){
 		this.$("time.timeago").timeago('dispose');
 	}
@@ -90,11 +92,11 @@ Dubtrack.View.systemChatItem = Backbone.View.extend({
 
 	events : {
 	},
-	
+
 	initialize:function () {
 		this.$el.html( dubtrack_lang.global.loading );
 	},
-	
+
 	beforeClose : function(){
 	}
 });

@@ -1,13 +1,3 @@
-Dubtrack.Events.bind('realtime:chat-message',realtimeChatPing);
-$('body').prepend('<audio class="isRobot" preload="auto"><source src="/assets/music/Robot_blip-Marianne_Gagnon-120342607.mp3" type="audio/mpeg"></audio>');
-function realtimeChatPing(data) {
-    var realtimeChatUser = Dubtrack.session.get('username');
-    var realtimeChatData = data.message;
-    if (!realtimeChatData.indexOf('@'+realtimeChatUser)) {
-        var isRobot = document.querySelector('.isRobot');
-        isRobot.play();
-    }
-}
 function is_touch() {
 	return $.browser.mobile;
 	/*

@@ -115,16 +115,16 @@ ul,ol{
 	right: 0;
 	z-index: 9999999;
 }
- 
+
 ::-webkit-scrollbar-track {
 	background: #000;
 }
- 
+
 ::-webkit-scrollbar-thumb {
-	background: #333 
+	background: #333
 }
 ::-webkit-scrollbar-thumb:window-inactive {
-	background: rgba(0,0,0,0.3); 
+	background: rgba(0,0,0,0.3);
 }
 ::-webkit-scrollbar-corner{
 	display: none;
@@ -200,7 +200,7 @@ section#main{
 	height: 100%;
 
 	&.roomActive{
-		
+
 		& .dt_section{
 			padding-right: 20em;
 		}
@@ -276,11 +276,11 @@ div.mousescroll{
 }
 
 .wrapper{
-	width: 48.75em; 
+	width: 48.75em;
 	margin: 1.875em auto 0 auto;
-	
+
 	&.no-margin{
-		margin-top: 0!important; 
+		margin-top: 0!important;
 		width: 37.5em;
 	}
 }
@@ -292,8 +292,8 @@ div.mousescroll{
 	position: absolute;
 	z-index: 999999;
 	padding: 0.625em 1.250em;
-	font-family: $siteFont; 
-	font-size: 1.125em; 
+	font-family: $siteFont;
+	font-size: 1.125em;
 	color: $bgColor;
 	background: $bgOtherAccentColor;
 	zoom: 1;
@@ -302,22 +302,22 @@ div.mousescroll{
 }
 
 span.comingSonn{
-	font-family: $siteFont; 
+	font-family: $siteFont;
 	font-size: 0.625em;
 	font-weight: bold;
-	color: red;	
+	color: red;
 	text-transform: none;
 	padding-left: 0.313em;
 }
 
 #ajax-content{
-	width: 100%; 
-	position: absolute; 
-	z-index: 99; 
+	width: 100%;
+	position: absolute;
+	z-index: 99;
 	top: 20%;
 
 	& a.close{
-		background:url(../images/create_newroom_closebutton.png) no-repeat 0 0; 
+		background:url(../images/create_newroom_closebutton.png) no-repeat 0 0;
 		width: 28px;
 		height: 28px;
 		top: 0.313em;
@@ -326,14 +326,14 @@ span.comingSonn{
 	}
 
 	& .ajax-loader{
-		width: 16.250em; 
-		margin: 0 auto; 
+		width: 16.250em;
+		margin: 0 auto;
 		position: relative;
 	}
 }
 
 .share_btns{
-	position: fixed; 
+	position: fixed;
 	top: 12.188em;
 	left: inherit;
 	margin: 0 0 0 -3.750em;
@@ -342,7 +342,7 @@ span.comingSonn{
 		top: 16.563em;
 	}
 }
- 
+
 div.image {
 	cursor:pointer
 }
@@ -354,12 +354,12 @@ div.image {
 a.button_full{
 	width: 100%;
 	text-align: center;
-	padding: 0.188em 0; 
+	padding: 0.188em 0;
 	color: #0085EA;
 	margin-bottom: 0.313em;
 }
 
-a.button_comments_more{ 
+a.button_comments_more{
 	width: 32.813em;
 }
 
@@ -367,14 +367,14 @@ a.button_comments_more{
 	display: inline-block;
 	width: 100px !important;
 	vertical-align: middle;
-} 
+}
 
 .roomview .main_content, #main-ajax-user .main_content{
 	background: none !important;
 	border: 0 !important;
 }
 
-.avatar_bg{ 
+.avatar_bg{
 	width: 100%;
 	height: 100%;
 	top: 0;
@@ -401,6 +401,14 @@ a.button_comments_more{
 			overflow-y: scroll;
 		}
 	}
+}
+
+.emoji {
+	width: 1.5em !important;
+	height: 1.5em !important;
+	display: inline-block !important;
+	margin: 0 0 -0.25em 0 !important;
+	background-size: contain !important;
 }
 
 .avatar_cont{

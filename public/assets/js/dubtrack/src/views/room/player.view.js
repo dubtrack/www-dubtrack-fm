@@ -20,9 +20,8 @@ Dubtrack.View.Player = Backbone.View.extend({
 	},
 
 	initialize : function(){
-		
-		var istoggleVideo = false;
-		
+		this.istoggleVideo = false;
+
 		this.playing = false;
 
 		this.autoplayStarted = false;
@@ -78,14 +77,17 @@ Dubtrack.View.Player = Backbone.View.extend({
 		}, player_object));
 
 		this.player_instance.on('error', function() {
-			this.jwplayer_container.hide();
-			this.errorElBtn.show();
-			this.bufferingEl.hide();
-			this.loadingEl.hide();
+			this.error_timeout = setTimeout(function(){
+				this.jwplayer_container.hide();
+				this.errorElBtn.show();
+				this.bufferingEl.hide();
+				this.loadingEl.hide();
+			}.bind(this), 5000);
 		}.bind(this));
 
 		this.player_instance.on('firstFrame', function() {
 			this.player_instance.seek(this.getStarTime());
+			if(this.error_timeout) clearTimeout(this.error_timeout);
 		}.bind(this));
 
 		this.player_instance.on('play', function() {
@@ -95,6 +97,7 @@ Dubtrack.View.Player = Backbone.View.extend({
 			this.bufferingEl.hide();
 			this.errorElBtn.hide();
 			this.jwplayer_container.show();
+			if(this.error_timeout) clearTimeout(this.error_timeout);
 		}.bind(this));
 
 		this.player_instance.on('pause', function() {
@@ -145,6 +148,8 @@ Dubtrack.View.Player = Backbone.View.extend({
 			this.pictureEl.hide();
 			this.loadingEl.hide();
 			$('.infoContainer').removeClass('display-block');
+			if(this.player_instance) this.player_instance.remove();
+			this.player_instance = null;
 
 			var roomEmbedUrl = Dubtrack.room.model.get('roomEmbed'),
 				regexp = /(http:\/\/|https:\/\/|\/\/)(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
@@ -194,7 +199,8 @@ Dubtrack.View.Player = Backbone.View.extend({
 		}
 
 		//load comments
-		this.loadComments();
+		//this.loadComments();
+		$('section#room-comments').remove();
 		//load queue info
 		this.fetchQueueInfo();
 		//update player controler
@@ -214,7 +220,7 @@ Dubtrack.View.Player = Backbone.View.extend({
 	playCurrent: function(){
 		var songInfo = this.activeSong.get('songInfo'),
 			song = this.activeSong.get('song'),
-			startTime = this.activeSong.get('startTime'),
+			startTime = this.getStarTime(),
 			sontLength = song.songLength/1000;
 
 		if(startTime > sontLength) return this.videoEnd();
@@ -372,26 +378,36 @@ Dubtrack.View.Player = Backbone.View.extend({
 
 		return false;
 	},
+
 	hideVideo: function(){
 		var isOn;
-    		if (!istoggleVideo) {
-        		istoggleVideo = true;
-        		$('#room-main-player-container').hide();
-        		isOn = "on";
-    		} else {
-        		istoggleVideo = false;
-        		$('#room-main-player-container').show();
-        		isOn = "off";
-    		}
+
+		if (!this.istoggleVideo) {
+			this.istoggleVideo = true;
+			$('#room-main-player-container').css('visibility', 'hidden');
+			$('#room-main-player-container iframe').css('visibility', 'hidden');
+			this.hideVideoElBtn.text('SHOW VIDEO');
+			isOn = "on";
+		} else {
+			this.istoggleVideo = false;
+			$('#room-main-player-container').css('visibility', 'visible');
+			$('#room-main-player-container iframe').css('visibility', 'visible');
+			this.hideVideoElBtn.text('HIDE VIDEO');
+			isOn = "off";
+		}
 	},
+
 	videoEnd: function(){
 		this.refresh();
 		this.skipElBtn.hide();
+		this.jwplayer_container.hide();
 
 		this.playing = false;
-		if(this.refreshTimeout) clearTimeout(this.refreshTimeout);
 
 		var self = this;
+
+		if(this.intervalCounter) clearInterval(this.intervalCounter);
+		if(this.refreshTimeout) clearTimeout(this.refreshTimeout);
 		this.refreshTimeout = setTimeout(function(){
 			self.render();
 		}, 15000);
@@ -421,15 +437,20 @@ Dubtrack.View.Player = Backbone.View.extend({
 	},
 
 	getStarTime: function(){
-		var startTime = this.activeSong.get('startTime');
+		var startTime = this.activeSong.get('startTime'),
+			song = this.activeSong.get('song');
 
-		if(!_.isNumber(startTime) || startTime < 0){
-			startTime = Date.now() - (this.activeSong.get('played') / 1000);
+		if(startTime == -1){
+			startTime = 0;
+		}else{
+			startTime = parseInt((Date.now() - song.played)/1000, 10);
 
-			this.activeSong.set({
-				'startTime': startTime
-			});
+			if(startTime < 0) startTime = 0;
 		}
+
+		this.activeSong.set({
+			'startTime': startTime
+		});
 
 		return startTime;
 	},
@@ -440,8 +461,15 @@ Dubtrack.View.Player = Backbone.View.extend({
 		var song = this.activeSong.get('song'),
 			songInfo = this.activeSong.get('songInfo');
 
+		//destroy player
+		if(this.player_instance){
+			this.player_instance.remove();
+			this.player_instance = null;
+		}
+
 		var play_object = {
 			file: "https://www.youtube.com/watch?v=" + songInfo.fkid,
+			provider: 'youtube',
 			image: 'http://images.dubtrack.fm/hhberclba/image/upload/c_fill,h_460,w_900/tiqxlzynh3rxrkwvzeak.jpg'
 		};
 
@@ -470,6 +498,7 @@ Dubtrack.View.Player = Backbone.View.extend({
 		if(!this.player_instance) this.setPlayer(play_object);
 		else this.player_instance.load(play_object);
 
+		this.refreshElBtn.addClass('show');
 	},
 
 	setTimer : function(start, length){
@@ -492,7 +521,7 @@ Dubtrack.View.Player = Backbone.View.extend({
 			minutesDown = Math.floor(countDown / 60),
 			secondsDown = parseInt( countDown - minutesDown * 60, 10);
 
-		if(minutesDown <= 0 && secondsDown <= 0) return this.videoEnd();
+		if(countDown <= 0) return;
 
 		this.minEl.html("0".substring(minutesDown >= 10) + minutesDown);
 		this.secEl.html("0".substring(secondsDown >= 10) + secondsDown);
@@ -505,25 +534,16 @@ Dubtrack.View.Player = Backbone.View.extend({
 
 	setTimerCounter : function(){
 		//downCounter
-		var minuteDown = parseFloat( this.minEl.text() ),
-			secondDown = Math.floor(parseFloat( this.secEl.text() )),
+		var currentTime = this.getCurrentTime(),
+			countDown = this.videoLength - currentTime,
+			minutesDown = Math.floor(countDown / 60),
+			secondsDown = parseInt( countDown - minutesDown * 60, 10),
 			songInfo = this.activeSong.get('songInfo');
 
-		secondDown--;
+		if(countDown <= 0) return;
 
-		if(secondDown < 0) {
-			secondDown = 59;
-			minuteDown = minuteDown - 1;
-		}
-
-		var totalTime = this.videoLength - ( minuteDown*60 + secondDown );
-
-		if( isNaN(totalTime) ) this.refresh();
-
-		this.minEl.html("0".substring(minuteDown >= 10) + minuteDown);
-		this.secEl.html("0".substring(secondDown >= 10) + secondDown);
-
-		var currentTime = this.getCurrentTime();
+		this.minEl.html("0".substring(minutesDown >= 10) + minutesDown);
+		this.secEl.html("0".substring(secondsDown >= 10) + secondsDown);
 
 		var w = currentTime * 100 / (songInfo.songLength/1000);
 		this.progressEl.css('width',  w + '%');
@@ -543,12 +563,8 @@ Dubtrack.View.Player = Backbone.View.extend({
 	},
 
 	beforeClose : function(){
-		if(this.playerDelegate) this.playerDelegate.close();
-
 		if(this.intervalCounter) clearInterval(this.intervalCounter);
 
 		if(this.playerControls) this.playerControls.close();
-
-		if(this.player_instance) this.player_instance.remove();
 	}
 });

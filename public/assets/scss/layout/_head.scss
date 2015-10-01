@@ -23,21 +23,6 @@
 	}
 }
 
-#dev-notice{
-	position: fixed;
-	left: 0;
-	width: 100%;
-	background: #ff0000;
-	color: #fff;
-	padding: 1.5rem 1rem;
-	padding: 0.5rem 1rem;
-	top: 3rem;
-	z-index: 99999;
-	text-align: center;
-	font-weight: bold;
-	font-size: 0.75rem;
-}
-
 #header-global{
 	position: fixed;
 	top: 0;
@@ -462,13 +447,11 @@
 	background: white;
 	z-index: -1;
 	padding: 1.5em 1em 1em 1em;
-	margin-left: -9.125em;
+	width: 20rem;
+	margin-left: -10rem;
+	text-align: center;
 	font-weight: bold;
 	display: none;
-
-	@include respond-to(bp500){
-		margin-left: -11.7em;
-	}
 
 	@include respond-to(bp1150, max-width){
 		bottom: 2.5em;
@@ -476,11 +459,11 @@
 		padding: 1em 1em 1em 1em;
 	}
 
-	& a{
+	a{
 		position: relative;
 		margin: 0 1em;
 		color: $bgColor;
-		font-size: 0.75em;
+		font-size: 1em;
 
 		i{
 			display: inline-block;

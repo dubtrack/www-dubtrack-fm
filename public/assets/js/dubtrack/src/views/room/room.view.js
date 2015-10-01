@@ -12,9 +12,9 @@ Dubtrack.View.Room = Backbone.View.extend({
 		this.currentMobileClass = "";
 
 		var self = this;
-		//$("#dubtrack-video-realtime .toggle_videos").bind("click", function(){
-		//	self.toggleVideos();
-		//});
+		$("#dubtrack-video-realtime .toggle_videos").bind("click", function(){
+			self.toggleVideos();
+		});
 
 		Dubtrack.Events.bind('realtime:room-update', this.roomUpdate, this);
 	},
@@ -63,7 +63,7 @@ Dubtrack.View.Room = Backbone.View.extend({
 		$.backstretch("destroy", false);
 		var url = Dubtrack.config.urls.roomImage;
 		url = Dubtrack.config.apiUrl + url.replace(":id", this.model.get("_id"));
-		
+
 		//cache busting
 		if(force) url += "?v" + Date.now();
 
@@ -89,6 +89,7 @@ Dubtrack.View.Room = Backbone.View.extend({
 		} else {
 			$("#create-room-div").show();
 		}
+
 		if(Dubtrack.session && Dubtrack.session.get("_id") === this.model.get("userid")){
 			$("#create-room-div").hide();
 			$("#edit-room-div").show();
@@ -122,14 +123,15 @@ Dubtrack.View.Room = Backbone.View.extend({
 		this.$('.room-feautre-title span').html('Top users in ' + this.model.get('name'));
 
 		$("#main-room-active-link").attr("href", "/join/" + this.model.get("roomUrl")).css("display", "block").find("span.current-room").html(this.model.get("name"));
+
 		//Closing Profile
 		$(".rewindProfile a").attr("href", "/join/" + this.model.get("roomUrl"));
 		//Clsoing #Browser
 		$(".close").attr("href", "/join/" + this.model.get("roomUrl"));
-		
+
 		Dubtrack.helpers.cookie.set('dubtrack-room', this.model.get("roomUrl"), 60);
 		Dubtrack.helpers.cookie.set('dubtrack-room-id', this.model.get("_id"), 60);
-		
+
 		Dubtrack.Events.bind('realtime:user-kick', this.userKickedOut, this);
 		Dubtrack.Events.bind('realtime:user-ban', this.userBannedOut, this);
 
@@ -188,7 +190,7 @@ Dubtrack.View.Room = Backbone.View.extend({
 	userBannedOut: function(r){
 		var id = (r.kickedUser && "_id" in r.kickedUser) ? r.kickedUser._id : false;
 
-		
+
 		if(Dubtrack.session && id && id === Dubtrack.session.get("_id") ){
 			var message = "You were banned from this room";
 
@@ -222,7 +224,7 @@ Dubtrack.View.Room = Backbone.View.extend({
 
 	joinRoom: function(){
 		var self = this;
-		//join room 
+		//join room
 		Dubtrack.helpers.sendRequest(this.urlUsersRoom, {}, "post", function(err, r){
 			if(err){
 				Dubtrack.playerController.$('.remove-if-banned').remove();
@@ -248,13 +250,13 @@ Dubtrack.View.Room = Backbone.View.extend({
 					self.loadVideoChat(self.goinstant_token);
 				}*/
 
-				/*if(r && r.data && r.data.user && r.data.user.ot_token && r.data.room && r.data.room.otSession){
+				if(r && r.data && r.data.user && r.data.user.ot_token && r.data.room && r.data.room.otSession){
 					//go instant token
 					self.ot_token = r.data.user.ot_token;
 					self.ot_session = r.data.room.otSession;
 
 					$("#dubtrack-video-realtime").show();
-				}*/
+				}
 			}
 		});
 	},
@@ -299,7 +301,7 @@ Dubtrack.View.Room = Backbone.View.extend({
 				if(err) return false;
 
 				var room = self.goInstantConnection.room(self.model.get("_id"));
- 
+
 				//join room
 				room.join(function(err){
 					if(err) return false;
@@ -366,11 +368,7 @@ Dubtrack.View.Room = Backbone.View.extend({
 		if(this.chat.user_muted || $(window).width() < 800) return;
 
 		if(Dubtrack.session && token && sessionId){
-			// Initialize API key, session, and token...
-			// Think of a session as a room, and a token as the key to get in to the room
-			// Sessions and tokens are generated on your server and passed down to the client
 			var apiKey = "44718392",
-				self = this,
 				divid = 'dtrealtimechat_' + Math.random().toString(36).substr(2, 9);
 
 			//create a new element
@@ -383,9 +381,12 @@ Dubtrack.View.Room = Backbone.View.extend({
 			this.ot_session = OT.initSession(apiKey, sessionId);
 
 			this.ot_session.connect(token, function(error) {
-				self.ot_publisher = OT.initPublisher(divid, {name: Dubtrack.session.get('username')});
-				self.ot_session.publish(self.ot_publisher);
-			});
+				this.ot_publisher = OT.initPublisher(divid, {
+					name: Dubtrack.session.get('username')
+				});
+
+				this.ot_session.publish(self.ot_publisher);
+			}.bind(this));
 
 			this.ot_session.on("streamCreated", function(event) {
 				//create a new element
@@ -395,11 +396,14 @@ Dubtrack.View.Room = Backbone.View.extend({
 					'class' : 'dtrealtime_videuser'
 				}).appendTo($('#dubtrack-video-realtime .realtime-videos-container'));
 
-				self.ot_session.subscribe(event.stream, divid);
-			});
+				this.ot_session.subscribe(event.stream, divid, {
+					insertMode: 'append'
+				}, function (err){
+					console.log(err);
+				}.bind(this));
+			}.bind(this));
 		}
 	},
-
 
 	setTopUsers: function(){
 

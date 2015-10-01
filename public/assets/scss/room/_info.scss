@@ -3,14 +3,14 @@ button.create{
 	margin-right: 50px;
 	font-size: 12px;
 }
-#room_info{	
+#room_info{
 	vertical-align:top;
 	& a{
 		&.right{
 			margin:10px 10px 0 0;
 		}
 		&.lobby{
-			color:#fff; 
+			color:#fff;
 			font-size:21px;
 			&:hover{
 				color:#fff;
@@ -18,34 +18,34 @@ button.create{
 		}
 	}
 	& span{
-		color:#00FFFF; 
-		font-size: 0.85em; 
+		color:#00FFFF;
+		font-size: 0.85em;
 		display:block;
 		font-family: $siteAccentFont;
 
 		&.no-style{
-			font:inherit; 
-			font-size:inherit; 
-			display:inline; 
-			color:inherit; 
+			font:inherit;
+			font-size:inherit;
+			display:inline;
+			color:inherit;
 			cursor:pointer;
 		}
 		&.full{
-			display:block; 
-			width:284px; 
-			overflow:hidden; 
-			height:29px; 
+			display:block;
+			width:284px;
+			overflow:hidden;
+			height:29px;
 		}
 	}
 	& div.lobby{
-		float:right; 
-		width:auto; 
+		float:right;
+		width:auto;
 		text-align:right
 	}
 	& .lobby{
 		& a{
-			display:inline-block; 
-			margin:0 0 0 7px; 
+			display:inline-block;
+			margin:0 0 0 7px;
 			vertical-align:top !important;
 		}
 		& img{
@@ -53,16 +53,16 @@ button.create{
 		}
 	}
 	& .full{
-		display:block; 
+		display:block;
 		margin: 0 0 0 0;
 		color:#fff;
 	}
 	& .info{
-		font-size:24px; 
+		font-size:24px;
 		display:inline-block;
 	}
 	& .djinfo{
-		line-height:20px; 
+		line-height:20px;
 		margin:10px 0 30px 0
 	}
 	& .view_queue{
@@ -79,17 +79,17 @@ button.create{
 		}
 	}
 	& .volume{
-		display:inline-block; 
+		display:inline-block;
 		margin:5px 0 0 0;
 		& a{
 			&.full{
-				background:url(../images/volume_icon_slider.png) no-repeat 0 center; 
-				width:21px; 
-				height:15px; 
-				display:inline-block; 
-				margin:0 0 0 20px; 
+				background:url(../images/volume_icon_slider.png) no-repeat 0 center;
+				width:21px;
+				height:15px;
+				display:inline-block;
+				margin:0 0 0 20px;
 				cursor:pointer;
-			}	
+			}
 			&.half{
 				background-image:url(../images/icon-low-volume-1.png)
 			}
@@ -100,14 +100,14 @@ button.create{
 	}
 	& ul{
 		&.icons{
-			display:inline-block; 
-			width:170px; 
-			margin:0px 0 0 0; 
-			vertical-align:top; 
+			display:inline-block;
+			width:170px;
+			margin:0px 0 0 0;
+			vertical-align:top;
 			& li{
-				padding:5px 0 0 25px; 
-				display:inline-block; 
-				background:no-repeat 0 center; 
+				padding:5px 0 0 25px;
+				display:inline-block;
+				background:no-repeat 0 center;
 				cursor:pointer;
 				&.infoicon{
 					background-image:url('../images/icon-info.png')
@@ -116,58 +116,58 @@ button.create{
 					background-image:url('../images/icon-users.png')
 				}
 				&.history{
-					background-image:url('../images/icon_history.png'); 
+					background-image:url('../images/icon_history.png');
 					margin:0 0 5px 0;
 				}
 				&.playlists{
-					background-image:url('../images/icon_playlists.png'); 
+					background-image:url('../images/icon_playlists.png');
 					padding-top:5px;
 					margin-left:5px;
 				}
 				&.browser{
-					width:160px; 
+					width:160px;
 					font-size:20px;
-					color:#fff; 
-					background:url(../images/icon_addsongstoplaylist.png) no-repeat 0 center; 
-					height:30px; 
+					color:#fff;
+					background:url(../images/icon_addsongstoplaylist.png) no-repeat 0 center;
+					height:30px;
 					padding:10px 0 0 35px;
 				}
 			}
 		}
 		&.voting{
-			position:absolute; 
-			bottom:50px; 
-			right:45px; 
-			font-family: $siteFont; 
-			font-size:30px; 
-			font-weight:bold; 
-			width:79px; 
+			position:absolute;
+			bottom:50px;
+			right:45px;
+			font-family: $siteFont;
+			font-size:30px;
+			font-weight:bold;
+			width:79px;
 			text-align:center;
 			& li{
 				display:block;
 				& span{
 					&.grey{
-						display:inline; 
+						display:inline;
 						color:#ccc
 					}
 				}
 				&.middle-border{
-					line-height:49px; 
+					line-height:49px;
 					@include border-radius(0.625em);
-					zoom: 1; 
-					border:3px solid #fff; 
-					height:40px; 
-					width:73px; 
-					padding:0 0 5px 0; 
-					color:#fff; 
+					zoom: 1;
+					border:3px solid #fff;
+					height:40px;
+					width:73px;
+					padding:0 0 5px 0;
+					color:#fff;
 					@include box-shadow(0px 0px 0.625em 0px rgba(0, 0, 0, 0.7));
 					font-size:48px;
-					font-family: $fontStack; 
+					font-family: $fontStack;
 				}
 				&.up{
 					background:url(../images/upvote_unpress.png) no-repeat center top;
 					&:hover{
-						background-image:url(../images/upvote_hover.png); 
+						background-image:url(../images/upvote_hover.png);
 						color:cyan;
 					}
 					& span{
@@ -175,11 +175,11 @@ button.create{
 					}
 				}
 				&.down{
-					background:url(../images/downvote_unpress.png) no-repeat center bottom; 
-					padding:6px 0 0 0; 
+					background:url(../images/downvote_unpress.png) no-repeat center bottom;
+					padding:6px 0 0 0;
 					height:48px;
 					&:hover{
-						background-image:url(../images/downvote_hover.png); 
+						background-image:url(../images/downvote_hover.png);
 						color:magenta;
 					}
 					& span{
@@ -187,35 +187,35 @@ button.create{
 					}
 				}
 				&.up.voted{
-					background-image:url(../images/upvote_onpress.png); 
+					background-image:url(../images/upvote_onpress.png);
 					color:#000;
 				}
 				&.down.voted{
-					background-image:url(../images/downvote_onpress.png); 
+					background-image:url(../images/downvote_onpress.png);
 					color:#000;
 				}
 			}
 		}
 	}
 	& .v-icon{
-		font-size:16px; 
-		height:44px; 
-		width:73px; 
-		padding:10px 0 0 0; 
-		cursor:pointer; 
-		margin:0 auto; 
+		font-size:16px;
+		height:44px;
+		width:73px;
+		padding:10px 0 0 0;
+		cursor:pointer;
+		margin:0 auto;
 		color:#ccc
 	}
-	& .browser-div{ 
-		margin:0px 0 0 -5px; 
-		font-size:30px; 
-		color:#fff; 
-		background:url(../images/play_button.png) no-repeat 0 0; 
+	& .browser-div{
+		margin:0px 0 0 -5px;
+		font-size:30px;
+		color:#fff;
+		background:url(../images/play_button.png) no-repeat 0 0;
 		height:39px;
 		padding:10px 0 0 30px;
 		cursor:pointer;
 		&:hover{
-			color:magenta; 
+			color:magenta;
 			background-image:url(../images/favorite_button_hover.png);
 			& a{
 				color:magenta;
@@ -225,18 +225,18 @@ button.create{
 			color: #fff;
 		}
 		& p{
-			display:inline-block; 
+			display:inline-block;
 			padding:10px 0 0 0;
 		}
 	}
 	& .add_to_fav{
 		margin:0px 0 0 -5px;
 		cursor:pointer;
-		background:url(../images/favorite_button.png) no-repeat 0 0; 
+		background:url(../images/favorite_button.png) no-repeat 0 0;
 		height:30px;
 		padding:10px 0 0 30px;
 		&:hover{
-			color:magenta; 
+			color:magenta;
 			background-image:url(../images/play_button_hover.png);
 			& a{
 				color:magenta;
@@ -248,27 +248,27 @@ button.create{
 	}
 	& .next_song_panel{
 		& span{
-			display:inline; 
+			display:inline;
 			font-size:18px
 		}
 	}
 	& .time{
-		display:inline-block; 
-		text-align:right; 
-		font-size:34px; 
-		color:#fff; 
-		max-width:100px; 
+		display:inline-block;
+		text-align:right;
+		font-size:34px;
+		color:#fff;
+		max-width:100px;
 		overflow:hidden;
 		& span{
-			font-size:12px; 
+			font-size:12px;
 			margin:0 0 0 0;
 			&.no-style{
-				font:inherit; 
-				font-size:inherit; 
-				display:inline; 
+				font:inherit;
+				font-size:inherit;
+				display:inline;
 				color:inherit;
 			}
-		}	
+		}
 	}
 }
 
@@ -281,8 +281,8 @@ button.create{
 	left: 157px;
 	padding: 20px;
 	@include transition-property(all);
-  	@include transition-duration(0.3s);
-  	@include transition-timing-function(ease-in);
+	  @include transition-duration(0.3s);
+	  @include transition-timing-function(ease-in);
 	font-size: 0.85em;
 	z-index: 999;
 	& #roomInfoBox{
@@ -308,31 +308,31 @@ button.create{
 		position: absolute;
 		top:20px;
 		right: 5px;
-		font-size: 10px; 
+		font-size: 10px;
 		color: #fff;
 		text-shadow: none;
 	}
 }
 
 #song-info-title{
-	min-width:284px !important; 
+	min-width:284px !important;
 	position:relative;
-	display:block; 
-	width:284px; 
-	overflow:hidden; 
+	display:block;
+	width:284px;
+	overflow:hidden;
 	height:29px;
 	& span{
-		font-size:24px !important; 
-		color:#fff !important; 
-		font-family: $fontStack !important; 
-		width:auto; 
+		font-size:24px !important;
+		color:#fff !important;
+		font-family: $fontStack !important;
+		width:auto;
 		overflow:visible !important;
-	} 
+	}
 }
 
 #dj-name{
-	color:#fff !important; 
-	font-size:18px !important; 
-	width:90px; 
+	color:#fff !important;
+	font-size:18px !important;
+	width:90px;
 	overflow:hidden
 }

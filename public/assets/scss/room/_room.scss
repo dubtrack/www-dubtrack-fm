@@ -39,7 +39,7 @@
 			}
 		}
 	}
-	
+
 	#canvas_cont{
 		width: 100%;
 		height: 100%;
@@ -72,13 +72,22 @@
 		}
 	}
 
-	@include respond-to(bp1150){
-		&.display-users-rooms{
+
+	&.display-users-rooms{
+		@include respond-to(bp1150){
 			#main_avatar_room{
 				left: 0;
 
 				.avatar_tools a.loadRoomAva span{
 					left: 0;
+				}
+			}
+		}
+
+		#main_avatar_room{
+			.avatar-list{
+				.picture{
+					display: block;
 				}
 			}
 		}

@@ -1,7 +1,7 @@
 // dubtrack languages
 
 var dubtrack_lang = {
-		
+
 		global : {
 			close			: 'close',
 			loading			: 'loading...',
@@ -13,17 +13,17 @@ var dubtrack_lang = {
 			loginFB			: '<span>with </span>facebook',
 			loginTW			: '<span>with </span>twitter',
 			login			: 'login',
-			comingsoon		: 'soon',	
+			comingsoon		: 'soon',
 			edit			: 'Edit',
 			publicStr		: 'public',
-			privateStr		: 'private', 
-			online			: "Online",   
+			privateStr		: 'private',
+			online			: "Online",
 			offline			: "Offline",
 			error			: "Error",
 			error_des		: "Sorry there was an error processing your request",
 			refresh			: "Refresh"
 		},
-		
+
 		player : {
 			share_song		: 'Share this song',
 			share_facebook	: 'Share on facebook',
@@ -44,9 +44,9 @@ var dubtrack_lang = {
 			became_dj		: ' became DJ',
 			join			: 'Please login to join the party: '
 		},
-		
+
 		room : {
-			joining			: 'joining room',	
+			joining			: 'joining room',
 			searching		: 'looking for rooms',
 			tune_in			: 'TUNE IN',
 			tuned_in		: 'tuned in',
@@ -67,25 +67,25 @@ var dubtrack_lang = {
 			twitterShare	: "I'm currently listening to <%= song %> on #dubtrackfm.  Join me!",
 			shareTitle		: "Share DubTrack.FM"
 		},
-		
+
 		roomForm : {
 			formLabel		: 'DUBTRACK.FM ROOM',
-			roomNameLabel	: 'Room name',	
+			roomNameLabel	: 'Room name',
 			maxSongLabel	: 'Max. song length',
 			maxSongLabelDes	: 'Max. song length in seconds',
 			roomDescLabel	: 'Room Description',
 			roomDesc		: 'About your room....',
 			save			: 'Save'
 		},
-		
+
 		notification : {
 			loading			: 'Loading notifications...',
 			following_you	: 'is now following you',
 			loadMore		: 'load more notifications',
-			//postedOn		: "Posted on <%= to.username %>'s wall", 
-			postedOn		: "@<%= to.username %>" 
+			//postedOn		: "Posted on <%= to.username %>'s wall",
+			postedOn		: "@<%= to.username %>"
 		},
-		
+
 		avatar : {
 			followers		: 'FOLLOWERS',
 			following		: 'FOLLOWING',
@@ -102,9 +102,9 @@ var dubtrack_lang = {
 			offline			: 'offline',
 			profileNotfound : 'Profile not found',
 			profileNotfound_des : "The profile you are looking for doesn't exist",
-			upload			: 'Upload Music'	
+			upload			: 'Upload Music'
 		},
-		
+
 		dubs : {
 			search			: 'Search...',
 			all_time		: 'All time',
@@ -123,7 +123,7 @@ var dubtrack_lang = {
 			song_notfound_des : 'Sorry but we were unable to find the song you were looking for',
 			voted			: 'voted'
 		},
-		
+
 		comments : {
 			report			: 'Report spam',
 			reported		: 'reported',
@@ -133,10 +133,11 @@ var dubtrack_lang = {
 			load_more		: 'view all comments',
 			login_to_post	: 'Please login to post a comment:'
 		},
-		
-		playlist : {	
+
+		playlist : {
 			loading_playlists : 'Loading playlists',
 			your_queue		: 'My queue',
+			room_queue		: 'Room queue',
 			my_tracks		: 'My tracks',
 			preview			: 'Preview',
 			addToQueue		: 'Add to queue',
@@ -157,21 +158,21 @@ var dubtrack_lang = {
 			deletedByUser	: 'Deleted by user',
 			history			: 'history'
 		},
-		
+
 		chat	: {
 			sound_on		: 'ON',
 			sound_off		: 'OFF',
 			sound_mention	: '@mention',
 			type_message	: 'Join the conversation',
 			login_message	: 'Login to join the conversation',
-			loadingHistory	: 'Loading history' 
+			loadingHistory	: 'Loading history'
 		},
-		
+
 		messages : {
 			reply			: 'Reply...',
-			send			: 'Send'	
+			send			: 'Send'
 		},
-		
+
 		profile : {
 			follow			: 'follow',
 			unfollow		: 'unfollow',
@@ -204,23 +205,23 @@ var dubtrack_lang = {
 			is_taken		: 'is taken',
 			is_available	: 'is available'
 		},
-		
+
 		titles : {
 			topdubs			: 'Top dubs',
 			lobby			: 'Lobby',
 			notifications	: 'Notifications'
 		},
-		
+
 		errors : {
 			roomLimit		: 'Sorry, you can only create up to 5 rooms'
 		},
-		
+
 		menu : {
 			topdubs			: 'Top Dubs',
 			help			: 'Help',
-			lobby			: 'Lobby'	
+			lobby			: 'Lobby'
 		},
-		
+
 		help : {
 			how_to_play		: 'How to play songs?',
 			how_to_play_des : 'To play a song click on the play(►) button ',
@@ -239,7 +240,7 @@ var dubtrack_lang = {
 			upvote			: 'Upvote/downvote',
 			upvote_des		: 'use the up or down buttons to vote on the current song. The number in the middle displays the total votes ',
 			lobby			: 'Lobby',
-			lobby_des		: 'Find new rooms and new people. You can also create your own room, promote on facebook and twitter to get a bigger audience ',	
+			lobby_des		: 'Find new rooms and new people. You can also create your own room, promote on facebook and twitter to get a bigger audience ',
 			top_dubs		: 'Top Dubs',
 			top_dubs_des	: 'Find the highest rated songs sorted by day, month and all time ',
 			profile			: 'Your profile',
@@ -266,5 +267,5 @@ var dubtrack_lang = {
 			remove_dj		: 'Remove @username as DJ',
 			up_next			: "You're up next!",
 			up_next_des		: "Your song will play next get ready :)<button class='btn btn-small btn-close'>dismiss</button>"
-		}	
+		}
 }

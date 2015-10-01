@@ -1,6 +1,6 @@
 Dubtrack.View.LayoutView = Backbone.View.extend({
 	el : $('#header-global'),
-	
+
 	events : {
 		"click .user-info-button": "navigateUser",
 		"click a.navigate" : "navigate",
@@ -12,9 +12,27 @@ Dubtrack.View.LayoutView = Backbone.View.extend({
 		//"mouseenter .menu-expand" : "setActiveMenu",
 		//"mouseleave .menu-expand" : "removeActiveMenu",
 		"touch" : "removeActiveMenu",
-		"click" : "removeActiveMenu"
+		"click" : "removeActiveMenu",
+		"click #header_login #login-link" : "displayLogin",
+		"click #header_login #signup-link" : "displaySignup"
 	},
-	
+
+	displayLogin : function(e){
+		e.preventDefault();
+
+		Dubtrack.app.navigate('/login', {
+			trigger: true
+		});
+	},
+
+	displaySignup : function(e){
+		e.preventDefault();
+
+		Dubtrack.app.navigate('/signup', {
+			trigger: true
+		});
+	},
+
 	initialize : function(){
 		this.$el.append( _.template(Dubtrack.els.templates.layout.header, Dubtrack.session.toJSON()) );
 
@@ -44,8 +62,11 @@ Dubtrack.View.LayoutView = Backbone.View.extend({
 			}
 		});
 
-		//init emoji
-		Dubtrack.helpers.emoji.init();
+		emojify.setConfig({
+			img_dir : Dubtrack.config.urls.mediaBaseUrl + '/assets/emoji/images/emoji'
+		});
+
+		this.main_login_window = new Dubtrack.View.LoginMainWindowView();
 
 		this.getNewMessages();
 	},
@@ -109,7 +130,7 @@ Dubtrack.View.LayoutView = Backbone.View.extend({
 		var model = new Dubtrack.Model.Room();
 
 		model.parse = Dubtrack.helpers.parse;
-		
+
 		this.roomUpdate = new dt.room.roomFormUpdateViewUpdate({model : model}).render();
 		$( this.roomUpdate.el ).appendTo( 'body' );
 		//this.roomUpdate.runPlugins();
@@ -132,10 +153,10 @@ Dubtrack.View.LayoutView = Backbone.View.extend({
 	logout: function(){
 		window.location = "/login/logout";
 	},
-	
+
 	render : function(){
 	},
-	
+
 	navigate : function(el){
 		this.$('.menu-expand').removeClass('active');
 		$href = $(el.target).attr("href");
@@ -312,7 +333,7 @@ Dubtrack.View.MainLeftMenuView = Backbone.View.extend({
 
 		return false;
 	},
-	
+
 	navigate : function(el){
 		var $href = $(el.target).attr("href");
 
