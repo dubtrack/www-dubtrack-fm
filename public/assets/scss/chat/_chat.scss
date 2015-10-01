@@ -56,7 +56,8 @@
 		display: none;
 	}
 
-	#chat .chat-container ul.chat-main li:hover > .stream-item-content .chatDelete {
+	.chat-container ul.chat-main li:hover > .stream-item-content .chatDelete,
+	.chat-container ul.chat-main li .stream-item-content:focus > .chatDelete {
 		@include opacity(0.5);
 		display: block;
 		right: 0;
