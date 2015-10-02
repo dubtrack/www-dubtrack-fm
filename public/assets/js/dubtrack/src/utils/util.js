@@ -55,7 +55,7 @@ Dubtrack.els.templates = {
 								'<time class="timeago" datetime="<%= date.toISOString() %>"><%= date.toLocaleString() %></time>' +
 							'</header>' +
 							'<div class="comment-content">' +
-								'<p><%= comment %></p>' +
+								'<p><%- comment %></p>' +
 							'</div>' +
 							'<div class="comment-dub">' +
 								'<span class="comment-dubs-total">' +
@@ -378,10 +378,10 @@ Dubtrack.els.templates = {
 						'</div>' +
 						'<header>' +
 							'<div class="description">' +
-								'<span class="name"><%= name %></span>' +
+								'<span class="name"><%- name %></span>' +
 								'<span class="current-song">' +
 									'<% if(currentSong && currentSong.name){ %>' +
-										'<%= currentSong.name %></span>' +
+										'<%- currentSong.name %></span>' +
 									'<% } else { %>' +
 										'&nbsp;' +
 									'<% } %>' +
