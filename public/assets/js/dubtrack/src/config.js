@@ -666,7 +666,7 @@ w.Dubtrack = {
 			convertHtmltoTags: function(text, imagloadFun){
 				var imageRegex = /\.(png|jpg|jpeg|gif)$/;
 
-				text = text.replace(/(\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|])/gim,
+				text = text.replace(/(\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%()?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|])/gim,
 					function(str) {
 						if (str.match(imageRegex)) {
 							var onErrorAction = "Dubtrack.helpers.image.imageError(this, '/assets/images/media/chat_image_load_error.png');" + imagloadFun;
