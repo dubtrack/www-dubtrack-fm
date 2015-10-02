@@ -427,6 +427,7 @@ Dubtrack.els.templates = {
 	'chat': {
 		'chatContainer': //'	<a href="#" class="chat-commands">?</a>' +
 							'<div class="chat_tools">' +
+								'<button class="clearChatToggle" >Clear Chat</button>' +
 								'<span class="room-user-counter"></span>' +
 								'<a class="chatSound" href="#">' +
 									dubtrack_lang.chat.sound_on +
