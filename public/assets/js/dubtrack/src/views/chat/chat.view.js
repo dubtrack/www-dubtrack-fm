@@ -1,13 +1,3 @@
-function clearChat() {
-    $('.chat-container ul.chat-main li').hide();
-    function chatLog(e){
-        var a=new Dubtrack.View.chatLoadingItem;a.$el.text(e).appendTo(Dubtrack.room.chat._messagesEl)
-    }
-    setTimeout(function(){chatLog('Chat has been cleared!'); }, 500);
-
-};
-$('.clearChatToggle').click(clearChat);
-
 Dubtrack.Events.bind('realtime:chat-message',realtimeChatPing);
 $('body').prepend('<audio class="isRobot" preload="auto"><source src="/assets/music/Robot_blip-Marianne_Gagnon-120342607.mp3" type="audio/mpeg"></audio>');
 function realtimeChatPing(data) {
@@ -38,7 +28,8 @@ Dubtrack.View.chat = Backbone.View.extend({
 		"click a.chat-commands": "displayChatHelp",
 		"click #new-messages-counter": "clickChatCounter",
 		"click .room-user-counter": "displayRoomUsers",
-		"click .pusher-chat-widget-input .icon-camera": "openGifCreator"
+		"click .pusher-chat-widget-input .icon-camera": "openGifCreator",
+		"click .clearChatToggle" : "clearChat"
 	},
 
 	initialize : function(){
@@ -73,6 +64,16 @@ Dubtrack.View.chat = Backbone.View.extend({
 		this.user_muted = false;
 
 		this.render();
+	},
+
+	clearChat : function(){
+		this.model.reset({});
+		Dubtrack.room.chat._messagesEl.find('li').remove();
+
+		clearTimeout(this.clear_chat_timeout);
+		this.clear_chat_timeout = setTimeout(function(){
+			var chat_log = new Dubtrack.View.chatLoadingItem().$el.text('Chat has been cleared!').appendTo(Dubtrack.room.chat._messagesEl)
+		}, 300);
 	},
 
 	muteUserRealtime: function(r){

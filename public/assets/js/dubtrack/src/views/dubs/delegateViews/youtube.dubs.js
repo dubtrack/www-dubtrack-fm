@@ -16,22 +16,22 @@ var ytDubsPlayerView = Backbone.View.extend({
 		var el = $(this.el);
 		//create controls
 		Dubtrack.els.controls(el, this);
-		
+
 		//create elements
 		this.id = id;
 		this.playerEl = $('<div/>', { id : id }).appendTo( el );
 		this.videoId = videoId;
 		this.replayEl.hide();
-		
+
 		this.mainYTimg = $('<div/>', {'class' : 'playerImage'}).html('<img src="http://img.youtube.com/vi/' + videoId + '/0.jpg" alt="">').appendTo( el );
-		
+
 		var self = this;
 		this.mainYTimg.on('click', function(){
 			self.play();
 		});
-		
+
 		this.buildVolume();
-		
+
 		this.playerWidth = ( $w ? $w : Dubtrack.config.player.playerEmbedWidth );
 		this.playerHeight = ( $h ? $h : Dubtrack.config.player.playerEmbedHeight );
 
@@ -39,13 +39,13 @@ var ytDubsPlayerView = Backbone.View.extend({
 		if(Dubtrack.playerController){
 			this.main_player_volume = Dubtrack.playerController.volume;
 		}
-		
+
 		return this;
 	},
-	
+
 	buildPlayer : function(autoplay){
 		var self = this;
-		
+
 		this.intervalUpdate = null;
 		this.player = new YT.Player( this.id , {
 			width	: self.playerWidth,
@@ -71,7 +71,11 @@ var ytDubsPlayerView = Backbone.View.extend({
 										self.replayEl.show();
 
 										if(Dubtrack.playerController && this.main_player_volume){
-											Dubtrack.playerController.setVolume(this.main_player_volume);
+											if(Dubtrack.playerController){
+												Dubtrack.playerController.setVolume(Dubtrack.playerController.volume);
+											}else{
+												Dubtrack.playerController.setVolume(this.main_player_volume);
+											}
 										}
 									break;
 									case 1:
@@ -98,21 +102,21 @@ var ytDubsPlayerView = Backbone.View.extend({
 
 	onPlayerStateChange : function(event){
 	},
-	
+
 	replay : function(){
 		if(this.player){
 			this.mainYTimg.hide();
 			this.setPlayer(0);
 		}
 	},
-	
+
 	play :  function(){
 		if(this.player){
 			try{
 				if(Dubtrack.playerController){
 					Dubtrack.playerController.setVolume(0, false);
 				}
-				
+
 				this.mainYTimg.hide();
 				this.bufferingEl.hide();
 				this.replayEl.hide();
@@ -146,7 +150,7 @@ var ytDubsPlayerView = Backbone.View.extend({
 		}
 		return false;
 	},
-	
+
 	updateytplayerloaded : function(){
 		if(this.player){
 			var self = this;
@@ -160,7 +164,7 @@ var ytDubsPlayerView = Backbone.View.extend({
 										}, 1000);
 		}
 	},
-	
+
 	updateytplayerInfo : function(){
 		if(this.player){
 			var self = this;
@@ -175,9 +179,9 @@ var ytDubsPlayerView = Backbone.View.extend({
 		this.play();
 		this.player.seekTo( ( e.offsetX / this.progressOuterEl.outerWidth() ) * this.player.getDuration(), true );
 	},
-	
+
 	buildVolume : function(){
-		
+
 		var slider  = this.volumeContainer.find('.volume-control'),
 			tooltip = this.volumeContainer.find('.tooltip'),
 			self = this;
@@ -216,7 +220,7 @@ var ytDubsPlayerView = Backbone.View.extend({
 					else {
 						volume.css('background-position', '0 -75px');
 					}
-					
+
 					self.setVolume(value);
 
 				},
@@ -225,21 +229,25 @@ var ytDubsPlayerView = Backbone.View.extend({
 					tooltip.fadeOut('fast');
 				},
 			});
-		
+
 	},
-	
+
 	setVolume : function (newVolume) {
 		if(this.player){
 			this.player.unMute();
 			this.player.setVolume( newVolume );
 		}
 	},
-	
+
 	beforeClose : function(){
 		if(Dubtrack.playerController && this.main_player_volume){
-			Dubtrack.playerController.setVolume(this.main_player_volume);
+			if(Dubtrack.playerController){
+				Dubtrack.playerController.setVolume(Dubtrack.playerController.volume);
+			}else{
+				Dubtrack.playerController.setVolume(this.main_player_volume);
+			}
 		}
-		
+
 		if(this.player){
 			console.log("destory youtube delegate view");
 			try{

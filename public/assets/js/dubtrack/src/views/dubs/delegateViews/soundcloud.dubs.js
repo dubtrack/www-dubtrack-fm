@@ -90,7 +90,11 @@ scDubsPlayerView = Backbone.View.extend({
 						self.replayEl.show();
 
 						if(Dubtrack.playerController && self.main_player_volume){
-							Dubtrack.playerController.setVolume(self.main_player_volume);
+							if(Dubtrack.playerController){
+								Dubtrack.playerController.setVolume(Dubtrack.playerController.volume);
+							}else{
+								Dubtrack.playerController.setVolume(self.main_player_volume);
+							}
 						}
 					},
 
@@ -249,7 +253,11 @@ scDubsPlayerView = Backbone.View.extend({
 
 	beforeClose : function(){
 		if(Dubtrack.playerController && this.main_player_volume){
-			Dubtrack.playerController.setVolume(this.main_player_volume);
+			if(Dubtrack.playerController){
+				Dubtrack.playerController.setVolume(Dubtrack.playerController.volume);
+			}else{
+				Dubtrack.playerController.setVolume(this.main_player_volume);
+			}
 		}
 
 		if(this.scPlayer){

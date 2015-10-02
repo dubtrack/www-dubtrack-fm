@@ -221,10 +221,10 @@ Dubtrack.View.Browser = Backbone.View.extend({
 				$c = this.model.get(id);
 				if($c) this.browserInfoEl = new Dubtrack.View.BrowserInfo({
 					model : $c
-				}).render('playlistInfo', this.userQueueCollection);
+				}).setBrowser(self).render('playlistInfo', this.userQueueCollection);
 
 				else {
-					this.browserInfoEl = new Dubtrack.View.BrowserInfo().render('playlistInfo', this.userQueueCollection);
+					this.browserInfoEl = new Dubtrack.View.BrowserInfo().setBrowser(self).render('playlistInfo', this.userQueueCollection);
 					this.browserInfoEl.setName(dubtrack_lang.global.loading);
 				}
 
@@ -517,6 +517,7 @@ Dubtrack.View.BrowserInfo = Backbone.View.extend({
 	events : {
 		"keyup input.playlist_filter": "filterPlaylist",
 		//"click a.playlist_type": "changePlaylistType",
+		"click a.shuffle-playlist": "shufflePlaylist",
 		"click a.navigate": "navigate"
 	},
 
@@ -574,6 +575,21 @@ Dubtrack.View.BrowserInfo = Backbone.View.extend({
 				if($name.indexOf($value) === -1) if("view") view.hide();
 				else if("view") view.show();
 			}, this);
+		}
+	},
+
+	setBrowser : function(browser){
+		this.parent_browser = browser;
+		return this;
+	},
+
+	shufflePlaylist : function(e){
+		if(e) e.preventDefault();
+
+		if(this.parent_browser){
+			this.parent_browser.playlistDetailContainer.randomize('li.playlist-item');
+
+			this.parent_browser.sortableUpdate();
 		}
 	},
 

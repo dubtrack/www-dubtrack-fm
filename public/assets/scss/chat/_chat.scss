@@ -59,8 +59,8 @@
 	.chat-container ul.chat-main li:hover > .stream-item-content .chatDelete,
 	.chat-container ul.chat-main li .stream-item-content:focus > .chatDelete {
 		@include opacity(0.5);
-		display: block;
 		right: 0;
+		display: block;
 		position: absolute;
 		font-size: 0.6em;
 		padding: 9px;
@@ -99,12 +99,12 @@
 		border-bottom: $standardBorder;
 		width: 100%;
 		z-index: 10;
-		
+
 		.clearChatToggle{
-			 font-size: 0.7em;
-			 margin-left: 65px;
-			 border-radius: 0em;
-			 line-height: 0.7;
+			font-size: 0.7em;
+			margin-left: 65px;
+			border-radius: 0em;
+			line-height: 0.7;
 		}
 
 		.room-user-counter{

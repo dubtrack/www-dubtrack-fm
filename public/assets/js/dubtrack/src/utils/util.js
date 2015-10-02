@@ -427,7 +427,7 @@ Dubtrack.els.templates = {
 	'chat': {
 		'chatContainer': //'	<a href="#" class="chat-commands">?</a>' +
 							'<div class="chat_tools">' +
-								'<button class="clearChatToggle" >Clear Chat</button>' +
+								'<button class="clearChatToggle">Clear Chat</button>' +
 								'<span class="room-user-counter"></span>' +
 								'<a class="chatSound" href="#">' +
 									dubtrack_lang.chat.sound_on +
@@ -501,7 +501,8 @@ Dubtrack.els.templates = {
 								//dubtrack_lang.playlist.tunes +
 							'</p>',
 
-		'playlistInfo': '<a href="#" class="playlist_type tt-wrapper"></a>' +
+		'playlistInfo': '<a href="#" class="shuffle-playlist tt-wrapper">Shuffle</a>' +
+						'<a href="#" class="playlist_type tt-wrapper"></a>' +
 						'<input type="text" class="playlist_filter" placeholder="' + dubtrack_lang.playlist.filter + '" value="" />',
 
 		'playlistSearchItem': '	<span class="display-error">' +

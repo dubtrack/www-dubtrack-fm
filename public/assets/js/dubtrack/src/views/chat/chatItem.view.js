@@ -121,7 +121,13 @@ Dubtrack.View.chatJoinItem = Dubtrack.View.systemChatItem.extend({
 
 Dubtrack.View.chatSkipItem = Dubtrack.View.systemChatItem.extend({
 	initialize:function () {
-		this.$el.html( "song skipped by a moderator" );
+		var user = this.model.get('username');
+
+		if(user){
+			this.$el.html( "song skipped by @" + user );
+		}else{
+			this.$el.html( "song skipped by a moderator" );
+		}
 	},
 });
 
