@@ -52,8 +52,14 @@
 		padding: 0;
 	}
 
-	.ChatDelete {
+	.chatDelete {
+		display: none;
+	}
+
+	.chat-container ul.chat-main li:hover > .stream-item-content .chatDelete,
+	.chat-container ul.chat-main li .stream-item-content:focus > .chatDelete {
 		@include opacity(0.5);
+		display: block;
 		right: 0;
 		position: absolute;
 		font-size: 0.6em;
