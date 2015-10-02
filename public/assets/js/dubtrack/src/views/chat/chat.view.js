@@ -1,3 +1,13 @@
+function clearChat() {
+    $('.chat-container ul.chat-main li').hide();
+    function chatLog(e){
+        var a=new Dubtrack.View.chatLoadingItem;a.$el.text(e).appendTo(Dubtrack.room.chat._messagesEl)
+    }
+    setTimeout(function(){chatLog('Chat has been cleared!'); }, 500);
+
+};
+$('.clearChatToggle').click(clearChat);
+
 Dubtrack.Events.bind('realtime:chat-message',realtimeChatPing);
 $('body').prepend('<audio class="isRobot" preload="auto"><source src="/assets/music/Robot_blip-Marianne_Gagnon-120342607.mp3" type="audio/mpeg"></audio>');
 function realtimeChatPing(data) {
