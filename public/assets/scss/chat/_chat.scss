@@ -93,6 +93,13 @@
 		border-bottom: $standardBorder;
 		width: 100%;
 		z-index: 10;
+		
+		.clearChatToggle{
+			 font-size: 0.7em;
+			 margin-left: 65px;
+			 border-radius: 0em;
+			 line-height: 0.7;
+		}
 
 		.room-user-counter{
 			cursor: pointer;
