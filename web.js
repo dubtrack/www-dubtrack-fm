@@ -34,8 +34,8 @@ app.use(session({
 
 app.use(function(req, res, next){
 	if(process.env.ENV == 'production'){
-		res.header('Content-Security-Policy', "default-src www.dubtrack.fm www.youtube.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.pubnub.com https://use.typekit.net https://content.jwplatform.com https://www.google.com https://mediadubtrackfm.s3.amazonaws.com https://cdn.pubnub.com https://www.google.com https://content.jwplatform.com https://use.typekit.net https://ssl.google-analytics.com/ga.js https://*.youtube.com *.ytimg.com *.jwpsrv.com *.jwpcdn.com; connect-src 'self' https://*.pubnub.com https://*.dubtrack.fm https://*.sndcdn.com; img-src 'self' *; style-src 'self' 'unsafe-inline' https://mediadubtrackfm.s3.amazonaws.com https://mediadubtrackfm.s3.amazonaws.com https://use.typekit.net; font-src 'self' https://mediadubtrackfm.s3.amazonaws.com data:; media-src api.soundcloud.com *.dubtrack.fm *.sndcdn.com;");
-		
+		res.header('Content-Security-Policy', "default-src https://www.dubtrack.fm; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.pubnub.com https://use.typekit.net https://content.jwplatform.com https://www.google.com https://mediadubtrackfm.s3.amazonaws.com https://cdn.pubnub.com https://www.google.com https://content.jwplatform.com https://use.typekit.net https://ssl.google-analytics.com/ga.js https://*.youtube.com *.ytimg.com *.jwpsrv.com *.jwpcdn.com https://www.gstatic.com https://*.google.com dubx.net; connect-src 'self' https://*.pubnub.com https://*.dubtrack.fm https://*.sndcdn.com; img-src 'self' *; style-src 'self' 'unsafe-inline' https://mediadubtrackfm.s3.amazonaws.com https://mediadubtrackfm.s3.amazonaws.com https://use.typekit.net dubx.net; font-src 'self' https://mediadubtrackfm.s3.amazonaws.com data:; media-src api.soundcloud.com *.dubtrack.fm *.sndcdn.com; frame-src 'self' *;");
+
 		if (req.headers['x-forwarded-proto'] == 'https') {
 			next();
 		} else {
