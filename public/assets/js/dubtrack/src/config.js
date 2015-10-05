@@ -665,7 +665,7 @@ w.Dubtrack = {
 
 		text : {
 			convertHtmltoTags: function(text, imagloadFun){
-				var imageRegex = /^https(.*)\.(png|jpg|jpeg|gif)$/;
+				var imageRegex = /^((http|https)\:\/\/i\.imgur\.com)(.*)\.(png|jpg|jpeg|gif)$/;
 
 				text = text.replace(/(\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%()[\]?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|])/gim,
 					function(str) {
