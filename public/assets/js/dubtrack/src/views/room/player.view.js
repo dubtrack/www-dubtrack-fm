@@ -94,7 +94,7 @@ Dubtrack.View.Player = Backbone.View.extend({
 
 		this.player_instance.on('firstFrame', function() {
 			if(this.error_timeout) clearTimeout(this.error_timeout);
-			var startTime = this.getStarTime();
+			var startTime = this.getStartTime();
 			if(startTime > 1) this.player_instance.seek(startTime);
 
 			if(this.istoggleVideo){
@@ -234,7 +234,7 @@ Dubtrack.View.Player = Backbone.View.extend({
 	playCurrent: function(){
 		var songInfo = this.activeSong.get('songInfo'),
 			song = this.activeSong.get('song'),
-			startTime = this.getStarTime(),
+			startTime = this.getStartTime(),
 			sontLength = song.songLength/1000;
 
 		if(startTime > sontLength) return this.videoEnd();
@@ -465,7 +465,7 @@ Dubtrack.View.Player = Backbone.View.extend({
 		});
 	},
 
-	getStarTime: function(){
+	getStartTime: function(){
 		var startTime = this.activeSong.get('startTime'),
 			song = this.activeSong.get('song');
 
@@ -485,7 +485,7 @@ Dubtrack.View.Player = Backbone.View.extend({
 	},
 
 	buildYT : function(){
-		if(this.getStarTime() < 0) return;
+		if(this.getStartTime() < 0) return;
 
 		var song = this.activeSong.get('song'),
 			songInfo = this.activeSong.get('songInfo');
