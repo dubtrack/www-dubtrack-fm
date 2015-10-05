@@ -672,7 +672,7 @@ w.Dubtrack = {
 						if (str.match(imageRegex)) {
 							str = str.replace(/^http:\/\//i, 'https://');
 							var onErrorAction = "Dubtrack.helpers.image.imageError(this, '/assets/images/media/chat_image_load_error.png');" + imagloadFun;
-							str = '<img src="' + str + '" alt="' + str + '" onclick="Dubtrack.helpers.text.shrinkImg(this)" onload="' + imagloadFun + '" onerror="' + onErrorAction + '" />';
+							str = '<a href="' + str + '" class="autolink" target="_blank"><img src="' + str + '" alt="' + str + '" onload="' + imagloadFun + '" onerror="' + onErrorAction + '" /></a>';
 							return str;
 						} else {
 							str = '<a href="' + str + '" class="autolink" target="_blank">' + str + '</a>';
