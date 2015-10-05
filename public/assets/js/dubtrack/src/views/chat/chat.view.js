@@ -76,6 +76,9 @@ Dubtrack.View.chat = Backbone.View.extend({
 		this.clear_chat_timeout = setTimeout(function(){
 			var chat_log = new Dubtrack.View.chatLoadingItem().$el.text('Chat has been cleared!').appendTo(Dubtrack.room.chat._messagesEl)
 		}, 300);
+		this.$('.ps-scrollbar-x').css('bottom','0px');
+		this.$('.ps-scrollbar-y').css('top','0px');
+		this.$('.ps-scrollbar-y-rail').css('top','0px');
 	},
 
 	muteUserRealtime: function(r){
