@@ -121,6 +121,7 @@ w.Dubtrack = {
 			skipSong: "/chat/skip/:id",
 			userQueue: "/user/session/room/:id/queue",
 			userQueueOrder : "/user/session/room/:id/queue/order",
+			roomUserQueueOrder : "/room/:id/queue/order",
 			userFollow: "/user/:id/follows",
 			userFollowing: "/user/:id/following",
 			userImage: "/user/:id/image",
@@ -664,11 +665,12 @@ w.Dubtrack = {
 
 		text : {
 			convertHtmltoTags: function(text, imagloadFun){
-				var imageRegex = /\.(png|jpg|jpeg|gif)$/;
+				var imageRegex = /^https(.*)\.(png|jpg|jpeg|gif)$/;
 
 				text = text.replace(/(\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%()[\]?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|])/gim,
 					function(str) {
 						if (str.match(imageRegex)) {
+							str = str.replace(/^http:\/\//i, 'https://');
 							var onErrorAction = "Dubtrack.helpers.image.imageError(this, '/assets/images/media/chat_image_load_error.png');" + imagloadFun;
 							str = '<img src="' + str + '" alt="' + str + '" onclick="Dubtrack.helpers.text.shrinkImg(this)" onload="' + imagloadFun + '" onerror="' + onErrorAction + '" />';
 							return str;

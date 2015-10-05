@@ -174,3 +174,22 @@ Dubtrack.View.chatBannedItem = Dubtrack.View.systemChatItem.extend({
 		this.$el.html( message );
 	},
 });
+
+Dubtrack.View.removedFromQueueItem = Dubtrack.View.systemChatItem.extend({
+	initialize: function () {
+		var removedUser = this.model.get('removedUser'),
+			user = this.model.get('user'),
+			message = "@" + user.username + " removed @" + removedUser.username + " from the queue";
+
+		this.$el.html( message );
+	},
+});
+
+Dubtrack.View.reorderQueueItem = Dubtrack.View.systemChatItem.extend({
+	initialize: function () {
+		var user = this.model.get('user'),
+			message = "@" + user.username + " reordered the queue";
+
+		this.$el.html( message );
+	},
+});

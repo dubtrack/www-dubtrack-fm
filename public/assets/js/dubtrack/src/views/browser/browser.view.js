@@ -411,7 +411,10 @@ Dubtrack.View.Browser = Backbone.View.extend({
 				break;
 
 			case "room_queue":
-				var urlQueue = Dubtrack.config.apiUrl + Dubtrack.config.urls.roomQueueDetails.replace( ":id", Dubtrack.room.model.get('_id') );
+				var urlQueue = Dubtrack.config.apiUrl + Dubtrack.config.urls.roomQueueDetails.replace( ":id", Dubtrack.room.model.get('_id') ),
+					url_queue_order = Dubtrack.config.apiUrl + Dubtrack.config.urls.roomUserQueueOrder.replace( ":id", Dubtrack.room.model.get('_id') );
+
+				this.url_items_order = url_queue_order;
 				this.userQueueCollection.url = urlQueue;
 
 				this.userQueueCollection.reset();
@@ -420,6 +423,7 @@ Dubtrack.View.Browser = Backbone.View.extend({
 						_.each(self.userQueueCollection.models, function (item) {
 							var itemViewEl = new Dubtrack.View.BrowserRoomQueuePlaylisttItem()
 							.fetchSong(item)
+							.setBrowser(self)
 							.$el
 							.appendTo( self.playlistDetailContainer );
 
@@ -430,6 +434,30 @@ Dubtrack.View.Browser = Backbone.View.extend({
 
 						//hide loading
 						self.loadingEl.hide();
+
+						if(Dubtrack.session && Dubtrack.room && Dubtrack.room.users && (Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || Dubtrack.room.model.get('userid') == Dubtrack.session.id || Dubtrack.room.users.getIfMod(Dubtrack.session.id))){
+							self.playlistDetailContainer.sortable({
+								axis: "y",
+								cursor: "move",
+								placeholder: "ui-state-highlight",
+
+								update: function(event, ui){
+									order = [];
+									$(this).children('li').each(function(idx, elm) {
+										console.log($(elm));
+										order.push($(elm).attr('data-userid'));
+									});
+									console.log(order, url_queue_order);
+									Dubtrack.helpers.sendRequest( url_queue_order, {
+										'order[]' : order
+									}, 'post');
+								}
+							});
+
+							self.playlistDetailContainer.addClass('display-mod-controls');
+						}else{
+							self.playlistDetailContainer.removeClass('display-mod-controls');
+						}
 					},
 
 					error: function(){
@@ -479,7 +507,17 @@ Dubtrack.View.Browser = Backbone.View.extend({
 		this.browser_view_state = null;
 		$(".dubtrack_overlay").hide();
 		this.$el.show().removeClass('animate');
-		Dubtrack.app.navigate("/");
+		if(Dubtrack.room && Dubtrack.room.model){
+			Dubtrack.app.navigate("/join/" + Dubtrack.room.model.get('roomUrl'), {
+				trigger : true
+			});
+		}else{
+			Dubtrack.app.navigate("/", {
+				trigger : true
+			});
+		}
+
+		return false;
 	},
 
 	displayBrowser: function(){
@@ -648,6 +686,10 @@ Dubtrack.View.playlistItem = Backbone.View.extend({
 	},
 
 	queuePlaylist : function(){
+		Dubtrack.app.navigate( "/browser/user/" + this.model.get('_id') , {
+			trigger: false
+		});
+
 		Dubtrack.app.browserView.displayDetails("queueSong", this.model.get('_id'));
 
 		return false;
@@ -700,6 +742,7 @@ Dubtrack.View.BrowserPlaylistItem = Backbone.View.extend({
 		"click .add_to_playlistQueue": "addPlaylistQueueContainer",
 		"click .remove_queue": "removeFromQueue",
 		"click .remove_track": "removeTrack",
+		"click .remove_dj": "removeDJFromQueue",
 		"click .preview": "preview",
 		"click a.editBtn": "focusInput",
 		"blur input.track_name_input": "updateTrackName",
@@ -823,6 +866,10 @@ Dubtrack.View.BrowserPlaylistItem = Backbone.View.extend({
 
 		this.close();
 
+		return false;
+	},
+
+	removeDJFromQueue : function(){
 		return false;
 	},
 
@@ -1020,12 +1067,33 @@ Dubtrack.View.BrowserQueuePlaylisttItem = Dubtrack.View.BrowserPlaylisHistorytIt
 
 Dubtrack.View.BrowserRoomQueuePlaylisttItem = Dubtrack.View.BrowserPlaylisHistorytItem.extend({
 	attributes: {
-		"class": "queue-item"
+		"class": "queue-item room-queue-item"
+	},
+
+	removeDJFromQueue : function(){
+		this.$('.remove_dj').addClass('loading-action');
+
+		$.ajax({
+			url: Dubtrack.config.apiUrl + '/room/' + Dubtrack.room.model.get('_id') + '/queue/user/' + this.queue.get('userid'),
+			async: false,
+			type: 'delete'
+		}).success(function(){
+			this.$el.remove();
+		}.bind(this)).error(function(){
+			this.$('.display-error').show().html('You don\'t have permissions to do this');
+		}.bind(this)).always(function(){
+			this.$('.remove_dj').removeClass('loading-action');
+		}.bind(this));
+
+		return false;
 	},
 
 	render : function(err, song){
 		this.model = song;
 		this.queue.set("song", song.toJSON());
+
+		this.$el.attr('data-userid', this.queue.get('userid'));
+		this.$el.attr('data-id', this.queue.get('userid'));
 
 		this.queue.set({
 			"filterName": song.get("name")
@@ -1040,6 +1108,15 @@ Dubtrack.View.BrowserRoomQueuePlaylisttItem = Dubtrack.View.BrowserPlaylisHistor
 		$('#browser .content-videos').perfectScrollbar('update');
 
 		return this;
+	},
+
+	moveToTop : function(e){
+		if(e) e.preventDefault();
+
+		if(this.parent_browser){
+			this.$el.prependTo(this.$el.parents('.browserPlaylistItems'));
+			this.parent_browser.sortableUpdate();
+		}
 	}
 });
 

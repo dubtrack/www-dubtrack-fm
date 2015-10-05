@@ -2,8 +2,7 @@ Dubtrack.View.roomUsersItem = Backbone.View.extend({
 	tagName: 'li',
 
 	events: {
-		//"click": "clickEvent",
-		//"click a.navigate": "clickEvent"
+		"click": "clickEvent",
 	},
 
 	initialize: function(){
@@ -11,11 +10,10 @@ Dubtrack.View.roomUsersItem = Backbone.View.extend({
 			'rel' : this.model.get('dubs'),
 		});
 
-        this.model.bind("reset", this.render, this);
+		this.model.bind("reset", this.render, this);
 
-        //realtime events
-        Dubtrack.Events.bind('realtime:user_update_' + this.model.get("userid"), this.dubUpdate, this);
-        Dubtrack.Events.bind('realtime:user-update-' + this.model.get("userid"), this.updateImage, this);
+		//realtime events
+		Dubtrack.Events.bind('realtime:user_update_' + this.model.get("userid"), this.dubUpdate, this);
 	},
 
 	render: function(){
@@ -24,14 +22,6 @@ Dubtrack.View.roomUsersItem = Backbone.View.extend({
 
 		this.pictureEl = this.$('.picture');
 		this.usernameEl = this.$('p.username');
-
-		/*$diff_time = this.model.get("diff_mins");
-
-		if($diff_time){
-			if( parseInt($diff_time) > 40 ){
-				this.$el.addClass('inactive');
-			}
-		}*/
 
 		var user = this.model.get("_user");
 
@@ -63,12 +53,6 @@ Dubtrack.View.roomUsersItem = Backbone.View.extend({
 		return this;
 	},
 
-	updateImage: function(r){
-		if(r && r.img && r.img.url){
-			this.$('.picture img').attr('src', r.img.url);
-		}
-	},
-
 	dubUpdate: function(r){
 		this.$('.dubs span').html(r.user.dubs);
 	},
@@ -81,9 +65,6 @@ Dubtrack.View.roomUsersItem = Backbone.View.extend({
 
 			var userInfo = user.get('userInfo');
 
-			//display user image
-			this.pictureEl.html( Dubtrack.helpers.image.getImage(user.id, user.get("username"), false, true));
-
 			//set username for search
 			this.$el.addClass('user-' + this.user.get('username').toLowerCase());
 		}catch(ex){
@@ -92,11 +73,14 @@ Dubtrack.View.roomUsersItem = Backbone.View.extend({
 	},
 
 	clickEvent: function(){
-		Dubtrack.app.navigate("/" + this.model.get('username'), {trigger: true});
+		Dubtrack.helpers.displayUser(this.user.get('_id'), this.$el);
+
 		return false;
 	},
 
 	setOffline: function(){
-		this.$el.append( $('<div/>', {'class' : 'offline'}).html( dubtrack_lang.avatar.offline ) );
+		this.$el.append( $('<div/>', {
+			'class' : 'offline'
+		}).html( dubtrack_lang.avatar.offline ) );
 	}
 });

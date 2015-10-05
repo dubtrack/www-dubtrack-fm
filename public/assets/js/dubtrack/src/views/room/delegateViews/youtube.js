@@ -6,7 +6,7 @@ Dubtrack.View.YoutubePlayer = Backbone.View.extend({
 
 	initialize: function(){
 	},
-	
+
 	render: function(url, start, onEnd, object, loadBg){
 		var self = this;
 
@@ -19,14 +19,14 @@ Dubtrack.View.YoutubePlayer = Backbone.View.extend({
 		this.ytPlayerContainer = $('<div/>', {
 			id: this.id
 		}).appendTo( this.$el );
-		
+
 		this.loadBg = loadBg;
 
 		this.$el.addClass('playerElement youtube');
 		if(loadBg) this.$el.addClass('hiddenPlayer');
-		
+
 		var params = Dubtrack.config.player.youtube.youtubeVars;
-		
+
 		console.log("YOUTUBE START TIME: ", start);
 		if(start >= 0){
 			params.start = start;
@@ -100,7 +100,7 @@ Dubtrack.View.YoutubePlayer = Backbone.View.extend({
 				self.render(url, start, onEnd, object, loadBg);
 			}, 1000);
 		}
-		
+
 		return this;
 	},
 
@@ -118,8 +118,8 @@ Dubtrack.View.YoutubePlayer = Backbone.View.extend({
 				console.log("YT ERROR: " + ex);
 			}
 		}
-		
-		this.setVolume( Dubtrack.playerController.volume );
+
+		this.setVolume( Dubtrack.playerController.volume, true );
 
 		return false;
 	},
@@ -151,10 +151,10 @@ Dubtrack.View.YoutubePlayer = Backbone.View.extend({
 		}catch(ex){
 			console.log(ex);
 		}
-		
+
 		$("#" + this.id).remove();
 	},
-	
+
 	setVolume : function (newVolume) {
 		if(this.player){
 			this.player.unMute();

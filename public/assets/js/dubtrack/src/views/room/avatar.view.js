@@ -3,19 +3,19 @@ var user_rejoin_count = 0;
 Dubtrack.View.roomUsers = Backbone.View.extend({
 
 	el: $('#avatar'),
-	
+
 	allowed_dj: 0,
-	
+
 	intervalId: false,
-	
+
 	roomId: false,
-	
+
 	events  : {
 		"click a.loadRoomAva": "loadRoomAva",
 		"click a.modLink": "loadModsAva",
 		"keyup .input-room-users-search input": "filterRoomUsers"
 	},
-	
+
 	initialize : function(){
 		var self = this;
 		this.$el.html( _.template( Dubtrack.els.templates.rooms.avatarsContainer, {} ));
@@ -35,12 +35,12 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 		this.collection.comparator = function(user){
 			return - ( parseInt( user.get('dubs'), 10 ) );
 		};
-		
+
 		//attach events to object
 		this.collection.bind("add", this.addUser, this);
 		this.collection.bind("remove", this.removeEl, this);
 		this.collection.bind("change", this.updateDubs, this);
-		
+
 		this.intervalId = setInterval(function(){
 			self.autoLoad();
 		}, 720000);
@@ -52,12 +52,12 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 
 		//set list container
 		this.avatarContainer = this.$el.find('ul#avatar-list');
-		
+
 		this.currentTabEl = this.$el.find(".currentBar");
 		this.avatarFriendsEl = this.$el.find(".friendsElAvatar");
 		this.tabsContainerEl = this.$el.find(".tabsContainer");
 		this.avatarModsEl = this.$el.find(".modsElAvatar");
-		
+
 		this.loadingEl = this.$el.find(".loadingAva");
 
 		this.$('a.loadRoomAva').html('<i>' + this.model.get('name') + '</i><span>chat</span>');
@@ -97,25 +97,25 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 			$(this).show();
 		});
 	},
-	
+
 	updateDubs : function(item){
 		item.viewEl.$('.dubs span').html( item.get("dubs") );
 		//this.resetEl();
 
 		//if(item.featureEl) item.featureEl.$('.dubs span').html( item.get("dubs") );
 	},
-	
+
 	resetEl : function(){
 		this.collection.sort();
-		
+
 		//empty containers
 		this.avatarContainer.empty();
 		//this.featureUsersEl.empty();
 
 		//this.totalFeatureUsers = 0;
-		
+
 		this.setTotalUsers();
-		
+
 		_.each(this.collection.models, function (item) {
 			this.appendEl(item);
 			//item.featureEl = false;
@@ -148,7 +148,7 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 		var user = this.collection.where({
 			userid: r.user._id
 		});
-		
+
 		this.collection.remove( user );
 	},
 
@@ -156,13 +156,13 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 		//this.resetEl();
 		this.appendEl(itemModel);
 	},
-		
+
 	appendEl : function(itemModel){
 		//append element
 		itemModel.viewEl = new Dubtrack.View.roomUsersItem({
 			model: itemModel
 		}).render();
-		
+
 		this.avatarContainer.append( itemModel.viewEl.$el );
 
 		this.setTotalUsers();
@@ -181,7 +181,7 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 
 		this.featureUsersEl.append( itemModel.featureEl.$el );*/
 	},
-	
+
 	removeEl : function(item){
 		item.viewEl.close();
 		//if(item.featureEl) item.featureEl.close();
@@ -217,14 +217,14 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 			}
 		}, this);
 	},
-	
+
 	loadRoomAva : function(){
 		if(Dubtrack.room && Dubtrack.room.$el){
 			Dubtrack.room.$el.removeClass('display-users-rooms');
 		}
 
 		//this.resetEl();
-		
+
 		return false;
 	},
 
@@ -268,7 +268,7 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 			//if(itemModel.featureEl) itemModel.featureEl.$el.addClass('currentDJ');
 		}
 	},
-	
+
 	setMod: function(r){
 		var id = (r.modUser && "_id" in r.modUser) ? r.modUser._id : false;
 
@@ -357,7 +357,7 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 
 		return false;
 	},
-	
+
 	autoLoad : function(){
 		console.log("DUBTRACK loading avatars");
 		var self = this;
@@ -373,9 +373,9 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 			}
 		});
 	},
-	
+
 	beforeClose : function(){
 		if( this.intervalId ) clearInterval(this.intervalId);
 	}
-	
+
 });

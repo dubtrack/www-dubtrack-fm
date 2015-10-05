@@ -11,22 +11,22 @@ Dubtrack.els.templates = {
 						'<%= image_str %>' +
 					'</div>' +
 					'<div class="message-content">' +
-						'<h3><%= name %></h3>' +
-						'<p><%= latest_message_str %></p>' +
+						'<h3><%- name %></h3>' +
+						'<p><%- latest_message_str %></p>' +
 					'</div>' +
 					'<div class="message-time">' +
-						'<%= latest_message %>' +
+						'<%- latest_message %>' +
 					'</div>',
 
 		'messageItem' : '<figure class="media">' +
 							'<%= Dubtrack.helpers.image.getImage(_user._id, _user.username) %>' +
 						'</figure>' +
 						'<div class="message-content">' +
-							'<h3><%= _user.username %>: </h3>' +
+							'<h3><%- _user.username %>: </h3>' +
 							'<p><%= message %></p>' +
 						'</div>' +
 						'<div class="message-time">'+
-							'<%= created %>' +
+							'<%- created %>' +
 						'</div>'
 	},
 	'comments': {
@@ -50,16 +50,16 @@ Dubtrack.els.templates = {
 						'</figure>' +
 						'<div class="content">' +
 							'<header>' +
-								'<a href="#" class="username"><%= user.username %></a>' +
+								'<a href="#" class="username"><%- user.username %></a>' +
 								'<i class="icon-dot"></i>' +
-								'<time class="timeago" datetime="<%= date.toISOString() %>"><%= date.toLocaleString() %></time>' +
+								'<time class="timeago" datetime="<%- date.toISOString() %>"><%- date.toLocaleString() %></time>' +
 							'</header>' +
 							'<div class="comment-content">' +
 								'<p><%- comment %></p>' +
 							'</div>' +
 							'<div class="comment-dub">' +
 								'<span class="comment-dubs-total">' +
-									'<%= updubs - downdubs %>' +
+									'<%- updubs - downdubs %>' +
 								'</span>' +
 								'<span class="icon-arrow-up">' +
 								'</span>' +
@@ -75,34 +75,34 @@ Dubtrack.els.templates = {
 	},
 
 	'search': {
-		'searchRoom': '	<img src="' + Dubtrack.config.apiUrl + '/room/<%= _id %>/image/thumbnail-small" alt="" />' +
+		'searchRoom': '	<img src="' + Dubtrack.config.apiUrl + '/room/<%- _id %>/image/thumbnail-small" alt="" />' +
 						'<span>' +
-							'<%= name %>' +
+							'<%- name %>' +
 						'</span>' +
 						'<span class="count">' +
-							'<%= activeUsers %> users' +
+							'<%- activeUsers %> users' +
 						'</span>',
 
 		'searchUser': '	<%= Dubtrack.helpers.image.getImage(_id, username) %>' +
 						'<span>' +
-							'<%= username %>' +
+							'<%- username %>' +
 						'</span>'
 
 	},
 
 	'profile': {
 		'popover_user': '<figure>' +
-							'<img src="' + Dubtrack.config.apiUrl + '/user/<%= _id %>/image" alt="" />' +
+							'<img src="' + Dubtrack.config.apiUrl + '/user/<%- _id %>/image" alt="" />' +
 						'</figure>' +
 						'<header>' +
-							'<h3><%= username %></h3>' +
-							'<a href="/<%= username %>">View profile</a>' +
+							'<h3><%- username %></h3>' +
+							'<a href="/<%- username %>">View profile</a>' +
 						'</header>',
 
 		'profileSidebar': '<div id="profileSidebar">' +
 								'<div id="activeRoom">' +
 									/*'<% if(dj_details.active_room !== 0) { %>' +
-										'<a href="#/join/<%= activeRoom.url_sh %>">' +
+										'<a href="#/join/<%- activeRoom.url_sh %>">' +
 											dubtrack_lang.profile.activeRoom +
 										'</a>' +
 									'<% } %>' +*/
@@ -110,11 +110,11 @@ Dubtrack.els.templates = {
 									'<ul id="userNotifications"></ul>' +
 									'<div id="followersEl">' +
 										'<span class="active followersCount">' +
-											//'<%= follower_count %> ' +
+											//'<%- follower_count %> ' +
 											dubtrack_lang.profile.folowers +
 										'</span>' +
 										'<span class="followingCount">' +
-											//'<%= following_count %> ' +
+											//'<%- following_count %> ' +
 											dubtrack_lang.profile.folowing +
 										'</span>' +
 										'<div class="followingContainer">' +
@@ -131,12 +131,12 @@ Dubtrack.els.templates = {
 							'<div class="rewindProfile"><a href="#"><span class="icon-close"></span></a></div>' +
 							'<div class="infoProfile">' +
 								'<h2>' +
-									'<span class="usernameContainer"><%= username %></span>' +
+									'<span class="usernameContainer"><%- username %></span>' +
 									'<% if(Dubtrack.session && Dubtrack.session.id === _id) { %>' +
 										'<div class="check_username_info"></div>' +
 										'<span class="editUsername">edit <i class="icon-pencil"></i></span>' +
 										'<span class="saveUsername">save <i class="icon-disk"></i></span>' +
-										'<input type="text" name="dt_username" value="<%= username %>" />' +
+										'<input type="text" name="dt_username" value="<%- username %>" />' +
 									'<% } %>' +
 									/*'<span<% if(dj_details.active_room !== 0){%> class="online"<% } %>>' +
 										'<i></i>' +
@@ -159,7 +159,7 @@ Dubtrack.els.templates = {
 										dubtrack_lang.profile.unfollow +
 									'</button>' +
 								'<% } else { %>' +
-									/*'<button href="/avatar/<%= _id %>/edit" class="message edit-btn navigate">' +
+									/*'<button href="/avatar/<%- _id %>/edit" class="message edit-btn navigate">' +
 										dubtrack_lang.profile.edit +
 									'</button>' +
 									'<button class="navigate btn message">' +
@@ -175,12 +175,12 @@ Dubtrack.els.templates = {
 									'<% } %>' +
 									'<%= imgProfile %>' +
 									/*'<span class="location">' +
-										'<%= location %>' +
+										'<%- location %>' +
 									'</span>' +*/
 								'</div>' +
 								'<div class="descriptionProfile">' +
 									/*'<div class="content_bio bio<% if(dj_details.bio_short_display){ %> hidden<% } %>">' +
-										'<%= dj_details.bio %>' +
+										'<%- dj_details.bio %>' +
 										'<% if(dj_details.bio_short_display){ %>' +
 											'<a href="#" class="readmore readlessLink">' +
 												dubtrack_lang.profile.read_less +
@@ -188,7 +188,7 @@ Dubtrack.els.templates = {
 										'<% } %>' +
 									'</div>' +
 									'<div class="content_bio bio_short<% if(!dj_details.bio_short_display){ %> hidden<% } %>">' +
-										'<%= dj_details.bio_short %>' +
+										'<%- dj_details.bio_short %>' +
 										'<a href="#" class="readmore readmoreLink">' +
 											dubtrack_lang.profile.read_more +
 										'</a>' +
@@ -285,7 +285,7 @@ Dubtrack.els.templates = {
 											dubtrack_lang.roomForm.roomNameLabel +
 										'</label>' +
 										'<div class="controls">' +
-											'<input class="input" name="name" id="roomName" placeholder="' + dubtrack_lang.roomForm.roomNameLabel + '" type="text" value="<%= name %>">' +
+											'<input class="input" name="name" id="roomName" placeholder="' + dubtrack_lang.roomForm.roomNameLabel + '" type="text" value="<%- name %>">' +
 										'</div>' +
 									'</div>' +
 									/*'<div class="control-group">' +
@@ -293,8 +293,8 @@ Dubtrack.els.templates = {
 											'Room url' +
 										'</label>' +
 										'<div class="controls">' +
-											'<span class="label_description">dubtrack.fm/join/<%= roomUrl %></span>' +
-											'<input class="input" name="newUrl" placeholder="Room url" type="text" value="<%= roomUrl %>">' +
+											'<span class="label_description">dubtrack.fm/join/<%- roomUrl %></span>' +
+											'<input class="input" name="newUrl" placeholder="Room url" type="text" value="<%- roomUrl %>">' +
 										'</div>' +
 									'</div>' +
 									'<div class="control-group">' +
@@ -305,7 +305,7 @@ Dubtrack.els.templates = {
 											'<p class="help-block">' +
 												dubtrack_lang.roomForm.maxSongLabelDes +
 											'</p>' +
-											'<input class="input-small" id="maxLengthSongName" name="max_length_song" placeholder"' + dubtrack_lang.roomForm.maxSongLabel + '" type="text" value="<%= maxLengthSong %>">' +
+											'<input class="input-small" id="maxLengthSongName" name="max_length_song" placeholder"' + dubtrack_lang.roomForm.maxSongLabel + '" type="text" value="<%- maxLengthSong %>">' +
 										'</div>' +
 									'</div>' +*/
 									'<div class="control-group" id="background-room-update">' +
@@ -323,7 +323,7 @@ Dubtrack.els.templates = {
 										'</label>' +
 										'<div class="controls textarea">' +
 											'<textarea class="textarea" name="description" placeholder="' + dubtrack_lang.roomForm.roomDesc + '">' +
-												'<%= description %>' +
+												'<%- description %>' +
 											'</textarea>' +
 										'</div>' +
 									'</div>' +*/
@@ -344,7 +344,7 @@ Dubtrack.els.templates = {
 										'</label>' +
 										'<div class="controls textarea">' +
 											'<textarea class="textarea" name="roomEmbed" id="roomEmbedInput" placeholder="Iframe embed url (src value in your embed code)">' +
-												'<%= roomEmbed %>' +
+												'<%- roomEmbed %>' +
 											'</textarea>' +
 										'</div>' +
 										'<div id="iframe-embed-preview">' +
@@ -361,19 +361,19 @@ Dubtrack.els.templates = {
 								'</div>' +
 							'</form>',
 
-		'roomListItem': '<a class="join" href="/join/<%= roomUrl %>">' +
+		'roomListItem': '<a class="join" href="/join/<%- roomUrl %>">' +
 							'<span>' + dubtrack_lang.room.tune_in + '</span>' +
 						'</a>' +
 						'<figure class="roomImage">' +
 							'<% if(currentSong && currentSong.songid){ %>' +
-								'<img src="' + Dubtrack.config.apiUrl + '/song/<%= currentSong.songid %>/image/large" alt="" />' +
+								'<img src="' + Dubtrack.config.apiUrl + '/song/<%- currentSong.songid %>/image/large" alt="" />' +
 							'<% } else { %>' +
-								'<img src="' + Dubtrack.config.apiUrl + '/room/<%= _id %>/image/thumbnail" alt="" />' +
+								'<img src="' + Dubtrack.config.apiUrl + '/room/<%- _id %>/image/thumbnail" alt="" />' +
 							'<% } %>' +
 						'</figure>' +
 						'<div class="user-count">' +
 							'<% if(activeUsers) { %>' +
-								'<%= activeUsers %>' +
+								'<%- activeUsers %>' +
 							'<% } %>' +
 						'</div>' +
 						'<header>' +
@@ -390,7 +390,7 @@ Dubtrack.els.templates = {
 								'<figure></figure>' +
 								'<div class="room-user">' +
 									dubtrack_lang.room.hosted_by +
-									'<a href="/<%= userid %>" class="navigate"></a>' +
+									'<a href="/<%- userid %>" class="navigate"></a>' +
 								'</div>' +
 							'</div>' +
 						'</header>',
@@ -414,12 +414,10 @@ Dubtrack.els.templates = {
 								'</div>' +
 							'</div>',
 
-		'avatarsContainerItem': '<div class="picture">' +
-								'</div>' +
-								'<p class="username">' +
-								'</p>' +
+		'avatarsContainerItem':'<p class="username">' +
+								'</p>' + '<p>-</p>' +
 								'<p class="dubs">' +
-									'<span><%= dubs %> </span>' +
+									'<span><%- dubs %> </span>' +
 									' dubs' +
 								'</p>',
 	},
@@ -465,11 +463,11 @@ Dubtrack.els.templates = {
 							'</div>' +
 							'<div class="activity-row">' +
 								'<div class="text">' +
-									'<p><a href="#" class="username"><%= user.username %>:</a> <%= message %></p>' +
+									'<p><a href="#" class="username"><%- user.username %>:</a> <%= message %></p>' +
 								'</div>' +
 								'<div class="meta-info">' +
 									'<span class="username">' +
-										'<%= user.username %> ' +
+										'<%- user.username %> ' +
 									'</span>' +
 									'<i class="icon-dot"></i>' +
 									'<span class="timeinfo">' +
@@ -494,10 +492,10 @@ Dubtrack.els.templates = {
 							'<div class="delete">' +
 								dubtrack_lang.playlist.deletePlaylist +
 							'</div>' +
-							'<%= name %>' +
+							'<%- name %>' +
 							'<p>' +
 								'&nbsp;' +
-								//'<%= total %> ' +
+								//'<%- total %> ' +
 								//dubtrack_lang.playlist.tunes +
 							'</p>',
 
@@ -510,19 +508,19 @@ Dubtrack.els.templates = {
 								'<span class="display-success">' +
 								'</span>' +
 								'<span class="timeDisplay">' +
-									'<%= minute %>' +
+									'<%- minute %>' +
 									':' +
-									'<%= second %>' +
+									'<%- second %>' +
 								'</span>' +
 								'<figure>' +
 									'<% if(images.thumbnail) {%>' +
-										'<img src="<%= images.thumbnail %>" alt="" />' +
+										'<img src="<%- images.thumbnail %>" alt="" />' +
 									'<% } else {%>' +
 										'<img src="' + Dubtrack.config.urls.mediaBaseUrl + '/assets/images/media/pic_notfound.jpg" alt="" />' +
 									'<% } %>' +
 								'</figure>' +
 								'<div class="description">' +
-									'<h2><%= name %></h2>' +
+									'<h2><%- name %></h2>' +
 									'<p>' +
 										'<span class="preview">' +
 											dubtrack_lang.playlist.preview +
@@ -553,25 +551,25 @@ Dubtrack.els.templates = {
 		'playlistHistoryItem': '<span class="display-error">' +
 								'</span>' +
 								'<span class="timeDisplay">' +
-									'<%= minute %>' +
+									'<%- minute %>' +
 									':' +
-									'<%= second %>' +
+									'<%- second %>' +
 								'</span>' +
 								'<figure>' +
 									'<% if(images.thumbnail) {%>' +
-										'<img src="<%= images.thumbnail %>" alt="" />' +
+										'<img src="<%- images.thumbnail %>" alt="" />' +
 									'<% } else {%>' +
 										'<img src="' + Dubtrack.config.urls.mediaBaseUrl + '/assets/images/media/pic_notfound.jpg" alt="" />' +
 									'<% } %>' +
 								'</figure>' +
 								'<div class="description">' +
-									'<h2><%= name %></h2>' +
+									'<h2><%- name %></h2>' +
 									'<p>' +
 										'<span class="preview">' +
 											dubtrack_lang.playlist.preview +
 										'</span>' +
-										'<span class="playedby">Played by <b><%= _user.username %></b></span>' +
-										'<span class="dubs-display">updubs <b><%= updubs %></b>  |  downdubs <b><%= downdubs %></b></span>' +
+										'<span class="playedby">Played by <b><%- _user.username %></b></span>' +
+										'<span class="dubs-display">updubs <b><%- updubs %></b>  |  downdubs <b><%- downdubs %></b></span>' +
 									'</p>' +
 								'</div>' +
 								'<div class="actions">' +
@@ -594,27 +592,36 @@ Dubtrack.els.templates = {
 		'playlistRoomQueueItem': '<span class="display-error">' +
 								'</span>' +
 								'<span class="timeDisplay">' +
-									'<%= minute %>' +
+									'<%- minute %>' +
 									':' +
-									'<%= second %>' +
+									'<%- second %>' +
 								'</span>' +
 								'<figure>' +
 									'<% if(images.thumbnail) {%>' +
-										'<img src="<%= images.thumbnail %>" alt="" />' +
+										'<img src="<%- images.thumbnail %>" alt="" />' +
 									'<% } else {%>' +
 										'<img src="' + Dubtrack.config.urls.mediaBaseUrl + '/assets/images/media/pic_notfound.jpg" alt="" />' +
 									'<% } %>' +
 								'</figure>' +
 								'<div class="description">' +
-									'<h2><%= name %></h2>' +
+									'<h2><%- name %></h2>' +
 									'<p>' +
 										'<span class="preview">' +
 											dubtrack_lang.playlist.preview +
 										'</span>' +
-										'<span class="playedby">Queued by <b><%= _user.username %></b></span>' +
+										'<span class="playedby">Queued by <b><%- _user.username %></b></span>' +
 									'</p>' +
 								'</div>' +
 								'<div class="actions">' +
+									'<a href="#" class="set_song_to_top_queue">' +
+										'<span class="icon-arrow-up"></span>' +
+										'move to top' +
+									'</a>' +
+									'<a href="#" class="img_bg remove_dj">' +
+										'<span class="icon-trashcan"></span>' +
+										'Remove DJ from queue' +
+										Dubtrack.config.loadingEls +
+									'</a>' +
 									'<a class="img_bg add_to_playlist" href="#">' +
 										'<span class="icon-plus-alt"></span>' +
 										dubtrack_lang.playlist.addToPlaylist +
@@ -692,7 +699,7 @@ Dubtrack.els.templates = {
 											'<%= Dubtrack.helpers.image.getImage(_id, username) %>' +
 										'</figure>' +
 										'<span>' +
-											'<%= username %>' +
+											'<%- username %>' +
 										'</span>' +
 									'</button>' +
 								'</li>' +

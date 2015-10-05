@@ -104,7 +104,7 @@ ul,ol{
 		padding: 0.125em 0.313em !important;
 
 		&:hover {
-		   color: #999;
+			 color: #999;
 		}
 
 		&.active {
@@ -210,7 +210,7 @@ ul,ol{
 		}
 
 		&.cyan {
-		   color: cyan;
+			 color: cyan;
 		}
 	}
 
@@ -356,14 +356,14 @@ ul,ol{
 		bottom: -5em;
 		margin-left: -10em;
 		left: 50%;
-  		width: 20em;
-  		height: 20em;
-  		background-color: $bgColor;
-  		@include border-radius(100%);
-  		border-radius: 100%;
-  		-webkit-animation: scaleout 1.0s infinite ease-in-out;
-  		animation: scaleout 1.0s infinite ease-in-out;
-  		z-index: 1;
+		width: 20em;
+		height: 20em;
+		background-color: $bgColor;
+		@include border-radius(100%);
+		border-radius: 100%;
+		-webkit-animation: scaleout 1.0s infinite ease-in-out;
+		animation: scaleout 1.0s infinite ease-in-out;
+		z-index: 1;
 	}
 
 	.loading-text{
@@ -378,78 +378,60 @@ ul.avatar-list {
 	@include clearfix2();
 
 	li {
-		cursor:pointer;
+		cursor: pointer;
 		border: 1px solid $bgColor;
-		//float: left;
-		display: inline-block;
-		background: $bgColor;
+		display: block;
 		font-family: $siteAccentFont;
+		font-size: 0.85em;
+		padding: 0.5rem 0.8rem;
 		color: $siteColor;
-		text-align: center;
-		width: 4em;
+		text-align: left;
 		overflow: hidden;
 		position: relative;
+
+		p{
+			display: inline-block;
+			margin: 0 0.5rem 0 0;
+			padding: 0;
+		}
 
 		&.mod,
 		&.creator,
 		&.admin,
 		&.currentDJ{
 			&:after{
-				content: "MOD";
-				background: $bgAccentColor;
-				color: $bgColor;
+				content: " - MOD";
+				color: $bgAccentColor;
 				font-weight: bold;
-				font-size: 0.65em;
-				position: absolute;
-				top: 4.8em;
-				left: 0;
-				width: 100%;
-				text-align: center;
+				display: inline-block;
 			}
 		}
 
 		&.admin{
 			&:after{
-				content: "ADMIN";
+				content: " - ADMIN";
 			}
 		}
 
 		&.creator{
 			&:after{
-				content: "CREATOR";
+				content: " - CREATOR";
 			}
 		}
 
 		&.currentDJ{
 			&:after{
-				content: "DJ";
-				background: $bgOtherAccentColor;
+				content: " - DJ";
+				color: $bgOtherAccentColor;
 			}
 		}
 
 		.dubDisplay{
-			position: absolute;
-			z-index: 99;
 			font-weight: bold;
-			color: $bgColor;
-			background: $bgOtherAccentColor;
-			width: 100%;
-			height: 100%;
-			top: 0;
-			left: 0;
-			text-align: center;
+			color: $bgOtherAccentColor;
 
 			& b{
-				display: block;
-				text-align: center;
-				margin-top: 1.5em;
 				color: $bgOtherColor;
-			}
-
-			& span{
-				font-size: 0.75em;
-				display: block;
-				text-align: center;
 			}
 		}
 
@@ -485,19 +467,7 @@ ul.avatar-list {
 
 		p.username {
 			color: #999;
-			font-size: 0.65em;
-			display: none;
-		}
-
-		.picture {
-			width: 100%;
-			height: 4em;;
-			overflow: hidden;
-			display: none;
-
-			& img {
-				width: 100%;
-			}
+			font-size: 1rem;
 		}
 
 		.offline{
@@ -516,12 +486,8 @@ ul.avatar-list {
 
 		p {
 			&.dubs{
-				display: block;
 				color: #999;
-				font-size: 0.65em;
 				text-transform: uppercase;
-				margin: 0;
-				padding: 0.5em 0;
 
 				& span{
 					font-weight: bold;
@@ -533,20 +499,20 @@ ul.avatar-list {
 }
 
 @-webkit-keyframes scaleout {
-  0% { -webkit-transform: scale(0.0) }
-  100% {
-    -webkit-transform: scale(1.0);
-    opacity: 0;
-  }
+	0% { -webkit-transform: scale(0.0) }
+	100% {
+		-webkit-transform: scale(1.0);
+		opacity: 0;
+	}
 }
 
 @keyframes scaleout {
-  0% {
-    transform: scale(0.0);
-    -webkit-transform: scale(0.0);
-  } 100% {
-    transform: scale(1.0);
-    -webkit-transform: scale(1.0);
-    opacity: 0;
-  }
+	0% {
+		transform: scale(0.0);
+		-webkit-transform: scale(0.0);
+	} 100% {
+		transform: scale(1.0);
+		-webkit-transform: scale(1.0);
+		opacity: 0;
+	}
 }

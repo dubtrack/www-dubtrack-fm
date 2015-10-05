@@ -25,7 +25,7 @@ Dubtrack.View.Room = Backbone.View.extend({
 		if( ! target.is('a') ) target = target.parents('a');
 
 		var display_target = target.data('display');
-		console.log(display_target, target);
+
 		if(display_target){
 			this.$el.removeClass(this.currentMobileClass);
 			this.currentMobileClass = display_target;
@@ -242,13 +242,6 @@ Dubtrack.View.Room = Backbone.View.extend({
 				if(r && r.data && r.data.user && r.data.user.muted){
 					self.chat.user_muted = true;
 				}
-
-				/*if(r && r.data && r.data.goinstant_token){
-					//go instant token
-					self.goinstant_token = r.data.goinstant_token;
-					//load Video Chat
-					self.loadVideoChat(self.goinstant_token);
-				}*/
 
 				if(r && r.data && r.data.user && r.data.user.ot_token && r.data.room && r.data.room.otSession){
 					//go instant token

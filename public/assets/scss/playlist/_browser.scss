@@ -214,6 +214,18 @@
 		height: 100%;
 
 		ul.browserPlaylistItems{
+
+			&.display-mod-controls{
+				> li{
+					&.room-queue-item{
+						.set_song_to_top_queue,
+						.remove_dj{
+							display: block;
+						}
+					}
+				}
+			}
+
 			> li{
 				position: relative;
 				padding: 0.5em;
@@ -256,7 +268,8 @@
 					padding: 0.5em 1em;
 				}
 
-				.set_song_to_top_queue{
+				.set_song_to_top_queue,
+				.remove_dj{
 					display: none;
 				}
 
@@ -319,6 +332,16 @@
 
 				&.history-item{
 					display: none;
+				}
+
+				&.room-queue-item{
+					.set_song_to_top_queue{
+						display: none;
+					}
+
+					.remove_dj{
+						display: none;
+					}
 				}
 
 				#addToPlaylistFloatContainer,

@@ -54,7 +54,7 @@ Dubtrack.View.SoundCloudPlayer = Backbone.View.extend({
 					volume : self.loadBg ? 0 : Dubtrack.playerController.volume,
 
 					onplay: function(){
-						self.setVolume( Dubtrack.playerController.volume );
+						self.setVolume( Dubtrack.playerController.volume, true );
 						object.loadingEl.hide();
 						object.bufferingEl.hide();
 						object.errorElBtn.hide();

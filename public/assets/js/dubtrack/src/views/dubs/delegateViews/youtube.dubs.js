@@ -70,12 +70,8 @@ var ytDubsPlayerView = Backbone.View.extend({
 										self.mainYTimg.show();
 										self.replayEl.show();
 
-										if(Dubtrack.playerController && this.main_player_volume){
-											if(Dubtrack.playerController){
-												Dubtrack.playerController.setVolume(Dubtrack.playerController.volume);
-											}else{
-												Dubtrack.playerController.setVolume(this.main_player_volume);
-											}
+										if(Dubtrack.room.player){
+											Dubtrack.room.player.setVolumeRemote(Dubtrack.playerController.volume);
 										}
 									break;
 									case 1:
@@ -113,8 +109,8 @@ var ytDubsPlayerView = Backbone.View.extend({
 	play :  function(){
 		if(this.player){
 			try{
-				if(Dubtrack.playerController){
-					Dubtrack.playerController.setVolume(0, false);
+				if(Dubtrack.room.player){
+					Dubtrack.room.player.setVolumeRemote(0, true);
 				}
 
 				this.mainYTimg.hide();
@@ -136,8 +132,10 @@ var ytDubsPlayerView = Backbone.View.extend({
 	pause : function(){
 		if(this.player){
 			try{
-				if(Dubtrack.playerController && this.main_player_volume){
-					Dubtrack.playerController.setVolume(this.main_player_volume);
+				if(Dubtrack.room.player){
+					Dubtrack.room.player.setVolumeRemote(Dubtrack.playerController.volume);
+				}else{
+					Dubtrack.room.player.setVolumeRemote(self.main_player_volume);
 				}
 
 				this.pauseEl.hide();
@@ -240,12 +238,8 @@ var ytDubsPlayerView = Backbone.View.extend({
 	},
 
 	beforeClose : function(){
-		if(Dubtrack.playerController && this.main_player_volume){
-			if(Dubtrack.playerController){
-				Dubtrack.playerController.setVolume(Dubtrack.playerController.volume);
-			}else{
-				Dubtrack.playerController.setVolume(this.main_player_volume);
-			}
+		if(Dubtrack.room.player){
+				Dubtrack.room.player.setVolumeRemote(Dubtrack.playerController.volume);
 		}
 
 		if(this.player){

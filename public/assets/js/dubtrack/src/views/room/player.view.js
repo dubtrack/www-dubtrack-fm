@@ -435,11 +435,11 @@ Dubtrack.View.Player = Backbone.View.extend({
 
 		this.refreshTimeout = setTimeout(function(){
 			self.render();
-		}, 15000);
+		}, 40000);
 
-		this.fetchSongTimeout = setTimeout(function(){
+		/*this.fetchSongTimeout = setTimeout(function(){
 			this.fetchSong();
-		}.bind(this), 5000);
+		}.bind(this), 30000);*/
 	},
 
 	fetchSong : function(){
@@ -499,7 +499,7 @@ Dubtrack.View.Player = Backbone.View.extend({
 		var play_object = {
 			file: "https://www.youtube.com/watch?v=" + songInfo.fkid,
 			provider: 'youtube',
-			image: 'http://images.dubtrack.fm/hhberclba/image/upload/c_fill,h_460,w_900/tiqxlzynh3rxrkwvzeak.jpg'
+			image: 'https://res.cloudinary.com/hhberclba/image/upload/c_fill,h_460,w_900/tiqxlzynh3rxrkwvzeak.jpg'
 		};
 
 		if(!this.player_instance) this.setPlayer(play_object);
@@ -521,7 +521,7 @@ Dubtrack.View.Player = Backbone.View.extend({
 		var play_object = {
 			file: url,
 			type: 'mp3',
-			image: 'http://images.dubtrack.fm/hhberclba/image/upload/c_fill,h_460,w_900/tiqxlzynh3rxrkwvzeak.jpg'
+			image: 'https://res.cloudinary.com/hhberclba/image/upload/c_fill,h_460,w_900/tiqxlzynh3rxrkwvzeak.jpg'
 		};
 
 		if(!this.player_instance) this.setPlayer(play_object);
@@ -581,12 +581,22 @@ Dubtrack.View.Player = Backbone.View.extend({
 	setVolume : function(vol){
 		this.player_volume_level = vol;
 		Dubtrack.playerController.volume = vol;
+
 		if(!this.player_instance) return;
 
 		if(vol <= 2) this.player_instance.setMute(true);
 		else this.player_instance.setMute(false);
 
 		this.player_instance.setVolume(this.player_volume_level);
+	},
+
+	setVolumeRemote : function(vol){
+		if(!this.player_instance) return;
+
+		if(vol <= 2) this.player_instance.setMute(true);
+		else this.player_instance.setMute(false);
+
+		this.player_instance.setVolume(vol);
 	},
 
 	getCurrentTime : function(){

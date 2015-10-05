@@ -89,12 +89,8 @@ scDubsPlayerView = Backbone.View.extend({
 						self.playEl.css("display", "block");
 						self.replayEl.show();
 
-						if(Dubtrack.playerController && self.main_player_volume){
-							if(Dubtrack.playerController){
-								Dubtrack.playerController.setVolume(Dubtrack.playerController.volume);
-							}else{
-								Dubtrack.playerController.setVolume(self.main_player_volume);
-							}
+						if(Dubtrack.room.player){
+							Dubtrack.room.player.setVolumeRemote(Dubtrack.playerController.volume);
 						}
 					},
 
@@ -121,8 +117,8 @@ scDubsPlayerView = Backbone.View.extend({
 	play :  function(){
 		if(this.scPlayer){
 			try{
-				if(Dubtrack.playerController){
-					Dubtrack.playerController.setVolume(0, false);
+				if(Dubtrack.room.player){
+					Dubtrack.room.player.setVolumeRemote(0, true);
 				}
 
 				this.playEl.hide();
@@ -138,8 +134,10 @@ scDubsPlayerView = Backbone.View.extend({
 	pause : function(){
 		if(this.scPlayer){
 			try{
-				if(Dubtrack.playerController && this.main_player_volume){
-					Dubtrack.playerController.setVolume(this.main_player_volume);
+				if(Dubtrack.room.player){
+					Dubtrack.room.player.setVolumeRemote(Dubtrack.playerController.volume);
+				}else{
+					Dubtrack.room.player.setVolumeRemote(self.main_player_volume);
 				}
 
 				this.pauseEl.hide();
@@ -252,12 +250,8 @@ scDubsPlayerView = Backbone.View.extend({
 	},
 
 	beforeClose : function(){
-		if(Dubtrack.playerController && this.main_player_volume){
-			if(Dubtrack.playerController){
-				Dubtrack.playerController.setVolume(Dubtrack.playerController.volume);
-			}else{
-				Dubtrack.playerController.setVolume(this.main_player_volume);
-			}
+		if(Dubtrack.room.player){
+			Dubtrack.room.player.setVolumeRemote(Dubtrack.playerController.volume);
 		}
 
 		if(this.scPlayer){
