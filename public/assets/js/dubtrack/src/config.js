@@ -25,6 +25,17 @@
 	}*/
 }());
 
+//Nambok, you can put this wherever you feel is necessary. (Highlights your own mentions and gives a bright line on the side)
+var yourUN = Dubtrack.session.get('username');
+var usernamePing = ('@' + yourUN);
+Dubtrack.Events.bind('realtime:chat-message', realtimePing);
+function realtimePing(data) {
+    if (data.message.toLowerCase().indexOf(usernamePing) > -1) {
+        $('.username-handle:contains('+ usernamePing +')').css('color','rgba(255,0,255,0.80)');
+        $('#chat .chat-main li:contains(' + usernamePing +')').css('box-shadow','inset -4px 0px 0px 0px rgba(255,0,255,1)');
+    }
+};
+
 var dt = {};
 dt.chat = {};
 dt.player = {};
