@@ -119,10 +119,14 @@
 					display: block;
 				}
 
-				i{
+				div{
 					font-style: normal;
 					font-size: 0.7em;
 					@include opacity(0.5);
+					width: 26em;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
 				}
 
 				span{

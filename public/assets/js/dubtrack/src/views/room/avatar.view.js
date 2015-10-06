@@ -60,7 +60,7 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 
 		this.loadingEl = this.$el.find(".loadingAva");
 
-		this.$('a.loadRoomAva').html('<i>' + this.model.get('name') + '</i><span>chat</span>');
+		this.$('a.loadRoomAva').html('<span>chat</span><div title="' + this.model.get('name') + '">' + this.model.get('name') + '</div>');
 
 		this.currentTabEl.css("width", "100%");
 
