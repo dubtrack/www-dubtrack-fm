@@ -193,7 +193,6 @@ Dubtrack.View.chat = Backbone.View.extend({
 		var chatModel = new Dubtrack.Model.chat(r);
 		this.model.add(chatModel);
 
-		console.log('test!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
 		if(Dubtrack.session){
 			var usernamePing = '@' + Dubtrack.session.get('username');
 			console.log(usernamePing, r.message);
