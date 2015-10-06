@@ -52,8 +52,15 @@
 		}
 
 		@include respond-to(bp600){
-			//float: left;
 			height: 25.45em;
+		}
+
+		#room-main-player-container{
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			top: 0;
+			left: 0;
 		}
 
 		&:hover{
@@ -100,6 +107,15 @@
 			position: relative;
 			width: 100%;
 			height: 100%;
+
+			&.soundcloud{
+				img{
+					position: relative;
+					top: 50%;
+					transform: translateY(-50%);
+					width: 100%;
+				}
+			}
 		}
 
 		.placeholder{

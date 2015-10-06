@@ -23,13 +23,13 @@ Dubtrack.View.SoundCloudPlayer = Backbone.View.extend({
 		//create canvas
 		this.canvasContEl = $('<div/>', {
 			id: this.id
-		}).html('<canvas id="fft" width="' + this.$el.innerWidth() + '" height="' + this.$el.innerHeight() + '">' +
-				'</canvas>' +
-				'<img src="' + Dubtrack.config.urls.mediaBaseUrl + '/assets/images/media/dubtrack-player.png" width="80" height="80" alt="" style="position:absolute;z-index:99;top:50%;left:50%;margin-top:-43px;margin-left:-40px" />')
+		}).html('<img src="https://res.cloudinary.com/hhberclba/image/upload/c_fill,h_460,w_900/tiqxlzynh3rxrkwvzeak.jpg" alt="" />')
 		.css({
 			'position': 'absolute',
 			'top': 0,
-			'left': 0
+			'left': 0,
+			'width': '100%',
+			'height': '100%'
 		}).appendTo( this.$el );
 
 		(url.indexOf("secret_token") == -1) ? url = url + '?' : url = url + '&';
@@ -48,8 +48,8 @@ Dubtrack.View.SoundCloudPlayer = Backbone.View.extend({
 					autoLoad: true,
 					autoPlay: self.loadBg ? false : true,
 					stream: true,
-					from: start,
-					position : start,
+					from: start * 1000,
+					position : start * 1000,
 					usePeakData : true,
 					volume : self.loadBg ? 0 : Dubtrack.playerController.volume,
 
@@ -59,10 +59,11 @@ Dubtrack.View.SoundCloudPlayer = Backbone.View.extend({
 						object.bufferingEl.hide();
 						object.errorElBtn.hide();
 						object.playing = true;
-						//object.playElBtn.hide();
 					},
 
 					onload: function() {
+						self.scPlayer.setPosition( start * 1000 );
+						self.setVolume( Dubtrack.playerController.volume )
 					},
 
 					onerror: function(){
@@ -70,11 +71,6 @@ Dubtrack.View.SoundCloudPlayer = Backbone.View.extend({
 						object.bufferingEl.hide();
 						object.errorElBtn.show();
 						this.playing = false;
-					},
-
-					whileplaying: function() {
-						self.drawSpectrum( this.peakData.right, this.peakData.left );
-						//object.playElBtn.hide();
 					},
 
 					onfinish : function() {
@@ -88,35 +84,6 @@ Dubtrack.View.SoundCloudPlayer = Backbone.View.extend({
 		});
 
 		return this;
-
-	},
-
-	drawSpectrum : function(r, l){
-		var fftEl = document.getElementById('fft'),
-			fft =   fftEl.getContext("2d"),
-			wEl  = fftEl.clientWidth/2,
-			hEl  = fftEl.clientHeight/2;
-		//h=h/8;
-		//clear canvas
-		fft.fillStyle = "rgba(0,0,0,0.7)";
-		fft.beginPath();
-		fft.arc(wEl,hEl,1000,0,Math.PI*4,true);
-		fft.closePath();
-		fft.fill();
-
-		//fill canvas
-		//left
-		fft.fillStyle = "rgba(0,255,255,0.5)";
-		fft.beginPath();
-		fft.arc(wEl,hEl,l*100,0,Math.PI*8,true);
-		fft.closePath();
-		fft.fill();
-		//right
-		fft.fillStyle = "rgba(249,0,254,0.7)";
-		fft.beginPath();
-		fft.arc(wEl,hEl,r*100,0,Math.PI*8,true);
-		fft.closePath();
-		fft.fill();
 	},
 
 	play: function(){
@@ -154,10 +121,13 @@ Dubtrack.View.SoundCloudPlayer = Backbone.View.extend({
 	},
 
 	setVolume : function (volume){
+		volume = parseInt(volume,10);
 
 		if(this.scPlayer){
-			this.scPlayer.unmute();
-			this.scPlayer.setVolume(parseInt(volume,10));
+			if(volume > 2) this.scPlayer.unmute();
+			else this.scPlayer.mute();
+
+			this.scPlayer.setVolume(volume);
 		}
 	},
 });

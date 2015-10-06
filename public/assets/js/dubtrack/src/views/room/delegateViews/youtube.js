@@ -135,6 +135,14 @@ Dubtrack.View.YoutubePlayer = Backbone.View.extend({
 		}
 	},
 
+	getAvailableQualityLevels : function(){
+		if(this.player){
+			return this.player.getAvailableQualityLevels();
+		}else{
+			return [];
+		}
+	},
+
 	getCurrentTime : function(){
 		try{
 			if(this.player) return this.player.getCurrentTime();
@@ -145,7 +153,6 @@ Dubtrack.View.YoutubePlayer = Backbone.View.extend({
 		console.log("destroy youtube delegate view parent");
 
 		try{
-			//this.player.getIframe().src = '';
 			this.player.destroy();
 			this.player = null;
 		}catch(ex){
@@ -156,8 +163,12 @@ Dubtrack.View.YoutubePlayer = Backbone.View.extend({
 	},
 
 	setVolume : function (newVolume) {
+		newVolume = parseInt(newVolume, 10);
+
 		if(this.player){
-			this.player.unMute();
+			if(newVolume > 2) this.player.unMute();
+			else this.player.mute();
+
 			this.player.setVolume( newVolume );
 		}
 	}

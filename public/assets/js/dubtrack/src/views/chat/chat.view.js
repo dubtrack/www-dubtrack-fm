@@ -76,6 +76,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		this.clear_chat_timeout = setTimeout(function(){
 			var chat_log = new Dubtrack.View.chatLoadingItem().$el.text('Chat has been cleared!').appendTo(Dubtrack.room.chat._messagesEl)
 		}, 300);
+
 		this.$('.ps-scrollbar-x').css('bottom','0px');
 		this.$('.ps-scrollbar-y').css('top','0px');
 		this.$('.ps-scrollbar-y-rail').css('top','0px');
@@ -191,6 +192,16 @@ Dubtrack.View.chat = Backbone.View.extend({
 
 		var chatModel = new Dubtrack.Model.chat(r);
 		this.model.add(chatModel);
+
+		console.log('test!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+		if(Dubtrack.session){
+			var usernamePing = '@' + Dubtrack.session.get('username');
+			console.log(usernamePing, r.message);
+			if (r.message.toLowerCase().indexOf(usernamePing) > -1) {
+				$('.username-handle:contains('+ usernamePing +')').css('color','rgba(255,0,255,0.80)');
+				$('#chat .chat-main li:contains(' + usernamePing +')').css('box-shadow','inset -4px 0px 0px 0px rgba(255,0,255,1)');
+			}
+		}
 	},
 
 	userJoin: function(r){
