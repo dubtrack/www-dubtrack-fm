@@ -1,4 +1,3 @@
-Dubtrack.Events.bind('realtime:chat-message',realtimeChatPing);
 $('body').prepend('<audio class="isRobot" preload="auto"><source src="/assets/music/Robot_blip-Marianne_Gagnon-120342607.mp3" type="audio/mpeg"></audio>');
 function realtimeChatPing(data) {
     var realtimeChatUser = Dubtrack.session.get('username');
@@ -8,6 +7,21 @@ function realtimeChatPing(data) {
         isRobot.play();
     }
 }
+Dubtrack.Events.bind('realtime:chat-message',realtimeChatPing);
+function advanceDisableVoting() {
+    var currentdj = Dubtrack.room.player.activeSong.get('user').id;
+    var currentAuth = Dubtrack.session.get('_id');
+    if (currentdj === currentAuth) {
+        $('.dubup').hide();
+        $('.dubdown').hide();
+        $('.add-to-playlist').hide();
+    } else {
+        $('.dubup').show();
+        $('.dubdown').show();
+        $('.add-to-playlist').show();
+    }
+}
+Dubtrack.Events.bind('realtime:room_playlist-update', advanceDisableVoting);      
 function is_touch() {
 	return $.browser.mobile;
 	/*
