@@ -154,6 +154,7 @@ Dubtrack.View.Player = Backbone.View.extend({
 				$('.dubup').hide();
 				$('.dubdown').hide();
 				$('.add-to-playlist').hide();
+				this.skipElBtn.show();
 			} else {
 				$('.dubup').show();
 				$('.dubdown').show();
