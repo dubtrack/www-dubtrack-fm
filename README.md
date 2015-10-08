@@ -1,7 +1,7 @@
 WWW-DUBTRACK  :]
 ====
 
-Documentation coming soon, for now you can follow this instructions to run it locally. Submit all PRs against the `staging` branch
+Documentation coming soon, for now you can follow these instructions to run it locally. Submit all PRs against the `staging` branch
 
 ##Requirements
 
