@@ -666,20 +666,33 @@ w.Dubtrack = {
 		text : {
 			convertHtmltoTags: function(text, imagloadFun){
 				var imageRegex = /^((http|https)\:\/\/(i\.imgur\.com|img[0-9]{2}\.deviantart\.net|media\.giphy\.com|[0-9]{2}\.media\.tumblr\.com))(.*)\.(png|jpg|jpeg|gif)$/;
-
+			
 				text = text.replace(/(\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%()[\]?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|])/gim,
 					function(str) {
 						if (str.match(imageRegex)) {
-							str = str.replace(/^http:\/\//i, 'https://');
-							var onErrorAction = "Dubtrack.helpers.image.imageError(this, '/assets/images/media/chat_image_load_error.png');" + imagloadFun;
-							str = '<a href="' + str + '" class="autolink" target="_blank"><img src="' + str + '" alt="' + str + '" onload="' + imagloadFun + '" onerror="' + onErrorAction + '" /></a>';
-							return str;
+							//Nambok, if this makes sense -- Change whatever is needed.
+							var isHideImages = false;		
+							function hideImages() {
+								var isOn
+									if (!isHideImages) {
+										isHideImages = false
+										str = str.replace(/^http:\/\//i, 'https://');
+										var onErrorAction = "Dubtrack.helpers.image.imageError(this, '/assets/images/media/chat_image_load_error.png');" + imagloadFun;
+										str = '<a href="' + str + '" class="autolink" target="_blank"><img src="' + str + '" alt="' + str + '" onload="' + imagloadFun + '" onerror="' + onErrorAction + '" /></a>';
+										return str;
+									} else {
+									isHideImages = true
+									str = '<a href="' + str + '" class="autolink" target="_blank">' + str + '</a>';
+									return str;
+									}	
+							}
+							$('.hideImagesToggle').click(hideImages);
 						} else {
 							str = '<a href="' + str + '" class="autolink" target="_blank">' + str + '</a>';
 							return str;
 						}
 				});
-
+			
 				return text;
 			},
 
