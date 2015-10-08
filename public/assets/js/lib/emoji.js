@@ -60,7 +60,7 @@
          /* ¬¬   */ unamused: /&#127;&#127;/g,
          /* :-c  */ frowning: /:-?c/gi,
          /* :'-( */ sob: /:['’]-?\(|:&#x27;\(/g,
-         /* X-(  */ persevere: /x-?\(/gi
+         /* X-(  */ persevere: /x-?\(/gi,
          /* :-*  */ kissing_heart: /:-?\*/g,
          /* ;-)  */ wink: /;-?\)/g,
          /* :-/  */ confused: /:-?\//g,
