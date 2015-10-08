@@ -73,6 +73,8 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 
 		this.resize();
 
+		this.setTotalUsersDebouce = _.debounce(this.setTotalUsers.bind(this), 3000);
+
 		this.$('#main-user-list-room').perfectScrollbar({
 			wheelSpeed: 30,
 			suppressScrollX: true,
@@ -133,7 +135,7 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 
 		//this.totalFeatureUsers = 0;
 
-		this.setTotalUsers();
+		this.setTotalUsersDebouce.call(this);
 
 		_.each(this.collection.models, function (item) {
 			this.appendEl(item);
@@ -187,7 +189,7 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 
 		this.avatarContainer.append( itemModel.viewEl.$el );
 
-		this.setTotalUsers();
+		this.setTotalUsersDebouce.call(this);
 
 		this.$('#main-user-list-room').perfectScrollbar('update');
 
@@ -219,7 +221,7 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 			if(Dubtrack.room) Dubtrack.room.joinRoom();
 		}
 
-		this.setTotalUsers();
+		this.setTotalUsersDebouce.call(this);
 
 		this.$('#main-user-list-room').perfectScrollbar('update');
 	},
