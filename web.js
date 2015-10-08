@@ -1,12 +1,14 @@
 var config = require('./config').config,
 express = require('express'),
-session = require('express-session'),
 morgan = require('morgan'),
 http = require('http'),
 path = require('path'),
 engine = require('ejs-locals'),
 routes = require('./routes/index.js'),
 app = express();
+
+app.use(helmet.xssFilter());
+app.use(helmet());
 
 app.use(morgan('common'));
 app.set('port', config.port);
@@ -18,19 +20,6 @@ app.set('views',__dirname + '/views');
 app.set('view engine', 'ejs');
 
 app.use(express.static('public'));
-
-app.use(express.cookieParser(config.secret));
-app.use(session({
-	secret: config.secret,
-	resave: true,
-	saveUninitialized: true,
-	cookie: {
-		path: '/',
-		domain: 'dubtrack.fm',
-		httpOnly: process.env.ENV == 'production' ? true : false,
-		maxAge : 172800000
-	}
-}));
 
 app.use(function(req, res, next){
 	if(process.env.ENV == 'production'){
