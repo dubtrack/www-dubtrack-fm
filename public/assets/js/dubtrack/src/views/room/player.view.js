@@ -149,6 +149,16 @@ Dubtrack.View.Player = Backbone.View.extend({
 			Dubtrack.cache.users.get(song.userid, this.renderUser, this);
 
 			type = songInfo.type;
+
+			if (Dubtrack.session && Dubtrack.session.get('_id') === song.userid) {
+				$('.dubup').hide();
+				$('.dubdown').hide();
+				$('.add-to-playlist').hide();
+			} else {
+				$('.dubup').show();
+				$('.dubdown').show();
+				$('.add-to-playlist').show();
+			}
 		}
 
 		switch(type){
