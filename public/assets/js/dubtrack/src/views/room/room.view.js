@@ -224,34 +224,38 @@ Dubtrack.View.Room = Backbone.View.extend({
 
 	joinRoom: function(){
 		var self = this;
-		//join room
-		Dubtrack.helpers.sendRequest(this.urlUsersRoom, {}, "post", function(err, r){
-			if(err){
-				Dubtrack.playerController.$('.remove-if-banned').remove();
-				self.chat.$('.pusher-chat-widget-input').html('');
+		if(Dubtrack.loggedIn){
+			//join room
+			Dubtrack.helpers.sendRequest(this.urlUsersRoom, {}, "post", function(err, r){
+				if(err){
+					Dubtrack.playerController.$('.remove-if-banned').remove();
+					self.chat.$('.pusher-chat-widget-input').html('');
 
-				switch(err.code){
-					case 401:
-						self.chat.$('.pusher-chat-widget-input').html('<p>' + err.data.err.details.message + '</p>');
-						Dubtrack.helpers.displayError("[" + err.code + "] " + dubtrack_lang.global.error, err.data.err.details.message + ". <b><u>You won't be able to chat or play songs</u></b>", false);
-					break;
-					default:
-						Dubtrack.helpers.displayError(dubtrack_lang.global.error, "An unexpected error occurred joining room", true);
-				}
-			}else{
-				if(r && r.data && r.data.user && r.data.user.muted){
-					self.chat.user_muted = true;
-				}
+					switch(err.code){
+						case 401:
+							try{
+								self.chat.$('.pusher-chat-widget-input').html('<p>' + err.data.err.details.message + '</p>');
+								Dubtrack.helpers.displayError("[" + err.code + "] " + dubtrack_lang.global.error, err.data.err.details.message + ". <b><u>You won't be able to chat or play songs</u></b>", false);
+							}catch(ex){}
+						break;
+						default:
+							Dubtrack.helpers.displayError(dubtrack_lang.global.error, "An unexpected error occurred joining room", true);
+					}
+				}else{
+					if(r && r.data && r.data.user && r.data.user.muted){
+						self.chat.user_muted = true;
+					}
 
-				if(r && r.data && r.data.user && r.data.user.ot_token && r.data.room && r.data.room.otSession){
-					//go instant token
-					self.ot_token = r.data.user.ot_token;
-					self.ot_session = r.data.room.otSession;
+					if(r && r.data && r.data.user && r.data.user.ot_token && r.data.room && r.data.room.otSession){
+						//go instant token
+						self.ot_token = r.data.user.ot_token;
+						self.ot_session = r.data.room.otSession;
 
-					$("#dubtrack-video-realtime").show();
+						$("#dubtrack-video-realtime").show();
+					}
 				}
-			}
-		});
+			});
+		}
 	},
 
 	toggleVideos: function(){

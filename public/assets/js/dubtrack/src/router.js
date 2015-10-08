@@ -14,11 +14,6 @@ DubtrackRoute = Backbone.Router.extend({
 		var firstScriptTag = document.getElementsByTagName('script')[0];
 		firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-		try{
-			_gaq.push(['_setAccount', dubtrackMain.config.gaId ]);
-			_gaq.push(['_trackPageview']);
-		}catch(ex){}
-
 		$.backstretch("destroy", false);
 		$.backstretch("https://mediadubtrackfm.s3.amazonaws.com/assets/images/backgrounds/2048.jpg");
 
@@ -583,10 +578,14 @@ DubtrackRoute = Backbone.Router.extend({
 			if("replace" in params){
 				if( ! params.replace ){
 					try{
-						_gaq.push(['_trackPageview', url]);
+						ga('set', 'page', url);
+						ga('send', 'pageview');
 					}catch(ex){}
 				}
-			}else _gaq.push(['_trackPageview', url]);
+			}else{
+				ga('set', 'page', url);
+				ga('send', 'pageview');
+			}
 		}
 
 		$('.menu-expand').removeClass('active');

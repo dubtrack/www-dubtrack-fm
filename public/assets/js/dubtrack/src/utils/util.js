@@ -85,7 +85,7 @@ Dubtrack.els.templates = {
 
 		'searchUser': '	<%= Dubtrack.helpers.image.getImage(_id, username) %>' +
 						'<span>' +
-							'<%- username %>' +
+							'<%= username %>' +
 						'</span>'
 
 	},
@@ -136,7 +136,7 @@ Dubtrack.els.templates = {
 										'<div class="check_username_info"></div>' +
 										'<span class="editUsername">edit <i class="icon-pencil"></i></span>' +
 										'<span class="saveUsername">save <i class="icon-disk"></i></span>' +
-										'<input type="text" name="dt_username" value="<%- username %>" />' +
+										'<input type="text" name="dt_username" value="<%- username %>" maxlength="30" />' +
 									'<% } %>' +
 									/*'<span<% if(dj_details.active_room !== 0){%> class="online"<% } %>>' +
 										'<i></i>' +
@@ -285,7 +285,7 @@ Dubtrack.els.templates = {
 											dubtrack_lang.roomForm.roomNameLabel +
 										'</label>' +
 										'<div class="controls">' +
-											'<input class="input" name="name" id="roomName" placeholder="' + dubtrack_lang.roomForm.roomNameLabel + '" type="text" value="<%- name %>">' +
+											'<input class="input" name="name" id="roomName" placeholder="' + dubtrack_lang.roomForm.roomNameLabel + '" type="text" value="<%- name %>" maxlength="100">' +
 										'</div>' +
 									'</div>' +
 									/*'<div class="control-group">' +
@@ -481,7 +481,7 @@ Dubtrack.els.templates = {
 		'previewContainer' : '<div class="close"><span class="icon-close"></span></div><div class="playerDubContainer"></div><div class="comments-container"></div>',
 
 		'playlistContainer': '	<div class="create-playlist-input">' +
-									'<input type="text" placeholder="' + dubtrack_lang.playlist.create + '" class="playlist-input" id="playlist-input" />' +
+									'<input type="text" placeholder="' + dubtrack_lang.playlist.create + '" class="playlist-input" id="playlist-input" maxlength="50" />' +
 									'<span class="icon-plus"></span>' +
 								'</div>' +
 								'<ul class="playlist-list-action"></ul>',
@@ -763,7 +763,7 @@ Dubtrack.els.templates = {
 										'</ul>' +
 									'<div>' +
 									'<div class="create-playlist">' +
-										'<input type="text" placeholder="' + dubtrack_lang.playlist.create + '" />' +
+										'<input type="text" placeholder="' + dubtrack_lang.playlist.create + '" maxlength="100" />' +
 										'<span class="icon-plus"></span>' +
 									'</div>' +
 									'<ul class="playlist-style playlist-list"></ul>' +

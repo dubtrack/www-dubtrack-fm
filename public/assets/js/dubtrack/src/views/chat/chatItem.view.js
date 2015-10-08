@@ -133,40 +133,45 @@ Dubtrack.View.chatSkipItem = Dubtrack.View.systemChatItem.extend({
 
 Dubtrack.View.chatKickedItem = Dubtrack.View.systemChatItem.extend({
 	initialize: function () {
-		var user = this.model.get('kickedUser');
+		var kickedUser = this.model.get('kickedUser'),
+			user = this.model.get('user');
 
-		this.$el.html( "@" + user.username + " was kicked out of the room" );
+		this.$el.html( "@" + kickedUser.username + " was kicked out of the room by @" + user.username );
 	},
 });
 
 Dubtrack.View.chatUnbannedItem = Dubtrack.View.systemChatItem.extend({
 	initialize: function () {
-		var user = this.model.get('kickedUser');
+		var kickedUser = this.model.get('kickedUser'),
+			user = this.model.get('user');
 
-		this.$el.html( "@" + user.username + " was unbanned from the room" );
+		this.$el.html( "@" + kickedUser.username + " was unbanned from the room by @" + user.username  );
 	},
 });
 
 Dubtrack.View.chatUnsetModItem = Dubtrack.View.systemChatItem.extend({
 	initialize: function () {
-		var user = this.model.get('modUser');
+		var modUser = this.model.get('modUser'),
+			user = this.model.get('user');
 
-		this.$el.html( "@" + user.username + " was removed as a moderator" );
+		this.$el.html( "@" + modUser.username + " was removed as a moderator by @" + user.username );
 	},
 });
 
 Dubtrack.View.chatSetModItem = Dubtrack.View.systemChatItem.extend({
 	initialize: function () {
-		var user = this.model.get('modUser');
+		var modUser = this.model.get('modUser'),
+			user = this.model.get('user');
 
-		this.$el.html( "@" + user.username + " was made a moderator" );
+		this.$el.html( "@" + modUser.username + " was made a moderator by @" + user.username );
 	},
 });
 
 Dubtrack.View.chatBannedItem = Dubtrack.View.systemChatItem.extend({
 	initialize: function () {
-		var user = this.model.get('kickedUser'),
-			message = "@" + user.username + " was banned from the room";
+		var kickedUser = this.model.get('kickedUser'),
+			user = this.model.get('user'),
+			message = "@" + kickedUser.username + " was banned from the room by @" + user.username;
 
 		var time = parseInt(this.model.get('time'), 10);
 		if(time && time !== 0) message += " for " + time + " minutes";

@@ -31,16 +31,24 @@ Dubtrack.View.roomUsersItem = Backbone.View.extend({
 
 		if( this.model.get("userid") == Dubtrack.room.model.get('userid')){
 			this.$el.addClass('creator');
+			if(Dubtrack.room && Dubtrack.room.player) Dubtrack.room.player.skipElBtn.show();
 		}
 
-		if( this.model.get("roleid") == "52d1ce33c38a06510c000001"){
-			this.$el.addClass('mod');
+		var role = this.model.get("roleid");
+		if(role){
+			this.$el.addClass(role.type);
+
+			if(this.model.get("userid") == Dubtrack.session.id){
+				if(Dubtrack.room && Dubtrack.room.player) Dubtrack.room.player.skipElBtn.show();
+			}
 		}
 
 		//set current DJ
 		var currentUserDJ = Dubtrack.room.player.activeSong.get('user');
 		if( currentUserDJ && currentUserDJ.id == this.model.get('userid')){
 			this.$el.addClass('currentDJ');
+
+			if(Dubtrack.room && Dubtrack.room.player) Dubtrack.room.player.skipElBtn.show();
 		}
 
 		if(!user || typeof user !== "object") Dubtrack.cache.users.get(this.model.get("userid"), this.renderUser, this);

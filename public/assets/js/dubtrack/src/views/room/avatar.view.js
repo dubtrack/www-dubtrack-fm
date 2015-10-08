@@ -48,6 +48,9 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 		//this.featureUsersEl = $('#avatar_feature ul.avatar-list');
 		//this.totalFeatureUsers = 0;
 
+		this.uuids = [];
+		this.rt_users = [];
+
 		this.autoLoad();
 
 		//set list container
@@ -79,10 +82,26 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 
 	setTotalUsers: function(){
 		//this.$('a.loadRoomAva span').html( this.collection.models.length );
+		Dubtrack.realtime.channelPresence(function(r){
+			if(r && r.uuids) this.uuids = r.uuids;
 
-		if(Dubtrack.room && Dubtrack.room.chat){
-			Dubtrack.room.chat.setUserCount(this.collection.models.length);
-		}
+			this.rt_users = [];
+			var found_current_user = false;
+
+			_.each(this.uuids, function(uuid){
+				if(uuid.match(/^[0-9a-fA-F]{24}$/)){
+					this.rt_users.push(uuid);
+
+					if(Dubtrack.loggedIn && Dubtrack.session && Dubtrack.session.get("_id") == uuid) found_current_user = true;
+				}
+			}.bind(this));
+
+			if(Dubtrack.loggedIn && Dubtrack.session && !found_current_user) this.rt_users.push(Dubtrack.session.get("_id"));
+
+			if(Dubtrack.room && Dubtrack.room.chat){
+				Dubtrack.room.chat.setUserCount(this.rt_users.length);
+			}
+		});
 	},
 
 	filterRoomUsers: function(){
@@ -137,11 +156,14 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 	},
 
 	userJoin: function(r){
-		var itemModel = new Dubtrack.Model.RoomUser( r.roomUser );
+			if(r && r.user){
+				var itemModel = new Dubtrack.Model.RoomUser( r.roomUser );
 
-		itemModel.set('user', r.user);
+				itemModel.set('user', r.user);
+				itemModel.set('_user', r.user);
 
-		this.collection.add( itemModel );
+				this.collection.add( itemModel );
+			}
 	},
 
 	userLeave: function(r){
@@ -149,7 +171,7 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 			userid: r.user._id
 		});
 
-		this.collection.remove( user );
+		if(user) this.collection.remove( user );
 	},
 
 	addUser: function(itemModel){
@@ -262,7 +284,7 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 			userid: userid
 		});
 
-		if(itemModel){
+		if(itemModel && itemModel.viewEl && itemModel.viewEl.$el){
 			itemModel.viewEl.$el.addClass('currentDJ');
 
 			//if(itemModel.featureEl) itemModel.featureEl.$el.addClass('currentDJ');
@@ -277,7 +299,7 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 				userid: id
 			});
 
-			if(itemModel){
+			if(itemModel && itemModel.viewEl && itemModel.viewEl.$el){
 				itemModel.set('roleid', '52d1ce33c38a06510c000001');
 
 				itemModel.viewEl.$el.addClass('mod');
@@ -295,7 +317,7 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 				userid: id
 			});
 
-			if(itemModel){
+			if(itemModel && itemModel.viewEl && itemModel.viewEl.$el){
 				itemModel.set('roleid', null);
 
 				itemModel.viewEl.$el.removeClass('mod');
@@ -313,7 +335,7 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 				userid: id
 			});
 
-			if(itemModel){
+			if(itemModel && itemModel.viewEl && itemModel.viewEl.$el){
 				itemModel.set('muted', true);
 			}
 		}
@@ -327,7 +349,7 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 				userid: id
 			});
 
-			if(itemModel){
+			if(itemModel && itemModel.viewEl && itemModel.viewEl.$el){
 				itemModel.set('muted', false);
 			}
 		}

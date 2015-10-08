@@ -4,9 +4,9 @@ _.extend(Dubtrack.Events, Backbone.Events);
 
 Dubtrack.realtime = {
 	channel: null,
-	
+
 	dtPubNub: null,
-	
+
 	init : function(){
 		var uuid = null;
 
@@ -23,10 +23,10 @@ Dubtrack.realtime = {
 			'ssl': true,
 			'uuid': uuid
 		});
-		
+
 		return this;
 	},
-		
+
 	destroy: function(){
 		if(Dubtrack.realtime.channel === null) return;
 
@@ -36,7 +36,21 @@ Dubtrack.realtime = {
 
 		Dubtrack.realtime.channel = null;
 	},
+
+	channelPresence: function(callback){
+		if(Dubtrack.realtime.channel === null) return;
+
+		if( Dubtrack.realtime.dtPubNub === null){
+			Dubtrack.realtime.init();
+		}
+
+		Dubtrack.realtime.dtPubNub.here_now({
+			channel : Dubtrack.realtime.channel,
+			callback : callback
+		});
 		
+	},
+
 	subscribe: function(channel, callback){
 		//create instance or disconnect from previous channel
 		if( Dubtrack.realtime.dtPubNub === null){
@@ -63,7 +77,7 @@ Dubtrack.realtime = {
 				console.log("DUBTRACK real time respose ", r);
 				Dubtrack.realtime.callback(r);
 			},
-			
+
 			disconnect: function(){
 
 			},
@@ -86,7 +100,7 @@ Dubtrack.realtime = {
 			restore: true
 		});
 	},
-		
+
 	callback: function(r){
 		if(r.type) Dubtrack.Events.trigger('realtime:' + r.type, r);
 	}

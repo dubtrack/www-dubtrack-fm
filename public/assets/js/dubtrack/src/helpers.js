@@ -13,7 +13,7 @@ Dubtrack.cache = {
 			user = new Dubtrack.Model.User({
 				_id: id
 			});
-			
+
 			user.parse = Dubtrack.helpers.parse;
 
 			user.fetch({
@@ -63,7 +63,7 @@ Dubtrack.cache = {
 			song = new Dubtrack.Model.Song({
 				_id: id
 			});
-			
+
 			song.parse = Dubtrack.helpers.parse;
 
 			song.fetch({

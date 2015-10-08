@@ -16,7 +16,8 @@ Dubtrack.View.Player = Backbone.View.extend({
 		"click .skip-el": "skipSong",
 		"click .playbtn-el": "playCurrentSong",
 		"click .refresh-el" : "reloadVideo",
-		"click .videoquality-el": "changeYTQuality"
+		"click .videoquality-el": "changeYTQuality",
+		"click .hideVideo-el": "hideVideo"
 	},
 
 	initialize : function(){
@@ -30,6 +31,7 @@ Dubtrack.View.Player = Backbone.View.extend({
 		this.bufferingEl = this.$('.buferring-el').html(dubtrack_lang.player.buffering);
 		this.playElBtn = this.$('.playbtn-el');
 		this.queueInfo = $('.queue-info');
+		this.hideVideoElBtn = this.$('.hideVideo-el');
 		this.qualityElBtn = this.$('.videoquality-el');
 		this.refreshElBtn = this.$('.refresh-el');
 		this.skipElBtn = this.$('.skip-el');
@@ -72,6 +74,24 @@ Dubtrack.View.Player = Backbone.View.extend({
 		return false;
 	},
 
+	hideVideo: function(){
+		var isOn;
+
+		if (!this.istoggleVideo) {
+			this.istoggleVideo = true;
+			$('#room-main-player-container').css('visibility', 'hidden');
+			$('#room-main-player-container iframe').css('visibility', 'hidden');
+			this.hideVideoElBtn.text('SHOW VIDEO');
+			isOn = "on";
+		} else {
+			this.istoggleVideo = false;
+			$('#room-main-player-container').css('visibility', 'visible');
+			$('#room-main-player-container iframe').css('visibility', 'visible');
+			this.hideVideoElBtn.text('HIDE VIDEO');
+			isOn = "off";
+		}
+	},
+
 	render : function(){
 		var songInfo = this.activeSong.get('songInfo'),
 			song = this.activeSong.get('song'),
@@ -80,6 +100,7 @@ Dubtrack.View.Player = Backbone.View.extend({
 		this.skipElBtn.hide();
 		this.qualityElBtn.removeClass('show');
 		this.refreshElBtn.removeClass('show');
+		this.hideVideoElBtn.removeClass('show');
 
 		if(this.refreshTimeout) clearTimeout(this.refreshTimeout);
 		if(this.queue_timeout) clearTimeout(this.queue_timeout);
@@ -408,12 +429,18 @@ Dubtrack.View.Player = Backbone.View.extend({
 		this.playElBtn.hide();
 		this.qualityElBtn.addClass('show');
 		this.refreshElBtn.addClass('show');
+		this.hideVideoElBtn.addClass('show');
 
 		if(song.songLength/1000 == 99999) startTime = -1;
 
 		this.playerDelegate.render(songInfo.fkid, startTime, function(){
 			self.videoEnd();
 		}, this, true );
+
+		if(this.istoggleVideo){
+			$('#room-main-player-container').css('visibility', 'hidden');
+			$('#room-main-player-container iframe').css('visibility', 'hidden');
+		}
 	},
 
 	buildSoundCloud : function(){
