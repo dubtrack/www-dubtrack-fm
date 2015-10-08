@@ -764,7 +764,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 					self.lastItemChatUser = false;
 					self.lastItemEl = false;
 
-					chatItem.$el.html("user quitely unmuted");
+					chatItem.$el.html("user quietly unmuted");
 				}
 			}, this);
 		});
@@ -792,7 +792,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 					self.lastItemChatUser = false;
 					self.lastItemEl = false;
 
-					chatItem.$el.html("user quitely muted");
+					chatItem.$el.html("user quietly muted");
 				}
 			}, this);
 		});
