@@ -221,7 +221,6 @@ Dubtrack.View.chat = Backbone.View.extend({
 			console.log(usernamePing, r.message);
 			if (r && r.message && r.message.toLowerCase().indexOf(usernamePing) > -1) {
 				$('.username-handle:contains('+ usernamePing +')').css('color','rgba(255,0,255,0.80)');
-				$('#chat .chat-main li:contains(' + usernamePing +')').css('box-shadow','inset -4px 0px 0px 0px rgba(255,0,255,1)');
 			}
 		}
 	},
