@@ -302,7 +302,20 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 			});
 
 			if(itemModel && itemModel.viewEl && itemModel.viewEl.$el){
-				itemModel.set('roleid', '52d1ce33c38a06510c000001');
+				itemModel.set('roleid', {
+					_id: "52d1ce33c38a06510c000001",
+					type: "mod",
+					label: "Moderator",
+					rights: [
+						"skip",
+						"queue-order",
+						"kick",
+						"ban",
+						"mute",
+						"set-dj",
+						"lock-queue"
+					]
+				});
 
 				itemModel.viewEl.$el.addClass('mod');
 
@@ -364,7 +377,7 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 
 		if(itemModel){
 			var roleid = itemModel.get('roleid');
-			if(roleid && roleid == "52d1ce33c38a06510c000001") return true;
+			if(roleid && roleid._id == "52d1ce33c38a06510c000001") return true;
 		}
 
 		return false;

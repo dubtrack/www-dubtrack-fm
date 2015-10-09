@@ -588,6 +588,13 @@ DubtrackRoute = Backbone.Router.extend({
 			}
 		}
 
+		//Handle Alexa by updating their fired variable and refiring the beacon
+		if(typeof window._atrk_fired != 'undefined' && typeof window.atrk != 'undefined'){
+			window._atrk_fired = false;
+
+			window.atrk();
+		}
+
 		$('.menu-expand').removeClass('active');
 
 		return Backbone.Router.prototype.navigate.call(this, url, params);

@@ -2,20 +2,20 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 	el: $("#player-controller"),
 
 	volume: 100,
-	
+
 	events : {
 		"click .dubup": "voteUpAction",
 		"click .dubdown": "voteDownAction",
 		"click .add-to-playlist": "addToPlaylist"
 	},
-	
+
 	initialize : function(){
 		var self = this;
 
 		this.$el.html( _.template( Dubtrack.els.templates.layout.playerController ) );
 
 		this.volumeSliderEl = this.$('#volume-div');
-					
+
 		$(window).bind('resize.dubtrackapp', function(){
 			self.resizeEl();
 		});
@@ -33,7 +33,7 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 		this.$('.infoContainer').css( 'width', w + 32 );
 		this.progressElWidth = w;
     },
-	
+
 	update : function(){
 		this.voteUp = $('.dubup');
 		this.voteDown = $('.dubdown');
@@ -42,13 +42,13 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 		this.updateVote();
 
 		this.resizeEl();
-		
+
 		return false;
 	},
-	
+
 	addToPlaylist : function(e){
 		if(!Dubtrack.loggedIn) return;
-		
+
 		var song = Dubtrack.room.player.activeSong.get('song');
 
 		if( !Dubtrack.room ||  song === null ) return false;
@@ -59,19 +59,19 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 		};
 
 		Dubtrack.helpers.genPlaylistContainer( $('body'), position, song.songid, false, 'playerBottomFixed' );
-		
+
 		return false;
 	},
-	
+
 	voteUpAction : function(){
 		this.vote('updub');
 
 		return false;
 	},
-	
+
 	voteDownAction : function(){
 		this.vote('downdub');
-		
+
 		return false;
 	},
 
@@ -85,7 +85,7 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 			song: r.playlist
 		});
 	},
-	
+
 	shareFacebook : function(){
 		var song = Dubtrack.room.player.activeSong.get('songInfo');
 
@@ -106,15 +106,15 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 		var windowSize = "width=600,height=500,scrollbars=yes";
 
 		window.open(target, windowName, windowSize);
-		
+
 		return false;
 	},
-	
+
 	shareTwitter : function(){
 		var song = Dubtrack.room.player.activeSong.get('songInfo');
-		
+
 		var url = encodeURIComponent(Dubtrack.config.globalBaseUrl + 'join/' + Dubtrack.room.model.get("roomUrl") );
-		
+
 		var title = "";
 
 		if( !Dubtrack.room ||  song === null){
@@ -129,10 +129,10 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 		var windowSize = "width=600,height=500,scrollbars=yes";
 
 		window.open(target, windowName, windowSize);
-		
+
 		return false;
 	},
-	
+
 	vote : function(voteType){
 		if(!Dubtrack.loggedIn) return;
 
@@ -162,18 +162,18 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 				if(cookie) totalVoted = totalVoted - 1;
 				totalVoted = totalVoted - 1;
 			}
-			
+
 			totalVoted = totalVoted;
 			this.voteDisplayTotal.html(totalVoted);
 		}
-		
+
 		if(voteType == "updub"){
 			this.voteUp.addClass("voted");
 		}else{
 			this.voteDown.addClass("voted");
 		}
 	},
-	
+
 	updateVote : function(){
 		//reset els
 		$(".voted").removeClass("voted");
@@ -191,30 +191,30 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 		if(song.songid !== dubsong) cookie = null;
 
 		if(isNaN(totalVoted)) totalVoted = 0;
-			
+
 		if(cookie){
 			if(cookie === "updub") this.voteUp.addClass("voted");
 			else this.voteDown.addClass("voted");
 		}
-		
+
 		this.voteDisplayTotal.html(totalVoted);
 	},
-	
+
 	volumeControl : function(){
 		var self = this;
-		
+
 		var volume = Dubtrack.helpers.cookie.get('dubtrack-room-volume');
 
 		if(!volume) volume = 100;
 		//if( dubtrackMain.roomModel.get('user.settings.volume_is_muted') ) dubtrackMain.roomModel.set({ 'user.settings.volume' : 0 });
-				
+
 		this.volumeSliderEl.slider({
 			value: volume,
-			
+
 			orientation: "horizontal",
-			
+
 			range: "min",
-			
+
 			animate: true,
 
 			slide: function(event, ui) {
@@ -225,14 +225,15 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 				self.setVolume( ui.value, true );
 			}
 		});
-		
+
 		this.setVolume( volume );
 	},
 
 	setVolume: function(value){
 		// gives the slider a logarithmic scale for adjustment instead of linear
 		if( value != 0 )
-				value = ( ( Math.pow(value, 2) / 10000 /* Math.pow(100, 2) */ ) * 97 ) + 3
+			value = ( ( Math.pow(value, 2) / 10000 ) * 97 ) + 3;
+
 		Dubtrack.helpers.cookie.set('dubtrack-room-volume', value, 30);
 		this.volume = value;
 
