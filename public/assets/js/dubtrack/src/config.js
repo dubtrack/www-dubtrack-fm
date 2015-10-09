@@ -47,6 +47,10 @@ if(!w.DUBTRACK_API_URL) w.DUBTRACK_API_URL = "https://api.dubtrack.fm";
 
 w.Dubtrack = {
 	init: function(){
+		// Load default global values
+		var hide_images = Dubtrack.helpers.cookie.get('dubtrack-hide-images');
+		if(!!hide_images) Dubtrack.HideImages = true;
+
 		Dubtrack.helpers.loadDependencies(function() {
 			Dubtrack.app = new DubtrackRoute();
 
@@ -81,6 +85,8 @@ w.Dubtrack = {
 	Collection: {},
 
 	View: {},
+
+	HideImages : false,
 
 	$: {
 		body: $('body'),
@@ -669,7 +675,7 @@ w.Dubtrack = {
 
 				text = text.replace(/(\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%()[\]?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|])/gim,
 					function(str) {
-						if (str.match(imageRegex)) {
+						if (!Dubtrack.HideImages && str.match(imageRegex)) {
 							str = str.replace(/^http:\/\//i, 'https://');
 							var onErrorAction = "Dubtrack.helpers.image.imageError(this, '/assets/images/media/chat_image_load_error.png');" + imagloadFun;
 							str = '<a href="' + str + '" class="autolink" target="_blank"><img src="' + str + '" alt="' + str + '" onload="' + imagloadFun + '" onerror="' + onErrorAction + '" /></a>';

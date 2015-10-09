@@ -33,6 +33,17 @@ module.exports = function(grunt) {
 			}
 		},
 
+		cssnano: {
+			options: {
+				sourcemap: true
+			},
+			dist: {
+				files: {
+					'public/assets/css/main.css': 'public/assets/css/main.css'
+				}
+			}
+		},
+
 		concat: {
 			dubtrack_plugins: {
 				src: ['public/assets/js/dubtrack/src/utils/plugins/*.js'],
@@ -126,6 +137,7 @@ module.exports = function(grunt) {
 		'wrap:dubtrack',
 		'removelogging',
 		'uglify',
+		'cssnano',
 		'clean:dubtrack_production',
 		'compass:dubtrack_production',
 		'clean:dubtrack_after'

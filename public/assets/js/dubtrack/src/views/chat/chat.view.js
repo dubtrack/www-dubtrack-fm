@@ -29,7 +29,8 @@ Dubtrack.View.chat = Backbone.View.extend({
 		"click #new-messages-counter": "clickChatCounter",
 		"click .room-user-counter": "displayRoomUsers",
 		"click .pusher-chat-widget-input .icon-camera": "openGifCreator",
-		"click .clearChatToggle" : "clearChat"
+		"click .clearChatToggle" : "clearChat",
+		"click .hideImagesToggle" : "hideImageToggleClick"
 	},
 
 	initialize : function(){
@@ -66,20 +67,42 @@ Dubtrack.View.chat = Backbone.View.extend({
 		this.user_muted = false;
 
 		this.render();
+
+		if(Dubtrack.HideImages) this.hideImageToggle();
+	},
+
+	hideImageToggleClick : function(){
+		Dubtrack.HideImages = !Dubtrack.HideImages;
+		Dubtrack.helpers.cookie.set('dubtrack-hide-images', Dubtrack.HideImages, 30);
+
+		this.hideImageToggle();
+
+		return false;
+	},
+
+	hideImageToggle : function(){
+		if(Dubtrack.HideImages){
+			this.$('.hideImagesToggle').html('Show Images');
+			this.$el.addClass('hide-images-in-text');
+		}else{
+			this.$('.hideImagesToggle').html('Hide Images');
+			this.$el.removeClass('hide-images-in-text');
+		}
 	},
 
 	clearChat : function(){
 		this.model.reset({});
 		Dubtrack.room.chat._messagesEl.find('li').remove();
 
-		clearTimeout(this.clear_chat_timeout);
+		if(this.clear_chat_timeout) clearTimeout(this.clear_chat_timeout);
 		this.clear_chat_timeout = setTimeout(function(){
 			var chat_log = new Dubtrack.View.chatLoadingItem().$el.text('Chat has been cleared!').appendTo(Dubtrack.room.chat._messagesEl)
 		}, 300);
 
-		this.$('.ps-scrollbar-x').css('bottom','0px');
-		this.$('.ps-scrollbar-y').css('top','0px');
-		this.$('.ps-scrollbar-y-rail').css('top','0px');
+		this.$('.chat-messages').scrollTop(0);
+		this.$('.chat-messages').perfectScrollbar('update');
+
+		return false;
 	},
 
 	muteUserRealtime: function(r){

@@ -7,6 +7,22 @@
 	width: 100%;
 	display: none;
 
+	&.hide-images-in-text{
+		.chat-messages{
+			.chat-main{
+				li{
+					.activity-row{
+						.text{
+							img{
+								display: none;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
 	@include respond-to(bp1150){
 		display: block;
 	}
@@ -102,7 +118,14 @@
 
 		.clearChatToggle{
 			font-size: 0.7em;
-			margin-left: 65px;
+			margin-left: 70px;
+			border-radius: 0em;
+			line-height: 0.7;
+		}
+
+		.hideImagesToggle {
+			font-size: 0.7em;
+			margin-left: 5px;
 			border-radius: 0em;
 			line-height: 0.7;
 		}
