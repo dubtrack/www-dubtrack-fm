@@ -665,7 +665,7 @@ w.Dubtrack = {
 
 		text : {
 			convertHtmltoTags: function(text, imagloadFun){
-				var imageRegex = /^((http|https)\:\/\/(i\.imgur\.com|img[0-9]{2}\.deviantart\.net|media\.giphy\.com|[0-9]{2}\.media\.tumblr\.com|s-media-cache-ak[0-9]\.pinimg\.com|reactiongifs\.com))(.*)\.(png|jpg|jpeg|gif)$/;
+				var imageRegex = /^((http|https)\:\/\/(i\.imgur\.com|img[0-9]{2}\.deviantart\.net|media\.giphy\.com|[0-9]{2}\.media\.tumblr\.com|s-media-cache-ak[0-9]\.pinimg\.com|(www\.)?reactiongifs\.com|9gag\.com|upload\.wikimedia\.org))(.*)\.(png|jpg|jpeg|gif|svg)$/;
 
 				text = text.replace(/(\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%()[\]?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|])/gim,
 					function(str) {
