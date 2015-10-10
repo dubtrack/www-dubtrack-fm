@@ -107,6 +107,7 @@ w.Dubtrack = {
 			roomQueueDetails: "/room/:id/playlist/details",
 			roomHistory: "/room/:id/playlist/history",
 			roomLockQueue: "/room/:id/lockQueue",
+			userQueuePause: "/room/:id/queue/pause",
 			dubs: "/dubs",
 			user: "/user",
 			updateUsername: "/user/updateUsername",

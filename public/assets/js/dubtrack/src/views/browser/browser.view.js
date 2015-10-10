@@ -13,6 +13,7 @@ Dubtrack.View.Browser = Backbone.View.extend({
 		"click a.search-btn": "search",
 		"click li.current_queue": "displayQueue",
 		"click .clear-queue": "clearMyQueue",
+		"click .pause-queue": "pauseMyQueue",
 		"click li.current_room_queue": "displayRoomQueue",
 		"click li.my_tracks": "displayMyTracks",
 		"click .create-playlist span": "createPlaylist",
@@ -28,6 +29,7 @@ Dubtrack.View.Browser = Backbone.View.extend({
 		Dubtrack.Events.bind('realtime:room_playlist-update', this.updateQueueList, this);
 		Dubtrack.Events.bind('realtime:room_playlist-queue-update', this.updateQueueListQueue, this);
 		Dubtrack.Events.bind('realtime:room-lock-queue', this.lockRoomRT, this);
+		Dubtrack.Events.bind('realtime:user-pause-queue', this.pauseMyQueueRT, this);
 		this.browser_view_state = null;
 		this.render();
 	},
@@ -123,6 +125,14 @@ Dubtrack.View.Browser = Backbone.View.extend({
 			});
 		}
 
+		if(Dubtrack.session && Dubtrack.room && Dubtrack.room.users){
+			this.pauseMyQueueRT({
+				user_queue : {
+					queuePaused: Dubtrack.room.users.getIfQueueIsActive(Dubtrack.session.id)
+				}
+			});
+		}
+
 		return this;
 	},
 
@@ -200,18 +210,52 @@ Dubtrack.View.Browser = Backbone.View.extend({
 	clearMyQueue : function(e){
 		if(e) e.preventDefault()
 
-		if (Dubtrack.room && Dubtrack.room.model){
-			this.$('.clear-queue').text('loading....');
+		if(confirm('Are you sure you want to clear your queue?')){
+			if (Dubtrack.room && Dubtrack.room.model){
+				this.$('.clear-queue').text('loading....');
 
-			$.ajax({
-				url: Dubtrack.config.apiUrl + '/room/' + Dubtrack.room.model.get('_id') + '/playlist',
-				async: false,
-				type: 'delete'
-			}).always(function(){
-				this.$('.clear-queue').text('clear');
-				this.$('.clear-queue-browser-bth').text('clear my queue');
-				this.displayDetails("queue");
-			}.bind(this));
+				$.ajax({
+					url: Dubtrack.config.apiUrl + '/room/' + Dubtrack.room.model.get('_id') + '/playlist',
+					async: false,
+					type: 'delete'
+				}).always(function(){
+					this.$('.clear-queue').text('clear');
+					this.$('.clear-queue-browser-bth').text('clear my queue');
+					this.displayDetails("queue");
+				}.bind(this));
+			}
+		}
+
+		return false;
+	},
+
+	pauseMyQueue : function(e){
+		if(this.loading_pause_queue) return false;
+
+		this.$('.pause-queue').text('loading....');
+		this.loading_pause_queue = true;
+
+		var url = Dubtrack.config.apiUrl + Dubtrack.config.urls.userQueuePause.replace( ":id", Dubtrack.room.model.get('_id') ),
+			queuePaused = Dubtrack.session && Dubtrack.room && Dubtrack.room.users && Dubtrack.room.users.getIfQueueIsActive(Dubtrack.session.id) ? 0 : 1;
+
+		Dubtrack.helpers.sendRequest( url, {
+			queuePaused: queuePaused
+		}, 'put', function(err){
+			if(err) this.$('.pause-queue').text('Coundn\'t update your queue settings');
+
+			this.loading_pause_queue = false;
+		}.bind(this));
+
+		return false;
+	},
+
+	pauseMyQueueRT : function(r){
+		if(r && r.user_queue){
+			if(r.user_queue.queuePaused){
+				this.$('.pause-queue').text('Resume my queue');
+			}else{
+				this.$('.pause-queue').text('Pause my queue');
+			}
 		}
 	},
 
@@ -259,6 +303,7 @@ Dubtrack.View.Browser = Backbone.View.extend({
 
 		this.browser_view_state = display;
 		this.$('.clear-queue-browser-bth').hide();
+		this.$('.pause-queue-browser-bth').hide();
 
 		if(Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || (Dubtrack.room.users && Dubtrack.room.users.getIfHasRole(Dubtrack.session.id))){
 			this.$('.sidebar #room-lock-queue').show();
@@ -421,6 +466,7 @@ Dubtrack.View.Browser = Backbone.View.extend({
 					this.url_items_order = url_queue_order;
 
 					this.$('.clear-queue-browser-bth').show();
+					this.$('.pause-queue-browser-bth').show();
 
 					this.userQueueCollection.reset();
 					this.userQueueCollection.fetch({

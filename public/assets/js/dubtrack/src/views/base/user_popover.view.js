@@ -138,6 +138,7 @@ dt.global.userPopover = Backbone.View.extend({
 		}
 		Dubtrack.room.chat._messageInputEl.focus();
 		Dubtrack.views.user_popover.$el.hide();
+		Dubtrack.room.$el.removeClass('display-users-rooms');
 
 		return false;
 	},

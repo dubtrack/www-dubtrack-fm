@@ -31,6 +31,8 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 		Dubtrack.Events.bind('realtime:user-setrole', this.receiveMessage, this);
 		Dubtrack.Events.bind('realtime:user-unsetrole', this.receiveMessage, this);
 
+		Dubtrack.Events.bind('realtime:user-pause-queue', this.updateUserQueue, this);
+
 		var url = Dubtrack.config.urls.roomUsers.replace( "{id}", this.model.id );
 
 		this.collection = new Dubtrack.Collection.RoomUser();
@@ -292,6 +294,20 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 		}
 	},
 
+	updateUserQueue: function(r){
+		var id = (r.user_queue && "userid" in r.user_queue) ? r.user_queue.userid : false;
+
+		if(id){
+			var itemModel = this.collection.findWhere({
+				userid: id
+			});
+
+			if(itemModel){
+				itemModel.set('queuePaused', r.user_queue.queuePaused);
+			}
+		}
+	},
+
 	setRole: function(r){
 		var id = (r.modUser && "_id" in r.modUser) ? r.modUser._id : false;
 
@@ -438,6 +454,18 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 
 		if(itemModel){
 			return itemModel.get("muted");
+		}
+
+		return false;
+	},
+
+	getIfQueueIsActive: function(userid){
+		var itemModel = this.collection.findWhere({
+			userid: userid
+		});
+
+		if(itemModel){
+			if(itemModel.get("queuePaused")) return true;;
 		}
 
 		return false;

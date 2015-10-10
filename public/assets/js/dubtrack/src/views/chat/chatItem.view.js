@@ -220,3 +220,18 @@ Dubtrack.View.lockRoomQueueItem = Dubtrack.View.systemChatItem.extend({
 		this.$el.html( message );
 	},
 });
+
+Dubtrack.View.pauseUserQueueItem = Dubtrack.View.systemChatItem.extend({
+	initialize: function () {
+		var user = this.model.get('user'),
+			user_queue = this.model.get('user_queue');
+
+		if(user_queue && user_queue.queuePaused){
+			message = "@" + user.username + " paused their queue";
+		}else{
+			message = "@" + user.username + " resumed their queue";
+		}
+
+		this.$el.html( message );
+	},
+});

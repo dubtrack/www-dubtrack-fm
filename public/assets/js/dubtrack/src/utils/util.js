@@ -94,8 +94,8 @@ Dubtrack.els.templates = {
 		'popover' : '<div class="usercontent">' +
 						'</div>' +
 						'<div class="global-actions">' +
-							'<a href="#" class="send-pm-message"><span class="icon-chat" title="Send private message"></span></a>' +
-							'<a href="#" class="chat-mention">@</a>' +
+							'<a href="#" class="send-pm-message" title="Send private message"><span class="icon-chat"></span></a>' +
+							'<a href="#" class="chat-mention" title="Mention in chat">@</a>' +
 						'</div>' +
 						'<div class="actions">' +
 							'<a href="#" class="kick">Kick</a>' +
@@ -806,7 +806,10 @@ Dubtrack.els.templates = {
 							'<div class="content-videos">' +
 								'<div class="result-videos">' +
 									'<div class="loading">' + dubtrack_lang.global.loading + '</div>' +
-									'<div class="clear-queue clear-queue-browser-bth">Clear my queue</div>' +
+									'<div class="queue-management">' +
+										'<div class="clear-queue clear-queue-browser-bth">Clear my queue</div>' +
+										'<div class="pause-queue pause-queue-browser-bth">Pause my queue</div>' +
+									'</div>' +
 									'<div id="results_video_api">' +
 										'<ul></ul>' +
 									'</div>' +

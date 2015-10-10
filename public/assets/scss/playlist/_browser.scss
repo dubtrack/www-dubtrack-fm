@@ -138,9 +138,6 @@
 					font-size: 0.75em;
 					color: $siteColor;
 					@include opacity(0);
-					//@include transition-property(opacity);
-					//@include transition-duration(0.1s);
-						//@include transition-timing-function(ease);
 				}
 
 				.delete{
@@ -159,11 +156,12 @@
 					padding: 0;
 				}
 
-				.clear-queue{
-					top: 0.1em;
+				.clear-queue,
+				.pause-queue{
+					top: 0.2em;
 				}
 
-				& .playlist-selected{
+				.playlist-selected{
 					background:url(../images/button_arrow.png) no-repeat;
 					width:69px;
 					height:69px;
@@ -175,13 +173,20 @@
 			}
 		}
 	}
+
+	.queue-management{
+		display: block;
+		@include clearfix2();
+	}
+
 	.loading,
-	.clear-queue-browser-bth{
+	.clear-queue-browser-bth,
+	.pause-queue-browser-bth{
 		left:50%;
 		margin-left: -20px;
 		top:0;
 		text-transform: uppercase;
-		background: magenta;
+		background: $bgAccentColor;
 		color: #000;
 		padding: 5px 15px;
 		font-size: 12px;
@@ -189,14 +194,24 @@
 		font-weight: bold;
 	}
 
-	.clear-queue-browser-bth{
+	.clear-queue-browser-bth,
+	.pause-queue-browser-bth{
 		text-align: center;
 		cursor: pointer;
 		font-size: 14px;
 		display: none;
+		width: 50%;
+		float: left;
+		outline: 1px solid $bgAccentColor;
+		margin-left: 0;
 	}
 
-	& .nano{
+	.pause-queue-browser-bth{
+		color: $bgAccentColor;
+		background: #000;
+	}
+
+	.nano{
 		float: left;
 		width: 100%;
 		overflow: hidden;
