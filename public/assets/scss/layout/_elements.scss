@@ -411,6 +411,12 @@ ul.avatar-list {
 			}
 		}
 
+		&.co-owner{
+			&:after{
+				content: " - CO-OWNER";
+			}
+		}
+
 		&.admin{
 			&:after{
 				content: " - ADMIN";
@@ -420,12 +426,6 @@ ul.avatar-list {
 		&.creator{
 			&:after{
 				content: " - CREATOR";
-			}
-		}
-
-		&.co-owner{
-			&:after{
-				content: " - CO-OWNER";
 			}
 		}
 
