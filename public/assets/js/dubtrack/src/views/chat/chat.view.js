@@ -47,8 +47,8 @@ Dubtrack.View.chat = Backbone.View.extend({
 		Dubtrack.Events.bind('realtime:user-kick', this.receiveMessage, this);
 		Dubtrack.Events.bind('realtime:user-ban', this.receiveMessage, this);
 		Dubtrack.Events.bind('realtime:user-unban', this.receiveMessage, this);
-		Dubtrack.Events.bind('realtime:user-setmod', this.receiveMessage, this);
-		Dubtrack.Events.bind('realtime:user-unsetmod', this.receiveMessage, this);
+		Dubtrack.Events.bind('realtime:user-setrole', this.receiveMessage, this);
+		Dubtrack.Events.bind('realtime:user-unsetrole', this.receiveMessage, this);
 		Dubtrack.Events.bind('realtime:user-mute', this.muteUserRealtime, this);
 		Dubtrack.Events.bind('realtime:user-unmute', this.unmuteUserRealtime, this);
 		Dubtrack.Events.bind('realtime:room_playlist-queue-remove-user', this.receiveMessage, this);
@@ -169,9 +169,6 @@ Dubtrack.View.chat = Backbone.View.extend({
 
 		self.createSound();
 		this.setDefaultSound( "mention" );
-		//this.loadScrolling();
-
-		//this.setMod();
 
 		$(window).resize(function(){
 			self.resize();
@@ -436,11 +433,11 @@ Dubtrack.View.chat = Backbone.View.extend({
 
 				this.playSound(false);
 				break;
-			case "user-setmod":
+			case "user-setrole":
 				this.lastItemChatUser = false;
 				this.lastItemEl = false;
 
-				chatItem = new Dubtrack.View.chatSetModItem({
+				chatItem = new Dubtrack.View.chatSetRoleItem({
 					model: chatModel
 				});
 
@@ -448,11 +445,11 @@ Dubtrack.View.chat = Backbone.View.extend({
 
 				this.playSound(false);
 				break;
-			case "user-unsetmod":
+			case "user-unsetrole":
 				this.lastItemChatUser = false;
 				this.lastItemEl = false;
 
-				chatItem = new Dubtrack.View.chatUnsetModItem({
+				chatItem = new Dubtrack.View.chatUnsetRoleItem({
 					model: chatModel
 				});
 
@@ -637,7 +634,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 				return str;
 			});
 
-			this.setMod(username);
+			this.setRole(username, 'setModUser');
 			return;
 		}
 
@@ -647,7 +644,47 @@ Dubtrack.View.chat = Backbone.View.extend({
 				return str;
 			});
 
-			this.unsetMod(username);
+			this.unsetRole(username, 'setModUser');
+			return;
+		}
+
+		if(message.indexOf("/setdj @") === 0){
+			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
+				username = str.replace("@", "");
+				return str;
+			});
+
+			this.setRole(username, 'setDJUser');
+			return;
+		}
+
+		if(message.indexOf("/unsetdj @") === 0){
+			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
+				username = str.replace("@", "");
+				return str;
+			});
+
+			this.unsetRole(username, 'setDJUser');
+			return;
+		}
+
+		if(message.indexOf("/setmanager @") === 0){
+			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
+				username = str.replace("@", "");
+				return str;
+			});
+
+			this.setRole(username, 'setManagerUser');
+			return;
+		}
+
+		if(message.indexOf("/unsetmanager @") === 0){
+			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
+				username = str.replace("@", "");
+				return str;
+			});
+
+			this.unsetRole(username, 'setManagerUser');
 			return;
 		}
 
@@ -716,16 +753,21 @@ Dubtrack.View.chat = Backbone.View.extend({
 		}, this);
 	},
 
-	setMod: function(username){
+	setRole: function(username, role){
 		var chatItem = new Dubtrack.View.chatLoadingItem();
 		chatItem.$el.appendTo( this._messagesEl );
+
+		if(!Dubtrack.config.urls[role]){
+			chatItem.$el.addClass('system-error').html('Invalid action');
+			return;
+		}
 
 		Dubtrack.cache.users.getByUsername(username, function(err, user){
 			if(err || !user){
 				chatItem.$el.addClass('system-error').html('Invalid user: @' + username);
 			}
 
-			var url = Dubtrack.config.apiUrl + Dubtrack.config.urls.setModUser.replace(":roomid", Dubtrack.room.model.id);
+			var url = Dubtrack.config.apiUrl + Dubtrack.config.urls[role].replace(":roomid", Dubtrack.room.model.id);
 			url = url.replace(":id", user.id);
 
 			Dubtrack.helpers.sendRequest(url, {
@@ -740,16 +782,21 @@ Dubtrack.View.chat = Backbone.View.extend({
 		});
 	},
 
-	unsetMod: function(username){
+	unsetRole: function(username, role){
 		var chatItem = new Dubtrack.View.chatLoadingItem();
 		chatItem.$el.appendTo( this._messagesEl );
+
+		if(!Dubtrack.config.urls[role]){
+			chatItem.$el.addClass('system-error').html('Invalid action');
+			return;
+		}
 
 		Dubtrack.cache.users.getByUsername(username, function(err, user){
 			if(err || !user){
 				chatItem.$el.addClass('system-error').html('Invalid user: @' + username);
 			}
 
-			var url = Dubtrack.config.apiUrl + Dubtrack.config.urls.setModUser.replace(":roomid", Dubtrack.room.model.id);
+			var url = Dubtrack.config.apiUrl + Dubtrack.config.urls[role].replace(":roomid", Dubtrack.room.model.id);
 			url = url.replace(":id", user.id);
 
 			Dubtrack.helpers.sendRequest(url, {

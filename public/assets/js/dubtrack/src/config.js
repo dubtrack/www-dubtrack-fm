@@ -123,7 +123,10 @@ w.Dubtrack = {
 			kickUser: "/chat/kick/:roomid/user/:id",
 			banUser: "/chat/ban/:roomid/user/:id",
 			muteUser: "/chat/mute/:roomid/user/:id",
-			setModUser: "/chat/mod/:roomid/user/:id",
+			setModUser: "/chat/52d1ce33c38a06510c000001/:roomid/user/:id",
+			setDJUser: "/chat/5615feb8e596154fc2000002/:roomid/user/:id",
+			setManagerUser: "/chat/5615fd84e596150061000003/:roomid/user/:id",
+			setVIPUser: "/chat/5615fe1ee596154fc2000001/:roomid/user/:id",
 			skipSong: "/chat/skip/:id",
 			userQueue: "/user/session/room/:id/queue",
 			userQueueOrder : "/user/session/room/:id/queue/order",
@@ -433,14 +436,18 @@ w.Dubtrack = {
 
 			var offset = $(el).offset();
 
-			if($(window).height() < offset.top + 100){
-				offset.top -= 100;
-			}
-
 			Dubtrack.views.user_popover.$el.css({
 				'left': offset.left - 200,
 				'top': offset.top
 			}).show();
+
+			//setTop
+			Dubtrack.views.user_popover.offset_top = offset.top;
+			if($(window).height() < offset.top + Dubtrack.views.user_popover.$el.height()){
+				Dubtrack.views.user_popover.$el.css({
+					top: offset.top - Dubtrack.views.user_popover.$el.height() + 200
+				});
+			}
 		},
 
 		flashLogin : function(){
@@ -671,7 +678,7 @@ w.Dubtrack = {
 
 		text : {
 			convertHtmltoTags: function(text, imagloadFun){
-				var imageRegex = /^(https?\:\/\/(i\.imgur\.com|img[0-9]{2}\.deviantart\.net|media[0-9]?\.giphy\.com|[0-9]{2}\.media\.tumblr\.com|s-media-cache-ak[0-9]\.pinimg\.com|(www\.)?reactiongifs\.com|9gag\.com|upload\.wikimedia\.org))(.*)\.(png|jpg|jpeg|gif)$/;
+				var imageRegex = /^((http|https)\:\/\/(i\.imgur\.com|img[0-9]{2}\.deviantart\.net|media[0-9]?\.giphy\.com|[0-9]{2}\.media\.tumblr\.com|s-media-cache-ak[0-9]\.pinimg\.com|(www\.)?reactiongifs\.com|9gag\.com|upload\.wikimedia\.org))(.*)\.(png|jpg|jpeg|gif)$/;
 
 				text = text.replace(/(\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%()[\]?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|])/gim,
 					function(str) {

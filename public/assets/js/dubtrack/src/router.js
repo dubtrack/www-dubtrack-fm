@@ -87,9 +87,6 @@ DubtrackRoute = Backbone.Router.extend({
 			case "browser":
 				this.browser();
 			break;
-			case "dubs":
-				this.dubsLoader();
-			break;
 			case "notifications":
 				this.notifications();
 			break;
@@ -173,89 +170,6 @@ DubtrackRoute = Backbone.Router.extend({
 				});
 			}
 
-		});
-	},
-
-	dubsLoader : function(type){
-
-		if( ! type ) {
-			this.dubs(dubtrackMain.config.dubsUrl + "/date/");
-			return;
-		}
-
-		switch(type){
-			case "":
-				this.dubs(dubtrackMain.config.dubsUrl + "/date/" + type, type);
-				return;
-			break;
-			default:
-				this.dubs(dubtrackMain.config.dubsGetSong + type, type);
-				return;
-		}
-
-	},
-
-	dubs : function(url, type){
-
-		var self = this;
-		this.before(function(){
-
-			document.title = "Dubs | Dubtrack.fm";
-
-			$("#dt_mainplayer").addClass('inactive');
-
-			//set loading state
-			Dubtrack.els.displayloading(dubtrack_lang.dubs.loading);
-
-			if( ! self.dubsListCollection ){
-				self.containers.dubContainerMainSection = $('<section/>', {'class' : 'dt_section', 'id' : 'dubContainerMainSection' }).appendTo( dubtrackMain.config.mainSectionEl );
-				dubtrackMain.config.dubsListContainer = $('<div/>', { 'class' : 'avatar_cont', 'id' : dubtrackMain.config.dubsListContainer }).appendTo( self.containers.dubContainerMainSection );
-
-				//create a dubs collection
-				self.dubsListCollection = new DubsListCollection();
-
-				self.dubsListCollection.url = url;
-				self.dubsListCollection.fetch({ success : function(m,r){
-					self.dubsView = new DubsView({ model : self.dubsListCollection });
-					$( self.dubsView.el ).appendTo( dubtrackMain.config.dubsListContainer );
-
-					//set elements active state
-					$( self.dubsView.el ).find('a.active').removeClass('active');
-					$( self.dubsView.el ).find('a.' + type).addClass('active');
-
-					dubtrackMain.elements.mainLoading.hide();
-					self.dubsView.runPlugins();
-
-					if(!r.success){
-						self.navigate('/dubs',{trigger:true});
-						dubtrackMain.helpers.displayError(dubtrack_lang.dubs.song_notfound, dubtrack_lang.dubs.song_notfound_des, false);
-					}
-
-				},
-				error : function(){
-					//hide loading
-					dubtrackMain.elements.mainLoading.hide();
-					self.navigate('/',{trigger:true});
-					dubtrackMain.helpers.displayError(dubtrack_lang.global.error, dubtrack_lang.global.error_des, true);
-				}});
-
-			}else{
-				self.dubsView.dubsListEl.html('');
-
-				self.dubsListCollection.url = url;
-				self.dubsListCollection.fetch({success : function(m,r){
-					dubtrackMain.elements.mainLoading.hide();
-					self.dubsView.runPlugins();
-
-					if(!r.success){
-						self.navigate('/dubs',{trigger:true});
-						dubtrackMain.helpers.displayError(dubtrack_lang.dubs.song_notfound, dubtrack_lang.dubs.song_notfound_des, false);
-					}
-
-				}});
-
-				self.containers.dubContainerMainSection.removeClass('inactive');
-			}
 		});
 	},
 
@@ -413,7 +327,7 @@ DubtrackRoute = Backbone.Router.extend({
 			userModel.parse = Dubtrack.helpers.parse;
 
 			userModel.fetch({
-				success : function(m,r){
+				success : function(m, r){
 					//hide loading
 					Dubtrack.els.mainLoading.hide();
 
@@ -427,23 +341,25 @@ DubtrackRoute = Backbone.Router.extend({
 							self.profileView.render();
 						}
 					}else{
-						/*self.navigate('/',{
-							trigger: true
-						});*/
-
 						Dubtrack.helpers.displayError(dubtrack_lang.avatar.profileNotfound, dubtrack_lang.avatar.profileNotfound_des, false);
 					}
 				},
 
-				error : function(){
+				error : function(m, r){
 					//hide loading
 					Dubtrack.els.mainLoading.hide();
 
-					/*self.navigate('/',{
-						trigger: true
-					});*/
+					try{
+						var status = r.statusCode();
 
-					Dubtrack.helpers.displayError(dubtrack_lang.global.error, dubtrack_lang.global.error_des, true);
+						if(status && status.status == 404){
+							Dubtrack.helpers.displayError("404 - Page not found", "the requested page doesn't exist", false);
+						}else{
+							Dubtrack.helpers.displayError(dubtrack_lang.global.error, dubtrack_lang.global.error_des, true);
+						}
+					}catch(ex){
+						Dubtrack.helpers.displayError(dubtrack_lang.global.error, dubtrack_lang.global.error_des, true);
+					}
 				}
 
 			});

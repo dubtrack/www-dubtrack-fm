@@ -22,8 +22,8 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 
 		Dubtrack.Events.bind('realtime:user-join', this.userJoin, this);
 		Dubtrack.Events.bind('realtime:user-leave', this.userLeave, this);
-		Dubtrack.Events.bind('realtime:user-setmod', this.setMod, this);
-		Dubtrack.Events.bind('realtime:user-unsetmod', this.unsetMod, this);
+		Dubtrack.Events.bind('realtime:user-setrole', this.setRole, this);
+		Dubtrack.Events.bind('realtime:user-unsetrole', this.unsetRole, this);
 		Dubtrack.Events.bind('realtime:room_playlist-dub', this.realTimeDub, this);
 		Dubtrack.Events.bind('realtime:user-mute', this.setMuted, this);
 		Dubtrack.Events.bind('realtime:user-unmute', this.setunMuted, this);
@@ -267,8 +267,6 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 
 		if(itemModel){
 			itemModel.viewEl.$el.removeClass("downdub").removeClass("updub").addClass(type);
-
-			//if(itemModel.featureEl) itemModel.featureEl.$el.removeClass("downdub").removeClass("updub").addClass(type);
 		}
 	},
 
@@ -288,12 +286,10 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 
 		if(itemModel && itemModel.viewEl && itemModel.viewEl.$el){
 			itemModel.viewEl.$el.addClass('currentDJ');
-
-			//if(itemModel.featureEl) itemModel.featureEl.$el.addClass('currentDJ');
 		}
 	},
 
-	setMod: function(r){
+	setRole: function(r){
 		var id = (r.modUser && "_id" in r.modUser) ? r.modUser._id : false;
 
 		if(id){
@@ -302,29 +298,15 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 			});
 
 			if(itemModel && itemModel.viewEl && itemModel.viewEl.$el){
-				itemModel.set('roleid', {
-					_id: "52d1ce33c38a06510c000001",
-					type: "mod",
-					label: "Moderator",
-					rights: [
-						"skip",
-						"queue-order",
-						"kick",
-						"ban",
-						"mute",
-						"set-dj",
-						"lock-queue"
-					]
-				});
+				itemModel.set('roleid', r.role_object);
 
-				itemModel.viewEl.$el.addClass('mod');
-
-				//if(itemModel.featureEl) itemModel.featureEl.$el.addClass('mod');
+				itemModel.viewEl.$el.removeClass('mod co-owner manager vip resident-dj');
+				itemModel.viewEl.$el.addClass(r.role_object.type);
 			}
 		}
 	},
 
-	unsetMod: function(r){
+	unsetRole: function(r){
 		var id = (r.modUser && "_id" in r.modUser) ? r.modUser._id : false;
 
 		if(id){
@@ -335,9 +317,7 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 			if(itemModel && itemModel.viewEl && itemModel.viewEl.$el){
 				itemModel.set('roleid', null);
 
-				itemModel.viewEl.$el.removeClass('mod');
-
-				//if(itemModel.featureEl) itemModel.featureEl.$el.removeClass('mod');
+				itemModel.viewEl.$el.removeClass('mod co-owner manager vip resident-dj');
 			}
 		}
 	},
@@ -378,6 +358,58 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 		if(itemModel){
 			var roleid = itemModel.get('roleid');
 			if(roleid && roleid._id == "52d1ce33c38a06510c000001") return true;
+		}
+
+		return false;
+	},
+
+	getIfResidentDJ: function(userid){
+		var itemModel = this.collection.findWhere({
+			userid: userid
+		});
+
+		if(itemModel){
+			var roleid = itemModel.get('roleid');
+			if(roleid && roleid._id == "5615feb8e596154fc2000002") return true;
+		}
+
+		return false;
+	},
+
+	getIfVIP: function(userid){
+		var itemModel = this.collection.findWhere({
+			userid: userid
+		});
+
+		if(itemModel){
+			var roleid = itemModel.get('roleid');
+			if(roleid && roleid._id == "5615fe1ee596154fc2000001") return true;
+		}
+
+		return false;
+	},
+
+	getIfManager: function(userid){
+		var itemModel = this.collection.findWhere({
+			userid: userid
+		});
+
+		if(itemModel){
+			var roleid = itemModel.get('roleid');
+			if(roleid && roleid._id == "5615fd84e596150061000003") return true;
+		}
+
+		return false;
+	},
+
+	getIfHasRole: function(userid){
+		var itemModel = this.collection.findWhere({
+			userid: userid
+		});
+
+		if(itemModel){
+			var roleid = itemModel.get('roleid');
+			if(roleid && roleid._id) return true;
 		}
 
 		return false;

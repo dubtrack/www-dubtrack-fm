@@ -38,31 +38,35 @@
 		}
 	}
 
-	.actions{
+	.global-actions{
 		clear: both;
 		@include clearfix2();
 		margin: 0.5em 0 0 0;
 
 		a{
-			float: left;
-			width: 15%;
+			outline: 1px solid $bgOtherColor;
 			display: block;
 			text-align: center;
-			outline: 1px solid $bgOtherColor;
+			font-weight: bolder;
+			background: $bgAccentColor;
+			padding: 0.5em 0;
+			float: left;
+			width: 50%;
+			color: #000;
+		}
+	}
+
+	.actions{
+		clear: both;
+		@include clearfix2();
+
+		a{
+			display: block;
+			text-align: center;
+			color: $bgAccentColor;
+			outline: 1px solid $bgAccentColor;
 			padding: 0.5em 0;
 			font-weight: bold;
-			color: #000;
-			background: $bgAccentColor;
-
-			&.unmute,
-			&.mute{
-				width: 22%;
-			}
-
-			&.unsetmod,
-			&.setmod{
-				width: 33%;
-			}
 		}
 	}
 }

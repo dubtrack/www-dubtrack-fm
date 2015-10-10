@@ -71,7 +71,12 @@ Dubtrack.View.chatItem = Backbone.View.extend({
 		var user = this.model.get("user");
 
 		if(user){
-			Dubtrack.room.chat._messageInputEl.val( "@" + user.username + " ");
+			var chat_val = Dubtrack.room.chat._messageInputEl.val();
+			if(chat_val.length > 0){
+				Dubtrack.room.chat._messageInputEl.val( Dubtrack.room.chat._messageInputEl.val() +  "@" + user.username + " ");
+			}else{
+				Dubtrack.room.chat._messageInputEl.val("@" + user.username + " ");
+			}
 			Dubtrack.room.chat._messageInputEl.focus();
 		}
 
@@ -149,21 +154,23 @@ Dubtrack.View.chatUnbannedItem = Dubtrack.View.systemChatItem.extend({
 	},
 });
 
-Dubtrack.View.chatUnsetModItem = Dubtrack.View.systemChatItem.extend({
+Dubtrack.View.chatUnsetRoleItem = Dubtrack.View.systemChatItem.extend({
 	initialize: function () {
 		var modUser = this.model.get('modUser'),
-			user = this.model.get('user');
+			user = this.model.get('user'),
+			role_object = this.model.get('role_object');
 
-		this.$el.html( "@" + modUser.username + " was removed as a moderator by @" + user.username );
+		this.$el.html( "@" + modUser.username + " was removed as a " + role_object.label + " by @" + user.username );
 	},
 });
 
-Dubtrack.View.chatSetModItem = Dubtrack.View.systemChatItem.extend({
+Dubtrack.View.chatSetRoleItem = Dubtrack.View.systemChatItem.extend({
 	initialize: function () {
 		var modUser = this.model.get('modUser'),
-			user = this.model.get('user');
+			user = this.model.get('user'),
+			role_object = this.model.get('role_object');
 
-		this.$el.html( "@" + modUser.username + " was made a moderator by @" + user.username );
+		this.$el.html( "@" + modUser.username + " was made a " + role_object.label + " by @" + user.username );
 	},
 });
 

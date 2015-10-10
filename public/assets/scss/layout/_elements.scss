@@ -398,7 +398,11 @@ ul.avatar-list {
 		&.mod,
 		&.creator,
 		&.admin,
-		&.currentDJ{
+		&.currentDJ,
+		&.co-owner,
+		&.vip,
+		&.resident-dj,
+		&.manager{
 			&:after{
 				content: " - MOD";
 				color: $bgAccentColor;
@@ -419,6 +423,30 @@ ul.avatar-list {
 			}
 		}
 
+		&.co-owner{
+			&:after{
+				content: " - CO-OWNER";
+			}
+		}
+
+		&.vip{
+			&:after{
+				content: " - VIP";
+			}
+		}
+
+		&.resident-dj{
+			&:after{
+				content: " - RESIDENT DJ";
+			}
+		}
+
+		&.manager{
+			&:after{
+				content: " - MANAGER";
+			}
+		}
+
 		&.currentDJ{
 			&:after{
 				content: " - DJ";
@@ -433,14 +461,6 @@ ul.avatar-list {
 			& b{
 				color: $bgOtherColor;
 			}
-		}
-
-		&.downdub{
-			border: 1px solid $bgAccentColor;
-		}
-
-		&.updub{
-			border: 1px solid $bgOtherAccentColor;
 		}
 
 		&.avatar-mod {
