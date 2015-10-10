@@ -44,7 +44,7 @@ Dubtrack.View.Player = Backbone.View.extend({
 		this.actveQueueCollection = new Dubtrack.Collection.RoomActiveQueue();
 		this.actveQueueCollection.url = Dubtrack.config.apiUrl + activeQueueUrl;
 
-		Dubtrack.Events.bind('realtime:room-update', this.render, this);
+		Dubtrack.Events.bind('realtime:room-update', this.roomUpdate, this);
 
 		var self = this;
 
@@ -58,6 +58,8 @@ Dubtrack.View.Player = Backbone.View.extend({
 
 		this.activeSong = new Dubtrack.Model.ActiveQueue();
 		this.activeSong.url = Dubtrack.config.apiUrl + url;
+
+		this.room_type = null;
 
 		this.activeSong.parse = Dubtrack.helpers.parse;
 
@@ -92,6 +94,14 @@ Dubtrack.View.Player = Backbone.View.extend({
 		}
 	},
 
+	roomUpdate : function(r){
+		if(r && r.room){
+			if(this.room_type != r.room.roomType){
+				this.render();
+			}
+		}
+	},
+
 	render : function(){
 		var songInfo = this.activeSong.get('songInfo'),
 			song = this.activeSong.get('song'),
@@ -109,6 +119,7 @@ Dubtrack.View.Player = Backbone.View.extend({
 		this.$('.playerElement').remove();
 
 		if(Dubtrack.room.model.get('roomType') == 'iframe'){
+			this.room_type = 'iframe';
 			this.placeHolder.hide();
 			Dubtrack.playerController.$('.currentTime').hide();
 			if(this.playerDelegate) this.playerDelegate.close();
@@ -120,6 +131,9 @@ Dubtrack.View.Player = Backbone.View.extend({
 			$('.infoContainer').removeClass('display-block');
 			this.$('#room-main-player-container').empty();
 			this.$('#room-main-player-container').hide();
+
+			if(this.intervalCounter) clearInterval(this.intervalCounter);
+			this.progressEl.css('width', '0%');
 
 			var roomEmbedUrl = Dubtrack.room.model.get('roomEmbed'),
 				regexp = /(http:\/\/|https:\/\/|\/\/)(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
@@ -134,6 +148,7 @@ Dubtrack.View.Player = Backbone.View.extend({
 
 			return;
 		}else{
+			this.room_type = 'room';
 			$('.custom-embed-info').hide();
 			$('.remove-if-iframe').addClass('display-block');
 			$('.infoContainer').addClass('display-block');

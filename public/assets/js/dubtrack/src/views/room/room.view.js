@@ -48,7 +48,9 @@ Dubtrack.View.Room = Backbone.View.extend({
 
 	roomUpdate : function(r){
 		if(r && r.room){
-			if(r.room.background && r.room.background != this.model.get("background")){
+			var currentBackground = this.model.get("background");
+
+			if(r.room.background && r.room.background.public_id && currentBackground && currentBackground.public_id && currentBackground.public_id != r.room.background.public_id){
 				this.updateBackground(true);
 			}
 
