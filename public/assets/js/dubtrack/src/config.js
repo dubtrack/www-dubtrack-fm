@@ -49,7 +49,7 @@ w.Dubtrack = {
 	init: function(){
 		// Load default global values
 		var hide_images = Dubtrack.helpers.cookie.get('dubtrack-hide-images');
-		if(!!hide_images) Dubtrack.HideImages = true;
+		if(hide_images && hide_images == 'hide') Dubtrack.HideImages = true;
 
 		Dubtrack.helpers.loadDependencies(function() {
 			Dubtrack.app = new DubtrackRoute();

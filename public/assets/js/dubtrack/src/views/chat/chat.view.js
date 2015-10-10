@@ -75,7 +75,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 
 	hideImageToggleClick : function(){
 		Dubtrack.HideImages = !Dubtrack.HideImages;
-		Dubtrack.helpers.cookie.set('dubtrack-hide-images', Dubtrack.HideImages, 30);
+		Dubtrack.helpers.cookie.set('dubtrack-hide-images', Dubtrack.HideImages ? 'hide' : 'show', 30);
 
 		this.hideImageToggle();
 
@@ -90,6 +90,12 @@ Dubtrack.View.chat = Backbone.View.extend({
 			this.$('.hideImagesToggle').html('Hide Images');
 			this.$el.removeClass('hide-images-in-text');
 		}
+
+		this.$('.chat-messages').scrollTop(0);
+		this.$('.chat-messages').perfectScrollbar('update');
+		var height = this.$('.chat-messages')[0].scrollHeight;
+		this.$('.chat-messages').scrollTop(height);
+		this.$('.chat-messages').perfectScrollbar('update');
 	},
 
 	clearChat : function(){
