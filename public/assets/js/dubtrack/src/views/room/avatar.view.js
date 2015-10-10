@@ -28,6 +28,9 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 		Dubtrack.Events.bind('realtime:user-mute', this.setMuted, this);
 		Dubtrack.Events.bind('realtime:user-unmute', this.setunMuted, this);
 
+		Dubtrack.Events.bind('realtime:user-setrole', this.receiveMessage, this);
+		Dubtrack.Events.bind('realtime:user-unsetrole', this.receiveMessage, this);
+
 		var url = Dubtrack.config.urls.roomUsers.replace( "{id}", this.model.id );
 
 		this.collection = new Dubtrack.Collection.RoomUser();

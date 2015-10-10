@@ -53,6 +53,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		Dubtrack.Events.bind('realtime:user-unmute', this.unmuteUserRealtime, this);
 		Dubtrack.Events.bind('realtime:room_playlist-queue-remove-user', this.receiveMessage, this);
 		Dubtrack.Events.bind('realtime:room_playlist-queue-reorder', this.receiveMessage, this);
+		Dubtrack.Events.bind('realtime:room-lock-queue', this.receiveMessage, this);
 
 		//subscribe after 2s
 		setTimeout(function(){
@@ -474,6 +475,18 @@ Dubtrack.View.chat = Backbone.View.extend({
 				this.lastItemEl = false;
 
 				chatItem = new Dubtrack.View.reorderQueueItem({
+					model: chatModel
+				});
+
+				chatItem.$el.appendTo( this._messagesEl );
+
+				this.playSound(false);
+				break;
+			case "room-lock-queue":
+				this.lastItemChatUser = false;
+				this.lastItemEl = false;
+
+				chatItem = new Dubtrack.View.lockRoomQueueItem({
 					model: chatModel
 				});
 

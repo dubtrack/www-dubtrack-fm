@@ -16,7 +16,8 @@ Dubtrack.View.Browser = Backbone.View.extend({
 		"click li.current_room_queue": "displayRoomQueue",
 		"click li.my_tracks": "displayMyTracks",
 		"click .create-playlist span": "createPlaylist",
-		"keydown .create-playlist input": "createPlaylistInput"
+		"keydown .create-playlist input": "createPlaylistInput",
+		"click .sidebar #room-lock-queue": "lockRoom"
 	},
 
 	initialize : function(){
@@ -26,6 +27,7 @@ Dubtrack.View.Browser = Backbone.View.extend({
 
 		Dubtrack.Events.bind('realtime:room_playlist-update', this.updateQueueList, this);
 		Dubtrack.Events.bind('realtime:room_playlist-queue-update', this.updateQueueListQueue, this);
+		Dubtrack.Events.bind('realtime:room-lock-queue', this.lockRoomRT, this);
 		this.browser_view_state = null;
 		this.render();
 	},
@@ -39,6 +41,38 @@ Dubtrack.View.Browser = Backbone.View.extend({
 	updateQueueListQueue : function(){
 		if(this.browser_view_state && (this.browser_view_state === "room_queue")){
 			this.displayDetails(this.browser_view_state);
+		}
+	},
+
+	lockRoom : function(){
+		if(this.loading_lock_queue) return false;
+
+		var url = Dubtrack.config.apiUrl + Dubtrack.config.urls.roomLockQueue.replace( ":id", Dubtrack.room.model.get('_id') ),
+			lockedQeue = Dubtrack.room && Dubtrack.room.model.get('lockQueue') ? 0 : 1;
+
+		this.$('.sidebar #room-lock-queue').text('Loading...');
+		this.loading_lock_queue = true;
+
+		Dubtrack.helpers.sendRequest( url, {
+			lockQueue: lockedQeue
+		}, 'put', function(err){
+			if(err) this.$('.sidebar #room-lock-queue').text('Coundn\'t update queue settings');
+
+			this.loading_lock_queue = false;
+		}.bind(this));
+
+		return false;
+	},
+
+	lockRoomRT : function(r){
+		if(r && r.room){
+			if(r.room.lockQueue){
+				this.$('.sidebar #room-lock-queue').addClass('locked');
+				this.$('.sidebar #room-lock-queue').text('Unlock queue');
+			}else{
+				this.$('.sidebar #room-lock-queue').removeClass('locked');
+				this.$('.sidebar #room-lock-queue').text('Lock queue');
+			}
 		}
 	},
 
@@ -76,6 +110,18 @@ Dubtrack.View.Browser = Backbone.View.extend({
 			suppressScrollX: true,
 			wheelPropagation: false
 		});
+
+		if(Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || (Dubtrack.room.users && Dubtrack.room.users.getIfHasRole(Dubtrack.session.id))){
+			this.$('.sidebar #room-lock-queue').show();
+		}else{
+			this.$('.sidebar #room-lock-queue').hide();
+		}
+
+		if(Dubtrack.room && Dubtrack.room.model){
+			this.lockRoomRT({
+				room : Dubtrack.room.model.toJSON()
+			});
+		}
 
 		return this;
 	},
@@ -189,7 +235,6 @@ Dubtrack.View.Browser = Backbone.View.extend({
 			order.push($(elm).attr('data-id'));
 		});
 
-		console.log(this.url_items_order);
 		Dubtrack.helpers.sendRequest( this.url_items_order, {
 			'order[]' : order
 		}, 'post');
@@ -214,6 +259,12 @@ Dubtrack.View.Browser = Backbone.View.extend({
 
 		this.browser_view_state = display;
 		this.$('.clear-queue-browser-bth').hide();
+
+		if(Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || (Dubtrack.room.users && Dubtrack.room.users.getIfHasRole(Dubtrack.session.id))){
+			this.$('.sidebar #room-lock-queue').show();
+		}else{
+			this.$('.sidebar #room-lock-queue').hide();
+		}
 
 		switch(display){
 			case "user":
@@ -326,7 +377,7 @@ Dubtrack.View.Browser = Backbone.View.extend({
 				this.browserInfoEl.$el.prependTo( this.playlistContainer );
 				this.browserInfoEl.setName(dubtrack_lang.playlist.history);
 
-				var urlHistory = Dubtrack.config.apiUrl + Dubtrack.config.urls.roomHistory.replace( "{id}", Dubtrack.room.model.get('_id') );
+				var urlHistory = Dubtrack.config.apiUrl + Dubtrack.config.urls.roomHistory.replace( ":id", Dubtrack.room.model.get('_id') );
 				this.historyCollection.url = urlHistory;
 
 				this.historyCollection.reset();
@@ -356,7 +407,7 @@ Dubtrack.View.Browser = Backbone.View.extend({
 				break;
 
 			case "queue":
-				if(Dubtrack.room && Dubtrack.room.model.get('lockQueue') && !(Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || Dubtrack.room.users.getIfHasRole(Dubtrack.session.id) || Dubtrack.room.model.get('userid') == Dubtrack.session.id)){
+				if(Dubtrack.room && Dubtrack.room.model.get('lockQueue') && !(Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || (Dubtrack.room.users && Dubtrack.room.users.getIfHasRole(Dubtrack.session.id)))){
 					//hide loading
 					self.loadingEl.hide();
 

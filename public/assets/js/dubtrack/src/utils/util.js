@@ -784,6 +784,7 @@ Dubtrack.els.templates = {
 						'</div>' +
 						'<div class="browser-content-main">' +
 							'<div class="sidebar">' +
+								'<div id="room-lock-queue">Lock queue</div>' +
 								'<div id="queue-next"></div>' +
 									'<span class="title">' + dubtrack_lang.player.playlists + '</span>' +
 									'<div id="playlists-scroll">' +

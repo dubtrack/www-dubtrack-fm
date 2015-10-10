@@ -205,3 +205,18 @@ Dubtrack.View.reorderQueueItem = Dubtrack.View.systemChatItem.extend({
 		this.$el.html( message );
 	},
 });
+
+Dubtrack.View.lockRoomQueueItem = Dubtrack.View.systemChatItem.extend({
+	initialize: function () {
+		var user = this.model.get('user'),
+			room = this.model.get('room');
+
+		if(room && room.lockQueue){
+			message = "@" + user.username + " locked the queue";
+		}else{
+			message = "@" + user.username + " unlocked the queue";
+		}
+
+		this.$el.html( message );
+	},
+});

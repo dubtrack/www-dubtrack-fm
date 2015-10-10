@@ -703,10 +703,8 @@
 			}
 		}
 	}
-	& input[type=text]{
-	}
 
-	& .sidebar{
+	.sidebar{
 		width: 17.5em;
 		height: 100%;
 		position: absolute;
@@ -714,19 +712,36 @@
 		background: $bgOtherColor;
 		z-index: 9;
 		right: -100%;
-		padding: 5.063em 1em 1em 1em;
+		padding: 4.063em 1em 1em 1em;
 
 		@include respond-to(bp1150){
 			right: 0;
 		}
 
-		& .nano{
+		#room-lock-queue{
+			display: block;
+			padding: 0.3rem 1.5rem;
+			font-weight: bold;
+			text-transform: uppercase;
+			color: #000;
+			font-size: 0.75rem;
+			background: $bgAccentColor;
+			margin-bottom: 1.5rem;
+			text-align: center;
+			cursor: pointer;
+
+			&.locked{
+				background: $bgOtherAccentColor;
+			}
+		}
+
+		.nano{
 			float: none;
 			width: 100%;
 		}
 	}
 
-	& .browser-content-main{
+	.browser-content-main{
 		position: relative;
 		width: 100%;
 		height: 100%;
@@ -738,7 +753,8 @@
 
 #queue-next img{
 	margin:15px 0 15px 0;
-	& img{
+
+	img{
 		width:297px;
 		margin:0 0 0 -10px;
 	}
