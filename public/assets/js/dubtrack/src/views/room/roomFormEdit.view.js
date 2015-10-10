@@ -11,7 +11,7 @@ dt.room.roomFormUpdateViewUpdate = Backbone.View.extend({
 		"submit form": "saveForm",
 		"keyup #roomEmbedInput" : "replaceIframe"
 	},
-	
+
 	render : function(){
 		this.$el.html( _.template( Dubtrack.els.templates.rooms.roomFormUpdate, this.model.toJSON() ));
 
@@ -55,7 +55,7 @@ dt.room.roomFormUpdateViewUpdate = Backbone.View.extend({
 		}
 
 		this.roomTypeChange();
-		
+
 		return this;
 	},
 
@@ -77,13 +77,14 @@ dt.room.roomFormUpdateViewUpdate = Backbone.View.extend({
 
 		this.displayCustomIframe();
 	},
-	
+
 	saveForm : function(e){
 		e.preventDefault();
 
 		var value = this.$('input#roomName').val(),
 			maxLengthSongValue = this.$('input#maxLengthSongName').val(),
 			roomType = this.$('#roomTypeSelect').val(),
+			lockQueue = this.$('#lockQueueSelect').val(),
 			roomEmbed = this.$('#roomEmbedInput').val();
 
 		if( value && value !== " "){
@@ -94,7 +95,8 @@ dt.room.roomFormUpdateViewUpdate = Backbone.View.extend({
 				name: value,
 				maxLengthSong: maxLengthSongValue,
 				roomType: roomType,
-				roomEmbed: roomEmbed
+				roomEmbed: roomEmbed,
+				lockQueue: lockQueue
 			},{
 				success: function(m, r){
 					if(r.code === 200){
@@ -119,7 +121,7 @@ dt.room.roomFormUpdateViewUpdate = Backbone.View.extend({
 				}
 			});
 		}
-		
+
 		return false;
 	},
 
@@ -144,7 +146,7 @@ dt.room.roomFormUpdateViewUpdate = Backbone.View.extend({
 			this.$('#iframe-embed-preview').empty();
 		}
 	},
-	
+
 	closeAction : function(){
 		this.close();
 		return false;

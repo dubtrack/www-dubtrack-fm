@@ -356,57 +356,64 @@ Dubtrack.View.Browser = Backbone.View.extend({
 				break;
 
 			case "queue":
-				var urlQueue = Dubtrack.config.apiUrl + Dubtrack.config.urls.userQueue.replace( ":id", Dubtrack.room.model.get('_id') ),
-					url_queue_order = Dubtrack.config.apiUrl + Dubtrack.config.urls.userQueueOrder.replace( ":id", Dubtrack.room.model.get('_id') );
-				//var urlQueue = Dubtrack.config.apiUrl + Dubtrack.config.urls.userQueue.replace( ":id", "52b8afded008544e87000005" );
-				this.userQueueCollection.url = urlQueue;
+				if(Dubtrack.room && Dubtrack.room.model.get('lockQueue') && !(Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || Dubtrack.room.users.getIfHasRole(Dubtrack.session.id) || Dubtrack.room.model.get('userid') == Dubtrack.session.id)){
+					//hide loading
+					self.loadingEl.hide();
 
-				this.url_items_order = url_queue_order;
+					$('<li/>').addClass('queue-locked-info').text('Queue is locked, but you can still enjoy the tunes in this room :]').appendTo( self.playlistDetailContainer )
+				}else{
+					var urlQueue = Dubtrack.config.apiUrl + Dubtrack.config.urls.userQueue.replace( ":id", Dubtrack.room.model.get('_id') ),
+						url_queue_order = Dubtrack.config.apiUrl + Dubtrack.config.urls.userQueueOrder.replace( ":id", Dubtrack.room.model.get('_id') );
+					//var urlQueue = Dubtrack.config.apiUrl + Dubtrack.config.urls.userQueue.replace( ":id", "52b8afded008544e87000005" );
+					this.userQueueCollection.url = urlQueue;
 
-				this.$('.clear-queue-browser-bth').show();
+					this.url_items_order = url_queue_order;
 
-				this.userQueueCollection.reset();
-				this.userQueueCollection.fetch({
-					success : function(){
-						_.each(self.userQueueCollection.models, function (item) {
-							var itemViewEl = new Dubtrack.View.BrowserQueuePlaylisttItem()
-							.fetchSong(item)
-							.setBrowser(self)
-							.$el
-							.appendTo( self.playlistDetailContainer );
+					this.$('.clear-queue-browser-bth').show();
 
-							item.set({
-								"browserView": itemViewEl
-							});
-						});
+					this.userQueueCollection.reset();
+					this.userQueueCollection.fetch({
+						success : function(){
+							_.each(self.userQueueCollection.models, function (item) {
+								var itemViewEl = new Dubtrack.View.BrowserQueuePlaylisttItem()
+								.fetchSong(item)
+								.setBrowser(self)
+								.$el
+								.appendTo( self.playlistDetailContainer );
 
-						//hide loading
-						self.loadingEl.hide();
-
-						self.playlistDetailContainer.sortable({
-							axis: "y",
-							cursor: "move",
-							placeholder: "ui-state-highlight",
-
-							update: function(event, ui){
-								order = [];
-								$(this).children('li').each(function(idx, elm) {
-									console.log($(elm));
-									order.push($(elm).attr('data-id'));
+								item.set({
+									"browserView": itemViewEl
 								});
-								console.log(order, url_queue_order);
-								Dubtrack.helpers.sendRequest( url_queue_order, {
-									'order[]' : order
-								}, 'post');
-							}
-						});
-					},
+							});
 
-					error: function(){
-						//hide loading
-						self.loadingEl.hide();
-					}
-				});
+							//hide loading
+							self.loadingEl.hide();
+
+							self.playlistDetailContainer.sortable({
+								axis: "y",
+								cursor: "move",
+								placeholder: "ui-state-highlight",
+
+								update: function(event, ui){
+									order = [];
+									$(this).children('li').each(function(idx, elm) {
+										console.log($(elm));
+										order.push($(elm).attr('data-id'));
+									});
+									console.log(order, url_queue_order);
+									Dubtrack.helpers.sendRequest( url_queue_order, {
+										'order[]' : order
+									}, 'post');
+								}
+							});
+						},
+
+						error: function(){
+							//hide loading
+							self.loadingEl.hide();
+						}
+					});
+				}
 
 				break;
 
@@ -916,7 +923,15 @@ Dubtrack.View.BrowserPlaylistItem = Backbone.View.extend({
 
 		Dubtrack.helpers.playlist.addQueue( id , type, function(err, r){
 			if(err){
-				self.$('.display-error').show().html('Song already in queue or played in the last hour');
+				try{
+					if(err && err.data && err.data.err && err.data.err.details && err.data.err.details && err.data.err.details.message){
+						self.$('.display-error').show().html(err.data.err.details.message);
+					}else{
+						self.$('.display-error').show().html('Song already in queue or played in the last hour');
+					}
+				}catch(ex){
+					self.$('.display-error').show().html('Song already in queue or played in the last hour');
+				}
 			}else{
 				self.$('.display-success').show().html('Song added to queue');
 			}

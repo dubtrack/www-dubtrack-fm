@@ -417,15 +417,15 @@ ul.avatar-list {
 			}
 		}
 
-		&.creator{
-			&:after{
-				content: " - CREATOR";
-			}
-		}
-
 		&.co-owner{
 			&:after{
 				content: " - CO-OWNER";
+			}
+		}
+
+		&.creator{
+			&:after{
+				content: " - CREATOR";
 			}
 		}
 

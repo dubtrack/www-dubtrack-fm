@@ -402,6 +402,19 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 		return false;
 	},
 
+	getIfOnwer: function(userid){
+		var itemModel = this.collection.findWhere({
+			userid: userid
+		});
+
+		if(itemModel){
+			var roleid = itemModel.get('roleid');
+			if(roleid && roleid._id == "5615fa9ae596154a5c000000") return true;
+		}
+
+		return false;
+	},
+
 	getIfHasRole: function(userid){
 		var itemModel = this.collection.findWhere({
 			userid: userid

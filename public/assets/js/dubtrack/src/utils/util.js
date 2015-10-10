@@ -358,6 +358,15 @@ Dubtrack.els.templates = {
 												'<option value="iframe"<% if(roomType && roomType == "iframe"){%> selected<%}%>>Iframe Embed</option>' +
 											'</select>' +
 										'</div>' +
+										'<label class="control-label display-block">' +
+											'Lock queue' +
+										'</label>' +
+										'<div class="controls textarea">' +
+											'<select name="lockQueue" id="lockQueueSelect">' +
+												'<option value="1"<% if(lockQueue){%> selected<%}%>>Yes</option>' +
+												'<option value="0"<% if(!lockQueue){%> selected<%}%>>No</option>' +
+											'</select>' +
+										'</div>' +
 									'</div>' +
 									'<div class="control-group" id="iframeEmbedField">' +
 										'<label class="control-label">' +

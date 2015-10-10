@@ -486,6 +486,8 @@ DubtrackRoute = Backbone.Router.extend({
 			if(join_cookie) this.join(join_cookie, false, true);
 		}
 
+		if(Dubtrack.views.user_popover) Dubtrack.views.user_popover.$el.hide();
+
 		if (callback) callback.call(this);
 	},
 

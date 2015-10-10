@@ -252,6 +252,17 @@
 					}
 				}
 
+				&.queue-locked-info{
+					border: #800000 1px solid;
+					color: #fff;
+					background: #bf0000;
+					padding: 0.7rem 2rem;
+					text-align: center;
+					text-transform: uppercase;
+					font-weight: bold;
+					font-size: 0.8rem;
+				}
+
 				.display-error,
 				.display-success{
 					display: block;
