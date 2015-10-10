@@ -375,10 +375,12 @@ Dubtrack.View.Player = Backbone.View.extend({
 		this.playing = false;
 		if(this.refreshTimeout) clearTimeout(this.refreshTimeout);
 
-		var self = this;
 		this.refreshTimeout = setTimeout(function(){
-			self.render();
-		}, 15000);
+				this.loadingEl.hide();
+				Dubtrack.playerController.$('.currentSong').html( dubtrack_lang.player.no_one_is_playing );
+				this.placeHolder.show();
+				this.pictureEl.hide();
+		}.bind(this), 15000);
 	},
 
 	fetchSong : function(){
