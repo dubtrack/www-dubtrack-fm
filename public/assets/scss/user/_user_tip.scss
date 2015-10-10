@@ -67,6 +67,16 @@
 			outline: 1px solid $bgAccentColor;
 			padding: 0.5em 0;
 			font-weight: bold;
+
+			input{
+				vertical-align: middle;
+				border: 0;
+				border-bottom: 1px solid $bgAccentColor;
+				background: #000;
+				color: #fff;
+				padding: 0.15rem 0.5rem;
+				width: 4rem;
+			}
 		}
 	}
 }

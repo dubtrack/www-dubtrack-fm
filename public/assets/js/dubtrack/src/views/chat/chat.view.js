@@ -668,6 +668,26 @@ Dubtrack.View.chat = Backbone.View.extend({
 			return;
 		}
 
+		if(message.indexOf("/setvip @") === 0){
+			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
+				username = str.replace("@", "");
+				return str;
+			});
+
+			this.setRole(username, 'setVIPUser');
+			return;
+		}
+
+		if(message.indexOf("/unsetvip @") === 0){
+			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
+				username = str.replace("@", "");
+				return str;
+			});
+
+			this.unsetRole(username, 'setVIPUser');
+			return;
+		}
+
 		if(message.indexOf("/setmanager @") === 0){
 			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
 				username = str.replace("@", "");

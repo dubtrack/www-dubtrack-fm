@@ -5,7 +5,8 @@ dt.global.userPopover = Backbone.View.extend({
 
 	events: {
 		'click a.kick' : 'kickuser',
-		'click a.ban' : 'banuser',
+		//'click a.ban' : 'banuser',
+		'keydown a.ban input': 'banuser',
 		'click a.mute' : 'muteuser',
 		'click a.unmute' : 'unmuteuser',
 		'click .usercontent': 'navigateUser',
@@ -96,11 +97,13 @@ dt.global.userPopover = Backbone.View.extend({
 		}
 
 		var self = this;
-		$('body').bind('click.userPopover', function(){
+		$('body').bind('click.userPopover', function(e){
 			if(self.userActive){
-				self.userActive = false;
-				Dubtrack.views.user_popover.$el.hide();
-				$('body').unbind('click.userPopover');
+				if(e && e.target && $(e.target).parents('a.ban').length < 0){
+					self.userActive = false;
+					Dubtrack.views.user_popover.$el.hide();
+					$('body').unbind('click.userPopover');
+				}
 			}
 		});
 
@@ -146,11 +149,19 @@ dt.global.userPopover = Backbone.View.extend({
 		return false;
 	},
 
-	banuser: function(){
-		this.userActive = false;
-		this.$el.hide();
-		Dubtrack.room.chat.banUser(this.user.get('username'), 0);
-		return false;
+	banuser: function(e){
+		c = e.which ? e.which : e.keyCode;
+		if (c == 13){
+			var value_input = this.$('a.ban input').val();
+			if(value_input.length > 0){
+				Dubtrack.room.chat.banUser(this.user.get('username'), parseInt(value_input, 10));
+			}else{
+				Dubtrack.room.chat.banUser(this.user.get('username'), 0);
+			}
+
+			Dubtrack.views.user_popover.$el.hide();
+			return false;
+		}
 	},
 
 	muteuser: function(){
