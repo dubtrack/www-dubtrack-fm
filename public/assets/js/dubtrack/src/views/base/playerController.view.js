@@ -238,5 +238,38 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 		this.volume = value;
 
 		if(Dubtrack.room.player) Dubtrack.room.player.setVolume( value );
+		
+		//Hopefully this works here -- or move it somewhere else
+		var volume = 0;
+		// Creation of the meter
+		$("#volume-div").after($('<span id="vol-meter">0</span>'));
+		$("#vol-meter").on("click", function(){
+		        if (getVolume() !== 0) volume = getVolume();
+		        $("#vol-meter").toggleClass("muted");
+		        if ($("#vol-meter").hasClass("muted")) setVolume(0);
+		        else setVolume(volume);
+		});
+		// On scroll wheel hover volume slider and "Playback-container"
+		$(".volume, .left_section").bind("mousewheel", function(e){
+		        var i = 5; //This can be changed to iterate more or less.
+		        if (e.originalEvent.wheelDelta /120 > 0) setVolume(getVolume() + i);
+		        else setVolume(getVolume() - i);
+		});
+		function setVolume(x) {
+		        if (x <= 0) {
+		                x = 0;
+		                $("#vol-meter")[0].className = "muted";
+		        } else if (x > 0 && x < 100) {
+		                $("#vol-meter").removeClass("muted");
+		        } else if (x >= 100) {
+		                x = 100;
+		        }
+		        $("#volume-div").slider({value: x});
+		        $("#vol-meter")[0].innerText = x+"";
+		}
+		function getVolume() {
+		        return $("#volume-div").slider("option", "value");
+		}
 	}
+	
 });
