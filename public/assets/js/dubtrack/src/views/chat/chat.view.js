@@ -54,7 +54,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		Dubtrack.Events.bind('realtime:room_playlist-queue-remove-user', this.receiveMessage, this);
 		Dubtrack.Events.bind('realtime:room_playlist-queue-reorder', this.receiveMessage, this);
 		Dubtrack.Events.bind('realtime:room-lock-queue', this.receiveMessage, this);
-		Dubtrack.Events.bind('realtime:user-pause-queue', this.receiveMessage, this);
+		//Dubtrack.Events.bind('realtime:user-pause-queue', this.receiveMessage, this);
 
 		//subscribe after 2s
 		setTimeout(function(){
