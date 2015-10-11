@@ -37,13 +37,13 @@ dt.global.userPopover = Backbone.View.extend({
 		 			this.$('.actions').show();
 		 			this.$('.actions a.send-pm-message').show();
 
-					if(Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || Dubtrack.room.users.getIfOnwer(Dubtrack.session.id) || Dubtrack.room.users.getIfMod(Dubtrack.session.id) || Dubtrack.room.users.getIfVIP(Dubtrack.session.id) || Dubtrack.room.users.getIfResidentDJ(Dubtrack.session.id) || Dubtrack.room.users.getIfManager(Dubtrack.session.id)){
+					if(Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || Dubtrack.room.users.getIfOwner(Dubtrack.session.id) || Dubtrack.room.users.getIfMod(Dubtrack.session.id) || Dubtrack.room.users.getIfVIP(Dubtrack.session.id) || Dubtrack.room.users.getIfResidentDJ(Dubtrack.session.id) || Dubtrack.room.users.getIfManager(Dubtrack.session.id)){
 					}
 
-					if(Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || Dubtrack.room.users.getIfOnwer(Dubtrack.session.id) || Dubtrack.room.users.getIfMod(Dubtrack.session.id) || Dubtrack.room.users.getIfVIP(Dubtrack.session.id) || Dubtrack.room.users.getIfManager(Dubtrack.session.id)){
+					if(Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || Dubtrack.room.users.getIfOwner(Dubtrack.session.id) || Dubtrack.room.users.getIfMod(Dubtrack.session.id) || Dubtrack.room.users.getIfVIP(Dubtrack.session.id) || Dubtrack.room.users.getIfManager(Dubtrack.session.id)){
 					}
 
-					if(Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || Dubtrack.room.users.getIfOnwer(Dubtrack.session.id) || Dubtrack.room.users.getIfMod(Dubtrack.session.id) || Dubtrack.room.users.getIfManager(Dubtrack.session.id)){
+					if(Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || Dubtrack.room.users.getIfOwner(Dubtrack.session.id) || Dubtrack.room.users.getIfMod(Dubtrack.session.id) || Dubtrack.room.users.getIfManager(Dubtrack.session.id)){
 						if(Dubtrack.room.users.getIfmuted(id)){
 							this.$('.actions a.mute').hide();
 							this.$('.actions a.unmute').show();
@@ -56,7 +56,7 @@ dt.global.userPopover = Backbone.View.extend({
 						this.$('.actions a.ban').show();
 					}
 
-					if(Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || Dubtrack.room.users.getIfOnwer(Dubtrack.session.id) || Dubtrack.room.users.getIfManager(Dubtrack.session.id)){
+					if(Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || Dubtrack.room.users.getIfOwner(Dubtrack.session.id) || Dubtrack.room.users.getIfManager(Dubtrack.session.id)){
 						if(Dubtrack.room.users.getIfMod(id)){
 							this.$('.actions a.setmod').hide();
 							this.$('.actions a.unsetmod').show();
@@ -92,7 +92,7 @@ dt.global.userPopover = Backbone.View.extend({
 
 					// Only for room owners
 					if(Dubtrack.room.model.get('userid') == Dubtrack.session.id){
-						if(Dubtrack.room.users.getIfOnwer(id)){
+						if(Dubtrack.room.users.getIfOwner(id)){
 							this.$('.actions a.setowner').hide();
 							this.$('.actions a.unsetowner').show();
 						}else{
