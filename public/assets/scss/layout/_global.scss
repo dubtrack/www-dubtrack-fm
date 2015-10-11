@@ -410,3 +410,18 @@ a.button_comments_more{
 .cursor-pointer{
 	cursor: pointer;
 }
+.ui-autocomplete {
+	background: #111;
+        border: 1px solid #202020;
+        border-top: transparent;
+        padding: 13px;
+        z-index: 2147483647;
+}
+.ui-menu-item:hover {
+	background: #202020;
+}
+.ui-menu-item a {
+	cursor: pointer;
+        color: #8c8c8c!important;
+}
+     
