@@ -419,7 +419,7 @@ ul.avatar-list {
 
 		&.creator{
 			&:after{
-				content: " - CREATOR";
+				content: " - CREATOR" !important;
 			}
 		}
 
@@ -443,7 +443,7 @@ ul.avatar-list {
 
 		&.admin{
 			&:after{
-				content: " - ADMIN";
+				content: " - ADMIN" !important;
 			}
 		}
 
