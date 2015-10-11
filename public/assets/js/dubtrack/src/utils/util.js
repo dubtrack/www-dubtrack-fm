@@ -485,7 +485,7 @@ Dubtrack.els.templates = {
 									'<div id="new-messages-counter"><span class="messages-display"></span> <i class="icon-arrow-down2"></i>' +
 									'</div>' +
 									'<% if(Dubtrack.loggedIn) { %>' +
-										'<input id="chat-txt-message" name="message" type="text" placeholder= "'+ dubtrack_lang.chat.type_message +'" autocomplete="off" maxlength="140">' +
+										'<input id="chat-txt-message" name="message" type="text" placeholder= "'+ dubtrack_lang.chat.type_message +'" autocomplete="off">' +
 										'<span class="icon-camera"></span>' +
 										'<button class= "pusher-chat-widget-send-btn">' +
 											'<span class="icon-arrow-right2"></span>' +
