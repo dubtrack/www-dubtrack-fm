@@ -58,6 +58,7 @@
 
 		&:hover{
 			.hideVideo-el.show,
+			.snoozeVideo-el.show,
 			.videoquality-el.show,
 			.refresh-el.show{
 				display: block;
@@ -183,7 +184,13 @@
 			cursor: pointer;
 			display: block;
 		}
-
+		.snoozeVideo-el{
+			background: $bgOtherAccentColor;
+			left: calc(50% - 101px);
+			top: calc(100% - 47px);
+			margin: 0;
+			cursor: pointer;
+		}
 		.error-el{
 			top: 50%;
 			margin-top: -2em;
