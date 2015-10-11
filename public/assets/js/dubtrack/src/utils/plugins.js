@@ -21,6 +21,23 @@ function advanceDisableVoting() {
         $('.add-to-playlist').show();
     }
 }
+var contentCompleteCallback
+$('#youtube-search').autocomplete({
+    messages: { noResults: '', results: function() {} },
+    source: function(request, response) {
+        $.getJSON("https://suggestqueries.google.com/complete/search?callback=?",
+            { "hl":"en", "ds":"yt", "jsonp":"contentCompleteCallback", "q":request.term, "client":"youtube" }
+        );
+        contentCompleteCallback = function(data) {
+            var content = [];
+            $.each(data[1], function(key, val) {
+                content.push({"value":val[0]});
+            });
+            content.length = 5;
+            response(content);
+        };
+    },
+});
 Dubtrack.Events.bind('realtime:room_playlist-update', advanceDisableVoting);      
 function is_touch() {
 	return $.browser.mobile;
