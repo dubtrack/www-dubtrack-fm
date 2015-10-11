@@ -417,12 +417,6 @@ ul.avatar-list {
 			}
 		}
 
-		&.admin{
-			&:after{
-				content: " - ADMIN";
-			}
-		}
-
 		&.creator{
 			&:after{
 				content: " - CREATOR";
@@ -444,6 +438,12 @@ ul.avatar-list {
 		&.manager{
 			&:after{
 				content: " - MANAGER";
+			}
+		}
+
+		&.admin{
+			&:after{
+				content: " - ADMIN";
 			}
 		}
 
