@@ -421,7 +421,7 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 		return false;
 	},
 
-	getIfOnwer: function(userid){
+	getIfOwner: function(userid){
 		var itemModel = this.collection.findWhere({
 			userid: userid
 		});
