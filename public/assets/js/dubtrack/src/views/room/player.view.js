@@ -17,6 +17,7 @@ Dubtrack.View.Player = Backbone.View.extend({
 		"click .refresh-el" : "reloadVideo",
 		"click .videoquality-el": "changeYTQuality",
 		"click .hideVideo-el": "hideVideo"
+		"click .snoozeVideo-el": "snoozeVideo"
 	},
 
 	initialize : function(){
@@ -34,6 +35,7 @@ Dubtrack.View.Player = Backbone.View.extend({
 		this.qualityElBtn = this.$('.videoquality-el');
 		this.refreshElBtn = this.$('.refresh-el');
 		this.hideVideoElBtn = this.$('.hideVideo-el');
+		this.snoozeVideoElBtn = this.$('.snoozeVideo-el');
 		this.skipElBtn = this.$('.skip-el');
 		this.errorElBtn = this.$('.error-el').html(dubtrack_lang.player.error);
 		this.placeHolder = this.$('.placeholder');
@@ -130,6 +132,7 @@ Dubtrack.View.Player = Backbone.View.extend({
 		this.qualityElBtn.removeClass('show');
 		this.refreshElBtn.removeClass('show');
 		this.hideVideoElBtn.removeClass('show');
+		this.snoozeVideoElBtn.removeClass('show');
 
 		if(this.refreshTimeout) clearTimeout(this.refreshTimeout);
 
@@ -384,6 +387,9 @@ Dubtrack.View.Player = Backbone.View.extend({
         		isOn = "off";
     		}
 	},
+	snoozeVideo: function(){
+		$('.playerElement').remove();
+	},
 	videoEnd: function(){
 		this.refresh();
 		this.skipElBtn.hide();
@@ -450,6 +456,7 @@ Dubtrack.View.Player = Backbone.View.extend({
 
 		this.qualityElBtn.addClass('show');
 		this.refreshElBtn.addClass('show');
+		this.snoozeVideoElBtn.addClass('show');
 		this.hideVideoElBtn.addClass('show');
 	},
 
