@@ -89,6 +89,17 @@ dt.global.userPopover = Backbone.View.extend({
 							this.$('.actions a.unsetmanager').hide();
 						}
 					}
+
+					// Only for room owners
+					if(Dubtrack.room.model.get('userid') == Dubtrack.session.id){
+						if(Dubtrack.room.users.getIfOnwer(id)){
+							this.$('.actions a.setowner').hide();
+							this.$('.actions a.unsetowner').show();
+						}else{
+							this.$('.actions a.setowner').show();
+							this.$('.actions a.unsetowner').hide();
+						}
+					}
 				}
 			}
 		}else{

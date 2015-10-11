@@ -740,6 +740,26 @@ Dubtrack.View.chat = Backbone.View.extend({
 			return;
 		}
 
+		if(message.indexOf("/setowner @") === 0){
+			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
+				username = str.replace("@", "");
+				return str;
+			});
+
+			this.setRole(username, 'setOwnerUser');
+			return;
+		}
+
+		if(message.indexOf("/unsetowner @") === 0){
+			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
+				username = str.replace("@", "");
+				return str;
+			});
+
+			this.unsetRole(username, 'setOwnerUser');
+			return;
+		}
+
 		if(message.indexOf("/unmute @") === 0){
 			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
 				username = str.replace("@", "");

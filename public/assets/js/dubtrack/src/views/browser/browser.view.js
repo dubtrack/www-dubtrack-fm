@@ -113,7 +113,7 @@ Dubtrack.View.Browser = Backbone.View.extend({
 			wheelPropagation: false
 		});
 
-		if(Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || (Dubtrack.room.users && Dubtrack.room.users.getIfHasRole(Dubtrack.session.id))){
+		if(Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || (Dubtrack.room.users && Dubtrack.room.users.getIfRoleHasPermission(Dubtrack.session.id, 'lock-queue'))){
 			this.$('.sidebar #room-lock-queue').show();
 		}else{
 			this.$('.sidebar #room-lock-queue').hide();

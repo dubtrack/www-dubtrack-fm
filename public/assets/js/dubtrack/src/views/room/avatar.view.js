@@ -434,6 +434,19 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 		return false;
 	},
 
+	getIfRoleHasPermission: function(userid, permission){
+		var itemModel = this.collection.findWhere({
+			userid: userid
+		});
+
+		if(itemModel){
+			var roleid = itemModel.get('roleid');
+			if(roleid && roleid.rights &&  _.contains(roleid.rights, permission)) return true;
+		}
+
+		return false;
+	},
+
 	getIfHasRole: function(userid){
 		var itemModel = this.collection.findWhere({
 			userid: userid

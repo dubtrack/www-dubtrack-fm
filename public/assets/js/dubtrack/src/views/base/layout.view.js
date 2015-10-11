@@ -139,7 +139,7 @@ Dubtrack.View.LayoutView = Backbone.View.extend({
 	},
 
 	editRoom: function(){
-		if(Dubtrack.room && Dubtrack.room.model && Dubtrack.session && Dubtrack.session.get("_id") === Dubtrack.room.model.get('userid')){
+		if(Dubtrack.session && Dubtrack.room.users && Dubtrack.room.users.getIfOnwer(Dubtrack.session.get("_id"))){
 			this.roomUpdate = new dt.room.roomFormUpdateViewUpdate({
 				model : Dubtrack.room.model
 			}).render();

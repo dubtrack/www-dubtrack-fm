@@ -40,6 +40,14 @@ Dubtrack.View.roomUsersItem = Backbone.View.extend({
 
 			if(this.model.get("userid") == Dubtrack.session.id){
 				if(Dubtrack.room && Dubtrack.room.player) Dubtrack.room.player.skipElBtn.show();
+
+				if(Dubtrack.room.users.getIfOnwer(this.model.get("userid"))){
+					$("#create-room-div").hide();
+					$("#edit-room-div").show();
+				}else{
+					$("#create-room-div").show();
+					$("#edit-room-div").hide();
+				}
 			}
 		}
 

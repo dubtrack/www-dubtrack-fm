@@ -102,14 +102,16 @@ Dubtrack.els.templates = {
 							'<a href="#" class="ban">Ban for <input type="text" value="" maxlength="3" /> minutes</a>' +
 							'<a href="#" class="mute">Mute</a>' +
 							'<a href="#" class="unmute">Unmute</a>' +
+							'<a href="#" class="setowner setrole" data-roleref="setOwnerUser">Set co-owner</a>' +
+							'<a href="#" class="unsetowner unsetrole" data-roleref="setOwnerUser">Unset co-onwer</a>' +
 							'<a href="#" class="setmanager setrole" data-roleref="setManagerUser">Set manager</a>' +
 							'<a href="#" class="unsetmanager unsetrole" data-roleref="setManagerUser">Unset manager</a>' +
 							'<a href="#" class="setmod setrole" data-roleref="setModUser">Set mod</a>' +
 							'<a href="#" class="unsetmod unsetrole" data-roleref="setModUser">Unset mod</a>' +
 							'<a href="#" class="setvip setrole" data-roleref="setVIPUser">Set VIP</a>' +
 							'<a href="#" class="unsetvip unsetrole" data-roleref="setVIPUser">Unset VIP</a>' +
-							'<a href="#" class="setdj setrole" data-roleref="setDJUser">Set DJ Resident</a>' +
-							'<a href="#" class="unsetdj unsetrole" data-roleref="setDJUser">Unset DJ Resident</a>' +
+							'<a href="#" class="setdj setrole" data-roleref="setDJUser">Set Resident DJ</a>' +
+							'<a href="#" class="unsetdj unsetrole" data-roleref="setDJUser">Unset Resident DJ</a>' +
 						'</div>',
 
 		'popover_user': '<figure>' +

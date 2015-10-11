@@ -129,6 +129,7 @@ w.Dubtrack = {
 			setDJUser: "/chat/5615feb8e596154fc2000002/:roomid/user/:id",
 			setManagerUser: "/chat/5615fd84e596150061000003/:roomid/user/:id",
 			setVIPUser: "/chat/5615fe1ee596154fc2000001/:roomid/user/:id",
+			setOwnerUser: "/chat/5615fa9ae596154a5c000000/:roomid/user/:id", 
 			skipSong: "/chat/skip/:id",
 			userQueue: "/user/session/room/:id/queue",
 			userQueueOrder : "/user/session/room/:id/queue/order",

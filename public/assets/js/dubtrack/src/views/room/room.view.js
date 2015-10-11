@@ -92,7 +92,7 @@ Dubtrack.View.Room = Backbone.View.extend({
 			$("#create-room-div").show();
 		}
 
-		if(Dubtrack.session && Dubtrack.session.get("_id") === this.model.get("userid")){
+		if(Dubtrack.session && Dubtrack.room.users && Dubtrack.room.users.getIfOnwer(Dubtrack.session.get("_id"))){
 			$("#create-room-div").hide();
 			$("#edit-room-div").show();
 		}else{
