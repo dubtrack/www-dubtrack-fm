@@ -297,6 +297,15 @@ Dubtrack.els.templates = {
 	},
 
 	'rooms': {
+		'roomModalView' : '<span class="closebtn">close</span>' +
+								'<div class="modal-header mainForm">' +
+									'<h3><%- name %></h3>' +
+								'</div>'+
+								'<div class="mid">' +
+									'<div class="control-group">' +
+										'<%= description %>' +
+									'</div>' +
+								'</div>',
 		'roomFormUpdate': '	<form class="form-horizontal">'+
 								'<span class="closebtn">close</span>' +
 								'<div class="modal-header mainForm">' +
@@ -304,7 +313,7 @@ Dubtrack.els.templates = {
 								'</div>' +
 								'<div class="mid">' +
 									'<div class="control-group">' +
-										'<label class="control-label" for="">' +
+										'<label class="control-label display-block">' +
 											dubtrack_lang.roomForm.roomNameLabel +
 										'</label>' +
 										'<div class="controls">' +
@@ -340,26 +349,17 @@ Dubtrack.els.templates = {
 											'<div id="progress"><div class="bar" style="width: 0%;"></div></div>' +
 										'</div>' +
 									'</div>' +
-									/*'<div class="mid larger control-group">' +
-										'<label class="control-label">' +
+									'<div class="larger control-group">' +
+										'<label class="control-label display-block">' +
 											dubtrack_lang.roomForm.roomDescLabel +
 										'</label>' +
 										'<div class="controls textarea">' +
-											'<textarea class="textarea" name="description" placeholder="' + dubtrack_lang.roomForm.roomDesc + '">' +
+											'<textarea class="textarea" id="roomDescription" name="description" placeholder="' + dubtrack_lang.roomForm.roomDesc + '" maxlength="255">' +
 												'<%- description %>' +
 											'</textarea>' +
 										'</div>' +
-									'</div>' +*/
+									'</div>' +
 									'<div class="control-group">' +
-										'<label class="control-label display-block">' +
-											'Room Type' +
-										'</label>' +
-										'<div class="controls textarea">' +
-											'<select name="roomType" id="roomTypeSelect">' +
-												'<option value="room"<% if(roomType && roomType == "room"){%> selected<%}%>>Dubtrack</option>' +
-												'<option value="iframe"<% if(roomType && roomType == "iframe"){%> selected<%}%>>Iframe Embed</option>' +
-											'</select>' +
-										'</div>' +
 										'<label class="control-label display-block">' +
 											'Lock queue' +
 										'</label>' +
@@ -367,6 +367,15 @@ Dubtrack.els.templates = {
 											'<select name="lockQueue" id="lockQueueSelect">' +
 												'<option value="1"<% if(lockQueue){%> selected<%}%>>Yes</option>' +
 												'<option value="0"<% if(!lockQueue){%> selected<%}%>>No</option>' +
+											'</select>' +
+										'</div>' +
+										'<label class="control-label display-block">' +
+											'Room Type' +
+										'</label>' +
+										'<div class="controls textarea">' +
+											'<select name="roomType" id="roomTypeSelect">' +
+												'<option value="room"<% if(roomType && roomType == "room"){%> selected<%}%>>Dubtrack</option>' +
+												'<option value="iframe"<% if(roomType && roomType == "iframe"){%> selected<%}%>>Iframe Embed</option>' +
 											'</select>' +
 										'</div>' +
 									'</div>' +
@@ -490,7 +499,7 @@ Dubtrack.els.templates = {
 							'</div>',
 
 		'chatMessage': '<div class="stream-item-content">'+
-							'<div class="chatDelete" onclick="$(this).closest(\'li\').remove();"><span class="icon-close"></span></div>' +
+							'<div class="chatDelete"><span class="icon-close"></span></div>' +
 							'<div class="image_row">' +
 								'<%= Dubtrack.helpers.image.getImage(user._id, user.username, false, true) %>' +
 							'</div>' +

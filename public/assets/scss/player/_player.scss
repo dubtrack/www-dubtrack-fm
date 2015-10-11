@@ -36,6 +36,14 @@
 			&:hover{
 				color: $bgAccentColor;
 			}
+
+			&.room-info-display{
+				font-size: 0.75em;
+				float: right;
+				margin: 0.5em 1em 0 0;
+				text-transform: uppercase;
+				font-weight: bold;
+			}
 		}
 	}
 

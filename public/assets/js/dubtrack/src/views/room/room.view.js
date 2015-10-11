@@ -5,7 +5,8 @@ Dubtrack.View.Room = Backbone.View.extend({
 
 	events: {
 		"click button.view-users": "displayUsers",
-		"click #mobile-room-menu a" : "setMenuActive"
+		"click #mobile-room-menu a" : "setMenuActive",
+		"click .player_sharing span.room-info-display" : "diplayRoomInfo"
 	},
 
 	initialize: function(){
@@ -16,7 +17,24 @@ Dubtrack.View.Room = Backbone.View.extend({
 			self.toggleVideos();
 		});
 
+		this.roomInfoView = null;
+
 		Dubtrack.Events.bind('realtime:room-update', this.roomUpdate, this);
+	},
+
+	diplayRoomInfo : function(){
+		if(!this.roomInfoView){
+			this.roomInfoView = new Dubtrack.View.RoomInfo({
+				model : this.model
+			}).render();
+
+			this.roomInfoView.$el.appendTo( 'body' );
+		}else{
+			this.roomInfoView.$el.show();
+			$(".dubtrack_overlay").show();
+		}
+
+		return false;
 	},
 
 	setMenuActive : function(e){

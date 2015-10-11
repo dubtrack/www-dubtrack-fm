@@ -84,7 +84,8 @@ dt.room.roomFormUpdateViewUpdate = Backbone.View.extend({
 		var value = this.$('input#roomName').val(),
 			maxLengthSongValue = this.$('input#maxLengthSongName').val(),
 			roomType = this.$('#roomTypeSelect').val(),
-			lockQueue = this.$('#lockQueueSelect').val(),
+			lockQueue = this.$('#lockQueueSelect').val()
+			description = this.$('#roomDescription').val(),
 			roomEmbed = this.$('#roomEmbedInput').val();
 
 		if( value && value !== " "){
@@ -96,6 +97,7 @@ dt.room.roomFormUpdateViewUpdate = Backbone.View.extend({
 				maxLengthSong: maxLengthSongValue,
 				roomType: roomType,
 				roomEmbed: roomEmbed,
+				description: description,
 				lockQueue: lockQueue
 			},{
 				success: function(m, r){

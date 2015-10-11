@@ -54,6 +54,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		Dubtrack.Events.bind('realtime:room_playlist-queue-remove-user', this.receiveMessage, this);
 		Dubtrack.Events.bind('realtime:room_playlist-queue-reorder', this.receiveMessage, this);
 		Dubtrack.Events.bind('realtime:room-lock-queue', this.receiveMessage, this);
+		Dubtrack.Events.bind('realtime:delete-chat-message', this.deleteChatItem, this);
 		//Dubtrack.Events.bind('realtime:user-pause-queue', this.receiveMessage, this);
 
 		//subscribe after 2s
@@ -524,7 +525,22 @@ Dubtrack.View.chat = Backbone.View.extend({
 					model: chatModel
 				});
 
-				var user = chatModel.get('user');
+				var user = chatModel.get('user'),
+					message = chatModel.get('message');
+
+				if(/^\/me.*\S+/.test(message)){
+					this.lastItemChatUser = false;
+					this.lastItemEl = false;
+
+					chatItem = new Dubtrack.View.chatMeCommand({
+						model: chatModel
+					});
+
+					chatItem.$el.appendTo( this._messagesEl );
+
+					this.playSound(false);
+					return;
+				}
 
 				if(	Dubtrack.session &&
 					Dubtrack.session.id != user._id &&
@@ -534,7 +550,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 
 				if(this.lastItemEl && this.lastItemChatUser && user._id == this.lastItemChatUser._id && this.lastItemEl.$el.is(":visible")){
 					this.lastItemEl.$('.text').append('<p>' + chatModel.get('message') + '</p>');
-
+					this.lastItemEl.$el.attr('id', chatModel.get('chatid'));
 					this.lastItemEl.updateTime(chatModel.get('time'));
 				}else{
 					this.lastItemChatUser = user;
@@ -796,11 +812,30 @@ Dubtrack.View.chat = Backbone.View.extend({
 		if(!this.user_muted){
 			//send chat message
 			chatModel.urlRoot = this.chatEndPointUrl;
-			chatModel.save();
+			chatModel.save(null, {
+				error : function(m, r){
+					this.lastItemChatUser = false;
+					this.lastItemEl = false;
+
+					var chatItem = new Dubtrack.View.chatLoadingItem();
+					chatItem.$el.appendTo( this._messagesEl );
+					if(r && r.status && r.status == 429){
+						chatItem.$el.addClass('system-error').html('You reached chat quota limit, please wait 15 mins before retrying');
+					}else{
+						chatItem.$el.addClass('system-error').html('An error occurred sending chat message');
+					}
+				}.bind(this)
+			});
 		}
 
 		//display item instantly
 		this.model.add(chatModel);
+	},
+
+	deleteChatItem: function(r){
+		if(r.chatid && r.user && r.user.username){
+			this.$('.chat-main li#' + r.chatid + ' .text').html('<p class="deleted">chat message deleted by @' + r.user.username + '</p>');
+		}
 	},
 
 	setUserCount: function(users){

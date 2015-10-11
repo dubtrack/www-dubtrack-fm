@@ -4,13 +4,16 @@
 	/*display:none*/
 }
 
-#roomFormUpdate{
+#roomFormUpdate,
+#roomInfoModal{
 	position: absolute;
+	min-height: 15em;
 	z-index: 999999;
-	top: 10em;
+	top: 5em;
 	left: 50%;
-	width: 20em;
-	margin-left: -10em;
+	width: 40em;
+	max-width: 100%;
+	margin-left: -20em;
 	background: $bgColor;
 	border: 2px solid $bgAccentColor;
 
@@ -19,7 +22,7 @@
 		top: 0.2em;
 		right: 0.5em;
 		font-weight: bold;
-		font-size: 0.75em;
+		font-size: 0.85em;
 		cursor: pointer;
 		color: #666;
 	}
@@ -28,29 +31,43 @@
 		background: $bgOtherColor;
 		padding: 0.5em 1em;
 
-		& h3{	
+		& h3{
 			margin: 0;
-			font-size: 0.85em;
+			font-size: 1.2em;
+			margin-bottom: 0.5em;
 		}
 	}
 
 	#iframe-embed-preview{
 		h3{
 			text-align: center;
-			font-size: 0.95em;
+			font-size: 1.2em;
 		}
 	}
 
 	.mid{
-		padding: 0 1em 1em 1em;
+		padding: 1.5em 1em 1em 1em;
+
+		a{
+			font-weight: bold;
+			color: #fff;
+		}
+
+		.larger{
+			textarea{
+				height: 10em;
+				font-size: 0.85em;
+			}
+		}
 
 		label{
 			display: none;
 
 			&.display-block{
 				display: block;
-				color: #666;
-				font-size: 0.75em;
+				color: #999;
+				font-size: 0.85em;
+				margin: 0.7em 0 0.4em 0;
 			}
 		}
 
@@ -62,11 +79,11 @@
 		.help-block{
 			margin: 1em 0 0 0;
 			color: #666;
-			font-size: 0.75em;
+			font-size: 0.85em;
 		}
 
 		#fileupload{
-			font-size: 0.75em;
+			font-size: 0.85em;
 		}
 
 		input,
@@ -75,16 +92,17 @@
 			display: block;
 			border: $standardBorder;
 			background: none;
+			font-size: 0.85em;
 			padding: 0.5em 1em;
 			width: 100%;
-			color: $siteColor;
+			color: #fff;
 			margin: 0 0 0.5em 0;
 		}
 
 		select{
 			padding: 1em;
 			display: block;
-			font-size: 0.75em;
+			font-size: 0.85em;
 			height: 2em;
 			width: 100%;
 		}
@@ -93,12 +111,12 @@
 	.modal-footer{
 		border-top: $standardBorder;
 		padding: 0.5em 1em;
-		//@include border-radius(0);
+		margin: 2em 0 1em 0;
 		@include clearfix2();
 
 		button{
-			font-size: 0.75em;
-			margin-left: 0.5em;
+			font-size: 0.95em;
+			margin-left: 0.8em;
 			float: right;
 		}
 	}

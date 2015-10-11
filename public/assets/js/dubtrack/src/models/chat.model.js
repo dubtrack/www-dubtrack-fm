@@ -3,6 +3,11 @@ Dubtrack.Model.chat = Backbone.Model.extend({
 
 	defaults: {
 		message: null,
-		type: null
+		type: null,
+		chatid: null
+	},
+
+	parse: function(response, xhr){
+		return response.data;
 	}
 });

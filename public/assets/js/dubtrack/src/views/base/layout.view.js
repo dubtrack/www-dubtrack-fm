@@ -132,8 +132,7 @@ Dubtrack.View.LayoutView = Backbone.View.extend({
 		model.parse = Dubtrack.helpers.parse;
 
 		this.roomUpdate = new dt.room.roomFormUpdateViewUpdate({model : model}).render();
-		$( this.roomUpdate.el ).appendTo( 'body' );
-		//this.roomUpdate.runPlugins();
+		this.roomUpdate.$el.appendTo( 'body' );
 
 		return false;
 	},
@@ -144,7 +143,7 @@ Dubtrack.View.LayoutView = Backbone.View.extend({
 				model : Dubtrack.room.model
 			}).render();
 
-			$( this.roomUpdate.el ).appendTo( 'body' );
+			this.roomUpdate.$el.appendTo( 'body' );
 		}
 
 		return false;

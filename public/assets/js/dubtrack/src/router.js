@@ -65,7 +65,7 @@ DubtrackRoute = Backbone.Router.extend({
 	emptyRoute : function(user){
 
 		if(!user || user === " " || user === "_=_"){
-			/*var join_cookie = Dubtrack.helpers.cookie.get('dubtrack-room');
+			var join_cookie = Dubtrack.helpers.cookie.get('dubtrack-room');
 
 			if(join_cookie){
 				this.navigate("join/" + join_cookie, {
@@ -73,8 +73,7 @@ DubtrackRoute = Backbone.Router.extend({
 				});
 			}else{
 				this.roomList();
-			}*/
-			this.roomList();
+			}
 
 			return false;
 		}

@@ -68,7 +68,7 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 
 		this.loadingEl = this.$el.find(".loadingAva");
 
-		this.$('a.loadRoomAva').html('<span>chat</span><div title="' + this.model.get('name') + '">' + this.model.get('name') + '</div>');
+		this.$('a.loadRoomAva').html('<span>chat</span><div title="' + this.model.get('name') + '">&nbsp;</div>');
 
 		this.currentTabEl.css("width", "100%");
 
@@ -78,7 +78,7 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 
 		this.resize();
 
-		this.setTotalUsersDebouce = _.debounce(this.setTotalUsers.bind(this), 3000);
+		this.setTotalUsersDebouce = _.debounce(this.setTotalUsers.bind(this), 2000);
 
 		this.$('#main-user-list-room').perfectScrollbar({
 			wheelSpeed: 30,
@@ -88,7 +88,6 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 	},
 
 	setTotalUsers: function(){
-		//this.$('a.loadRoomAva span').html( this.collection.models.length );
 		Dubtrack.realtime.channelPresence(function(r){
 			if(r && r.uuids) this.uuids = r.uuids;
 

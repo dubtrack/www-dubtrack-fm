@@ -25,8 +25,6 @@ Dubtrack.View.Player = Backbone.View.extend({
 
 		this.autoplayStarted = false;
 
-		//dubtrackMain.config.playerCountDown = dubtrackMain.config.playerMainContainer.find('#countDownDivmain');
-
 		this.loadingEl = this.$('.loading-el').html(dubtrack_lang.player.loading);
 		this.bufferingEl = this.$('.buferring-el').html(dubtrack_lang.player.buffering);
 		this.playElBtn = this.$('.playbtn-el');

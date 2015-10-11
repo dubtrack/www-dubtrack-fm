@@ -327,6 +327,14 @@
 					text-transform: uppercase;
 				}
 
+				&.chat-me-command-joined{
+					color: #999;
+					font-style: italic;
+					text-align: left;
+					font-size: 0.75em;
+					padding: 0.2em 0 0.2em 0.5em;
+				}
+
 				.activity-row {
 					float: left;
 					margin: 0;
@@ -376,6 +384,10 @@
 							word-wrap: break-word;
 							line-height: 1.2em;
 							margin: 0 0 0.5em 0;
+
+							&.deleted{
+								color: #666;
+							}
 
 							a.username,
 							a.username:hover,

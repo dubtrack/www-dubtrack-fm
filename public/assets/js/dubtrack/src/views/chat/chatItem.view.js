@@ -4,12 +4,14 @@ Dubtrack.View.chatItem = Backbone.View.extend({
 
 	events : {
 		//"click a.navigate" : "navigateAvatar",
-		"click a.username" : "clickUsername"
+		"click a.username" : "clickUsername",
+		"click .chatDelete" : "deleteChat"
 	},
 
 	initialize:function () {
 		this.model.set( 'message', Dubtrack.helpers.text.convertHtmltoTags( this.model.get('message'), "Dubtrack.room.chat.scollBottomChat();" ));
 		this.model.set( 'message', Dubtrack.helpers.text.convertAttoLink( this.model.get('message') ));
+		this.model.bind('change', this.setId, this);
 
 		var modelJson = this.model.toJSON();
 
@@ -29,6 +31,7 @@ Dubtrack.View.chatItem = Backbone.View.extend({
 		}
 
 		Dubtrack.Events.bind('realtime:user-update-' + modelJson.user._id, this.updateUser, this);
+		this.setId();
 	},
 
 	render: function() {
@@ -38,6 +41,11 @@ Dubtrack.View.chatItem = Backbone.View.extend({
 		this.$(".timeago").timeago();
 
 		emojify.run(this.el);
+	},
+
+	setId: function(){
+		var chat_id = this.model.get('chatid');
+		if(chat_id) this.$el.attr('id', chat_id);
 	},
 
 	updateTime: function(time){
@@ -83,6 +91,24 @@ Dubtrack.View.chatItem = Backbone.View.extend({
 		return false;
 	},
 
+	deleteChat : function(){
+		if(Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || (Dubtrack.room.users && Dubtrack.room.users.getIfRoleHasPermission(Dubtrack.session.id, 'delete-chat'))){
+			this.$('.text').html('<p class="deleted">loading...</p>');
+
+			var chat_id = this.model.get('chatid');
+			if(chat_id){
+				var url = Dubtrack.config.apiUrl + Dubtrack.config.urls.deleteChat.replace(":id", Dubtrack.room.model.id).replace(":chatid", chat_id);
+				Dubtrack.helpers.sendRequest( url, {}, 'delete', function(err, r){
+					if(err){
+						this.$('.text').html('<p class="deleted">you don\'t have permissions to do this</p>')
+					}
+				}.bind(this));
+			}
+		}else{
+			this.close();
+		}
+	},
+
 	beforeClose : function(){
 		this.$("time.timeago").timeago('dispose');
 	}
@@ -104,6 +130,23 @@ Dubtrack.View.systemChatItem = Backbone.View.extend({
 
 	beforeClose : function(){
 	}
+});
+
+Dubtrack.View.chatMeCommand = Dubtrack.View.systemChatItem.extend({
+	attributes: {
+		"class": "chat-me-command-joined"
+	},
+
+	initialize: function () {
+		var user = this.model.get('user'),
+			message = this.model.get('message');
+
+		if(message) message = message.replace(/^\/me\s/, '');
+
+		if(message && message.length > 0) this.$el.html( "@" + user.username + " " + message);
+
+		console.log(message, "test!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+	},
 });
 
 Dubtrack.View.chatLoadingItem = Dubtrack.View.systemChatItem.extend({

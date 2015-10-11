@@ -80,7 +80,9 @@ dt.global.userPopover = Backbone.View.extend({
 							this.$('.actions a.setdj').show();
 							this.$('.actions a.unsetdj').hide();
 						}
+					}
 
+					if(Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || Dubtrack.room.users.getIfOwner(Dubtrack.session.id)){
 						if(Dubtrack.room.users.getIfManager(id)){
 							this.$('.actions a.setmanager').hide();
 							this.$('.actions a.unsetmanager').show();

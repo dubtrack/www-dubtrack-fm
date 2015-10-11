@@ -29,9 +29,11 @@ Dubtrack.View.roomUsersItem = Backbone.View.extend({
 			this.$el.addClass('admin');
 		}
 
-		if( this.model.get("userid") == Dubtrack.room.model.get('userid')){
-			this.$el.addClass('creator');
-			if(Dubtrack.room && Dubtrack.room.player) Dubtrack.room.player.skipElBtn.show();
+		if(Dubtrack.session && this.model.get("userid") == Dubtrack.session.id){
+			if( this.model.get("userid") == Dubtrack.room.model.get('userid')){
+				this.$el.addClass('creator');
+				if(Dubtrack.room && Dubtrack.room.player) Dubtrack.room.player.skipElBtn.show();
+			}
 		}
 
 		var role = this.model.get("roleid");
