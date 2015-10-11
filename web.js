@@ -4,6 +4,8 @@ morgan = require('morgan'),
 http = require('http'),
 path = require('path'),
 engine = require('ejs-locals'),
+helmet = require('helmet'),
+csp = require('helmet-csp'),
 routes = require('./routes/index.js'),
 app = express();
 

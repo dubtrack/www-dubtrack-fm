@@ -68,7 +68,8 @@ module.exports = function(grunt) {
 					'public/assets/js/lib/jquery.mousewheel.js',
 					'public/assets/js/lib/soundmanager2.js',
 					'public/assets/js/lib/underscore.min.js',
-					'public/assets/js/lib/backbone.min.js'
+					'public/assets/js/lib/backbone.min.js',
+					'public/assets/js/lib/emoji.js'
 				],
 				dest: 'public/assets/js/includes.js',
 			},
