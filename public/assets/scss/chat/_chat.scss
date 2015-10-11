@@ -304,6 +304,17 @@
 					@include respond-to(bp1150){
 						width: calc(20.5em - 18px);
 					}
+					
+					.isMod {
+						display: none;
+						font-size: 8px;
+						background-color: magenta;
+						padding: 3px;
+						text-transform: uppercase;
+						border-radius: 9px;
+						font-weight: 700;
+						margin-right: 5px;
+					}
 
 					.meta-info{
 						@include opacity(0.3);
