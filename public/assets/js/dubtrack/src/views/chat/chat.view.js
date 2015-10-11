@@ -162,7 +162,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 
 		if(Dubtrack.session && id && r.type === "chat-message" && r.user._id === Dubtrack.session.get("_id") ) return;
 		if (Dubtrack.session && Dubtrack.room.users.getIfHasRole(id)) {
-			document.querySelector('.user-'+id+' .isMod').style.display = 'initial';
+			$('.user-'+id+' .isMod').show();
 		};
 		var chatModel = new Dubtrack.Model.chat(r);
 		this.model.add(chatModel);
