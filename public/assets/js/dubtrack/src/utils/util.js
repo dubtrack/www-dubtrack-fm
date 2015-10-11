@@ -462,7 +462,7 @@ Dubtrack.els.templates = {
 							'</div>' +
 							'<div class="activity-row">' +
 								'<div class="text">' +
-									'<p><a href="#" class="username"><%= user.username %>:</a> <%= message %></p>' +
+									'<p><span class="isMod">Mod</span><a href="#" class="username"><%= user.username %>:</a> <%= message %></p>' +
 								'</div>' +
 								'<div class="meta-info">' +
 									'<span class="username">' +
