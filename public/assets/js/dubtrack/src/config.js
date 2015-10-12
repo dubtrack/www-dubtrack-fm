@@ -705,7 +705,7 @@ w.Dubtrack = {
 							str = '<a href="' + str + '" class="autolink" target="_blank"><img src="' + str + '" alt="' + str + '" onload="' + imagloadFun + '" onerror="' + onErrorAction + '" /></a>';
 							return str;
 						} else {
-							str = '<a href="' + str + '" class="autolink" target="_blank">' + shortenLink(str, 140) + '</a>';
+							str = '<a href="' + str + '" class="autolink" target="_blank">' + shortenLink(str, 60) + '</a>';
 							return str;
 						}
 				});
