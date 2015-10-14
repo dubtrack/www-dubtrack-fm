@@ -37,9 +37,7 @@ Dubtrack.View.SoundCloudPlayer = Backbone.View.extend({
 
 		soundManager.setup({
 			url: '/assets/swf/',
-
-			flashVersion: 9,
-
+			preferFlash: false,
 			onready: function() {
 				//create sound with sound manager
 				self.scPlayer = soundManager.createSound({
@@ -62,7 +60,7 @@ Dubtrack.View.SoundCloudPlayer = Backbone.View.extend({
 					},
 
 					onload: function() {
-						self.scPlayer.setPosition( start * 1000 );
+						//self.scPlayer.setPosition( start * 1000 );
 						self.setVolume( Dubtrack.playerController.volume )
 					},
 

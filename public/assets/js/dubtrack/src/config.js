@@ -50,6 +50,7 @@ w.Dubtrack = {
 		// Load default global values
 		var hide_images = Dubtrack.helpers.cookie.get('dubtrack-hide-images');
 		if(hide_images && hide_images == 'hide') Dubtrack.HideImages = true;
+		soundManager.waitForWindowLoad = true;
 
 		Dubtrack.helpers.loadDependencies(function() {
 			Dubtrack.app = new DubtrackRoute();
@@ -103,6 +104,7 @@ w.Dubtrack = {
 			room: "/room",
 			roomImage: "/room/:id/image",
 			roomUsers: "/room/{id}/users",
+			roomBeacon: "/room/beacon/:id/:userid",
 			roomQueue: "/room/{id}/playlist",
 			roomQueueDetails: "/room/:id/playlist/details",
 			roomHistory: "/room/:id/playlist/history",
@@ -160,7 +162,8 @@ w.Dubtrack = {
 					'output': 'embed',
 					'wmode': 'transparent',
 					'playsinline' : 1,
-					'iv_load_policy' : 3
+					'iv_load_policy' : 3,
+					'html5' : 1
 				},
 
 				playerParams: {
@@ -172,7 +175,8 @@ w.Dubtrack = {
 					'output': 'embed',
 					'wmode': 'transparent',
 					'playsinline' : 1,
-					'iv_load_policy' : 3
+					'iv_load_policy' : 3,
+					'html5' : 1
 				}
 			},
 

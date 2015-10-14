@@ -354,7 +354,7 @@ Dubtrack.View.Browser = Backbone.View.extend({
 						self.loadingEl.hide();
 
 
-						self.playlistDetailContainer.sortable({
+						self.playlistDetailContainer.multisortable({
 							axis: "y",
 							cursor: "move",
 							placeholder: "ui-state-highlight",
@@ -486,7 +486,7 @@ Dubtrack.View.Browser = Backbone.View.extend({
 							//hide loading
 							self.loadingEl.hide();
 
-							self.playlistDetailContainer.sortable({
+							self.playlistDetailContainer.multisortable({
 								axis: "y",
 								cursor: "move",
 								placeholder: "ui-state-highlight",
@@ -539,8 +539,8 @@ Dubtrack.View.Browser = Backbone.View.extend({
 						//hide loading
 						self.loadingEl.hide();
 
-						if(Dubtrack.session && Dubtrack.room && Dubtrack.room.users && (Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || Dubtrack.room.model.get('userid') == Dubtrack.session.id || Dubtrack.room.users.getIfMod(Dubtrack.session.id) || Dubtrack.room.users.getIfManager(Dubtrack.session.id))){
-							self.playlistDetailContainer.sortable({
+						if(Dubtrack.session && Dubtrack.room && Dubtrack.room.users && (Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || Dubtrack.room.users.getIfRoleHasPermission(Dubtrack.session.id, 'queue-order'))){
+							self.playlistDetailContainer.multisortable({
 								axis: "y",
 								cursor: "move",
 								placeholder: "ui-state-highlight",
@@ -635,7 +635,7 @@ Dubtrack.View.Browser = Backbone.View.extend({
 		this.browser_view_state = null;
 
 		try{
-			this.playlistDetailContainer.sortable('destroy');
+			this.playlistDetailContainer.multisortable('destroy');
 		}catch(ex){}
 
 		//window.location.hash = "#/";
@@ -1189,8 +1189,16 @@ Dubtrack.View.BrowserRoomQueuePlaylisttItem = Dubtrack.View.BrowserPlaylisHistor
 			url: Dubtrack.config.apiUrl + '/room/' + Dubtrack.room.model.get('_id') + '/queue/user/' + this.queue.get('userid'),
 			async: false,
 			type: 'delete'
-		}).success(function(){
-			this.$el.remove();
+		}).success(function(response){
+			try{
+				if(response && response.data && response.data.userNextSong && response.data.userNextSong._song){
+					this.render(null, new Dubtrack.Model.Song(response.data.userNextSong._song));
+				}else{
+					this.$el.remove();
+				}
+			}catch(ex){
+				this.$el.remove();
+			}
 		}.bind(this)).error(function(){
 			this.$('.display-error').show().html('You don\'t have permissions to do this');
 		}.bind(this)).always(function(){

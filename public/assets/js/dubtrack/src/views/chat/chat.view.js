@@ -51,7 +51,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		Dubtrack.Events.bind('realtime:user-unsetrole', this.receiveMessage, this);
 		Dubtrack.Events.bind('realtime:user-mute', this.muteUserRealtime, this);
 		Dubtrack.Events.bind('realtime:user-unmute', this.unmuteUserRealtime, this);
-		Dubtrack.Events.bind('realtime:room_playlist-queue-remove-user', this.receiveMessage, this);
+		Dubtrack.Events.bind('realtime:room_playlist-queue-remove-user-song', this.receiveMessage, this);
 		Dubtrack.Events.bind('realtime:room_playlist-queue-reorder', this.receiveMessage, this);
 		Dubtrack.Events.bind('realtime:room-lock-queue', this.receiveMessage, this);
 		Dubtrack.Events.bind('realtime:delete-chat-message', this.deleteChatItem, this);
@@ -70,6 +70,12 @@ Dubtrack.View.chat = Backbone.View.extend({
 		this.user_muted = false;
 
 		this.render();
+
+		//display welcome message
+		this.model.add(new Dubtrack.Model.chat({
+			time: Date.now(),
+			type: 'room-welcome-message'
+		}));
 
 		if(Dubtrack.HideImages) this.hideImageToggle();
 	},
@@ -466,11 +472,11 @@ Dubtrack.View.chat = Backbone.View.extend({
 
 				this.playSound(false);
 				break;
-			case "room_playlist-queue-remove-user":
+			case "room_playlist-queue-remove-user-song":
 				this.lastItemChatUser = false;
 				this.lastItemEl = false;
 
-				chatItem = new Dubtrack.View.removedFromQueueItem({
+				chatItem = new Dubtrack.View.removedSongFromQueueItem({
 					model: chatModel
 				});
 
@@ -514,6 +520,18 @@ Dubtrack.View.chat = Backbone.View.extend({
 
 				this.playSound(false);
 				break;
+			case "room-welcome-message":
+				this.lastItemChatUser = false;
+				this.lastItemEl = false;
+
+				chatItem = new Dubtrack.View.welcomeMessageChatItem({
+					model: chatModel
+				});
+
+				chatItem.$el.appendTo( this._messagesEl );
+
+				this.playSound(false);
+				break;
 			default:
 				if(this.refreshImage){
 					chatModel.set({
@@ -550,7 +568,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 
 				if(this.lastItemEl && this.lastItemChatUser && user._id == this.lastItemChatUser._id && this.lastItemEl.$el.is(":visible")){
 					this.lastItemEl.$('.text').append('<p>' + chatModel.get('message') + '</p>');
-					this.lastItemEl.$el.attr('id', chatModel.get('chatid'));
+					this.lastItemEl.model.set('id', chatModel.get('chatid'));
 					this.lastItemEl.updateTime(chatModel.get('time'));
 				}else{
 					this.lastItemChatUser = user;
