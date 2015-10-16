@@ -354,8 +354,28 @@ Dubtrack.els.templates = {
 											dubtrack_lang.roomForm.roomDescLabel +
 										'</label>' +
 										'<div class="controls textarea">' +
-											'<textarea class="textarea" id="roomDescription" name="description" placeholder="' + dubtrack_lang.roomForm.roomDesc + '" maxlength="255">' +
+											'<textarea class="textarea" id="roomDescription" name="description" placeholder="' + dubtrack_lang.roomForm.roomDesc + '" maxlength="1000">' +
 												'<%- description %>' +
+											'</textarea>' +
+										'</div>' +
+									'</div>' +
+									'<div class="larger control-group">' +
+										'<label class="control-label display-block">' +
+											'Welcome message (you can use {username} and {roomname} as variables :])' +
+										'</label>' +
+										'<div class="controls textarea">' +
+											'<textarea class="textarea mid-textarea" id="welcomeMessage" name="welcomeMessage" placeholder="Welcome message" maxlength="300">' +
+												'<%- welcomeMessage %>' +
+											'</textarea>' +
+										'</div>' +
+									'</div>' +
+									'<div class="larger control-group">' +
+										'<label class="control-label display-block">' +
+											'Metadata description (this will be shown on social media sites and google search engines)' +
+										'</label>' +
+										'<div class="controls textarea">' +
+											'<textarea class="textarea mid-textarea" id="metaDescription" name="metaDescription" placeholder="Metadata description" maxlength="255">' +
+												'<%- metaDescription %>' +
 											'</textarea>' +
 										'</div>' +
 									'</div>' +
@@ -661,7 +681,7 @@ Dubtrack.els.templates = {
 									'</a>' +
 									'<a href="#" class="img_bg remove_dj">' +
 										'<span class="icon-trashcan"></span>' +
-										'Remove DJ from queue' +
+										'Remove from queue' +
 										Dubtrack.config.loadingEls +
 									'</a>' +
 									'<a class="img_bg add_to_playlist" href="#">' +

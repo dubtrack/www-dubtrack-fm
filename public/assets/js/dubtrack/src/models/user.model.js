@@ -2,13 +2,13 @@ Dubtrack.Model.User = Backbone.Model.extend({
 	urlRoot: Dubtrack.config.apiUrl + Dubtrack.config.urls.user,
 
 	defaults: {
-		username: String,
-		status: Number,
-		roleid: Number,
-		dubs: Number,
-		created: Number,
-		lastLogin: Number,
-		userInfo: Object
+		username: null,
+		status: 0,
+		roleid: null,
+		dubs: 0,
+		created: 0,
+		lastLogin: 0,
+		userInfo: {}
 	},
 });
 

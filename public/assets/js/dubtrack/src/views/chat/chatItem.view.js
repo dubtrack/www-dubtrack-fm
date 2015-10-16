@@ -132,21 +132,26 @@ Dubtrack.View.systemChatItem = Backbone.View.extend({
 	}
 });
 
-Dubtrack.View.chatMeCommand = Dubtrack.View.systemChatItem.extend({
+Dubtrack.View.chatMeCommand = Dubtrack.View.chatItem.extend({
 	attributes: {
 		"class": "chat-me-command-joined"
 	},
 
 	initialize: function () {
+		this.model.bind('change', this.setId, this);
+
 		var user = this.model.get('user'),
 			message = this.model.get('message');
 
 		if(message) message = message.replace(/^\/me\s/, '');
 
-		if(message && message.length > 0) this.$el.html( "@" + user.username + " " + message);
+		if(message && message.length > 0) this.$el.html( "<div class='chatDelete'><span class='icon-close'></span></div><div class='text'>@" + user.username + " " + message + '</div>');
 
-		console.log(message, "test!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		emojify.run(this.el);
+		this.setId();
 	},
+
+	render: function() {}
 });
 
 Dubtrack.View.chatLoadingItem = Dubtrack.View.systemChatItem.extend({
@@ -230,11 +235,11 @@ Dubtrack.View.chatBannedItem = Dubtrack.View.systemChatItem.extend({
 	},
 });
 
-Dubtrack.View.removedFromQueueItem = Dubtrack.View.systemChatItem.extend({
+Dubtrack.View.removedSongFromQueueItem = Dubtrack.View.systemChatItem.extend({
 	initialize: function () {
 		var removedUser = this.model.get('removedUser'),
 			user = this.model.get('user'),
-			message = "@" + user.username + " removed @" + removedUser.username + " from the queue";
+			message = "@" + user.username + " removed a song queued by @" + removedUser.username;
 
 		this.$el.html( message );
 	},
@@ -276,5 +281,35 @@ Dubtrack.View.pauseUserQueueItem = Dubtrack.View.systemChatItem.extend({
 		}
 
 		this.$el.html( message );
+	},
+});
+
+Dubtrack.View.welcomeMessageChatItem = Dubtrack.View.systemChatItem.extend({
+	attributes: {
+		"class": "chat-welcome-message"
+	},
+
+	initialize: function () {
+		if(Dubtrack.room){
+			var message = Dubtrack.room.model.get('welcomeMessage'),
+				roomName = Dubtrack.room.model.get('name'),
+				username = Dubtrack.session.get('username');
+
+			if(message && message.length > 0){
+				if(!roomName) roomName = "";
+				if(!username) username = "";
+
+				message = message.replace("{roomname}", roomName);
+				message = message.replace("{username}", username);
+
+				this.$el.html( Dubtrack.helpers.text.convertHtmltoTags(message) );
+
+				emojify.run(this.el);
+			}else{
+				this.$el.remove();
+			}
+		}else{
+			this.$el.remove();
+		}
 	},
 });

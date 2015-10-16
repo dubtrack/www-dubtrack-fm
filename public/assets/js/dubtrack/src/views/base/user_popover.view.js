@@ -5,8 +5,8 @@ dt.global.userPopover = Backbone.View.extend({
 
 	events: {
 		'click a.kick' : 'kickuser',
-		//'click a.ban' : 'banuser',
-		'keydown a.ban input': 'banuser',
+		'click a.ban' : 'banuser',
+		'keydown a.ban input': 'banuserKeydown',
 		'click a.mute' : 'muteuser',
 		'click a.unmute' : 'unmuteuser',
 		'click .usercontent': 'navigateUser',
@@ -34,8 +34,8 @@ dt.global.userPopover = Backbone.View.extend({
 				this.$('.actions a').hide();
 
 				if(Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || Dubtrack.room.users.getIfHasRole(Dubtrack.session.id) || Dubtrack.room.model.get('userid') == Dubtrack.session.id) {
-		 			this.$('.actions').show();
-		 			this.$('.actions a.send-pm-message').show();
+					 this.$('.actions').show();
+					 this.$('.actions a.send-pm-message').show();
 
 					if(Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || Dubtrack.room.users.getIfOwner(Dubtrack.session.id) || Dubtrack.room.users.getIfMod(Dubtrack.session.id) || Dubtrack.room.users.getIfVIP(Dubtrack.session.id) || Dubtrack.room.users.getIfResidentDJ(Dubtrack.session.id) || Dubtrack.room.users.getIfManager(Dubtrack.session.id)){
 					}
@@ -109,6 +109,16 @@ dt.global.userPopover = Backbone.View.extend({
 			this.$('.global-actions').hide();
 		}
 
+		if(Dubtrack.helpers.isDubtrackAdmin(id) || Dubtrack.room.model.get('userid') == id){
+			this.$('.actions').hide();
+		}
+
+		if(Dubtrack.helpers.isDubtrackAdmin(id) || Dubtrack.room.users.getIfHasRole(id)){
+			this.$('.actions a.mute').hide();
+			this.$('.actions a.kick').hide();
+			this.$('.actions a.ban').hide();
+		}
+
 		var self = this;
 		$('body').bind('click.userPopover', function(e){
 			if(self.userActive){
@@ -164,6 +174,23 @@ dt.global.userPopover = Backbone.View.extend({
 	},
 
 	banuser: function(e){
+		if(e && e.target){
+			if(!$(e.target).is('input')){
+				var value_input = this.$('a.ban input').val();
+				if(value_input.length > 0){
+					Dubtrack.room.chat.banUser(this.user.get('username'), parseInt(value_input, 10));
+				}else{
+					Dubtrack.room.chat.banUser(this.user.get('username'), 0);
+				}
+
+				Dubtrack.views.user_popover.$el.hide();
+			}
+		}
+
+		return false;
+	},
+
+	banuserKeydown: function(e){
 		c = e.which ? e.which : e.keyCode;
 		if (c == 13){
 			var value_input = this.$('a.ban input').val();

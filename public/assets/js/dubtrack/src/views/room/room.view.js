@@ -155,13 +155,24 @@ Dubtrack.View.Room = Backbone.View.extend({
 		Dubtrack.Events.bind('realtime:user-kick', this.userKickedOut, this);
 		Dubtrack.Events.bind('realtime:user-ban', this.userBannedOut, this);
 
-		window.onbeforeunload = function() {
-			$.ajax({
-				url: self.urlUsersRoom,
-				async: false,
-				type: 'delete'
+
+		if(Dubtrack.loggedIn){
+			var leaveUrl = Dubtrack.config.apiUrl + Dubtrack.config.urls.roomBeacon.replace( ":id", this.model.id ).replace( ":userid", Dubtrack.session.get("_id"));
+
+			$(window).bind('beforeunload', function () {
+				$.ajax({
+					url: leaveUrl,
+					async: false
+				});
 			});
-		};
+
+			$(window).bind("unload", function () {
+				$.ajax({
+					url: leaveUrl,
+					async: false
+				});
+			});
+		}
 
 		$(window).resize(function(){
 			self.resize();
@@ -227,16 +238,11 @@ Dubtrack.View.Room = Backbone.View.extend({
 		Dubtrack.helpers.cookie.delete('dubtrack-room');
 		Dubtrack.helpers.cookie.delete('dubtrack-room-id');
 
-		/*$.ajax({
-			url: this.urlUsersRoom,
-			async: false,
-			type: 'delete'
-		});*/
-
 		window.onbeforeunload = null;
 
 		window.location = "/";
 	},
+
 
 	renderChat: function(){
 		this.chat = new Dubtrack.View.chat();

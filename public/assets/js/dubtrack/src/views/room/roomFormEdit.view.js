@@ -86,7 +86,9 @@ dt.room.roomFormUpdateViewUpdate = Backbone.View.extend({
 			roomType = this.$('#roomTypeSelect').val(),
 			lockQueue = this.$('#lockQueueSelect').val()
 			description = this.$('#roomDescription').val(),
-			roomEmbed = this.$('#roomEmbedInput').val();
+			roomEmbed = this.$('#roomEmbedInput').val(),
+			welcomeMessage = this.$('#welcomeMessage').val(),
+			metaDescription = this.$('#metaDescription').val();
 
 		if( value && value !== " "){
 			this.$('.btn-primary').html('loading...');
@@ -98,7 +100,9 @@ dt.room.roomFormUpdateViewUpdate = Backbone.View.extend({
 				roomType: roomType,
 				roomEmbed: roomEmbed,
 				description: description,
-				lockQueue: lockQueue
+				lockQueue: lockQueue,
+				welcomeMessage: welcomeMessage,
+				metaDescription: metaDescription
 			},{
 				success: function(m, r){
 					if(r.code === 200){

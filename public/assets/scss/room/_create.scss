@@ -35,6 +35,8 @@
 			margin: 0;
 			font-size: 1.2em;
 			margin-bottom: 0.5em;
+			word-wrap: break-word;
+			white-space: normal;
 		}
 	}
 
@@ -42,11 +44,20 @@
 		h3{
 			text-align: center;
 			font-size: 1.2em;
+			word-wrap: break-word;
+			white-space: normal;
 		}
+	}
+
+	.control-group{
+		word-wrap: break-word;
+		white-space: normal;
 	}
 
 	.mid{
 		padding: 1.5em 1em 1em 1em;
+		word-wrap: break-word;
+		white-space: normal;
 
 		a{
 			font-weight: bold;
@@ -57,6 +68,10 @@
 			textarea{
 				height: 10em;
 				font-size: 0.85em;
+
+				&.mid-textarea{
+					height: 5em;
+				}
 			}
 		}
 

@@ -11,6 +11,8 @@ Dubtrack.Model.Room = Backbone.Model.extend({
 		isPublic: null,
 		lang: null,
 		musicType: null,
+		metaDescription: null,
+		welcomeMessage: null,
 		password: null,
 		activeUsers: 0,
 		allowedDjs: null,
