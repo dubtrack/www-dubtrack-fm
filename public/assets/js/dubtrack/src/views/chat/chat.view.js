@@ -853,6 +853,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 	deleteChatItem: function(r){
 		if(r.chatid && r.user && r.user.username){
 			this.$('.chat-main li#' + r.chatid + ' .text').html('<p class="deleted">chat message deleted by @' + r.user.username + '</p>');
+			this.$('.chat-main li#' + r.chatid).attr('id', '').find('.chatDelete').remove();
 		}
 	},
 

@@ -118,6 +118,12 @@ Dubtrack.View.SoundCloudPlayer = Backbone.View.extend({
 		console.log("destory sound cloud delegate view");
 	},
 
+	stop : function() {
+		try{
+			if(this.scPlayer) return this.scPlayer.stop();
+		}catch(ex){}
+	},
+
 	setVolume : function (volume){
 		volume = parseInt(volume,10);
 

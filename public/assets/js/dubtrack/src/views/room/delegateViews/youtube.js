@@ -7,6 +7,65 @@ Dubtrack.View.YoutubePlayer = Backbone.View.extend({
 	initialize: function(){
 	},
 
+	loadVideo : function(url, start, onEnd, object, loadBg){
+		this.url = url;
+
+		var params = Dubtrack.config.player.youtube.youtubeVars;
+		console.log("YOUTUBE START TIME: ", start);
+		if(start >= 0){
+			params.start = start;
+		}
+
+		this.player.loadVideoById({
+			width: Dubtrack.config.player.playerWidth,
+			height: Dubtrack.config.player.playerHeight,
+			startSeconds: start,
+			videoId: url,
+			playerVars: params,
+			events: {
+				'onReady': function(event){
+					object.errorElBtn.hide();
+					self.setVolume( Dubtrack.playerController.volume );
+
+					self.setPlaybackQuality( object.playbackQuality );
+
+					if(!is_mobile()){
+						self.play();
+					}
+				},
+
+				'onError': function(e){
+					object.playing = false;
+					console.log("YOUYUBE ERROR", e);
+				},
+
+				'onStateChange': function(newState){
+					console.log("YT player stated changed => " + newState.data);
+					switch(newState.data){
+						case 0:
+							if(onEnd) onEnd.call();
+						break;
+						case 1:
+								object.loadingEl.hide();
+								object.bufferingEl.hide();
+								object.playing = true;
+								object.autoplayStarted = true;
+						break;
+						case 3:
+							object.bufferingEl.show();
+							object.playing = false;
+						break;
+						case 2:
+							self.play();
+						break;
+						default:
+						break;
+					}
+				}
+			}
+		});
+	},
+
 	render: function(url, start, onEnd, object, loadBg){
 		var self = this;
 
@@ -31,12 +90,11 @@ Dubtrack.View.YoutubePlayer = Backbone.View.extend({
 		if(start >= 0){
 			params.start = start;
 		}
-		//params.t = '120m';
 
 		object.loadingEl.hide();
 
 		try{
-			var youtubePlayer = new YT.Player( this.id, {
+			this.player = new YT.Player( this.id, {
 				width: Dubtrack.config.player.playerWidth,
 				height: Dubtrack.config.player.playerHeight,
 				startSeconds: start,
@@ -44,53 +102,44 @@ Dubtrack.View.YoutubePlayer = Backbone.View.extend({
 				playerVars: params,
 				events: {
 					'onReady': function(event){
-									self.player = event.target;
+						object.errorElBtn.hide();
+						self.setVolume( Dubtrack.playerController.volume );
 
-									object.errorElBtn.hide();
-									//self.play();
-									//if( self.loadBg ) self.setVolume( 0 );
-									//else self.setVolume( Dubtrack.playerController.volume );
-									self.setVolume( Dubtrack.playerController.volume );
+						self.setPlaybackQuality( object.playbackQuality );
 
-									self.setPlaybackQuality( object.playbackQuality );
-
-									if(!is_mobile()){
-										self.play();
-									}
-								},
+						if(!is_mobile()){
+							self.play();
+						}
+					},
 
 					'onError': function(e){
-									object.playing = false;
-									console.log("YOUYUBE ERROR", e);
-								},
+						object.playing = false;
+						console.log("YOUYUBE ERROR", e);
+					},
 
 					'onStateChange': function(newState){
-									console.log("YT player stated changed => " + newState.data);
-									switch(newState.data){
-										case 0:
-											if(onEnd) onEnd.call();
-										break;
-										case 1:
-											//if( self.loadBg ){
-											//	self.player.pauseVideo();
-											//}else{
-												object.loadingEl.hide();
-												object.bufferingEl.hide();
-												object.playing = true;
-												object.autoplayStarted = true;
-											//}
-										break;
-										case 3:
-											object.bufferingEl.show();
-											object.playing = false;
-										break;
-										case 2:
-											self.play();
-										break;
-										default:
-										break;
-									}
-								}
+						console.log("YT player stated changed => " + newState.data);
+						switch(newState.data){
+							case 0:
+								if(onEnd) onEnd.call();
+							break;
+							case 1:
+									object.loadingEl.hide();
+									object.bufferingEl.hide();
+									object.playing = true;
+									object.autoplayStarted = true;
+							break;
+							case 3:
+								object.bufferingEl.show();
+								object.playing = false;
+							break;
+							case 2:
+								self.play();
+							break;
+							default:
+							break;
+						}
+					}
 				}
 			});
 
@@ -149,6 +198,12 @@ Dubtrack.View.YoutubePlayer = Backbone.View.extend({
 		}catch(ex){}
 	},
 
+	stop : function() {
+		try{
+			if(this.player) return this.player.stopVideo();
+		}catch(ex){}
+	},
+
 	beforeClose : function(){
 		console.log("destroy youtube delegate view parent");
 
@@ -166,10 +221,12 @@ Dubtrack.View.YoutubePlayer = Backbone.View.extend({
 		newVolume = parseInt(newVolume, 10);
 
 		if(this.player){
-			if(newVolume > 2) this.player.unMute();
-			else this.player.mute();
+			try{
+				if(newVolume > 2) this.player.unMute();
+				else this.player.mute();
 
-			this.player.setVolume( newVolume );
+				this.player.setVolume( newVolume );
+			}catch(ex){}
 		}
 	}
 });
