@@ -267,6 +267,8 @@ Dubtrack.View.Player = Backbone.View.extend({
 
 		if(song === null || song._id != r.song._id){
 			console.log("DUBTRACK UPDATING PLAYER!");
+			if(this.activePlayerDelegate) this.activePlayerDelegate.stop();
+
 			this.refresh();
 
 			this.activeSong.set({
