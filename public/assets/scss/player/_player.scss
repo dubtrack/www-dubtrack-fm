@@ -239,6 +239,7 @@
 	cursor: pointer;
 	@include border-radius(0.313em);
 	position: relative;
+	top: -8px;
 
 	.ui-slider-handle {
 		@include border-radius(0.6em);
@@ -258,4 +259,30 @@
 	.ui-slider-range-min {
 		background: #ff00ff;
 	}
+}
+#vol-meter::selection {background:transparent;}
+#vol-meter {
+	display: inline-block;
+	position: relative;
+	top: -15px;
+	width: 100%;
+	text-align: center;
+	cursor: pointer;
+}
+#vol-meter:after {
+    margin: 0 0 0 .5em;
+    font-family: IcoMoon;
+    speak: none;
+    font-style: normal;
+    font-weight: 400;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    content: "\e60b";
+    font-size: .75em;
+}
+#vol-meter.muted:after {
+  content: "\e609";
 }
