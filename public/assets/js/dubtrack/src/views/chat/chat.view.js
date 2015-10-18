@@ -1,14 +1,3 @@
-Dubtrack.Events.bind('realtime:chat-message',realtimeChatPing);
-$('body').prepend('<audio class="isRobot" preload="auto"><source src="/assets/music/user_ping.mp3" type="audio/mpeg"></audio>');
-function realtimeChatPing(data) {
-		var realtimeChatUser = Dubtrack.session.get('username');
-		var realtimeChatData = data.message;
-		if (!realtimeChatData.indexOf('@'+realtimeChatUser)) {
-				var isRobot = document.querySelector('.isRobot');
-				isRobot.play();
-		}
-}
-
 Dubtrack.AvatarUsersRegistered = new Backbone.Collection();
 
 Dubtrack.View.chat = Backbone.View.extend({
@@ -280,12 +269,12 @@ Dubtrack.View.chat = Backbone.View.extend({
 				this.chatSoundHtmlEl.html( dubtrack_lang.chat.sound_on );
 			break;
 			case "mention":
-				this.renderSound = false;
+				this.renderSound = true;
 				this.chatSoundFilter = "mention";
 				this.chatSoundHtmlEl.html( dubtrack_lang.chat.sound_mention );
 			break;
 			case "off":
-				this.renderSound = true;
+				this.renderSound = false;
 				this.chatSoundFilter = "off";
 				this.chatSoundHtmlEl.html( dubtrack_lang.chat.sound_off );
 				this.chatSoundHtmlEl.addClass( "mute" );
@@ -578,9 +567,13 @@ Dubtrack.View.chat = Backbone.View.extend({
 					chatItem.render();
 				}
 
-				//this.playSound( (data.body.indexOf("@" + this.usernameEl) != -1) );
-				//else this.playSound(false);
-				this.playSound(false);
+				if(Dubtrack.session && Dubtrack.session.get('username')){
+					var regex = new RegExp("@" + Dubtrack.session.get('username') + "\\b", 'g');
+					var mention = regex.test(chatModel.get('message'));
+					this.playSound(mention);
+				}else{
+					this.playSound(false);
+				}
 		}
 	},
 
@@ -588,6 +581,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		if(this.chatSound) return;
 
 		this.chatSound = true;
+		this.mentionChatSound = true;
 
 		var self = this;
 
@@ -600,6 +594,15 @@ Dubtrack.View.chat = Backbone.View.extend({
 					id: 'chatsound',
 					autoPlay: false,
 					url: Dubtrack.config.urls.mediaBaseUrl + "/assets/music/notification.mp3",
+					onerror : function() {
+						self.chatSound = false;
+					}
+				});
+
+				self.mentionChatSound = soundManager.createSound({
+					id: 'chatmentionsound',
+					autoPlay: false,
+					url: "/assets/music/user_ping.mp3",
 					onerror : function() {
 						self.chatSound = false;
 					}
@@ -619,24 +622,25 @@ Dubtrack.View.chat = Backbone.View.extend({
 	},
 
 	playSound : function(mention){
-		//$('.avatar_' + Player.currentDJ).addClass("currentDJ");
-		//$(".avatar_" + DJ.DJRoom.iduser_owner).addClass("owner-mod");
 		this.scollBottomChat();
 
 		if(this.renderSound){
-			if(this.chatSoundFilter == "none" || mention){
+			if(this.chatSoundFilter == "none"){
 				try{
 					if(this.chatSound) this.chatSound.play();
 				}catch(ex){
 					console.log("CHAT PLAY NOTIFICATION ERROR", ex);
 				}
 			}
+
+			if(mention){
+				try{
+					if(this.mentionChatSound) this.mentionChatSound.play();
+				}catch(ex){
+					console.log("CHAT MENTION PLAY NOTIFICATION ERROR", ex);
+				}
+			}
 		}
-
-		//if(!this.isScrolling || this.idCounter < 15){
-		//this.chatEl.nanoScroller({ scroll: 'bottom' });
-		//}
-
 	},
 
 	systemMessageReceived : function(message){
@@ -853,6 +857,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 	deleteChatItem: function(r){
 		if(r.chatid && r.user && r.user.username){
 			this.$('.chat-main li#' + r.chatid + ' .text').html('<p class="deleted">chat message deleted by @' + r.user.username + '</p>');
+			this.$('.chat-main li#' + r.chatid).attr('id', '').find('.chatDelete').remove();
 		}
 	},
 

@@ -69,6 +69,15 @@
 			width: 100%;
 			top: 0;
 			left: 0;
+
+			#room-main-player-container-youtube,
+			#room-main-player-container-soundcloud{
+				position: absolute;
+				height: 100%;
+				width: 100%;
+				top: 0;
+				left: 0;
+			}
 		}
 
 		&:hover{

@@ -163,7 +163,10 @@ w.Dubtrack = {
 					'wmode': 'transparent',
 					'playsinline' : 1,
 					'iv_load_policy' : 3,
-					'html5' : 1
+					'html5' : 1,
+					'is_html5_mobile_device' : 1,
+					'disablekb' : 1,
+					'frameborder' : 0
 				},
 
 				playerParams: {
@@ -176,7 +179,10 @@ w.Dubtrack = {
 					'wmode': 'transparent',
 					'playsinline' : 1,
 					'iv_load_policy' : 3,
-					'html5' : 1
+					'html5' : 1,
+					'is_html5_mobile_device' : 1,
+					'disablekb' : 1,
+					'frameborder' : 0
 				}
 			},
 
@@ -687,12 +693,11 @@ w.Dubtrack = {
 
 		text : {
 			convertHtmltoTags: function(text, imagloadFun){
-				var imageRegex = /^((http|https)\:\/\/(i\.imgur\.com|img[0-9]{2}\.deviantart\.net|(i|media[0-9]?)\.giphy\.com|[0-9]{2}\.media\.tumblr\.com|s-media-cache-ak[0-9]\.pinimg\.com|(www\.)?reactiongifs\.com|9gag\.com|upload\.wikimedia\.org))(.*)\.(png|jpg|jpeg|gif)$/;
+				var imageRegex = /^(http|https)(.*)\.(png|jpg|jpeg|gif)$/;
 
 				text = text.replace(/(\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%()[\]?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|])/gim,
 					function(str) {
 						if (!Dubtrack.HideImages && str.match(imageRegex)) {
-							str = str.replace(/^http:\/\//i, 'https://');
 							var onErrorAction = "Dubtrack.helpers.image.imageError(this, '/assets/images/media/chat_image_load_error.png');" + imagloadFun;
 							str = '<a href="' + str + '" class="autolink" target="_blank"><img src="' + str + '" alt="' + str + '" onload="' + imagloadFun + '" onerror="' + onErrorAction + '" /></a>';
 							return str;
