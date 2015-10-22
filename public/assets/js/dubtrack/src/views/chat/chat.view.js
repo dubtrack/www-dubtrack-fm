@@ -3,7 +3,7 @@ $('body').prepend('<audio class="isRobot" preload="auto"><source src="/assets/mu
 function realtimeChatPing(data) {
 		var realtimeChatUser = Dubtrack.session.get('username');
 		var realtimeChatData = data.message;
-		if (!realtimeChatData.indexOf('@'+realtimeChatUser)) {
+		if (!realtimeChatData.toLowerCase().indexOf('@'+realtimeChatUser)) {
 				var isRobot = document.querySelector('.isRobot');
 				isRobot.play();
 		}
