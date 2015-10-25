@@ -448,10 +448,13 @@ w.Dubtrack = {
 
 			Dubtrack.views.user_popover.displayUser(id);
 
-			var offset = $(el).offset();
+			var offset = $(el).offset(),
+				left = offset.left - 200;
+
+			if(left < 0) left = 0;
 
 			Dubtrack.views.user_popover.$el.css({
-				'left': offset.left - 200,
+				'left': left,
 				'top': offset.top
 			}).show();
 

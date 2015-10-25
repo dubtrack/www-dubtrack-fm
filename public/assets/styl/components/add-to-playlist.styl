@@ -1,0 +1,60 @@
+#addToPlaylistFloatContainer
+	position absolute
+	z-index 99999
+	padding 0
+	border-radius 1rem
+	transform translate3d(-50%, -50%, 0)
+	transform-style preserve-3d
+	backface-visibility hidden
+	top 50%
+	left 50%
+	width 35rem
+	max-width 100%
+	background $dark-gray
+
+	.create-playlist-header
+		color $meta-color
+		font-weight bold
+		font-size 1.5rem
+		text-transform uppercase
+		padding 0.5rem 1rem
+
+		span
+			font-size 1.1rem
+			margin-left 0.5rem
+			cursor pointer
+
+	.create-playlist-input
+		position relative
+
+		.icon-add
+			position absolute
+			top 0.2rem
+			right 0.5rem
+			background $accent-color
+			color $dark-gray
+			padding 0.3rem
+			cusor pointer
+
+		input
+			padding 0.3rem 1rem
+			border-bottom 1px solid $meta-color
+
+			&:focus
+				color #fff
+
+	.playlist-list-action
+		position relative
+		max-height 20rem
+		overflow hidden
+
+		li
+			padding 0.5rem 1rem
+			border-bottom 1px solid $meta-color
+			cursor pointer
+
+			&:hover
+				color $accent-color
+
+			&:last-of-type
+				border-bottom 0

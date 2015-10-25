@@ -1,0 +1,279 @@
+#private-messages
+	width 100%
+	height 100%
+	overflow hidden
+	position relative
+
+	&.view-message-details
+		.main-message-list
+			left -100%
+
+		.message-details
+			left 0
+
+	.loading
+		position absolute
+		background $accent-color
+		font-weight bold
+		font-size 0.85rem
+		text-transform uppercase
+		top 3.7rem
+		left 50%
+		z-index 999
+		opacity 0.7
+		padding 0.3rem 1rem
+		transform translateX(-50%)
+
+	.user_selected_items
+	.search-results .search-results-users
+		.result-item
+			clearfix()
+			margin 0.7rem 0
+			cursor pointer
+
+			img
+				width 1.7rem
+				height 1.7rem
+				float left
+
+			span
+				margin-left 1rem
+				font-size 0.85rem
+
+				b
+					color $meta-color
+
+	.private-message-details-info
+	.private-message-info
+		padding 0 2.5rem
+		position absolute
+		width 100%
+		left 0
+		top 5rem
+		text-align center
+		color $accent-color
+		display none
+
+	.main-message-list
+	.message-details
+		position absolute
+		background $background-dark-color
+		height 100%
+		width 100%
+		top 0
+		left 0
+		transition left 0.25s
+
+		input
+			border 1px solid $darker-gray
+			background none
+			display block
+			width 100%
+			background none
+			height 2.6rem
+			padding 0 3rem 0 1rem
+			color $meta-color
+
+		.message-header
+			position absolute
+			top 0
+			left 0
+			width 100%
+			padding 0.5em 1em
+			border-bottom 1px solid $darker-gray
+			z-index 99
+
+			a
+				color $accent-color
+				font-size 0.85rem
+				font-weight bold
+				text-transform uppercase
+
+			input
+				padding 0 2.8rem 0 1rem
+
+			.icon-search
+			.icon-plus-alt
+				position absolute
+				left 1.5rem
+				top 0.85rem
+
+			.icon-plus-alt
+				left auto
+				right 1.5rem
+				cursor pointer
+
+		.message-list-wrapper
+			padding 3.6rem 0 0 0
+			position relative
+			height 100%
+
+			.message-list-wrapper-inner
+				position relative
+				height 100%
+				overflow hidden
+
+		ul.message-list
+			padding 0
+
+			li.message-item
+				padding 1rem
+				border-bottom 1px solid $darker-gray
+				position relative
+				cursor pointer
+				min-height 4.7rem
+				opacity 0.8
+				transition opacity 0.1s
+
+				&:hover
+					opacity 1
+
+					.message-time
+						display block
+
+				&.new-message
+					&:before
+						content ""
+						position absolute
+						left 0
+						top 0
+						height 100%
+						width 0.4rem
+						background $accent-color
+
+				.media
+					border-radius 100%
+					width 3rem
+					height 3rem
+					overflow hidden
+					margin 0
+					padding 0
+
+					img
+						width 100%
+
+				.message-content
+					h3
+						margin 0.25rem 0
+						padding 0
+						font-size 1rem
+						font-weight bold
+						color $accent-color
+						overflow hidden
+
+					p
+						font-size 0.95rem
+						text-align left
+						margin 0
+						padding 0
+						color $primary-color
+
+					a
+						color $primary-color
+						font-weight bold
+
+					img
+						width 100%
+
+					.username-handle
+						color $accent-color
+						font-weight bold
+
+				.message-time
+					position absolute
+					right 1rem
+					top 0.2rem
+					color $meta-color
+					font-size 0.85rem
+
+	.main-message-list ul.message-list li.message-item
+		.message-content
+			overflow hidden
+
+			p
+				white-space nowrap
+
+		.image-container
+			clearfix()
+			width 3rem
+			height 3rem
+			overflow hidden
+			float left
+			margin-right 1rem
+			margin-bottom 0.5rem
+
+			.media
+				display block
+				width 1.5rem
+				height 1.5rem
+				float left
+
+		&.display-2-users
+			.media
+				width 3rem
+				height 3rem
+
+		&.display-3-users
+			.media
+				&:nth-of-type(2)
+					margin-left 1.5rem
+
+		&.display-4-users
+			.media
+				&:nth-of-type(1)
+					margin-left 0.75rem
+
+	.message-details
+		left 100%
+
+		.message-list-wrapper
+			padding 3rem 0 4.5rem 0
+
+		ul.message-list
+			li.message-item
+				padding-bottom 1.7rem
+				opacity 1
+				min-height 4.5rem
+
+				&:last-of-type
+					border-bottom 0
+
+				.message-content
+					line-height 1rem
+					padding-left 0
+
+					h3
+						margin 0
+						padding 0
+						display inline
+						font-size 0.95rem
+						color $accent-color
+
+					p
+						font-size 0.95rem
+						display inline
+						color $primary-color
+
+				.media
+					width 2rem
+					height 2rem
+					position relative
+					float left
+					margin-right 1rem
+					margin-bottom 0.5rem
+
+				.message-time
+					display none
+					right auto
+					left 1rem
+					top auto
+					font-size 0.75rem
+					bottom 0.2rem
+
+		.input-container
+			position absolute
+			border-top 1px solid $darker-gray
+			padding 1rem
+			width 100%
+			bottom 0
+			left 0

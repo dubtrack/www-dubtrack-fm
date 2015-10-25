@@ -1,0 +1,125 @@
+#roomFormUpdate
+#roomInfoModal
+	position absolute
+	min-height 15rem
+	z-index 999999
+	top 5rem
+	left 50%
+	width 40rem
+	max-width 100%
+	margin-bottom 10rem
+	background rgba(0, 0, 0, 0.8)
+	border-radius 1rem
+	overflow hidden
+	transform translateX(-50%)
+
+	.closebtn
+		position absolute
+		top 1rem
+		right 1rem
+		font-weight bold
+		font-size 1rem
+		cursor pointer
+		color #666
+
+	.modal-header
+		background rgba(0, 0, 0, 0.8)
+		padding 0.5rem 1rem
+
+		h3
+			margin 0
+			font-size 1.2rem
+			margin-bottom 0.5rem
+			word-wrap break-word
+			white-space normal
+			font-weight bold
+
+	#iframe-embed-preview
+		h3
+			text-align center
+			font-size 1.2rem
+			word-wrap break-word
+			white-space normal
+
+	.control-group
+		word-wrap break-word
+		white-space normal
+
+	.mid
+		padding 1rem 1rem 0 1rem
+		word-wrap break-word
+		white-space normal
+
+		a
+			font-weight bold
+			color #fff
+
+		.larger
+			textarea
+				height 10rem
+				font-size 0.85rem
+
+				&.mid-textarea
+					height 5rem
+
+		label
+			display none
+
+			&.display-block
+				display block
+				color $meta-color
+				font-weight bold
+				font-size 0.95rem
+				margin 0.7rem 0 0.4rem 0
+
+		#progress .bar
+			height 0.2rem
+			background $accent-color
+
+		.help-block
+			margin 1rem 0 0 0
+			color #666
+			font-size 0.85rem
+
+		#fileupload
+			font-size 0.85rem
+
+		input
+		textarea
+		select
+			display block
+			border 1px solid $meta-color
+			background none
+			font-size 0.85rem
+			padding 0.5rem 1rem
+			width 100%
+			color #fff
+			margin 0 0 0.5rem 0
+			border-radius 0.5rem
+
+		select
+			padding 1rem
+			display block
+			font-size 0.85rem
+			height 2rem
+			width 100%
+
+	.modal-footer
+		background rgba(0, 0, 0, 0.8)
+		padding 0.7rem 1rem
+		margin 2rem 0 0 0
+		clearfix()
+
+		button
+			cursor pointer
+			background none
+			border-radius 1rem
+			font-size 1rem
+			font-weight bold
+			border 1px solid $meta-color
+			outline 0
+			color $meta-color
+			box-shadow 0
+			margin-left 0.8rem
+			padding 0.5rem 1rem
+			float right

@@ -1,0 +1,89 @@
+#main_avatar_room
+	display none
+	position relative
+	width 100%
+	padding: 4rem 1rem 1rem 1rem
+
+	.avatar_tools
+		display block
+		margin-bottom 1rem
+
+		input
+			border-bottom 1px solid $meta-color
+			padding 0
+
+	.loadingAva
+		display none
+
+	#main-user-list-room
+		position relative
+		overflow hidden
+
+		#avatar-list
+			li
+				display block
+				margin-bottom 0.5rem
+				cursor pointer
+
+				&.mod
+				&.creator
+				&.admin
+				&.currentDJ
+				&.co-owner
+				&.vip
+				&.resident-dj
+				&.manager
+				&:after
+					p.username
+						&:after
+							content " Mod"
+							color $accent-color
+							font-weight bold
+							display inline-block
+							margin-left 0.5rem
+
+				&.co-owner
+					p.username
+						&:after
+							content " Co-owner"
+
+				&.creator
+					p.username
+						&:after
+							content " Creator" !important
+
+				&.vip
+					p.username
+						&:after
+							content " VIP"
+
+				&.resident-dj
+					p.username
+						&:after
+							content " Resident DJ"
+
+				&.manager
+					p.username
+						&:after
+							content " Manager"
+
+				&.admin
+					p.username
+						&:after
+							content " Admin" !important
+
+				&.currentDJ
+					p.username
+						&:after
+							content " DJ" !important
+
+				p
+					display inline-block
+					margin 0
+					padding 0
+					font-weight bold
+
+					&.dubs
+						text-align right
+						float right
+						color $meta-color

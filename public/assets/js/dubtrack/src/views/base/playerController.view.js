@@ -6,7 +6,8 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 	events : {
 		"click .dubup": "voteUpAction",
 		"click .dubdown": "voteDownAction",
-		"click .add-to-playlist": "addToPlaylist"
+		"click .add-to-playlist": "addToPlaylist",
+		"click .display-browser": "displayBrowser"
 	},
 
 	initialize : function(){
@@ -14,34 +15,20 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 
 		this.$el.html( _.template( Dubtrack.els.templates.layout.playerController ) );
 
-		this.volumeSliderEl = this.$('#volume-div');
-
-		$(window).bind('resize.dubtrackapp', function(){
-			self.resizeEl();
-		});
+		this.volumeSliderEl = $('#volume-div');
 
 		Dubtrack.Events.bind('realtime:room_playlist-dub', this.realTimeDub, this);
 
-		this.resizeEl();
 		this.volumeControl();
 	},
 
-    resizeEl: function(){
-		this.$('.infoContainer').css( 'width', 0 );
-		var w = $(window).width() - this.$('div.left').width() - this.$('div.right').width() - this.$('.infoContainer').width();
-
-		this.$('.infoContainer').css( 'width', w + 32 );
-		this.progressElWidth = w;
-    },
-
 	update : function(){
 		this.voteUp = $('.dubup');
+		this.voteUpCounter = $('.dubup .dub-counter');
 		this.voteDown = $('.dubdown');
-		this.voteDisplayTotal = $('.dubstotal');
+		this.voteDownCounter = $('.dubdown .dub-counter');
 
 		this.updateVote();
-
-		this.resizeEl();
 
 		return false;
 	},
@@ -63,6 +50,12 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 		return false;
 	},
 
+	displayBrowser : function(){
+		Dubtrack.app.navigate("/browser/queue", {
+			trigger: true
+		});
+	},
+
 	voteUpAction : function(){
 		this.vote('updub');
 
@@ -80,7 +73,9 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 
 		if( !Dubtrack.room ||  song === null || r.playlist._id !== song._id) return;
 
-		this.voteDisplayTotal.html(r.playlist.updubs - r.playlist.downdubs);
+		this.voteUpCounter.text(r.playlist.updubs);
+		this.voteDownCounter.text(r.playlist.downdubs);
+
 		Dubtrack.room.player.activeSong.set({
 			song: r.playlist
 		});
@@ -162,9 +157,6 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 				if(cookie) totalVoted = totalVoted - 1;
 				totalVoted = totalVoted - 1;
 			}
-
-			totalVoted = totalVoted;
-			this.voteDisplayTotal.html(totalVoted);
 		}
 
 		if(voteType == "updub"){
@@ -177,7 +169,9 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 	updateVote : function(){
 		//reset els
 		$(".voted").removeClass("voted");
-		this.voteDisplayTotal.html("0");
+
+		this.voteUpCounter.text(0);
+		this.voteDownCounter.text(0);
 
 		var song = Dubtrack.room.player.activeSong.get('song');
 
@@ -197,7 +191,8 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 			else this.voteDown.addClass("voted");
 		}
 
-		this.voteDisplayTotal.html(totalVoted);
+		this.voteUpCounter.text(song.updubs);
+		this.voteDownCounter.text(song.downdubs);
 	},
 
 	volumeControl : function(){

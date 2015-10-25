@@ -1,0 +1,38 @@
+#main-menu-right
+	background none
+	position fixed
+	height 100%
+	right -35rem
+	top 0
+	width 30rem
+	z-index 1000
+	padding 3.7rem 0 3.5rem 0
+	backface-visibility hidden
+	transition transform 0.2s ease-in-out
+
+	.close-menu
+		border-bottom 0
+		font-size 1rem
+		padding 0.6rem
+		position absolute
+		left -2.2rem
+		line-height 0.5rem
+		text-align center
+		top 3.6rem
+		background $background-dark-color
+
+		span
+			font-size: 1em
+			color $meta-color
+
+		&:hover
+			color $accent-color
+
+	p
+		padding 1rem
+		color $primary-color
+		text-align center
+
+.menu-right-in
+	#main-menu-right
+		transform translateX(-35rem)

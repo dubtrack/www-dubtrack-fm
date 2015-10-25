@@ -1,0 +1,259 @@
+#chat
+	display block
+	position relative
+	height 100%
+
+	&.hide-images-in-text
+		.chat-messages
+			.chat-main
+				li
+					.activity-row
+						.text
+							img
+								display none
+
+	.chat_tools
+		position absolute
+		width 100%
+		top 0
+		left 0
+		border-bottom 1px solid $meta-color
+		clearfix()
+
+		span
+			float left
+			display block
+			padding 0.8rem 0
+			width 33%
+			border 0
+			outline 0
+			cursor pointer
+			text-align center
+			font-size 1.5rem
+			color $meta-color
+			position relative
+
+			&:after
+				content ""
+				position absolute
+				border 1px solid $primary-color
+				bottom 0
+				left 0
+				width 100%
+				display none
+
+			&.display-chat
+				color $primary-color
+
+				&:after
+					display block
+
+			&:hover
+				color $primary-color
+
+			&.icon-chatsettings
+				font-size 2.5rem
+				line-height 0.6
+
+			&.icon-people
+				i
+					font-size 0.85rem
+					line-height 0.8
+					font-style normal
+					font-weight bold
+					margin-left 0.4rem
+					top -0.3rem
+					position relative
+
+	.chatLoading
+		display none
+
+	.chat-container
+		height 100%
+		padding-bottom 3.5rem
+		padding-top 3.4rem
+
+		.chat-messages
+			overflow hidden
+			position relative
+			height 100%
+
+			.chat-main
+				padding 1rem 1rem
+				overflow none
+
+				li
+					position relative
+					font-size 0.95rem
+					padding 0 0 1rem 0
+					overflow hidden
+					clearfix()
+
+					&:hover
+						.meta-info .timeinfo
+						.chatDelete
+							display block
+
+					&.chat-welcome-message
+					&.system
+					&.system-error
+					&.chat-system-loading
+						color $meta-color
+						font-weight bold
+
+					&.system-error
+						color $accent-other-color
+
+					&.chat-me-command-joined
+						color $meta-color
+						font-style italic
+						font-weight bold
+
+					.stream-item-content
+						.image_row
+							position absolute
+							top 0
+							left 0
+							width 2.5rem
+							height 2.5rem
+							border-radius 100%
+							overflow hidden
+							cursor pointer
+
+					.activity-row
+						padding-left 3.5rem
+
+						.text
+							word-wrap break-word
+
+							.username-handle
+								font-weight bold
+
+							img
+								max-width 100%
+
+							p
+								margin 0
+								padding 0
+
+								&.deleted
+									color $meta-color
+									font-style italic
+									font-weight bold
+
+								a
+									font-weight bold
+
+							a.username
+								display block
+								font-size 0.85rem
+								line-height 1.2
+								font-weight bold
+								color $meta-color
+								cursor pointer
+
+					.meta-info
+						.username
+							display none
+
+						.timeinfo
+							position absolute
+							bottom: 0.2rem
+							right 0
+							display none
+							font-size 0.75rem
+							font-weight bold
+							color $meta-color
+
+					.chatDelete
+						position absolute
+						font-size 0.6rem
+						top 0
+						right 0
+						cursor pointer
+						display none
+
+	.pusher-chat-widget-input
+		position absolute
+		padding 0.5rem 0
+		bottom 0
+		left 0
+		width 100%
+		border-top 1px solid $meta-color
+
+		input
+			padding-right 3rem
+
+		.chatLogin
+			padding 0.5rem 1rem
+
+		.pusher-chat-widget-send-btn
+			display none
+
+		.icon-camera
+			position absolute
+			right 1rem
+			top 1.2rem
+			cursor pointer
+
+		#new-messages-counter
+			opacity 0.6
+			position absolute
+			top 0
+			padding 0.5rem
+			font-size 0.85rem
+			font-weight bold
+			text-align center
+			background $accent-color
+			margin-top -2.4rem
+			width 100%
+			color #000
+			cursor pointer
+			text-transform uppercase
+
+	.chat-options
+		padding-top 3.5rem
+		display none
+
+		.chat-option-header
+			display block
+			padding 0 1rem
+			color $meta-color
+			font-size 0.85rem
+			font-weight bold
+			text-transform uppercase
+			margin-top 1rem
+
+		.chat-option-buttons
+			clearfix()
+
+			span
+				display block
+				float left
+				border 1px solid $meta-color
+				border-left 0
+				width 50%
+				text-align center
+				padding 1rem 0
+				cursor pointer
+
+				&.active
+					color #fff !important
+
+					i
+						color $accent-color
+
+				&:hover
+					color $accent-color
+
+				&:last-child
+					border-right 0
+
+				i
+					margin-right 0.2rem
+					font-size 0.85rem
+
+			&.chat-option-buttons-sound
+				span
+					width 33.33%
+					color $meta-color

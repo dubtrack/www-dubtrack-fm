@@ -1,0 +1,83 @@
+#user_popover
+	position fixed
+	z-index 9999999
+	border-radius 1rem
+	background $primary-color
+	display none
+	min-width 19rem
+	overflow hidden
+
+	.usercontent
+		cursor pointer
+		clearfix()
+		padding 1rem
+
+		header
+			float left
+			margin 0.5rem 0 0 1rem
+
+			h3
+			.dubs
+				font-size 1rem
+				color $dark-gray
+				margin 0
+
+			h3
+				font-weight bold
+				font-size 1.3rem
+
+		figure
+			width 4rem
+			height 4rem
+			border-radius 100%
+			overflow hidden
+			float left
+			margin 0 0.5rem 0 0
+
+			img
+				width 100%
+
+	.actions
+	.global-actions
+		background $background-meta-color
+
+	.global-actions
+		clear both
+		clearfix()
+		margin 0.5rem 0 0 0
+
+		a
+			outline 1px solid $gray
+			display block
+			text-align center
+			font-weight bold
+			padding 0.5rem 0
+			float left
+			width 50%
+			color $dark-gray
+
+	.actions
+		clear both
+		clearfix()
+
+		a
+			display block
+			text-align center
+			color $dark-gray
+			outline 1px solid $gray
+			padding 0.5rem 0
+			font-weight bold
+
+			input
+				vertical-align middle
+				border-radius 1rem
+				border 1px solid $dark-gray
+				background $background-meta-color
+				color $dark-gray
+				padding 0.15rem 0.5rem
+				width 4rem
+
+
+.not-logged-in
+	.global-actions
+		display none !important

@@ -1,0 +1,103 @@
+#login-model-window
+	display none
+	height 100%
+	position absolute
+	top 0
+	left 0
+	width 100%
+	height 100%
+	background rgba(0, 0, 0, 0.5)
+
+	.login-model-container
+		display none
+		width 20rem
+		max-width 100%
+		margin 0 auto
+		top 50%
+		position relative
+		transform translateY(-50%)
+		transform-style preserve-3d
+		backface-visibility hidden
+
+		&.show-form
+			display block
+
+		.facebook-login
+		.twitter-login
+			display block
+			padding 1rem 1rem
+			border-radius 2rem
+			background #2B5C94
+			font-weight bold
+			margin-bottom 0.5rem
+
+			i
+				margin-right 1rem
+
+		.twitter-login
+			background #009DF6
+
+		.err-message
+		.success-message
+			display none
+			font-weight bold
+			color $meta-color
+
+		.err-message
+			color $accent-other-color
+
+		.account-actions
+			clearfix()
+			margin-top 1.5rem
+			text-align center
+
+			&.account-actions-single
+				a
+					width 100%
+					float none
+
+			a
+				font-weight bold
+				font-size 0.85rem
+				display block
+				float left
+				width 50%
+
+		h1
+			margin 0 auto 1rem auto
+			width 7rem
+			height 7rem
+			background-image url('https://res.cloudinary.com/hhberclba/image/upload/c_lpad,h_500,w_500/v1400351432/dubtrack_new_logo_fvpxa6.png')
+			background-repeat none
+			background-size 7rem 7rem
+			text-indent -9999rem
+			overflow hidden
+
+		h2
+			font-weight bold
+			text-align center
+			margin 0 0 3rem 0
+
+		h3
+			font-weight bold
+			font-size 1rem
+			margin-top 1.5rem
+
+		form
+			text-align center
+
+		input
+			border 1px solid $primary-color
+			border-radius 0.5rem
+			margin-bottom 0.4rem
+
+			&[type=submit]
+				font-style normal
+				padding 0.5rem 2.5rem
+				font-weight bold
+				background $primary-color
+				color $meta-color
+				width auto
+				margin 1rem auto 0 auto
+				display inline-block
+				text-align center

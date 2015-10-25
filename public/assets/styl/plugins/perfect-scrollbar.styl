@@ -1,0 +1,75 @@
+.ps-container
+	.ps-scrollbar-x-rail
+		position: absolute
+		bottom 3px
+		height 8px
+		border-radius 4px
+		opacity 0
+		transition background-color .2s linear, opacity .2s linear
+
+	&:hover .ps-scrollbar-x-rail
+	&.hover .ps-scrollbar-x-rail
+		opacity 0.6
+
+	.ps-scrollbar-x-rail
+		&:hover
+		&.hover
+			background-color #000
+			opacity 0.6
+
+		.in-scrolling
+			opacity 0.9
+
+	.ps-scrollbar-y-rail
+		position absolute
+		right 3px
+		width 8px
+		border-radius 4px
+		opacity 0
+		transition background-color .2s linear, opacity .2s linear
+		z-index 99999
+
+	&:hover .ps-scrollbar-y-rail
+	&.hover .ps-scrollbar-y-rail
+		opacity 0.6
+
+	.ps-scrollbar-y-rail
+		&:hover
+		&.hover
+			background-color #000
+			opacity 0.9
+
+		&.in-scrolling
+			opacity 0.9
+
+	.ps-scrollbar-x
+		position absolute
+		bottom 0
+		height 8px
+		background-color #333
+		border-radius 4px
+		transition background-color .2s linear
+
+	&.ie6 .ps-scrollbar-x
+		font-size 0
+
+	.ps-scrollbar-x-rail
+		&:hover .ps-scrollbar-x
+		&.hover .ps-scrollbar-x
+			background-color #333
+
+	.ps-scrollbar-y
+		position absolute
+		right 0
+		width 8px
+		background-color #333
+		border-radius 4px
+		transition background-color .2s linear
+
+	&.ie .ps-scrollbar-y
+		font-size 0
+
+	.ps-scrollbar-y-rail
+		&:hover .ps-scrollbar-y
+		&.hover .ps-scrollbar-y
+			background-color #333

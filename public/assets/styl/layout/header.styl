@@ -1,0 +1,103 @@
+#header-global
+	position fixed
+	padding 0.8rem 1rem
+	top 0
+	z-index 99
+	left 0
+	width 100%
+	background $background-primary-color
+	clearfix()
+
+	.header-left-navigation
+		float left
+
+		h1
+		a
+			text-transform uppercase
+			font-weight bold
+			margin 0 0.75rem 0 0
+
+		h1
+			display inline-block
+			text-indent -9999rem
+			width 2rem
+			height 2rem
+			background-image url('https://res.cloudinary.com/hhberclba/image/upload/c_lpad,h_100,w_100/v1400351432/dubtrack_new_logo_fvpxa6.png')
+			background-size 2rem 2rem
+
+		a
+			display inline-block
+
+			&.room-active-link
+				display none
+
+				&.active-room
+					display inline-block
+
+					.icon-chevron
+						font-size 0.75rem
+						color $accent-color
+						margin-right 0.75rem
+
+	.header-right-navigation
+	#header_login
+		float right
+		margin-right 1rem
+
+	.header-right-navigation
+		.user-messages
+		.user-info
+			display inline-block
+			vertical-align middle
+			margin-left 1rem
+
+		.user-info
+			cursor pointer
+
+			span
+			.user-image
+				display inline-block
+				vertical-align middle
+
+			.user-image
+				width 2rem
+				height 2rem
+				overflow hidden
+				border-radius 100%
+				margin 0
+				padding 0
+				margin-left 0.8rem
+
+			span
+				font-weight bold
+
+		.user-messages
+			font-size 1.2rem
+			line-height 1.2
+			cursor pointer
+			position relative
+
+			.message-counter
+				display block
+				position absolute
+				top -0.5rem
+				right -0.5rem
+				width 1.35rem
+				height 1.35rem
+				padding 0.5rem
+				border-radius 100%
+				background $accent-other-color
+				font-size 0.75rem
+				line-height 0.5
+				text-align center
+				font-weight bold
+
+	#header_login
+		display none
+		margin-right 0
+		margin-top 0.2rem
+
+		a
+			padding 0 1rem
+			font-weight bold
+			color $primary-color

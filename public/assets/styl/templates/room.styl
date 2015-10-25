@@ -1,0 +1,87 @@
+#main-room
+	top 0
+	left 50%
+	position absolute
+	margin 0 auto
+	width 100%
+	height 100%
+	max-width 80rem
+	padding 5rem 0
+	transform translate3d(-50%, 0, 0)
+
+	&.display-users-rooms
+		#main_avatar_room
+			display block
+
+		#chat
+			width 100%
+			position absolute
+			top 0
+			height 3.5rem
+			overflow hidden
+
+			.display-chat
+			.display-chat-settings
+				color $meta-color
+
+				&:after
+					display none
+
+			.display-room-users
+				color $primary-color
+
+				&:after
+					display block
+
+			.chat-container
+				display none
+
+	&.display-chat-settings
+		#chat
+			.display-chat
+			.display-room-users
+				color $meta-color
+
+				&:after
+					display none
+
+			.display-chat-settings
+				color $primary-color
+
+				&:after
+					display block
+
+			.chat-container
+				display none
+
+			.chat-options
+				display block
+
+	#mobile-room-menu
+		display none
+
+	.main-room-wrapper
+		position relative
+		width 100%
+		height 100%
+
+	.right_section
+	.left_section
+		position absolute
+		left 0
+		top 0
+		height 100%
+		padding 0
+
+	.left_section
+		padding-right 32rem
+		width 100%
+
+	.right_section
+		border-radius 1rem
+		background rgba(0, 0, 0, 0.7)
+		width 30rem
+		left auto
+		right 0
+		top 50%
+		transform translate3d(0, -50%, 0)

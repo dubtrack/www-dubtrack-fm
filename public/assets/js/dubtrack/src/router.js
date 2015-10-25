@@ -406,6 +406,7 @@ DubtrackRoute = Backbone.Router.extend({
 
 	join : function(id, callbackJoin, hide){
 		$('.dubtrack-section').hide();
+		$('#login-model-window').hide();
 		$("html").removeClass("menu-left-in").removeClass('menu-right-in');
 
 		if (Dubtrack.room && Dubtrack.room.model){
@@ -469,14 +470,7 @@ DubtrackRoute = Backbone.Router.extend({
 		var self = this;
 
 		$('.dubtrack-section').hide();
-
-		/*$dj_new_user = Dubtrack.helpers.cookie.get('dj_new_user');
-
-		if( ! $dj_new_user && Dubtrack.user.loggedIn ){
-
-			this.help();
-			ntlp_set_cookie('dj_new_user', true, 60);
-		}*/
+		$('#login-model-window').hide();
 
 		$("html").removeClass("menu-left-in").removeClass('menu-right-in');
 
