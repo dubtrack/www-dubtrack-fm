@@ -9,7 +9,9 @@
 	left 50%
 	padding-top 5rem
 	transition bottom 0.3s
-	transform translate3d(-50%, 0, 0)
+	transform translateX(-50%)
+	filter blur(0)
+	-webkit-filter blur(0)
 	transform-style preserve-3d
 	backface-visibility hidden
 
@@ -213,6 +215,10 @@
 					font-weight bold
 					text-transform uppercase
 					transform translate(-50%, 0)
+					-webkit-filter blur(0)
+					filter blur(0)
+					transform-style preserve-3d
+					backface-visibility hidden
 
 				.content-videos
 					position relative

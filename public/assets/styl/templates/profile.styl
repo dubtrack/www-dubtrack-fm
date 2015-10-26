@@ -7,7 +7,11 @@
 	min-height 100%
 	width 100%
 	background rgba(0, 0, 0, 0.5)
-	transform translate3d(-50%, 0, 0)
+	transform translateX(-50%)
+	-webkit-filter blur(0)
+	filter blur(0)
+	transform-style preserve-3d
+	backface-visibility hidden
 
 	#profileSidebar
 	.profileWrapper
@@ -109,6 +113,8 @@
 					background #fff
 					transition opacity 0.3s
 					transform translateZ(0)
+					-webkit-filter blur(0)
+					filter blur(0)
 					transform-style preserve-3d
 					backface-visibility hidden
 

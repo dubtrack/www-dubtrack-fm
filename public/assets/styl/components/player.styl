@@ -4,7 +4,11 @@
 	border-radius 1rem
 	background rgba(0, 0, 0, 0.7)
 	top 50%
-	transform translate3d(0, -50%, 0)
+	transform translateY(-50%)
+	-webkit-filter blur(0)
+	filter blur(0)
+	transform-style preserve-3d
+	backface-visibility hidden
 	user-select none
 
 	.player_header
@@ -53,6 +57,10 @@
 		border-radius 1rem
 		background rgba(0, 0, 0, 0.8)
 		transform translateX(-50%)
+		-webkit-filter blur(0)
+		filter blur(0)
+		transform-style preserve-3d
+		backface-visibility hidden
 		left 50%
 		cursor pointer
 
@@ -73,7 +81,11 @@
 		z-index 99999
 		display none
 		background $accent-color
-		transform translate3d(-50%, -50%, 0)
+		transform translate(-50%, -50%)
+		-webkit-filter blur(0)
+		filter blur(0)
+		transform-style preserve-3d
+		backface-visibility hidden
 
 	.loading-el
 		display block
@@ -88,7 +100,11 @@
 		.loading-el-wrapper
 			position relative
 			top 50%
-			transform translate3d(0, -50%, 0)
+			transform translateY(-50%)
+			-webkit-filter blur(0)
+			filter blur(0)
+			transform-style preserve-3d
+			backface-visibility hidden
 
 			span
 				display block
@@ -102,7 +118,11 @@
 		width 100%
 		left 0
 		top 50%
-		transform translate3d(0, -50%, 0)
+		transform translateY(-50%)
+		-webkit-filter blur(0)
+		filter blur(0)
+		transform-style preserve-3d
+		backface-visibility hidden
 
 	.player_container
 		padding-bottom 56.25%
@@ -133,6 +153,10 @@
 						position relative
 						top: 50%
 						transform translateY(-50%)
+						-webkit-filter blur(0)
+						filter blur(0)
+						transform-style preserve-3d
+						backface-visibility hidden
 						width 100%
 
 	#custom_iframe_embed

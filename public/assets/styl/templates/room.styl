@@ -7,7 +7,11 @@
 	height 100%
 	max-width 60rem
 	padding 5rem 0
-	transform translate3d(-50%, 0, 0)
+	transform translateX(-50%)
+	filter blur(0)
+	-webkit-filter blur(0)
+	transform-style preserve-3d
+	backface-visibility hidden
 
 	@media screen and (min-height: 41rem)
 		max-width 70rem
@@ -90,4 +94,8 @@
 		left auto
 		right 0
 		top 50%
-		transform translate3d(0, -50%, 0)
+		transform translateY(-50%)
+		-webkit-filter blur(0)
+		filter blur(0)
+		transform-style preserve-3d
+		backface-visibility hidden
