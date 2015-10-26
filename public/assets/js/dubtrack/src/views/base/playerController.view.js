@@ -210,7 +210,7 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 
 			range: "min",
 
-			animate: true,
+			animate: false,
 
 			slide: function(event, ui) {
 				self.setVolume( ui.value, false );
@@ -225,10 +225,6 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 	},
 
 	setVolume: function(value){
-		// gives the slider a logarithmic scale for adjustment instead of linear
-		if( value != 0 )
-			value = ( ( Math.pow(value, 2) / 10000 ) * 97 ) + 3;
-
 		Dubtrack.helpers.cookie.set('dubtrack-room-volume', value, 30);
 		this.volume = value;
 

@@ -259,8 +259,21 @@
 									margin 0.7rem 0.5rem 0.7rem 0
 
 					#results_video_api
+						.queue-locked-info
+							padding 1rem
+							font-weight bold
+							background $accent-color
+							color $background-dark-color
+
 						.browserPlaylistItems
 							padding-bottom 5rem
+
+							&.display-mod-controls
+								.room-queue-item
+									.actions
+										.set_song_to_top_queue
+										.remove_dj
+											display block
 
 						.playlist-item
 						.queue-item
@@ -373,4 +386,10 @@
 						.queue-item
 							.actions
 								.add_to_queue
+									display none
+
+						.room-queue-item
+							.actions
+								.set_song_to_top_queue
+								.remove_dj
 									display none

@@ -4,6 +4,30 @@
 		{
 			"icon": {
 				"paths": [
+					"M972.8 512l-307.2-256v153.6h-358.4v204.8h358.4v153.6l307.2-256zM153.6 153.6h409.6v-102.4h-409.6c-56.32 0-102.4 46.080-102.4 102.4v716.8c0 56.32 46.080 102.4 102.4 102.4h409.6v-102.4h-409.6v-716.8z"
+				],
+				"attrs": [],
+				"isMulticolor": false,
+				"tags": [
+					"log-out"
+				],
+				"grid": 20
+			},
+			"attrs": [],
+			"properties": {
+				"order": 1,
+				"id": 0,
+				"prevSize": 20,
+				"code": 59657,
+				"name": "log-out"
+			},
+			"setIdx": 0,
+			"setId": 12,
+			"iconIdx": 0
+		},
+		{
+			"icon": {
+				"paths": [
 					"M341.333 85.333h341.333l85.333 128h128q53 0 90.5 38.167t37.5 91.167v468.667q0 53-37.5 90.167t-90.5 37.167h-768q-53 0-90.5-37.5t-37.5-90.5v-468.667q0-53 37.5-90.833t90.5-37.833h128zM512 341.333q43.333 0 82.833 17t68 45.5 45.5 68 17 82.833-17 82.833-45.5 68-68 45.5-82.833 17-82.833-17-68-45.5-45.5-68-17-82.833 17-82.833 45.5-68 68-45.5 82.833-17zM512 426.667q-53 0-90.5 37.5t-37.5 90.5 37.5 90.5 90.5 37.5 90.5-37.5 37.5-90.5-37.5-90.5-90.5-37.5zM722.333 298.667l-83.667-128h-251.667l-85.333 128h-173.667q-17.667 0-30.167 12.667t-12.5 30.667v468.667q0 17.667 12.5 30.167t30.167 12.5h768q18 0 30.333-12.167t12.333-29.833v-468.667q0-18-12.667-31t-30-13h-173.667z"
 				],
 				"attrs": [],
@@ -21,7 +45,7 @@
 				"code": 59653,
 				"name": "camera"
 			},
-			"setIdx": 1,
+			"setIdx": 2,
 			"setId": 10,
 			"iconIdx": 0
 		},
@@ -45,7 +69,7 @@
 				"code": 59656,
 				"name": "skip_next"
 			},
-			"setIdx": 3,
+			"setIdx": 4,
 			"setId": 8,
 			"iconIdx": 0
 		},
@@ -69,7 +93,7 @@
 				"code": 59420,
 				"name": "arrow_drop_down"
 			},
-			"setIdx": 3,
+			"setIdx": 4,
 			"setId": 8,
 			"iconIdx": 1
 		},
@@ -94,7 +118,7 @@
 				"code": 59650,
 				"name": "angle-double-up"
 			},
-			"setIdx": 2,
+			"setIdx": 3,
 			"setId": 9,
 			"iconIdx": 0
 		},
@@ -122,7 +146,7 @@
 				"code": 59417,
 				"name": "message-2"
 			},
-			"setIdx": 4,
+			"setIdx": 5,
 			"setId": 7,
 			"iconIdx": 0
 		},
@@ -146,7 +170,7 @@
 				"code": 59405,
 				"name": "add"
 			},
-			"setIdx": 5,
+			"setIdx": 6,
 			"setId": 6,
 			"iconIdx": 0
 		},
@@ -171,7 +195,7 @@
 				"code": 59406,
 				"name": "delete"
 			},
-			"setIdx": 5,
+			"setIdx": 6,
 			"setId": 6,
 			"iconIdx": 1
 		},
@@ -196,7 +220,7 @@
 				"code": 59407,
 				"name": "edit"
 			},
-			"setIdx": 5,
+			"setIdx": 6,
 			"setId": 6,
 			"iconIdx": 2
 		},
@@ -221,7 +245,7 @@
 				"code": 59408,
 				"name": "ShapeCopy4"
 			},
-			"setIdx": 5,
+			"setIdx": 6,
 			"setId": 6,
 			"iconIdx": 3
 		},
@@ -248,7 +272,7 @@
 				"code": 59409,
 				"name": "createplaylist"
 			},
-			"setIdx": 7,
+			"setIdx": 8,
 			"setId": 4,
 			"iconIdx": 0
 		},
@@ -275,7 +299,7 @@
 				"code": 59410,
 				"name": "editplaylist"
 			},
-			"setIdx": 7,
+			"setIdx": 8,
 			"setId": 4,
 			"iconIdx": 1
 		},
@@ -302,7 +326,7 @@
 				"code": 59411,
 				"name": "shuffle"
 			},
-			"setIdx": 7,
+			"setIdx": 8,
 			"setId": 4,
 			"iconIdx": 2
 		},
@@ -333,7 +357,7 @@
 				"code": 59412,
 				"name": "trash"
 			},
-			"setIdx": 7,
+			"setIdx": 8,
 			"setId": 4,
 			"iconIdx": 3
 		},
@@ -362,7 +386,7 @@
 				"code": 59413,
 				"name": "history"
 			},
-			"setIdx": 7,
+			"setIdx": 8,
 			"setId": 4,
 			"iconIdx": 4
 		},
@@ -411,7 +435,7 @@
 				],
 				"name": "clear"
 			},
-			"setIdx": 7,
+			"setIdx": 8,
 			"setId": 4,
 			"iconIdx": 5
 		},
@@ -441,7 +465,7 @@
 				"code": 59404,
 				"name": "playlist"
 			},
-			"setIdx": 8,
+			"setIdx": 9,
 			"setId": 3,
 			"iconIdx": 0
 		},
@@ -466,7 +490,7 @@
 				"code": 59392,
 				"name": "chevron"
 			},
-			"setIdx": 9,
+			"setIdx": 10,
 			"setId": 2,
 			"iconIdx": 0
 		},
@@ -490,7 +514,7 @@
 				"code": 59393,
 				"name": "upvote"
 			},
-			"setIdx": 9,
+			"setIdx": 10,
 			"setId": 2,
 			"iconIdx": 1
 		},
@@ -514,7 +538,7 @@
 				"code": 59394,
 				"name": "downvote"
 			},
-			"setIdx": 9,
+			"setIdx": 10,
 			"setId": 2,
 			"iconIdx": 2
 		},
@@ -538,7 +562,7 @@
 				"code": 59395,
 				"name": "heart"
 			},
-			"setIdx": 9,
+			"setIdx": 10,
 			"setId": 2,
 			"iconIdx": 3
 		},
@@ -565,7 +589,7 @@
 				"code": 59396,
 				"name": "chat"
 			},
-			"setIdx": 9,
+			"setIdx": 10,
 			"setId": 2,
 			"iconIdx": 5
 		},
@@ -590,7 +614,7 @@
 				"code": 59397,
 				"name": "chatsettings"
 			},
-			"setIdx": 9,
+			"setIdx": 10,
 			"setId": 2,
 			"iconIdx": 6
 		},
@@ -617,7 +641,7 @@
 				"code": 59398,
 				"name": "people"
 			},
-			"setIdx": 9,
+			"setIdx": 10,
 			"setId": 2,
 			"iconIdx": 7
 		},
@@ -642,7 +666,7 @@
 				"code": 59399,
 				"name": "mute"
 			},
-			"setIdx": 9,
+			"setIdx": 10,
 			"setId": 2,
 			"iconIdx": 8
 		},
@@ -666,7 +690,7 @@
 				"code": 59400,
 				"name": "reload"
 			},
-			"setIdx": 9,
+			"setIdx": 10,
 			"setId": 2,
 			"iconIdx": 9
 		},
@@ -690,7 +714,7 @@
 				"code": 59401,
 				"name": "play"
 			},
-			"setIdx": 9,
+			"setIdx": 10,
 			"setId": 2,
 			"iconIdx": 10
 		},
@@ -714,7 +738,7 @@
 				"code": 59402,
 				"name": "facebook"
 			},
-			"setIdx": 9,
+			"setIdx": 10,
 			"setId": 2,
 			"iconIdx": 11
 		},
@@ -738,7 +762,7 @@
 				"code": 59403,
 				"name": "twitter"
 			},
-			"setIdx": 9,
+			"setIdx": 10,
 			"setId": 2,
 			"iconIdx": 12
 		},
@@ -766,7 +790,7 @@
 				"name": "search",
 				"code": 59416
 			},
-			"setIdx": 10,
+			"setIdx": 11,
 			"setId": 0,
 			"iconIdx": 134
 		},
@@ -793,7 +817,7 @@
 				"name": "lock",
 				"code": 59648
 			},
-			"setIdx": 10,
+			"setIdx": 11,
 			"setId": 0,
 			"iconIdx": 143
 		},
@@ -818,7 +842,7 @@
 				"name": "unlocked",
 				"code": 59649
 			},
-			"setIdx": 10,
+			"setIdx": 11,
 			"setId": 0,
 			"iconIdx": 144
 		},
@@ -846,7 +870,7 @@
 				"name": "cross",
 				"code": 59651
 			},
-			"setIdx": 10,
+			"setIdx": 11,
 			"setId": 0,
 			"iconIdx": 271
 		},
@@ -871,7 +895,7 @@
 				"name": "pause2",
 				"code": 59652
 			},
-			"setIdx": 10,
+			"setIdx": 11,
 			"setId": 0,
 			"iconIdx": 285
 		},
@@ -901,7 +925,7 @@
 				"name": "volume-high",
 				"code": 59654
 			},
-			"setIdx": 10,
+			"setIdx": 11,
 			"setId": 0,
 			"iconIdx": 294
 		},
@@ -929,7 +953,7 @@
 				"name": "volume-mute",
 				"code": 59655
 			},
-			"setIdx": 10,
+			"setIdx": 11,
 			"setId": 0,
 			"iconIdx": 297
 		},
@@ -961,7 +985,7 @@
 				"name": "youtube4",
 				"code": 59418
 			},
-			"setIdx": 10,
+			"setIdx": 11,
 			"setId": 0,
 			"iconIdx": 410
 		},
@@ -987,7 +1011,7 @@
 				"name": "soundcloud",
 				"code": 59419
 			},
-			"setIdx": 10,
+			"setIdx": 11,
 			"setId": 0,
 			"iconIdx": 452
 		}

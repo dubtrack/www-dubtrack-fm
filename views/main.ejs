@@ -115,6 +115,19 @@
 			</div>
 		</section>
 	</nav>
+	<nav id="main-menu-left">
+		<a href="#" class="close-menu">
+			<span class="icon-close"></span>
+		</a>
+		<a href="/lobby" class="navigate lobby-link">Lobby</a>
+		<a href="#" class="navigate room-active-link"><span class="current-room"></span></a>
+		<a href="mailto:support@dubtrack.fm" target="_blank">Contact</a>
+		<div class="social-links">
+			<a href="https://www.facebook.com/dubtrackfm" class="facebook" target="blank"><span class="icon-facebook"></span></a>
+			<a href="https://twitter.com/dubtrack_fm" class="twitter" target="blank"><span class="icon-twitter"></span></a>
+		</div>
+		<a href="/login/logout" class="logout-link"><span class="icon-logout"></span> Log out</a>
+	</nav>
 
 	<header id="header-global">
 		<div class="header-left-navigation">
@@ -128,6 +141,17 @@
 		<section id="main-section">
 			<%-body -%>
 			<section id="room-list" class="dubtrack-section">
+				<div class="room-loby-header">
+					<div class="room-search">
+						<input type="text" id="room-search" placeholder="Search for a room..." />
+						<i class="icon-search"></i>
+					</div>
+					<div class="links-container">
+						<a href="#" class="create-room">New room</a>
+						<a href="https://www.facebook.com/dubtrackfm" class="facebook" target="blank"><span class="icon-facebook"></span></a>
+						<a href="https://twitter.com/dubtrack_fm" class="twitter" target="blank"><span class="icon-twitter"></span></a>
+					</div>
+				</div>
 				<div id="container-room-list">
 				</div>
 			</section>
@@ -189,6 +213,7 @@
 								<span class="icon-facebook" onclick="Dubtrack.playerController.shareFacebook();"></span>
 								<span class="icon-twitter" onclick=Dubtrack.playerController.shareTwitter();></span>
 							</section>
+							<div class="play-song-link"><i class="icon-play"></i> Queue a song</div>
 						</section>
 						<section id="room-comments">
 						</section>

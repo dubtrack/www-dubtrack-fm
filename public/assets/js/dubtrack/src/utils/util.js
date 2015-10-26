@@ -490,9 +490,10 @@ Dubtrack.els.templates = {
 						'</div>' +
 						'<div class="right">' +
 							'<a href="#" class="icon-shuffle shuffle-playlist tt-wrapper"></a>' +
-							'<a href="#" class="icon-editplaylist edit-playlist-name tt-wrapper"></a>' +
+							/*'<a href="#" class="icon-editplaylist edit-playlist-name tt-wrapper"></a>' +*/
 							'<a href="#" class="icon-trash delete-playlist tt-wrapper"></a>' +
 							'<a href="#" class="playlist_type tt-wrapper"></a>' +
+							'<a href="#" class="text-button queue-playlist">Queue all</a>' +
 						'</div>',
 
 		'roomQueueInfo': '<div class="description">' +
@@ -676,9 +677,9 @@ Dubtrack.els.templates = {
 									'<span class="title">Your playlists</span>' +
 									'<div id="playlists-scroll">' +
 										'<ul class="playlist-style">' +
-											'<li class="room_history"><span class="icon-history"></span>Room history</li>' +
 											'<li class="current_queue"><span class="icon-play"></span>' + dubtrack_lang.playlist.your_queue + '</li>' +
 											'<li class="current_room_queue"><span class="icon-playlist"></span> ' + dubtrack_lang.playlist.room_queue + '</li>' +
+											'<li class="room_history"><span class="icon-history"></span>Room history</li>' +
 										'</ul>' +
 									'<div>' +
 									'<ul class="playlist-style playlist-list"></ul>' +

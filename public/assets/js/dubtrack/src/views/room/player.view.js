@@ -16,6 +16,8 @@ Dubtrack.View.Player = Backbone.View.extend({
 		"click .skip-el": "skipSong",
 		"click .playbtn-el": "playCurrentSong",
 		"click .refresh-el" : "reloadVideo",
+		"click .player-controller-container .mute" : "mutePlayer",
+		"click .play-song-link" : "displayBrowserSearch",
 		"click .videoquality-el": "changeYTQuality",
 		"click .hideVideo-el": "hideVideo",
 		"click .display-queue" : "displayRoomQueue",
@@ -95,13 +97,13 @@ Dubtrack.View.Player = Backbone.View.extend({
 			this.istoggleVideo = true;
 			$('#room-main-player-container').css('visibility', 'hidden');
 			$('#room-main-player-container iframe').css('visibility', 'hidden');
-			this.hideVideoElBtn.text('SHOW VIDEO');
+			this.hideVideoElBtn.addClass('active');
 			isOn = "on";
 		} else {
 			this.istoggleVideo = false;
 			$('#room-main-player-container').css('visibility', 'visible');
 			$('#room-main-player-container iframe').css('visibility', 'visible');
-			this.hideVideoElBtn.text('HIDE VIDEO');
+			this.hideVideoElBtn.removeClass('active');
 			isOn = "off";
 		}
 	},
@@ -118,6 +120,35 @@ Dubtrack.View.Player = Backbone.View.extend({
 		Dubtrack.app.navigate("/browser/room-queue", {
 			trigger: true
 		});
+
+		return false;
+	},
+
+	displayBrowserSearch : function(){
+		Dubtrack.app.navigate("/browser/search", {
+			trigger: true
+		});
+
+		return false;
+	},
+
+	mutePlayer : function(){
+		if(this.muted_player){
+			this.muted_player = false;
+
+			if(this.volumeBeforeMuted && this.volumeBeforeMuted > 2){
+				this.setVolume(this.volumeBeforeMuted);
+				Dubtrack.playerController.volumeSliderEl.slider('value', this.volumeBeforeMuted);
+			}else{
+				this.setVolume(100);
+				Dubtrack.playerController.volumeSliderEl.slider('value', 100);
+			}
+		}else{
+			this.muted_player = true;
+			this.volumeBeforeMuted = Dubtrack.playerController.volume;
+			this.setVolume(0);
+			Dubtrack.playerController.volumeSliderEl.slider('value', 0);
+		}
 
 		return false;
 	},
@@ -586,9 +617,16 @@ Dubtrack.View.Player = Backbone.View.extend({
 	},
 
 	setTimerCounter : function(){
-		var song = this.activeSong.get('song'),
-			currentTime = this.getCurrentTime(),
-			countDown = this.videoLength - currentTime,
+		var song = this.activeSong.get('song');
+
+		var currentTime = 0;
+		if(this.activePlayerDelegate && !this.playing){
+			currentTime = parseInt((Date.now() - song.played)/1000, 10);
+		}else{
+			currentTime = this.getCurrentTime();
+		}
+
+		var countDown = this.videoLength - currentTime,
 			minutesDown = Math.floor(countDown / 60),
 			secondsDown = parseInt( countDown - minutesDown * 60, 10),
 			songInfo = this.activeSong.get('songInfo');
@@ -605,6 +643,9 @@ Dubtrack.View.Player = Backbone.View.extend({
 	setVolume : function(vol){
 		this.player_volume_level = vol;
 		Dubtrack.playerController.volume = vol;
+
+		if(vol > 2) this.muted_player = false;
+		else this.muted_player = true;
 
 		if(!this.activePlayerDelegate) return;
 

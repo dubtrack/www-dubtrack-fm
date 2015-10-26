@@ -5,7 +5,8 @@ Dubtrack.View.LayoutView = Backbone.View.extend({
 		"click .header-right-navigation .user-info": "navigateUser",
 		"click a.navigate" : "navigate",
 		"click li.logout": "logout",
-		"click #create-room-div": "createRoom",
+		"click .header-left-navigation h1" : "setActiveMenu",
+		"mouseenter .header-left-navigation h1" : "setActiveMenu",
 		"click #header_login #login-link" : "displayLogin",
 		"click #header_login #signup-link" : "displaySignup",
 		"click .user-messages" : "setActiveMenuRight"
@@ -43,8 +44,13 @@ Dubtrack.View.LayoutView = Backbone.View.extend({
 		}
 
 		this.menu_right = new Dubtrack.View.MainRightMenuView();
+		this.menu_left = new Dubtrack.View.MainLeftMenuView();
 
 		$('body').bind('click', function(e){
+			if($(e.target).parents("#main-menu-left").length === 0){
+				$("html").removeClass("menu-left-in");
+			}
+
 			if($(e.target).parents("#main-menu-right").length === 0){
 				$("html").removeClass("menu-right-in");
 				Dubtrack.layout.menu_right.message_view.$el.removeClass('view-message-details');
@@ -58,6 +64,12 @@ Dubtrack.View.LayoutView = Backbone.View.extend({
 		this.main_login_window = new Dubtrack.View.LoginMainWindowView();
 
 		this.getNewMessages();
+	},
+
+	setActiveMenu : function(){
+		$("html").toggleClass("menu-left-in");
+
+		return false;
 	},
 
 	setActiveMenuRight : function(){
@@ -101,17 +113,6 @@ Dubtrack.View.LayoutView = Backbone.View.extend({
 		if(r && r.img && r.img.url){
 			this.$('figure.user-image img').attr('src', r.img.url);
 		}
-	},
-
-	createRoom: function(){
-		var model = new Dubtrack.Model.Room();
-
-		model.parse = Dubtrack.helpers.parse;
-
-		this.roomUpdate = new dt.room.roomFormUpdateViewUpdate({model : model}).render();
-		this.roomUpdate.$el.appendTo( 'body' );
-
-		return false;
 	},
 
 	logout: function(){
@@ -300,4 +301,38 @@ Dubtrack.View.MainRightMenuView = Backbone.View.extend({
 
 		return false;
 	},
+});
+
+Dubtrack.View.MainLeftMenuView = Backbone.View.extend({
+	el : $("#main-menu-left"),
+
+	events: {
+		"click a.navigate": "navigate",
+		"click a.close-menu" : "closeMenu",
+		"mouseleave" : "closeMenu"
+	},
+
+	initialize : function(){
+		if(Dubtrack.loggedIn) this.$('a.logout-link').css("display", "block");
+	},
+
+	closeMenu : function(){
+		$("html").removeClass("menu-left-in");
+
+		return false;
+	},
+
+	navigate : function(el){
+		var $href = $(el.target).attr("href");
+
+		if($href){
+			$("html").removeClass("menu-left-in");
+
+			Dubtrack.app.navigate($href, {
+				trigger: true
+			});
+		}
+
+		return false;
+	}
 });

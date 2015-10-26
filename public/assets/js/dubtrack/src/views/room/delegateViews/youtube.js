@@ -25,6 +25,7 @@ Dubtrack.View.YoutubePlayer = Backbone.View.extend({
 			events: {
 				'onReady': function(event){
 					object.errorElBtn.hide();
+					object.loadingEl.hide();
 					self.setVolume( Dubtrack.playerController.volume );
 
 					self.setPlaybackQuality( object.playbackQuality );
@@ -35,6 +36,7 @@ Dubtrack.View.YoutubePlayer = Backbone.View.extend({
 				},
 
 				'onError': function(e){
+					object.loadingEl.hide();
 					object.playing = false;
 					console.log("YOUYUBE ERROR", e);
 				},

@@ -1,7 +1,42 @@
 #room-list
+	.room-loby-header
+		position relative
+		background $background-primary-color
+		margin-bottom 1rem
+		padding 1rem
+		text-align center
+		overflow hidden
+
+		.room-search
+			position absolute
+			left 0
+			top 0
+			border-right 1px solid $meta-color
+
+			input
+				padding 1rem
+				padding-left 2.5rem
+
+			.icon-search
+				position absolute
+				left 1rem
+				top 1.4rem
+				color $meta-color
+				font-size 0.75rem
+
+		.links-container
+			display inline-block
+
+			a
+				display inline-block
+				margin 0 0.5rem
+				font-weight bold
+				text-transform uppercase
+
 	#container-room-list
+		position relative
 		max-width 93rem
-		margin 0 auto
+		margin 0 auto 5rem auto
 		clearfix()
 
 		.room-item

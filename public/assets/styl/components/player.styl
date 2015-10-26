@@ -5,12 +5,14 @@
 	background rgba(0, 0, 0, 0.7)
 	top 50%
 	transform translate3d(0, -50%, 0)
+	user-select none
 
 	.player_header
 		position absolute
 		width 100%
 		top -3rem
 		left 0
+		user-select none
 
 		span
 			cursor pointer
@@ -26,8 +28,10 @@
 
 			&.hideVideo-el
 				float right
-				color #fff
-				background #000
+
+				&.active
+					color #fff
+					background #000
 
 			&.edit-room
 				position relative
@@ -41,6 +45,21 @@
 
 			&.active
 				background $accent-color
+
+	.play-song-link
+		position absolute
+		bottom -4rem
+		padding 1rem 3rem
+		border-radius 1rem
+		background rgba(0, 0, 0, 0.8)
+		transform translateX(-50%)
+		left 50%
+		cursor pointer
+
+		i
+			color $accent-color
+			margin-right 0.5rem
+			display inline-block
 
 	#custom_iframe_embed_error
 	.playbtn-el
@@ -128,6 +147,7 @@
 
 	.player_sharing
 		margin-top 1rem
+		user-select none
 		clearfix()
 
 		span
@@ -165,6 +185,7 @@
 			.volume-controller-container
 				width 6rem
 				display inline-block
+				vertical-align middle
 				margin-left 1rem
 
 				#volume-div

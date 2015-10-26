@@ -102,6 +102,7 @@ w.Dubtrack = {
 			commentsDubs: "/comments/:id/dubs",
 			commentsFlag: "/comments/:id/flag",
 			room: "/room",
+			roomSearch: "/room/term/:term",
 			roomImage: "/room/:id/image",
 			roomUsers: "/room/{id}/users",
 			roomBeacon: "/room/beacon/:id/:userid",

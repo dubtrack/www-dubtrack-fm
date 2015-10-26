@@ -6,7 +6,7 @@
 	top 0
 	width 30rem
 	z-index 1000
-	padding 3.7rem 0 3.5rem 0
+	padding 3.6rem 0 3.5rem 0
 	backface-visibility hidden
 	transition transform 0.2s ease-in-out
 
@@ -33,6 +33,70 @@
 		color $primary-color
 		text-align center
 
+#main-menu-left
+	padding 6rem 0 0 0
+	background $background-dark-color
+	position fixed
+	height 100%
+	left -14rem
+	top 0
+	width 12.5rem
+	z-index 999999
+	backface-visibility hidden
+	transition transform 0.2s ease-in-out
+
+	a
+		display block
+		color $meta-color
+		padding 0 1rem
+		margin-bottom 0.5rem
+		font-size 1rem
+
+		&.close-menu
+			border-bottom 0
+			font-size 1rem
+			padding 0.6rem
+			position absolute;
+			right 0.5rem
+			text-align center
+			top 0.5rem
+
+			span
+				font-size 1rem
+
+		&.logout-link
+			position absolute
+			bottom 0.5rem
+			left 0
+			border-bottom 0
+			width 100%
+			display none
+
+			span
+				display inline-block
+				margin-right 0.5rem
+
+		&.room-active-link
+			display: none;
+			color $accent-color
+
+	.social-links
+		margin-top 2rem
+		clearfix()
+
+		a
+			float left
+			width auto
+			margin-right 0.5rem
+			padding-right 0
+			color $primary-color
+			font-weight bold
+			font-size 1.2rem
+
 .menu-right-in
 	#main-menu-right
 		transform translateX(-35rem)
+
+.menu-left-in
+	#main-menu-left
+		transform translateX(14rem)

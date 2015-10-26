@@ -143,6 +143,7 @@ Dubtrack.View.Room = Backbone.View.extend({
 		this.$('.room-feautre-title span').html('Top users in ' + this.model.get('name'));
 
 		$("#main-room-active-link").attr("href", "/join/" + this.model.get("roomUrl")).addClass('active-room').find('.room-name').html(this.model.get("name"));
+		$("#main-menu-left .room-active-link").attr("href", "/join/" + this.model.get("roomUrl")).css("display", "block").find("span.current-room").html(this.model.get("name"));
 
 		//Closing Profile
 		$(".rewindProfile a").attr("href", "/join/" + this.model.get("roomUrl"));
@@ -176,8 +177,6 @@ Dubtrack.View.Room = Backbone.View.extend({
 
 	displayRoom: function(){
 		this.$el.show();
-
-		if(this.users) this.users.resize();
 	},
 
 	userKickedOut: function(r){

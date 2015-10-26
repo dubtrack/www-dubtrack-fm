@@ -183,7 +183,6 @@ Dubtrack.View.Browser = Backbone.View.extend({
 	},
 
 	displayDetails : function(display, id){
-
 		this.loadingEl.show();
 
 		if(this.browserInfoEl) this.browserInfoEl.close();
@@ -411,9 +410,6 @@ Dubtrack.View.Browser = Backbone.View.extend({
 				break;
 
 			case "room_queue":
-				this.browserInfoEl = new Dubtrack.View.RoomQueueInfo().setBrowser(self).render();
-				this.browserInfoEl.$el.prependTo( this.playlistContainer );
-
 				this.$('#playlists-scroll .current_room_queue').addClass('selected');
 
 				var urlQueue = Dubtrack.config.apiUrl + Dubtrack.config.urls.roomQueueDetails.replace( ":id", Dubtrack.room.model.get('_id') ),
@@ -441,6 +437,9 @@ Dubtrack.View.Browser = Backbone.View.extend({
 						self.loadingEl.hide();
 
 						if(Dubtrack.session && Dubtrack.room && Dubtrack.room.users && (Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || Dubtrack.room.users.getIfRoleHasPermission(Dubtrack.session.id, 'queue-order'))){
+							self.browserInfoEl = new Dubtrack.View.RoomQueueInfo().setBrowser(self).render();
+							self.browserInfoEl.$el.prependTo( self.playlistContainer );
+
 							self.playlistDetailContainer.multisortable({
 								axis: "y",
 								cursor: "move",
@@ -562,6 +561,7 @@ Dubtrack.View.BrowserInfo = Backbone.View.extend({
 		//"click a.playlist_type": "changePlaylistType",
 		"click a.shuffle-playlist": "shufflePlaylist",
 		"click a.delete-playlist": "removePlaylist",
+		"click a.queue-playlist" : "queuePlaylist",
 
 		"click a.navigate": "navigate"
 	},
@@ -589,6 +589,16 @@ Dubtrack.View.BrowserInfo = Backbone.View.extend({
 		if($href){
 			dubtrackMain.app.navigate($href, {trigger : true});
 		}
+
+		return false;
+	},
+
+	queuePlaylist : function(){
+		Dubtrack.app.navigate( "/browser/user/" + this.model.get('_id') , {
+			trigger: false
+		});
+
+		Dubtrack.app.browserView.displayDetails("queueSong", this.model.get('_id'));
 
 		return false;
 	},

@@ -48,9 +48,6 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 			self.autoLoad();
 		}, 720000);
 
-		//this.featureUsersEl = $('#avatar_feature ul.avatar-list');
-		//this.totalFeatureUsers = 0;
-
 		this.uuids = [];
 		this.rt_users = [];
 
@@ -63,16 +60,6 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 		this.avatarModsEl = this.$el.find(".modsElAvatar");
 
 		this.loadingEl = this.$el.find(".loadingAva");
-
-		this.$('a.loadRoomAva').html('<span>chat</span><div title="' + this.model.get('name') + '">&nbsp;</div>');
-
-		this.currentTabEl.css("width", "100%");
-
-		$(window).resize(function(){
-			self.resize();
-		});
-
-		this.resize();
 
 		this.setTotalUsersDebouce = _.debounce(this.setTotalUsers.bind(this), 2000);
 
@@ -146,13 +133,6 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 				this.totalFeatureUsers++;
 			}*/
 		}, this);
-
-		this.$('#main-user-list-room').perfectScrollbar('update');
-	},
-
-	resize: function(){
-		var $h = parseInt( $(window).height(), 10 ) - 280;
-		this.$('#main-user-list-room').css('height', $h);
 
 		this.$('#main-user-list-room').perfectScrollbar('update');
 	},
