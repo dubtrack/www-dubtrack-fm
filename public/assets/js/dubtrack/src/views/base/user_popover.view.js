@@ -139,6 +139,10 @@ dt.global.userPopover = Backbone.View.extend({
 	renderUser: function(err, user){
 		this.user = user;
 		this.$('.usercontent').html( _.template(Dubtrack.els.templates.profile.popover_user, user.toJSON()) );
+
+		if(Dubtrack.session && Dubtrack.room && Dubtrack.room.users){
+			this.$('.usercontent .dubs').html(Dubtrack.room.users.getDubs(user.id) + ' dubs');
+		}
 	},
 
 	sendPersonalMessage : function(){

@@ -1,0 +1,132 @@
+#room-list
+	.room-loby-header
+		position relative
+		background $background-primary-color
+		margin-bottom 1rem
+		padding 1rem
+		text-align center
+		overflow hidden
+
+		.room-search
+			position absolute
+			left 0
+			top 0
+			border-right 1px solid $meta-color
+
+			input
+				padding 1rem
+				padding-left 2.5rem
+
+			.icon-search
+				position absolute
+				left 1rem
+				top 1.4rem
+				color $meta-color
+				font-size 0.75rem
+
+		.links-container
+			display inline-block
+
+			a
+				display inline-block
+				margin 0 0.5rem
+				font-weight bold
+				text-transform uppercase
+
+	#container-room-list
+		position relative
+		max-width 93rem
+		margin 0 auto 5rem auto
+		clearfix()
+
+		.room-item
+			background $background-dark-color
+			display block
+			width 30rem
+			float left
+			margin 0 0.5rem 1rem 0.5rem
+			overflow hidden
+			border-radius 1rem
+			position relative
+
+			&:hover
+				.roomImage
+					.join
+						display block
+
+			.roomImage
+				margin 0
+				padding 0
+				position relative
+				padding-bottom 59%
+				overflow hidden
+
+				.join
+					display none
+					background rgba(0, 255, 255, 0.5)
+					position absolute
+					width 100%
+					height 100%
+					text-align center
+					font-weight bold
+					top 0
+					left 0
+					color $primary-color
+
+					span
+						font-size 1.8rem
+						position relative
+						top 50%
+						margin-top -2rem
+
+				img
+					width 100%
+					position absolute
+					top 0
+					left 0
+
+			header
+				padding 0.5rem 5rem 1rem 1rem
+				font-weight bold
+				font-size 1.2rem
+				overflow hidden
+
+				.description
+					white-space nowrap
+					overflow hidden
+
+				.name
+					line-height 0.8
+
+				.user-info
+					font-size 0.95rem
+					color $meta-color
+
+					a
+						color $meta-color
+
+					figure
+						display none
+
+			.current-song
+				display block
+				background $background-primary-color
+				font-style italic
+				font-weight bold
+				font-size 0.85rem
+				color $meta-color
+				padding 0.5rem 1rem
+				white-space nowrap
+				overflow hidden
+
+			.user-count
+				position absolute
+				bottom 4.7rem
+				right 1rem
+				font-size 1.3rem
+				font-weight bold
+
+				.icon-people
+					font-size 1rem
+					color $meta-color
+					margin-right 0.5rem

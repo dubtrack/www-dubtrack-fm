@@ -102,6 +102,7 @@ w.Dubtrack = {
 			commentsDubs: "/comments/:id/dubs",
 			commentsFlag: "/comments/:id/flag",
 			room: "/room",
+			roomSearch: "/room/term/:term",
 			roomImage: "/room/:id/image",
 			roomUsers: "/room/{id}/users",
 			roomBeacon: "/room/beacon/:id/:userid",
@@ -448,10 +449,13 @@ w.Dubtrack = {
 
 			Dubtrack.views.user_popover.displayUser(id);
 
-			var offset = $(el).offset();
+			var offset = $(el).offset(),
+				left = offset.left - 200;
+
+			if(left < 0) left = 0;
 
 			Dubtrack.views.user_popover.$el.css({
-				'left': offset.left - 200,
+				'left': left,
 				'top': offset.top
 			}).show();
 

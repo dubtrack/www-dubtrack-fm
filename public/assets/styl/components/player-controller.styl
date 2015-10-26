@@ -1,0 +1,142 @@
+#player-controller
+	position fixed
+	left 0
+	bottom 0
+	width 100%
+	height 3.5rem
+	overflow hidden
+	background $background-primary-color
+
+	.left
+		display block
+		padding-right 20.7rem
+		width 100%
+
+		.custom-embed-info
+			display none
+			padding 1rem
+			font-weight bold
+
+		ul
+			position relative
+			height 3.5rem
+
+			li
+				display inline-block
+				font-weight bold
+
+				&.imgEl
+					width 3.5rem
+					height 3.5rem
+					position absolute
+					top 0
+					left 0
+
+				&.infoContainer
+					padding 0 0 0 3.5rem
+					height 100%
+					width 100%
+
+					.infoContainerInner
+						width 100%
+						height 100%
+						padding 0.5rem 1rem
+						position relative
+
+						.currentDJSong
+							color $meta-color
+							font-size 0.85rem
+							display block
+							line-height 1
+
+						.progressBg
+							background $accent-color
+							height 0.3rem
+							position absolute
+							left 0
+							bottom 0
+
+						.currentTime
+							position absolute
+							right 1rem
+							top 1rem
+
+	.right
+		position absolute
+		right 0
+		top 0
+		height 3.5rem
+		background $light-gray
+
+		ul
+			li
+				display block
+				float left
+				padding 0
+				font-size 1.1rem
+				font-weight bold
+				cursor pointer
+
+				a
+					padding 1rem 1.5rem
+					display block
+					text-align center
+
+				&:before
+					font-size 1.2rem
+
+				.dub-counter
+					margin-left 0.5rem
+					display inline-block
+
+				.dubdown
+				.dubup
+					width 6rem
+					padding-right 0.5rem
+					padding-left 0.5rem
+
+					&:hover
+						color inherit
+
+						span
+							color inherit
+
+				.dubdown
+					&.voted
+						background $accent-other-color
+
+						span
+							color $dark-gray
+
+					.icon-arrow-down
+						color $accent-other-color
+
+						&:before
+							@extend .icon-downvote:before
+
+				.dubup
+					&.voted
+						background $accent-color
+
+						span
+							color $dark-gray
+
+					.icon-arrow-up
+						color $accent-color
+
+						&:before
+							@extend .icon-upvote:before
+
+.not-logged-in
+	#player-controller
+		.left
+			padding-right 12rem
+
+.no-song-playing
+	#player-controller
+		.left
+			ul
+				li
+					&.infoContainer
+						padding-top 0.5rem
+						padding-left 0

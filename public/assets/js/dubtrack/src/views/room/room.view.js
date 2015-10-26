@@ -6,7 +6,7 @@ Dubtrack.View.Room = Backbone.View.extend({
 	events: {
 		"click button.view-users": "displayUsers",
 		"click #mobile-room-menu a" : "setMenuActive",
-		"click .player_sharing span.room-info-display" : "diplayRoomInfo"
+		"click span.room-info-display" : "diplayRoomInfo"
 	},
 
 	initialize: function(){
@@ -142,7 +142,8 @@ Dubtrack.View.Room = Backbone.View.extend({
 		//set feature users title
 		this.$('.room-feautre-title span').html('Top users in ' + this.model.get('name'));
 
-		$("#main-room-active-link").attr("href", "/join/" + this.model.get("roomUrl")).css("display", "block").find("span.current-room").html(this.model.get("name"));
+		$("#main-room-active-link").attr("href", "/join/" + this.model.get("roomUrl")).addClass('active-room').find('.room-name').html(this.model.get("name"));
+		$("#main-menu-left .room-active-link").attr("href", "/join/" + this.model.get("roomUrl")).css("display", "block").find("span.current-room").html(this.model.get("name"));
 
 		//Closing Profile
 		$(".rewindProfile a").attr("href", "/join/" + this.model.get("roomUrl"));
@@ -155,9 +156,8 @@ Dubtrack.View.Room = Backbone.View.extend({
 		Dubtrack.Events.bind('realtime:user-kick', this.userKickedOut, this);
 		Dubtrack.Events.bind('realtime:user-ban', this.userBannedOut, this);
 
-
 		if(Dubtrack.loggedIn){
-			var leaveUrl = Dubtrack.config.apiUrl + Dubtrack.config.urls.roomBeacon.replace( ":id", this.model.id ).replace( ":userid", Dubtrack.session.get("_id"));
+			var leaveUrl = Dubtrack.config.apiUrl + Dubtrack.config.urls.roomBeacon.replace( ":id", this.model.id ).replace( ":userid", Dubtrack.session.id);
 
 			$(window).bind('beforeunload', function () {
 				$.ajax({
@@ -173,35 +173,10 @@ Dubtrack.View.Room = Backbone.View.extend({
 				});
 			});
 		}
-
-		$(window).resize(function(){
-			self.resize();
-		});
 	},
 
 	displayRoom: function(){
 		this.$el.show();
-
-		this.resize();
-
-		if(this.chat) this.chat.resize();
-		if(this.users) this.users.resize();
-
-	},
-
-	resize: function(){
-		var width = parseInt(this.$el.innerWidth(), 10);
-
-		this.$('.right_section').width( width * 0.35 ).css({
-			marginRight: (width/2) * -1
-		});
-
-		/*var $h = "auto";
-		if( parseInt( $(window).width(), 10 ) > 800){
-			$h = parseInt( $(window).height(), 10 ) - 135;
-		}*/
-
-		//this.$('.left_section').css('minHeight', $h);
 	},
 
 	userKickedOut: function(r){
@@ -238,9 +213,13 @@ Dubtrack.View.Room = Backbone.View.extend({
 		Dubtrack.helpers.cookie.delete('dubtrack-room');
 		Dubtrack.helpers.cookie.delete('dubtrack-room-id');
 
-		window.onbeforeunload = null;
-
-		window.location = "/";
+		var leaveUrl = Dubtrack.config.apiUrl + Dubtrack.config.urls.roomBeacon.replace( ":id", this.model.id ).replace( ":userid", Dubtrack.session.id);
+		$.ajax({
+			url: leaveUrl
+		}).always(function(){
+			window.onbeforeunload = null;
+			window.location = "/";
+		});
 	},
 
 
@@ -255,6 +234,7 @@ Dubtrack.View.Room = Backbone.View.extend({
 			Dubtrack.helpers.sendRequest(this.urlUsersRoom, {}, "post", function(err, r){
 				if(err){
 					Dubtrack.playerController.$('.remove-if-banned').remove();
+					$('body').addClass('not-logged-in');
 					self.chat.$('.pusher-chat-widget-input').html('');
 
 					switch(err.code){

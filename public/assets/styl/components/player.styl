@@ -1,0 +1,219 @@
+#main_player
+	position relative
+	padding 1rem
+	border-radius 1rem
+	background rgba(0, 0, 0, 0.7)
+	top 50%
+	transform translate3d(0, -50%, 0)
+	user-select none
+
+	.player_header
+		position absolute
+		width 100%
+		top -3rem
+		left 0
+		user-select none
+
+		span
+			cursor pointer
+			border-radius 1.5rem
+			padding 0.5rem 1rem
+			background #fff
+			font-weight bold
+			font-size 0.85rem
+			text-transform uppercase
+			margin-right 0.5rem
+			color #000
+			opacity 0.8
+
+			&.hideVideo-el
+				float right
+
+				&.active
+					color #fff
+					background #000
+
+			&.edit-room
+				position relative
+				display none
+
+				i
+					position absolute
+					font-size 2rem
+					line-height 0.85
+					left -0.05rem
+
+			&.active
+				background $accent-color
+
+	.play-song-link
+		position absolute
+		bottom -4rem
+		padding 1rem 3rem
+		border-radius 1rem
+		background rgba(0, 0, 0, 0.8)
+		transform translateX(-50%)
+		left 50%
+		cursor pointer
+
+		i
+			color $accent-color
+			margin-right 0.5rem
+			display inline-block
+
+	#custom_iframe_embed_error
+	.playbtn-el
+		position absolute
+		top 50%
+		left 50%
+		padding 1rem 1.5rem
+		text-transform uppercase
+		font-weight bold
+		cursor pointer
+		z-index 99999
+		display none
+		background $accent-color
+		transform translate3d(-50%, -50%, 0)
+
+	.loading-el
+		display block
+		position absolute
+		text-align center
+		background #000
+		width 100%
+		height 100%
+		text-transform uppercase
+		opacity 0.6
+
+		.loading-el-wrapper
+			position relative
+			top 50%
+			transform translate3d(0, -50%, 0)
+
+			span
+				display block
+				margin-top 2rem
+
+	.placeholder
+		display none
+		position absolute
+		text-align center
+		font-weight bold
+		width 100%
+		left 0
+		top 50%
+		transform translate3d(0, -50%, 0)
+
+	.player_container
+		padding-bottom 56.25%
+		position relative
+
+		#room-main-player-container
+			position absolute
+			height 100%
+			width 100%
+			top 0
+			left 0
+
+			#room-main-player-container-youtube
+			#room-main-player-container-soundcloud
+				position absolute
+				height 100%
+				width 100%
+				top 0
+				left 0
+
+			.playerElement
+				position relative
+				width 100%
+				height 100%
+
+				&.soundcloud
+					img
+						position relative
+						top: 50%
+						transform translateY(-50%)
+						width 100%
+
+	#custom_iframe_embed
+		display none
+
+		iframe
+			position absolute
+			height 100%
+			width 100%
+			top 0
+			left 0
+
+	.player_sharing
+		margin-top 1rem
+		user-select none
+		clearfix()
+
+		span
+			font-size 1.5rem
+			margin-right 1.5rem
+			cursor pointer
+
+		.player-controller-container
+			float right
+
+			.skip-el
+				float left
+				cursor pointer
+				font-weight bold
+				font-size 1rem
+				text-transform uppercase
+
+				i
+					display inline-block
+					vertical-align text-top
+					font-size 1.2rem
+
+			span
+				display inline-block
+				margin-left 1.3rem
+				margin-right 0
+
+				&.videoquality-el
+					font-size 1rem
+					text-transform uppercase
+					font-weight bold
+					top -0.3rem
+					position relative
+
+			.volume-controller-container
+				width 6rem
+				display inline-block
+				vertical-align middle
+				margin-left 1rem
+
+				#volume-div
+					width 100%
+					height 0.3rem
+					margin 0 .2rem 0.6rem 0
+					background $meta-color
+					border 0
+					display block
+					cursor pointer
+					border-radius 1rem
+					position relative
+
+					.ui-slider-handle
+						border-radius 100%
+						background $primary-color
+						border 0
+						padding 0
+						height 1.2rem
+						width 1.2rem
+						top -0.4rem
+						margin-left -0.55rem
+						cursor pointer
+						display block
+						position absolute
+						box-shadow 0px 0px 5px 0px rgba(0, 0, 0, 0.6)
+
+					.ui-slider-range-min
+						border-radius 1rem
+						height 0.3rem
+						background $accent-color

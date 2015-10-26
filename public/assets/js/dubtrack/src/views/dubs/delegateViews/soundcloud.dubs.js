@@ -26,14 +26,9 @@ scDubsPlayerView = Backbone.View.extend({
 		//create canvas
 		this.canvasContEl = $('<div/>', {
 			id: this.id
-		}).html('<canvas id="fft" width="' + this.playerWidth + '" height="' + this.playerHeight + '">' +
-				'</canvas>' +
-				'<img src="' + Dubtrack.config.urls.mediaBaseUrl + '/assets/images/media/dubtrack-player.png" width="80" height="80" alt="" style="position:absolute;z-index:99;top:50%;left:50%;margin-top:-43px;margin-left:-40px" />')
-		.css({
-			'position': 'relative',
-			'top': 0,
-			'left': 0
-		}).appendTo( this.$el );
+		}).html('<img src="' + Dubtrack.config.urls.mediaBaseUrl + '/assets/images/media/dubtrack-player.png"  alt="" />')
+		.addClass('playerImage SCplayerImage')
+		.appendTo( this.$el );
 
 		this.buildVolume();
 
@@ -72,16 +67,15 @@ scDubsPlayerView = Backbone.View.extend({
 					autoLoad:true,
 					autoPlay:false,
 					stream: true,
+
 					onerror : function() {
 						self.errorEl.show();
 					},
-					onplay: function() {
-					},
-					onload: function() {
-					},
+
 					whileplaying: function() {
-						self.drawSpectrum( this.peakData.right, this.peakData.left );
-						self.progressEl.css( { width : parseInt( ( this.position * parseInt( self.progressOuterEl.outerWidth() ) )/this.duration ) } );
+						self.progressEl.css({
+							width : parseInt((this.position * parseInt( self.progressOuterEl.outerWidth(), 10))/this.duration, 10)
+						});
 					},
 
 					onfinish : function() {
@@ -162,36 +156,7 @@ scDubsPlayerView = Backbone.View.extend({
 		if(this.scPlayer) this.scPlayer.setVolume(parseInt(vol));
 	},
 
-	drawSpectrum : function(r, l){
-		var fftEl = document.getElementById('fft'),
-			fft =   fftEl.getContext("2d"),
-			wEl  = fftEl.clientWidth/2,
-			hEl  = fftEl.clientHeight/2;
-		//h=h/8;
-		//clear canvas
-		fft.fillStyle = "rgba(0,0,0,0.7)";
-		fft.beginPath();
-		fft.arc(wEl,hEl,1000,0,Math.PI*4,true);
-		fft.closePath();
-		fft.fill();
-
-		//fill canvas
-		//left
-		fft.fillStyle = "rgba(0,255,255,0.5)";
-		fft.beginPath();
-		fft.arc(wEl,hEl,l*100,0,Math.PI*8,true);
-		fft.closePath();
-		fft.fill();
-		//right
-		fft.fillStyle = "rgba(249,0,254,0.7)";
-		fft.beginPath();
-		fft.arc(wEl,hEl,r*100,0,Math.PI*8,true);
-		fft.closePath();
-		fft.fill();
-	},
-
 	buildVolume : function(){
-
 		var slider  = this.volumeContainer.find('.volume-control'),
 			tooltip = this.volumeContainer.find('.tooltip'),
 			self = this;

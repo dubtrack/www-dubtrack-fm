@@ -2,9 +2,6 @@ Dubtrack.View.Profile = Backbone.View.extend({
 	el: $('#profileMainSection'),
 
 	events : {
-		"click li.playlistEl": "loadPlaylists",
-		"click li.feedEl": "loadComments",
-		"click li.musicEl": "loadMusic",
 		"click .follow": "follow",
 		"click .unfollow": "unfollow",
 		"click a.readlessLink": "readLess",
@@ -15,6 +12,7 @@ Dubtrack.View.Profile = Backbone.View.extend({
 		"click .followingCount": "loadFollowing",
 		"click .updatePictureGif": "openGifCreator",
 		"click .infoProfile h2 span.editUsername": "displayEditForm",
+		"click .infoProfile h2 span.cancelUsername": "closeEditForm",
 		"keyup .infoProfile h2 input": "keyUpCheckforUsername",
 		"click .infoProfile h2 span.saveUsername" : "updateUserName",
 		"click .rewindProfile a" : "closeProfile"
@@ -43,34 +41,8 @@ Dubtrack.View.Profile = Backbone.View.extend({
 
 		var links = this.model.get('links');
 
-		if (Dubtrack.room && Dubtrack.room.model){
-			this.$('.rewindProfile').show();
-		}else{
-			this.$('.rewindProfile').hide();
-		}
-
-		/*_.each( links, function(link){
-			$n = link.link.split( '/' );
-
-			$name = getDomainName($n[2]);
-			var $li = $('<li/>').html( $('<a/>', {'target' : '_blank', 'class' : $name, 'href' : link.link }).html( $name ) ).appendTo( this.socialEl );
-		}, this);*/
-		var link = null;
-		if(user.userInfo.provider === "facebook") link = "https://www.facebook.com/" + user.userInfo.username;
-		if(user.userInfo.provider === "twitter") link = "https://twitter.com/" + user.userInfo.username;
-
-		/*$('<li/>').html( $('<a/>', {
-			'target': '_blank',
-			'class': user.userInfo.provider,
-			'href': link
-		}).html( '<span class="icon-' + user.userInfo.provider + '"></span>' ) )
-		.appendTo( this.socialEl );*/
-
 		this.displayBarCurrent = this.$('span.progress');
 		this.loadingTabsEl = this.$(".tabLoading");
-
-		//loadComments
-		this.loadComments();
 
 		//load details
 		this.loadDetails();
@@ -85,7 +57,17 @@ Dubtrack.View.Profile = Backbone.View.extend({
 			Dubtrack.app.navigate('/join/' + Dubtrack.room.model.get("roomUrl"), {
 				trigger: true
 			});
+		}else{
+			Dubtrack.app.navigate('/lobby', {
+				trigger: true
+			});
 		}
+	},
+
+	closeEditForm: function(){
+		this.$('.infoProfile h2').removeClass('edit_username');
+
+		return false;
 	},
 
 	displayEditForm: function(){
@@ -206,159 +188,21 @@ Dubtrack.View.Profile = Backbone.View.extend({
 		return false;
 	},
 
-	loadMusic : function(){
-
-		var self = this;
-
-		this.$el.find('.contentMainProfile .active').removeClass('active');
-
-		//create container
-		this.$('#musicContent').addClass('active');
-		this.$('li.musicEl').addClass('active');
-
-		this.moveProgress();
-
-		/*if( ! this.musicUserCollection){
-
-			this.loadingTabsEl.show();
-
-			this.musicUserCollection = new playlistUserItemCollection();
-			this.musicUserCollection.url = dubtrackMain.config.getMusicTracks + this.model.get("id");
-
-			this.musicUserCollection.fetch({success: function(){
-
-				_.each(self.musicUserCollection.models, function (item) {
-					var minute = Math.floor(parseFloat( item.get('video_length') ) / 60);
-					var second = parseFloat( item.get('video_length') ) - minute * 60;
-					if(second.length<2) second = "0"+second;
-
-					minute = ("0".substring(minute >= 10) + minute);
-					second = ("0".substring(second >= 10) + second);
-
-					item.set({ 'minute' : minute, 'second' : second });
-					var itemViewEl = $(new dt.playlist.browserPlaylistViewItem({model:item}).render("profileBrowserItem").el).appendTo( $(this.el).find('#musicContent ul.content-videos') );
-
-				}, self);
-
-				self.loadingTabsEl.hide();
-
-			}});
-		}*/
-	},
-
-	loadWallPosts : function(){
-
-		var self = this;
-
-		this.$el.find('a.loadMoreWallPosts').html( dubtrack_lang.global.loading );
-
-		/*this.wallpostCollection.fetchPage(this.currentPage, function(){
-			//set comments view
-			self.wallpostView = new WallpostView({ model : self.wallpostCollection });
-			self.commentsViewEl = $( self.wallpostView.render($dj_details.id).el ).appendTo( $(self.el).find('#feedContent') );
-			$(self.el).find('a.loadMoreWallPosts').html( dubtrack_lang.profile.loadmorewall );
-
-			if(self.wallpostCollection.models.length === 0) $(self.el).find('a.loadMoreWallPosts').hide();
-		});*/
-
-
-		return false;
-	},
-
-	loadMoreWallPosts : function(){
-
-		var self = this;
-
-		$(this.el).find('a.loadMoreWallPosts').html( dubtrack_lang.global.loading );
-
-		this.currentPage = this.currentPage + 1;
-
-		this.wallpostCollection.fetchPage(this.currentPage, function(c, r){
-			$(self.el).find('a.loadMoreWallPosts').html( dubtrack_lang.profile.loadmorewall );
-
-			if(r.data.wall_posts.length === 0) $(self.el).find('a.loadMoreWallPosts').hide();
-		});
-
-		return false;
-
-	},
-
-	loadComments : function(){
-
-		/*if( !this.wallpostCollection ){
-			$dj_details = this.model.get('dj_details');
-
-			//set comments collection
-			this.wallpostCollection = new WallpostCollection();
-			this.wallpostCollection.setUrl($dj_details.id);
-
-			this.loadWallPosts();
-		}
-		*/
-		this.$('.contentMainProfile .active').removeClass('active');
-		this.$('#feedContent').addClass('active');
-		this.$('li.feedEl').addClass('active');
-
-		this.moveProgress();
-	},
-
-	readLess : function(){
-		$(this.el).find('.content_bio.hidden').removeClass('hidden');
-		$(this.el).find('.content_bio.bio').addClass('hidden');
-
-		return false;
-	},
-
-	readMore : function(){
-		$(this.el).find('.content_bio.hidden').removeClass('hidden');
-		$(this.el).find('.content_bio.bio_short').addClass('hidden');
-
-		return false;
-	},
-
 	loadDetails : function(){
-
 		this.profileSidebar = $( _.template( Dubtrack.els.templates.profile.profileSidebar, this.model.toJSON()) ).appendTo( this.$el );
 
 		this.followersEl = this.$("#followersEl");
 		this.notificationsEl = this.$("#userNotifications");
 
 		this.loadFollowers();
-		/*
-		var notifications = this.model.get('notifications');
-
-		$dj_details = this.model.get('dj_details');
-		var img = dubtrackMain.helpers.getProfileImg( $dj_details.oauth_uid, $dj_details.username, $dj_details.oauth_provider );
-
-		_.each(notifications, function(notification){
-			notification.img = img;
-			$( _.template( tpl.get('notificationProfile'), notification) ).appendTo( this.notificationsEl );
-		}, this);
-
-		this.notificationsEl.find('.timeago').timeago();
-
-		var self = this;
-		this.followersEl.find('span.followersCount').on('click', function(){
-			self.followersEl.find('span.active').removeClass('active');
-			$(this).addClass('active');
-			self.followersEl.find('.followingContainer').css('left', '0');
-			self.loadFollowers();
-		});
-
-		this.followersEl.find('span.followingCount').on('click', function(){
-			self.followersEl.find('span.active').removeClass('active');
-			$(this).addClass('active');
-			self.followersEl.find('.followingContainer').css('left', '-100%');
-			self.loadFollowing();
-		});*/
-
-		//this.loadFollowers();
 	},
 
 	follow : function(e){
 		var url = Dubtrack.config.apiUrl + Dubtrack.config.urls.userFollowing.replace( ":id", this.model.get('_id') );
 
-		Dubtrack.helpers.sendRequest( url, {}, 'post');
+		Dubtrack.helpers.sendRequest( url, {}, 'post', function(err){
+			this.loadFollowers();
+		}.bind(this));
 
 		this.$('button.unfollow').show();
 		this.$('button.follow').hide();
@@ -369,43 +213,14 @@ Dubtrack.View.Profile = Backbone.View.extend({
 	unfollow : function(e){
 		var url = Dubtrack.config.apiUrl + Dubtrack.config.urls.userFollowing.replace( ":id", this.model.get('_id') );
 
-		Dubtrack.helpers.sendRequest( url, {}, 'delete');
+		Dubtrack.helpers.sendRequest( url, {}, 'delete', function(err){
+			this.loadFollowers();
+		}.bind(this));
 
 		this.$('button.unfollow').hide();
 		this.$('button.follow').show();
 
 		return false;
-	},
-
-	loadFollowing : function(){
-		this.followersEl.find('span.active').removeClass('active');
-
-		this.$('.followingCount').addClass('active');
-		this.$('.followingContainer').css('left', '-100%');
-
-		if(! this.following ){
-			this.following = new Dubtrack.Collection.UserFollowing();
-
-			var url = Dubtrack.config.apiUrl + Dubtrack.config.urls.userFollow.replace( ":id", this.model.get('_id') );
-			this.following.url = url;
-
-			var self = this;
-			this.following.fetch({
-				success: function(m, r){
-					console.log(self.following);
-					_.each(self.following.models, function(itemUser){
-						new Dubtrack.View.ProfileItemFollower({
-							model: itemUser
-						})
-						.render(itemUser.get('following'))
-						.$el.appendTo( self.$('.followingContainer .avatarFollowing') );
-					});
-				}
-			});
-		}
-
-		return false;
-
 	},
 
 	loadFollowers : function(){
@@ -414,30 +229,32 @@ Dubtrack.View.Profile = Backbone.View.extend({
 		this.$('.followersCount').addClass('active');
 		this.$('.followingContainer').css('left', '0');
 
-		if(! this.follows ){
-			this.follows = new Dubtrack.Collection.UserFollowing();
+		this.$('.followingContainer .avatarFollower').empty();
+		this.follows = new Dubtrack.Collection.UserFollowing();
 
-			var url = Dubtrack.config.apiUrl + Dubtrack.config.urls.userFollowing.replace( ":id", this.model.get('_id') );
-			this.follows.url = url;
+		var url = Dubtrack.config.apiUrl + Dubtrack.config.urls.userFollowing.replace( ":id", this.model.get('_id') );
+		this.follows.url = url;
 
-			var self = this;
-			this.follows.fetch({
-				success: function(m, r){
-					_.each(self.follows.models, function(itemUser){
-						new Dubtrack.View.ProfileItemFollower({
-							model: itemUser
-						})
-						.render(itemUser.get('userid'))
-						.$el.appendTo( self.$('.followingContainer .avatarFollower') );
+		var self = this;
+		this.follows.reset({});
+		this.follows.fetch({
+			success: function(m, r){
+				_.each(self.follows.models, function(itemUser){
+					new Dubtrack.View.ProfileItemFollower({
+						model: itemUser
+					})
+					.render(itemUser.get('userid'))
+					.$el.appendTo( self.$('.followingContainer .avatarFollower') );
 
-						if( Dubtrack.loggedIn && itemUser.get("userid") == Dubtrack.session.id ){
-							self.$('button.follow').hide();
-							self.$('button.unfollow').show();
-						}
-					});
-				}
-			});
-		}
+					if( Dubtrack.loggedIn && itemUser.get("userid") == Dubtrack.session.id ){
+						self.$('button.follow').hide();
+						self.$('button.unfollow').show();
+					}
+				});
+
+				self.$('.followingContainer .total-followers').text(self.follows.models.length);
+			}
+		});
 
 		return false;
 	},

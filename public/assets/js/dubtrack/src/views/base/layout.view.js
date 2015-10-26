@@ -2,19 +2,14 @@ Dubtrack.View.LayoutView = Backbone.View.extend({
 	el : $('#header-global'),
 
 	events : {
-		"click .user-info-button": "navigateUser",
+		"click .header-right-navigation .user-info": "navigateUser",
 		"click a.navigate" : "navigate",
 		"click li.logout": "logout",
-		"click #edit-room-div" : "editRoom",
-		"click #create-room-div": "createRoom",
-		"click .menu-expand" : "setActiveMenu",
-		"click li.user-messages" : "setActiveMenuRight",
-		//"mouseenter .menu-expand" : "setActiveMenu",
-		//"mouseleave .menu-expand" : "removeActiveMenu",
-		"touch" : "removeActiveMenu",
-		"click" : "removeActiveMenu",
+		"click .header-left-navigation h1" : "setActiveMenu",
+		"mouseenter .header-left-navigation h1" : "setActiveMenu",
 		"click #header_login #login-link" : "displayLogin",
-		"click #header_login #signup-link" : "displaySignup"
+		"click #header_login #signup-link" : "displaySignup",
+		"click .user-messages" : "setActiveMenuRight"
 	},
 
 	displayLogin : function(e){
@@ -42,15 +37,15 @@ Dubtrack.View.LayoutView = Backbone.View.extend({
 
 		if(!Dubtrack.loggedIn){
 			this.$('#header_login').show();
+			$('body').addClass('not-logged-in');
 		}else{
 			this.$('#mobile-login').hide();
 			Dubtrack.Events.bind('realtime:user-update-' + Dubtrack.session.id, this.updateImage, this);
 		}
 
-		this.menu_left = new Dubtrack.View.MainLeftMenuView();
 		this.menu_right = new Dubtrack.View.MainRightMenuView();
+		this.menu_left = new Dubtrack.View.MainLeftMenuView();
 
-		var self = this;
 		$('body').bind('click', function(e){
 			if($(e.target).parents("#main-menu-left").length === 0){
 				$("html").removeClass("menu-left-in");
@@ -60,7 +55,7 @@ Dubtrack.View.LayoutView = Backbone.View.extend({
 				$("html").removeClass("menu-right-in");
 				Dubtrack.layout.menu_right.message_view.$el.removeClass('view-message-details');
 			}
-		});
+		}.bind(this));
 
 		emojify.setConfig({
 			img_dir : Dubtrack.config.urls.mediaBaseUrl + '/assets/emoji/images/emoji'
@@ -69,6 +64,24 @@ Dubtrack.View.LayoutView = Backbone.View.extend({
 		this.main_login_window = new Dubtrack.View.LoginMainWindowView();
 
 		this.getNewMessages();
+	},
+
+	setActiveMenu : function(){
+		$("html").toggleClass("menu-left-in");
+
+		return false;
+	},
+
+	setActiveMenuRight : function(){
+		$("html").toggleClass("menu-right-in");
+
+		if($("html").hasClass('menu-right-in')){
+			this.menu_right.loadMessages();
+		}else{
+			Dubtrack.layout.menu_right.message_view.$el.removeClass('view-message-details');
+		}
+
+		return false;
 	},
 
 	getNewMessages : function(){
@@ -96,57 +109,10 @@ Dubtrack.View.LayoutView = Backbone.View.extend({
 		});
 	},
 
-	setActiveMenuRight : function(){
-		$("html").toggleClass("menu-right-in");
-
-		if($("html").hasClass('menu-right-in')){
-			this.menu_right.loadMessages();
-		}else{
-			Dubtrack.layout.menu_right.message_view.$el.removeClass('view-message-details');
-		}
-
-		return false;
-	},
-
-	setActiveMenu : function(){
-		$("html").toggleClass("menu-left-in");
-
-		return false;
-	},
-
-	removeActiveMenu : function(e){
-		if($(e.target).parents('.menu-expand').length) return;
-
-		this.$('.menu-expand').removeClass('active');
-	},
-
 	updateImage: function(r){
 		if(r && r.img && r.img.url){
 			this.$('figure.user-image img').attr('src', r.img.url);
 		}
-	},
-
-	createRoom: function(){
-		var model = new Dubtrack.Model.Room();
-
-		model.parse = Dubtrack.helpers.parse;
-
-		this.roomUpdate = new dt.room.roomFormUpdateViewUpdate({model : model}).render();
-		this.roomUpdate.$el.appendTo( 'body' );
-
-		return false;
-	},
-
-	editRoom: function(){
-		if(Dubtrack.session && Dubtrack.room.users && Dubtrack.room.users.getIfOwner(Dubtrack.session.get("_id"))){
-			this.roomUpdate = new dt.room.roomFormUpdateViewUpdate({
-				model : Dubtrack.room.model
-			}).render();
-
-			this.roomUpdate.$el.appendTo( 'body' );
-		}
-
-		return false;
 	},
 
 	logout: function(){
@@ -315,12 +281,35 @@ Dubtrack.View.SearchUserItem = Backbone.View.extend({
 	}
 });
 
+Dubtrack.View.MainRightMenuView = Backbone.View.extend({
+	el : $("#main-menu-right"),
+
+	events: {
+		"click a.close-menu" : "closeMenu"
+	},
+
+	initialize : function(){
+		this.message_view = new Dubtrack.View.Message.Main();
+	},
+
+	loadMessages : function(){
+		this.message_view.loadMessages();
+	},
+
+	closeMenu : function(){
+		$("html").removeClass("menu-right-in");
+
+		return false;
+	},
+});
+
 Dubtrack.View.MainLeftMenuView = Backbone.View.extend({
 	el : $("#main-menu-left"),
 
 	events: {
 		"click a.navigate": "navigate",
-		"click a.close-menu" : "closeMenu"
+		"click a.close-menu" : "closeMenu",
+		"mouseleave" : "closeMenu"
 	},
 
 	initialize : function(){
@@ -346,26 +335,4 @@ Dubtrack.View.MainLeftMenuView = Backbone.View.extend({
 
 		return false;
 	}
-});
-
-Dubtrack.View.MainRightMenuView = Backbone.View.extend({
-	el : $("#main-menu-right"),
-
-	events: {
-		"click a.close-menu" : "closeMenu"
-	},
-
-	initialize : function(){
-		this.message_view = new Dubtrack.View.Message.Main();
-	},
-
-	loadMessages : function(){
-		this.message_view.loadMessages();
-	},
-
-	closeMenu : function(){
-		$("html").removeClass("menu-right-in");
-
-		return false;
-	},
 });

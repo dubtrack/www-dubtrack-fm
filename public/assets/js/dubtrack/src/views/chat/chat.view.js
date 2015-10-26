@@ -14,9 +14,14 @@ Dubtrack.View.chat = Backbone.View.extend({
 		"keydown input#chat-txt-message": "keyPressAction",
 		"click button.pusher-chat-widget-send-btn": "sendMessage",
 		"click a.chatSound": "setSound",
+		"click .setOnChatNotifications" : "setSoundOn",
+		"click .setOffChatNotifications" : "setSoundOff",
+		"click .setMentionChatNotifications" : "setSoundMention",
 		"click a.chat-commands": "displayChatHelp",
 		"click #new-messages-counter": "clickChatCounter",
-		"click .room-user-counter": "displayRoomUsers",
+		"click .display-room-users": "displayRoomUsers",
+		"click .display-chat": "displayChat",
+		"click .display-chat-settings": "displayChatOptions",
 		"click .pusher-chat-widget-input .icon-camera": "openGifCreator",
 		"click .clearChatToggle" : "clearChat",
 		"click .hideImagesToggle" : "hideImageToggleClick"
@@ -75,6 +80,8 @@ Dubtrack.View.chat = Backbone.View.extend({
 
 		this.hideImageToggle();
 
+		this.displayChat();
+
 		return false;
 	},
 
@@ -106,6 +113,8 @@ Dubtrack.View.chat = Backbone.View.extend({
 		this.$('.chat-messages').scrollTop(0);
 		this.$('.chat-messages').perfectScrollbar('update');
 
+		this.displayChat();
+
 		return false;
 	},
 
@@ -125,9 +134,25 @@ Dubtrack.View.chat = Backbone.View.extend({
 
 	displayRoomUsers: function(){
 		if(Dubtrack.room && Dubtrack.room.$el){
-			Dubtrack.room.$el.addClass('display-users-rooms');
+			Dubtrack.room.$el.removeClass('display-chat-settings').addClass('display-users-rooms');
 
 			if(Dubtrack.room && Dubtrack.room.users) Dubtrack.room.users.resetEl();
+		}
+
+		return false;
+	},
+
+	displayChat: function(){
+		if(Dubtrack.room && Dubtrack.room.$el){
+			Dubtrack.room.$el.removeClass('display-users-rooms display-chat-settings');
+		}
+
+		return false;
+	},
+
+	displayChatOptions: function(){
+		if(Dubtrack.room && Dubtrack.room.$el){
+			Dubtrack.room.$el.removeClass('display-users-rooms').addClass('display-chat-settings');
 		}
 
 		return false;
@@ -172,13 +197,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		this.newMessageCounter = 0;
 
 		self.createSound();
-		this.setDefaultSound( "mention" );
-
-		$(window).resize(function(){
-			self.resize();
-		});
-
-		this.resize();
+		this.setSoundMention();
 
 		this.$('.chat-messages').perfectScrollbar({
 			wheelSpeed: 50,
@@ -289,8 +308,37 @@ Dubtrack.View.chat = Backbone.View.extend({
 		return false;
 	},
 
-	setSound : function(){
+	setSoundOn : function(){
+		this.$('.chat-option-buttons-sound .active').removeClass('active');
+		this.$('.setOnChatNotifications').addClass('active');
 
+		this.renderSound = true;
+		this.chatSoundFilter = "none";
+
+		return false;
+	},
+
+	setSoundOff : function(){
+		this.$('.chat-option-buttons-sound .active').removeClass('active');
+		this.$('.setOffChatNotifications').addClass('active');
+
+		this.renderSound = false;
+		this.chatSoundFilter = "off";
+
+		return false;
+	},
+
+	setSoundMention : function(){
+		this.$('.chat-option-buttons-sound .active').removeClass('active');
+		this.$('.setMentionChatNotifications').addClass('active');
+
+		this.renderSound = true;
+		this.chatSoundFilter = "mention";
+
+		return false;
+	},
+
+	setSound : function(){
 		this.chatSoundHtmlEl.removeClass("mute");
 
 		switch(this.chatSoundFilter){
@@ -319,23 +367,6 @@ Dubtrack.View.chat = Backbone.View.extend({
 
 		//DJ.global.sendPostRequest("room/main/saveUserData", {'var': 'chat_sound', 'value': Chat.chatSoundFilter}, null, null);
 		return false;
-	},
-
-	resize: function(){
-		var $h = parseInt( $(window).height(), 10 ) - 255;
-
-		if( parseInt( $(window).width(), 10 ) < 1150){
-			$h -= 15;
-		}
-
-		if($('body').hasClass('videoActive') && $(window).width() > 800){
-			$h -= 200;
-		}
-
-		this.$('.chat-messages').css('height', $h);
-		this.$('.chat-messages').perfectScrollbar('update');
-
-		this.scollBottomChat();
 	},
 
 	displayHistory : function(){
@@ -876,7 +907,11 @@ Dubtrack.View.chat = Backbone.View.extend({
 			realTimeChannel: Dubtrack.room.model.get('realTimeChannel')
 		}, "post", function(err, r){
 			if(err){
-				chatItem.$el.addClass('system-error').html('unauthorized action');
+				if(err.data && err.data.err && err.data.err.details && err.data.err.details.message){
+					chatItem.$el.addClass('system-error').html(err.data.err.details.message);
+				}else{
+					chatItem.$el.addClass('system-error').html('unauthorized action');
+				}
 			}else{
 				chatItem.$el.hide();
 			}
@@ -904,7 +939,11 @@ Dubtrack.View.chat = Backbone.View.extend({
 				realTimeChannel: Dubtrack.room.model.get('realTimeChannel')
 			}, "post", function(err, r){
 				if(err){
-					chatItem.$el.addClass('system-error').html('unauthorized action');
+					if(err.data && err.data.err && err.data.err.details && err.data.err.details.message){
+						chatItem.$el.addClass('system-error').html(err.data.err.details.message);
+					}else{
+						chatItem.$el.addClass('system-error').html('unauthorized action');
+					}
 				}else{
 					chatItem.$el.hide();
 				}
@@ -933,7 +972,11 @@ Dubtrack.View.chat = Backbone.View.extend({
 				realTimeChannel: Dubtrack.room.model.get('realTimeChannel')
 			}, "delete", function(err, r){
 				if(err){
-					chatItem.$el.addClass('system-error').html('unauthorized action');
+					if(err.data && err.data.err && err.data.err.details && err.data.err.details.message){
+						chatItem.$el.addClass('system-error').html(err.data.err.details.message);
+					}else{
+						chatItem.$el.addClass('system-error').html('unauthorized action');
+					}
 				}else{
 					chatItem.$el.hide();
 				}
@@ -958,7 +1001,11 @@ Dubtrack.View.chat = Backbone.View.extend({
 				realTimeChannel: Dubtrack.room.model.get('realTimeChannel')
 			}, "delete", function(err, r){
 				if(err){
-					chatItem.$el.addClass('system-error').html('unauthorized action');
+					if(err.data && err.data.err && err.data.err.details && err.data.err.details.message){
+						chatItem.$el.addClass('system-error').html(err.data.err.details.message);
+					}else{
+						chatItem.$el.addClass('system-error').html('unauthorized action');
+					}
 				}else{
 					self.lastItemChatUser = false;
 					self.lastItemEl = false;
@@ -986,7 +1033,11 @@ Dubtrack.View.chat = Backbone.View.extend({
 				realTimeChannel: Dubtrack.room.model.get('realTimeChannel')
 			}, "post", function(err, r){
 				if(err){
-					chatItem.$el.addClass('system-error').html('unauthorized action');
+					if(err.data && err.data.err && err.data.err.details && err.data.err.details.message){
+						chatItem.$el.addClass('system-error').html(err.data.err.details.message);
+					}else{
+						chatItem.$el.addClass('system-error').html('unauthorized action');
+					}
 				}else{
 					self.lastItemChatUser = false;
 					self.lastItemEl = false;
@@ -1013,7 +1064,11 @@ Dubtrack.View.chat = Backbone.View.extend({
 				realTimeChannel: Dubtrack.room.model.get('realTimeChannel')
 			}, "delete", function(err, r){
 				if(err){
-					chatItem.$el.addClass('system-error').html('unauthorized action');
+					if(err.data && err.data.err && err.data.err.details && err.data.err.details.message){
+						chatItem.$el.addClass('system-error').html(err.data.err.details.message);
+					}else{
+						chatItem.$el.addClass('system-error').html('unauthorized action');
+					}
 				}else{
 					chatItem.$el.hide();
 				}
@@ -1040,7 +1095,11 @@ Dubtrack.View.chat = Backbone.View.extend({
 				realTimeChannel: Dubtrack.room.model.get('realTimeChannel')
 			}, "post", function(err, r){
 				if(err){
-					chatItem.$el.addClass('system-error').html('unauthorized action');
+					if(err.data && err.data.err && err.data.err.details && err.data.err.details.message){
+						chatItem.$el.addClass('system-error').html(err.data.err.details.message);
+					}else{
+						chatItem.$el.addClass('system-error').html('unauthorized action');
+					}
 				}else{
 					chatItem.$el.hide();
 				}
@@ -1065,7 +1124,11 @@ Dubtrack.View.chat = Backbone.View.extend({
 				realTimeChannel: Dubtrack.room.model.get('realTimeChannel')
 			}, "post", function(err, r){
 				if(err){
-					chatItem.$el.addClass('system-error').html('unauthorized action');
+					if(err.data && err.data.err && err.data.err.details && err.data.err.details.message){
+						chatItem.$el.addClass('system-error').html(err.data.err.details.message);
+					}else{
+						chatItem.$el.addClass('system-error').html('unauthorized action');
+					}
 				}else{
 					chatItem.$el.hide();
 				}
