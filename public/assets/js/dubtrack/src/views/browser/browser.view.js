@@ -619,15 +619,16 @@ Dubtrack.View.BrowserInfo = Backbone.View.extend({
 		if($value === "" || $value === " "){
 			_.each(this.collection.models, function (item) {
 				var view = item.get("browserView");
-				if("view") view.show();
+				view.show();
 			}, this);
 		}else{
+			$value = $value.toLowerCase();
 			_.each(this.collection.models, function (item) {
 				var view = item.get("browserView");
 				console.log(item);
 				$name = item.get("filterName").toLowerCase();
-				if($name.indexOf($value) === -1) if("view") view.hide();
-				else if("view") view.show();
+				if($name.indexOf($value) === -1) view.hide();
+				else view.show();
 			}, this);
 		}
 	},
