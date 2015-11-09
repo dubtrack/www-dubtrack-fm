@@ -704,6 +704,18 @@ w.Dubtrack = {
 		},
 
 		text : {
+
+			shortenLink: function(displayLink, maxLimit) {
+				if(displayLink.length > maxLimit) {
+					displayLink = displayLink.substring(0, maxLimit) + "...";
+				}
+				return displayLink;
+			},
+
+			shortenMessage: function(text, maxLimit) {
+				return text.substring(0, maxLimit);
+			},
+
 			convertHtmltoTags: function(text, imagloadFun){
 				var imageRegex = /^(http|https)(.*)\.(png|jpg|jpeg|gif)$/;
 
@@ -714,7 +726,7 @@ w.Dubtrack = {
 							str = '<a href="' + str + '" class="autolink" target="_blank"><img src="' + str + '" alt="' + str + '" onload="' + imagloadFun + '" onerror="' + onErrorAction + '" /></a>';
 							return str;
 						} else {
-							str = '<a href="' + str + '" class="autolink" target="_blank">' + str + '</a>';
+							str = '<a href="' + str + '" class="autolink" target="_blank">' + shortenLink(str, 60) + '</a>';
 							return str;
 						}
 				});
