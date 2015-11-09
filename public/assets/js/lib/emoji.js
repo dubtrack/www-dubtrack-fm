@@ -48,7 +48,7 @@
                 var emoticons = {
          /* :..: */ named: /:([a-z0-9A-Z_-]+):/,
          /* :-)  */ smiley: /:-?\)/g,
-         /* :-o  */ open_mouth: /:-o/gi,
+         /* :-o  */ open_mouth: /:-?o/gi,
          /* :-]  */ grin: /[:;]-?]/g,
          /* :-D  */ smile: /[:;]-?d/gi,
          /* X-D  */ laughing: /x-d/gi,
@@ -67,7 +67,7 @@
          /* :-s  */ confounded: /:-?s/gi,
          /* :-|  */ neutral_face: /:-?\|/g,
          /* :-$  */ relaxed: /:-?\$/g,
-         /* :-x  */ mask: /:-x/gi,
+         /* :-x  */ mask: /:-?x/gi,
          /* <3   */ heart: /<3|&lt;3/g,
          /* </3  */ broken_heart: /<\/3|&lt;&#x2F;3/g,
          /* :+1: */ thumbsup: /:\+1:/g,
