@@ -2,6 +2,7 @@
 	display none
 	height 100%
 	position absolute
+	display table
 	top 0
 	left 0
 	width 100%
@@ -10,20 +11,28 @@
 
 	.login-model-container
 		display none
-		width 20rem
-		max-width 100%
-		margin 0 auto
-		top 50%
+		width 100%
+		padding 0 1rem
+		margin 0 0 10rem 0
 		position relative
-		transform translateY(-50%)
-		transform-style preserve-3d
-		backface-visibility hidden
 
 		&.show-form
 			display block
+			margin-top 10rem
+
+			@media screen and (min-height: 60em)
+				margin-top 0rem
+				vertical-align middle
+				display table-cell
+
+		.login-model-container-wrapper
+			width 20rem
+			max-width 100%
+			margin 0 auto
 
 		.facebook-login
 		.twitter-login
+		.soudcloud-login
 			display block
 			padding 1rem 1rem
 			border-radius 2rem
@@ -31,11 +40,17 @@
 			font-weight bold
 			margin-bottom 0.5rem
 
+			&:hover
+				color $primary-color
+
 			i
 				margin-right 1rem
 
 		.twitter-login
 			background #009DF6
+
+		.soudcloud-login
+			background #ff3a00
 
 		.err-message
 		.success-message

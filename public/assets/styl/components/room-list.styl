@@ -1,11 +1,20 @@
 #room-list
+	text-align left
+	margin 5.7rem 0 7.5rem 0
+
+	@media screen and (min-width: $desktop-breakpoint)
+		margin 3.6rem 0 0 0
+
 	.room-loby-header
 		position relative
-		background $background-primary-color
+		background $background-darker-color
 		margin-bottom 1rem
 		padding 1rem
 		text-align center
 		overflow hidden
+
+		@media screen and (min-width: $desktop-breakpoint)
+			background $background-primary-color
 
 		.room-search
 			position absolute
@@ -25,7 +34,12 @@
 				font-size 0.75rem
 
 		.links-container
-			display inline-block
+			display block
+			float right
+
+			@media screen and (min-width: $desktop-breakpoint)
+				display inline-block
+				float none
 
 			a
 				display inline-block
@@ -33,21 +47,37 @@
 				font-weight bold
 				text-transform uppercase
 
+				&.facebook
+				&.twitter
+					display none
+
+					@media screen and (min-width: $desktop-breakpoint)
+						display inline-block
+
 	#container-room-list
 		position relative
-		max-width 93rem
+		width 100%
 		margin 0 auto 5rem auto
-		clearfix()
+		padding 0 0.5rem
+		text-align center
+
+		@media screen and (min-width: $desktop-breakpoint)
+			max-width 93rem
+			padding 0
 
 		.room-item
 			background $background-dark-color
-			display block
-			width 30rem
-			float left
-			margin 0 0.5rem 1rem 0.5rem
+			display inline-block
+			width 100%
+			margin 0 0 0.5rem 0
 			overflow hidden
 			border-radius 1rem
 			position relative
+			text-align left
+
+			@media screen and (min-width: $tablet-breakpoint)
+				margin 0 0.5rem 1rem 0.5rem
+				width 20rem
 
 			&:hover
 				.roomImage
@@ -60,6 +90,10 @@
 				position relative
 				padding-bottom 59%
 				overflow hidden
+				display none
+
+				@media screen and (min-width: $tablet-breakpoint)
+					display block
 
 				.join
 					display none
@@ -99,8 +133,11 @@
 					line-height 0.8
 
 				.user-info
-					font-size 0.95rem
+					font-size 1rem
 					color $meta-color
+
+					.room-user
+						white-space nowrap
 
 					a
 						color $meta-color

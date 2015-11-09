@@ -47,6 +47,8 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 
 		Dubtrack.helpers.genPlaylistContainer( $('body'), position, song.songid, false, 'playerBottomFixed' );
 
+		$("html, body").scrollTop(0);
+
 		return false;
 	},
 

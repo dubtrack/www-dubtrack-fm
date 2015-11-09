@@ -214,15 +214,13 @@ Dubtrack.els.templates = {
 	},
 
 	'rooms': {
-		'roomModalView' : '<span class="closebtn icon-close"></span>' +
-								'<div class="modal-header mainForm">' +
-									'<h3><%- name %></h3>' +
-								'</div>'+
-								'<div class="mid">' +
-									'<div class="control-group">' +
+		'roomModalView' : '<div class="room-info-display-container">' +
+									'<h2><%- name %><span>hosted by <i><%- _user.username %></i></span></h2>' +
+									'<div class="description">' +
 										'<%= description %>' +
 									'</div>' +
 								'</div>',
+
 		'roomFormUpdate': '	<form class="form-horizontal">'+
 								'<span class="closebtn icon-close"></span>' +
 								'<div class="modal-header mainForm">' +
@@ -395,6 +393,10 @@ Dubtrack.els.templates = {
 									'<span><%- dubs %> </span>' +
 									' dubs' +
 								'</p>',
+
+		'roomBanListItem' : '<%- _user.username %><span class="actions">unban</span>',
+
+		'roomMuteListItem' : '<%- _user.username %><span class="actions">unmute</span>'
 	},
 
 	'chat': {
@@ -481,16 +483,17 @@ Dubtrack.els.templates = {
 								'</div>',
 
 		'playlistHistoryBrowser': '<div class="description">' +
-									'<span>Room history</span>' +
+									'<input type="text" class="playlist_filter" placeholder="Filter history" value="">' +
 								'</div>',
 
 		'playlistInfo': '<div class="description">' +
+							'<input type="text" class="editplaylist_name" placeholder="Playlist name" value="<%- name %>" value="" />' +
+							'<span class="icon-save save-playlistname"></span>' +
 							'<input type="text" class="playlist_filter" placeholder="' + dubtrack_lang.playlist.filter + '" value="" />' +
-							'<span><%- name %></span>' +
 						'</div>' +
 						'<div class="right">' +
 							'<a href="#" class="icon-shuffle shuffle-playlist tt-wrapper"></a>' +
-							/*'<a href="#" class="icon-editplaylist edit-playlist-name tt-wrapper"></a>' +*/
+							'<a href="#" class="icon-editplaylist edit-playlist-name tt-wrapper"></a>' +
 							'<a href="#" class="icon-trash delete-playlist tt-wrapper"></a>' +
 							'<a href="#" class="playlist_type tt-wrapper"></a>' +
 							'<a href="#" class="text-button queue-playlist">Queue all</a>' +
@@ -643,7 +646,32 @@ Dubtrack.els.templates = {
 					'</div>' +
 					'<% } %>',
 
+		'soundCloudImportItem' : '<%- title %><i class="total-items"><%- total_tracks %></i>',
+
 		'browser': '<div class="browser-content">'+
+						'<div id="import-playlist-container">' +
+							'<span class="close-import-playlist icon-close"></span>' +
+							'<h3>Import playlists</h3>' +
+							'<div class="playlist-type-select playlist-tab-import-active">' +
+								'<span class="icon-youtube import-youtube"></span>' +
+								'<span class="icon-soundcloud import-soundcloud"></span>' +
+							'</div>' +
+							'<div class="import-playlist-youtube">' +
+								'<div class="loading-import">Importing playlist....</div>' +
+								'<div class="err-message"></div>' +
+								'<input class="youtube-username" placeholder="Youtube playlist ID" />' +
+								'<select class="playlist-select" name="playlist-id"></select>' +
+								'<span class="import-playlist icon-inbox">Import</span>' +
+							'</div>' +
+							'<div class="import-playlist-soundcloud">' +
+								'<div class="loading-import">Importing playlist....</div>' +
+								'<div class="err-message"></div>' +
+								'<input class="soundcloud-username" placeholder="Soundcloud username" />' +
+								'<div class="playlist-container"><ul></ul></div>' +
+								'<select class="playlist-select" name="playlist-id"></select>' +
+								'<span class="import-playlist icon-inbox">Import</span>' +
+							'</div>' +
+						'</div>' +
 						'<div class="browser-content-header">' +
 							'<span class="close-browser icon-downvote"></span>' +
 							'<div class="form">' +
@@ -666,6 +694,10 @@ Dubtrack.els.templates = {
 						'</div>' +
 						'<div class="browser-content-main">' +
 							'<div class="sidebar">' +
+								'<div class="display-sidebar"><span class="icon-playlist"></span></div>' +
+								'<div class="import-playlist">' +
+									'<span class="icon-inbox"></span> Import playlists' +
+								'</div>' +
 								'<div class="create-playlist">' +
 									'<div class="create-playlist-display"><span class="icon-createplaylist"></span> Create playlist</div>' +
 									'<div class="create-playlist-form">' +
@@ -674,31 +706,30 @@ Dubtrack.els.templates = {
 									'</div>' +
 								'</div>' +
 								'<div id="queue-next"></div>' +
-									'<span class="title">Your playlists</span>' +
-									'<div id="playlists-scroll">' +
-										'<ul class="playlist-style">' +
-											'<li class="current_queue"><span class="icon-play"></span>' + dubtrack_lang.playlist.your_queue + '</li>' +
-											'<li class="current_room_queue"><span class="icon-playlist"></span> ' + dubtrack_lang.playlist.room_queue + '</li>' +
-											'<li class="room_history"><span class="icon-history"></span>Room history</li>' +
-										'</ul>' +
+								'<span class="title">Your playlists</span>' +
+								'<div id="playlists-scroll">' +
+									'<ul class="playlist-style">' +
+										'<li class="current_queue"><span class="icon-play"></span>' + dubtrack_lang.playlist.your_queue + '</li>' +
+										'<li class="current_room_queue"><span class="icon-playlist"></span> ' + dubtrack_lang.playlist.room_queue + '</li>' +
+										'<li class="room_history"><span class="icon-history"></span>Room history</li>' +
+									'</ul>' +
 									'<div>' +
-									'<ul class="playlist-style playlist-list"></ul>' +
-								'</div>' +
-							'</div>' +
-						'</div>' +
-						'<div class="nano">' +
-							'<div class="content-videos">' +
-								'<div class="result-videos">' +
-									'<div class="loading">' + dubtrack_lang.global.loading + '</div>' +
-									'<div id="results_video_api">' +
-										'<ul></ul>' +
+										'<ul class="playlist-style playlist-list"></ul>' +
 									'</div>' +
-									'<div class="back-fill"></div>' +
+								'</div>' +
+							'</div>' +
+							'<div class="nano">' +
+								'<div class="content-videos">' +
+									'<div class="result-videos">' +
+										'<div class="loading">' + dubtrack_lang.global.loading + '</div>' +
+										'<div id="results_video_api">' +
+											'<ul></ul>' +
+										'</div>' +
+									'</div>' +
 								'</div>' +
 							'</div>' +
 						'</div>' +
-					'</div>' +
-				'</div>',
+					'</div>',
 
 		'playerController': '<div class="right">'+
 								'<ul>' +

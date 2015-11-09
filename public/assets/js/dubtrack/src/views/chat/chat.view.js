@@ -901,21 +901,33 @@ Dubtrack.View.chat = Backbone.View.extend({
 		var chatItem = new Dubtrack.View.chatLoadingItem();
 		chatItem.$el.appendTo( this._messagesEl );
 
-		var url = Dubtrack.config.apiUrl + Dubtrack.config.urls.skipSong.replace(":id", Dubtrack.room.model.id);
+		if(Dubtrack.room && Dubtrack.room.player && Dubtrack.room.player.activeSong && Dubtrack.room.player.activeSong.get('song')){
+			var song = Dubtrack.room.player.activeSong.get('song');
 
-		Dubtrack.helpers.sendRequest(url, {
-			realTimeChannel: Dubtrack.room.model.get('realTimeChannel')
-		}, "post", function(err, r){
-			if(err){
-				if(err.data && err.data.err && err.data.err.details && err.data.err.details.message){
-					chatItem.$el.addClass('system-error').html(err.data.err.details.message);
-				}else{
-					chatItem.$el.addClass('system-error').html('unauthorized action');
-				}
-			}else{
-				chatItem.$el.hide();
+			if(!song._id){
+				chatItem.$el.addClass('system-error').html('No active song');
+
+				return;
 			}
-		}, this);
+
+			var url = Dubtrack.config.apiUrl + Dubtrack.config.urls.skipSong.replace(":id", Dubtrack.room.model.id).replace(":songid", song._id);
+
+			Dubtrack.helpers.sendRequest(url, {
+				realTimeChannel: Dubtrack.room.model.get('realTimeChannel')
+			}, "post", function(err, r){
+				if(err){
+					if(err.data && err.data.err && err.data.err.details && err.data.err.details.message){
+						chatItem.$el.addClass('system-error').html(err.data.err.details.message);
+					}else{
+						chatItem.$el.addClass('system-error').html('unauthorized action');
+					}
+				}else{
+					chatItem.$el.hide();
+				}
+			}, this);
+		}else{
+			chatItem.$el.addClass('system-error').html('No active song');
+		}
 	},
 
 	setRole: function(username, role){

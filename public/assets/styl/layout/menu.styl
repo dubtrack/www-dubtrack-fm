@@ -2,13 +2,19 @@
 	background none
 	position fixed
 	height 100%
-	right -35rem
+	right -25rem
 	top 0
-	width 30rem
+	width 20rem
 	z-index 1000
-	padding 3.6rem 0 3.5rem 0
+	padding 3.6rem 0 6.5rem 0
 	backface-visibility hidden
+	transform-style preserve-3d
 	transition transform 0.2s ease-in-out
+
+	@media screen and (min-width: $tablet-breakpoint)
+		padding 3.6rem 0 3.5rem 0
+		width 30rem
+		right -35rem
 
 	.close-menu
 		border-bottom 0
@@ -42,6 +48,7 @@
 	top 0
 	width 12.5rem
 	z-index 999999
+	transform-style preserve-3d
 	backface-visibility hidden
 	transition transform 0.2s ease-in-out
 
@@ -95,8 +102,41 @@
 
 .menu-right-in
 	#main-menu-right
-		transform translateX(-35rem)
+		transform translateX(-25rem)
+
+		@media screen and (min-width: $tablet-breakpoint)
+			transform translateX(-35rem)
 
 .menu-left-in
 	#main-menu-left
 		transform translateX(14rem)
+
+#mobile-room-menu
+	display block
+	width 100%
+	position absolute
+	background $background-primary-color
+	top 3.6rem
+	left 0
+	margin 0
+	padding 0
+	z-index 99
+	clearfix()
+
+	@media screen and (min-width: $desktop-breakpoint)
+		display none
+
+	a
+		font-size 0.75rem
+		font-weight bold
+		cursor pointer
+		width 50%
+		text-align center
+		text-transform uppercase
+		padding 0.5rem 0.2rem
+		float left
+		display block
+		border-right 1px solid $background-darker-color
+
+		&:last-child
+			border-right 0

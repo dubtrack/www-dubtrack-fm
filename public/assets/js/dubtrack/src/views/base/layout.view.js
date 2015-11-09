@@ -1,15 +1,17 @@
 Dubtrack.View.LayoutView = Backbone.View.extend({
-	el : $('#header-global'),
+	el : $('body'),
 
 	events : {
-		"click .header-right-navigation .user-info": "navigateUser",
-		"click a.navigate" : "navigate",
-		"click li.logout": "logout",
-		"click .header-left-navigation h1" : "setActiveMenu",
-		"mouseenter .header-left-navigation h1" : "setActiveMenu",
-		"click #header_login #login-link" : "displayLogin",
-		"click #header_login #signup-link" : "displaySignup",
-		"click .user-messages" : "setActiveMenuRight"
+		"click #header-global .header-right-navigation .user-info": "navigateUser",
+		"click #header-global a.navigate" : "navigate",
+		"click #header-global li.logout": "logout",
+		"click #header-global .header-left-navigation h1" : "setActiveMenu",
+		"mouseenter #header-global .header-left-navigation h1" : "setActiveMenu",
+		"click #header-global #header_login #login-link" : "displayLogin",
+		"click #header-global #header_login #signup-link" : "displaySignup",
+		"click #header-global .user-messages" : "setActiveMenuRight",
+		"click #mobile-room-menu .chat-button" : "diplayChatLayout",
+		"click #mobile-room-menu .player-button" : "diplayPlayerLayout"
 	},
 
 	displayLogin : function(e){
@@ -28,8 +30,20 @@ Dubtrack.View.LayoutView = Backbone.View.extend({
 		});
 	},
 
+	diplayPlayerLayout : function(){
+		this.$el.removeClass('diplay-chat');
+
+		return false;
+	},
+
+	diplayChatLayout : function(){
+		this.$el.addClass('diplay-chat');
+
+		return false;
+	},
+
 	initialize : function(){
-		this.$el.append( _.template(Dubtrack.els.templates.layout.header, Dubtrack.session.toJSON()) );
+		this.$('#header-global').append( _.template(Dubtrack.els.templates.layout.header, Dubtrack.session.toJSON()) );
 
 		this.searchView = new Dubtrack.View.SearchView({
 			el: this.$('li.global-search-header')
@@ -67,7 +81,7 @@ Dubtrack.View.LayoutView = Backbone.View.extend({
 	},
 
 	setActiveMenu : function(){
-		$("html").toggleClass("menu-left-in");
+		$("html").addClass("menu-left-in");
 
 		return false;
 	},

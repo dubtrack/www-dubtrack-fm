@@ -3,13 +3,9 @@
 	padding 1rem
 	border-radius 1rem
 	background rgba(0, 0, 0, 0.7)
-	top 50%
-	transform translateY(-50%)
-	-webkit-filter blur(0)
-	filter blur(0)
-	transform-style preserve-3d
-	backface-visibility hidden
+	display block
 	user-select none
+	z-index 1
 
 	.player_header
 		position absolute
@@ -28,14 +24,30 @@
 			text-transform uppercase
 			margin-right 0.5rem
 			color #000
+			display inline-block
 			opacity 0.8
+			text-align center
+
+			&.display-queue
+				display none
+
+				@media screen and (min-width: $tablet-breakpoint)
+					display inline-block
 
 			&.hideVideo-el
+			&.skip-el
 				float right
+
+				i
+					vertical-align middle
+					font-size 1.3rem
 
 				&.active
 					color #fff
 					background #000
+
+			&.display-mods-controls
+				display none
 
 			&.edit-room
 				position relative
@@ -44,8 +56,8 @@
 				i
 					position absolute
 					font-size 2rem
-					line-height 0.85
-					left -0.05rem
+					line-height 1.15
+					left 0
 
 			&.active
 				background $accent-color
@@ -55,11 +67,11 @@
 		bottom -4rem
 		padding 1rem 3rem
 		border-radius 1rem
+		line-height 1.7
 		background rgba(0, 0, 0, 0.8)
 		transform translateX(-50%)
-		-webkit-filter blur(0)
-		filter blur(0)
 		transform-style preserve-3d
+		width 15rem
 		backface-visibility hidden
 		left 50%
 		cursor pointer
@@ -68,6 +80,22 @@
 			color $accent-color
 			margin-right 0.5rem
 			display inline-block
+
+		.queue-info
+			display none
+			position absolute
+			top -0.3rem
+			right -0.3rem
+			background $accent-color
+			width 1.7rem
+			height 1.7rem
+			text-align center
+			font-weight bold
+			color $background-primary-color
+			border-radius 100%
+
+			&.queue-active
+				display block
 
 	#custom_iframe_embed_error
 	.playbtn-el
@@ -82,8 +110,6 @@
 		display none
 		background $accent-color
 		transform translate(-50%, -50%)
-		-webkit-filter blur(0)
-		filter blur(0)
 		transform-style preserve-3d
 		backface-visibility hidden
 
@@ -101,8 +127,6 @@
 			position relative
 			top 50%
 			transform translateY(-50%)
-			-webkit-filter blur(0)
-			filter blur(0)
 			transform-style preserve-3d
 			backface-visibility hidden
 
@@ -119,14 +143,19 @@
 		left 0
 		top 50%
 		transform translateY(-50%)
-		-webkit-filter blur(0)
-		filter blur(0)
 		transform-style preserve-3d
 		backface-visibility hidden
 
 	.player_container
+	#mods-controllers
+	#room-info-display
+		display none
 		padding-bottom 56.25%
 		position relative
+		z-index 10
+
+	.player_container
+		display block
 
 		#room-main-player-container
 			position absolute
@@ -142,6 +171,7 @@
 				width 100%
 				top 0
 				left 0
+				z-index 10
 
 			.playerElement
 				position relative
@@ -153,8 +183,6 @@
 						position relative
 						top: 50%
 						transform translateY(-50%)
-						-webkit-filter blur(0)
-						filter blur(0)
 						transform-style preserve-3d
 						backface-visibility hidden
 						width 100%
@@ -183,16 +211,49 @@
 			float right
 
 			.skip-el
+			.hideVideo-el
+			.mute
 				float left
 				cursor pointer
 				font-weight bold
 				font-size 1rem
 				text-transform uppercase
 
+				&.active
+					span
+						&.icon-eye-unblocked
+							display block
+
+						&.icon-eye-blocked
+							display none
+
 				i
 					display inline-block
 					vertical-align text-top
 					font-size 1.2rem
+
+				span
+					&.icon-eye-unblocked
+						display none
+
+					&.icon-eye-blocked
+						display block
+
+			.mute
+				&.sound-muted
+					span
+						&.icon-mute
+							display block
+
+						&.icon-sound-alt
+							display none
+
+				span
+					&.icon-mute
+						display none
+
+					&.icon-sound-alt
+						display block
 
 			span
 				display inline-block
@@ -200,17 +261,31 @@
 				margin-right 0
 
 				&.videoquality-el
-					font-size 1rem
+					font-size 1.2rem
 					text-transform uppercase
 					font-weight bold
 					top -0.3rem
 					position relative
+					color $meta-color
+					display none
+
+					&.active-hd
+						color $primary-color
+
+					@media screen and (min-width: $tablet-breakpoint)
+						&.show
+							display inline-block
 
 			.volume-controller-container
 				width 6rem
-				display inline-block
 				vertical-align middle
-				margin-left 1rem
+				margin-left 0.8rem
+				float left
+				margin-top 0.6rem
+				display none
+
+				@media screen and (min-width: $tablet-breakpoint)
+					display block
 
 				#volume-div
 					width 100%

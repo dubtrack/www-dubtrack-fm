@@ -80,12 +80,18 @@ Dubtrack.View.RoomList = Backbone.View.extend({
 	},
 
 	createRoom: function(){
-		var model = new Dubtrack.Model.Room();
+		if(!Dubtrack.loggedIn){
+			Dubtrack.app.navigate('/login', {
+				trigger: true
+			});
+		}else{
+			var model = new Dubtrack.Model.Room();
 
-		model.parse = Dubtrack.helpers.parse;
+			model.parse = Dubtrack.helpers.parse;
 
-		this.roomUpdate = new dt.room.roomFormUpdateViewUpdate({model : model}).render();
-		this.roomUpdate.$el.appendTo( 'body' );
+			this.roomUpdate = new dt.room.roomFormUpdateViewUpdate({model : model}).render();
+			this.roomUpdate.$el.appendTo( 'body' );
+		}
 
 		return false;
 	},

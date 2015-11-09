@@ -27,13 +27,17 @@
 			background-size 2rem 2rem
 
 		a
-			display inline-block
+			display none
+
+			@media screen and (min-width: $tablet-breakpoint)
+				display inline-block
 
 			&.room-active-link
 				display none
 
 				&.active-room
-					display inline-block
+					@media screen and (min-width: $tablet-breakpoint)
+						display inline-block
 
 					.icon-chevron
 						font-size 0.75rem
@@ -71,6 +75,10 @@
 
 			span
 				font-weight bold
+				display none
+
+				@media screen and (min-width: $tablet-breakpoint)
+					display inline-block
 
 		.user-messages
 			font-size 1.2rem

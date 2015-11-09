@@ -3,7 +3,7 @@
 	position relative
 	width 100%
 	height 100%
-	padding: 6.5rem 1rem 1rem 1rem
+	padding: 6.5rem 0 1rem 0
 
 	.avatar_tools
 		position absolute
@@ -33,6 +33,8 @@
 		overflow hidden
 
 		#avatar-list
+			padding 0 1rem
+
 			li
 				display block
 				margin-bottom 0.5rem
@@ -46,7 +48,6 @@
 				&.vip
 				&.resident-dj
 				&.manager
-				&:after
 					p.username
 						&:after
 							content " Mod"

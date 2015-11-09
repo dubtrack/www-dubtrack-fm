@@ -1,6 +1,6 @@
 Dubtrack.Collection.Room = Backbone.Collection.extend({
 	url: Dubtrack.config.apiUrl + Dubtrack.config.urls.room,
-	
+
 	model: Dubtrack.Model.Room
 });
 
