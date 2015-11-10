@@ -1,0 +1,142 @@
+#main-room
+	top 0
+	margin 0 auto
+	width 100%
+	height 100%
+	padding 7rem 1rem 8rem 1rem
+	display block
+	text-align center
+	position relative
+
+	@media screen and (min-width: $desktop-breakpoint)
+		padding 5rem 1rem
+		max-width 70rem
+
+	@media screen and (min-height: 47em) and (min-width: $desktop-breakpoint)
+		max-width 80rem
+
+	@media screen and (min-height: 60em) and (min-width: $desktop-breakpoint)
+		max-width 100rem
+
+	@media screen and (min-height: 80em) and (min-width: $desktop-breakpoint)
+		max-width 120rem
+
+	@media screen and (min-height: 100em) and (min-width: $desktop-breakpoint)
+		max-width 140rem
+
+	@media screen and (min-height: 120em) and (min-width: $desktop-breakpoint)
+		max-width 160rem
+
+	&.display-users-rooms
+		#main_avatar_room
+			display block
+
+		#chat
+			width 100%
+			position absolute
+			top 0
+			height 3.5rem
+			overflow hidden
+
+			.display-chat
+			.display-chat-settings
+				color $meta-color
+
+				&:after
+					display none
+
+			.display-room-users
+				color $primary-color
+
+				&:after
+					display block
+
+			.chat-container
+				display none
+
+	&.display-chat-settings
+		#chat
+			.display-chat
+			.display-room-users
+				color $meta-color
+
+				&:after
+					display none
+
+			.display-chat-settings
+				color $primary-color
+
+				&:after
+					display block
+
+			.chat-container
+				display none
+
+			.chat-options
+				display block
+
+	.main-room-wrapper
+		position relative
+		right 0
+		left 0
+		width 100%
+		height 100%
+		display block
+		margin-bottom 8rem
+
+		@media screen and (min-height: 41em) and (min-width: $desktop-breakpoint)
+			margin-bottom 0
+
+		@media screen and (min-width: $desktop-breakpoint)
+			min-height 31.25rem
+
+	.right_section
+	.left_section
+		text-align left
+		position absolute
+		left 0
+		top 0
+		height 100%
+		padding 0
+
+	.left_section
+		width 100%
+		margin-top 3rem
+
+		@media screen and (min-height: 41em) and (min-width: $desktop-breakpoint)
+			display table
+			margin-top 0
+
+		@media screen and (min-width: $desktop-breakpoint)
+			padding-right 32rem
+
+		.main-player-wrapper
+			@media screen and (min-height: 41em) and (min-width: $desktop-breakpoint)
+				display table-cell
+				vertical-align middle
+
+	.right_section
+		border-radius 1rem
+		background rgba(0, 0, 0, 0.7)
+		width 100%
+		left auto
+		display none
+		right 0
+
+		@media screen and (min-width: $desktop-breakpoint)
+			display block
+			width 30rem
+
+.diplay-chat
+	#main-room
+		.left_section
+			display none
+
+			@media screen and (min-width: $desktop-breakpoint)
+				display block
+
+			@media screen and (min-height: 41em) and (min-width: $desktop-breakpoint)
+				display table
+
+		.right_section
+			display block

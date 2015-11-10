@@ -1,0 +1,102 @@
+#mods-controllers
+	.mods-controllers-main-wrapper
+		position absolute
+		height 100%
+		width 100%
+		padding 4rem 0 1rem 0
+
+		.mod-controllers-headers
+			position absolute
+			top 1rem
+			width 100%
+			text-align center
+
+			a
+				display inline-block
+				padding 0 1rem
+				text-transform uppercase
+				font-weight bold
+
+				&.active
+					color $accent-color
+
+		.mods-controllers-wrapper
+			position relative
+			height 100%
+			width 100%
+
+			.mods-controllers-commands-list
+			.mods-controllers-mute-list
+			.mods-controllers-ban-list
+				display none
+				top 0
+				left 0
+				position absolute
+				height 100%
+				width 100%
+
+				&.show-controller
+					display block
+
+				.mods-controller-container
+					height 100%
+					width 100%
+					position relative
+					overflow hidden
+
+					h2
+						font-size 1.1rem
+						font-weight bold
+						text-align center
+						text-transform uppercase
+
+						span
+							text-transform none
+							display block
+							color $meta-color
+
+				.skip-el
+					cursor pointer
+					display inline-block !important
+					margin 0.5rem auto 3rem auto
+					padding 0.5rem 1rem
+					border-radius 1rem
+					border 1px solid $meta-color
+					width auto
+
+					i
+						font-size 1.2rem
+						display inline-block
+						vertical-align middle
+
+				.user-list
+				.chat-command-list
+					text-align left
+					list-style none
+					padding-right 1rem
+
+					li
+						display block
+						padding 0.5rem 0
+						border-bottom 1px solid $meta-color
+						color $meta-color
+						clearfix()
+
+						&:last-child
+							border-bottom 0
+
+						.actions
+							float right
+							text-transform uppercase
+							color $primary-color
+							font-weight bold
+							cursor pointer
+
+				.chat-command-list
+					li
+						.actions
+							text-transform none
+
+			.mods-controllers-commands-list
+				margin-top 1rem
+				text-align center

@@ -98,12 +98,15 @@ w.Dubtrack = {
 		apiUrl: w.DUBTRACK_API_URL,
 
 		urls: {
-			mediaBaseUrl: "https://mediadubtrackfm.s3.amazonaws.com",
+			mediaBaseUrl: "https://dubtrack-fm.s3.amazonaws.com",
 			commentsDubs: "/comments/:id/dubs",
 			commentsFlag: "/comments/:id/flag",
 			room: "/room",
+			roomSearch: "/room/term/:term",
 			roomImage: "/room/:id/image",
 			roomUsers: "/room/{id}/users",
+			roomBanUsers: "/room/:id/users/ban",
+			roomMuteUsers: "/room/:id/users/mute",
 			roomBeacon: "/room/beacon/:id/:userid",
 			roomQueue: "/room/{id}/playlist",
 			roomQueueDetails: "/room/:id/playlist/details",
@@ -116,8 +119,12 @@ w.Dubtrack = {
 			queryUsernameAvailability: "/user/query/availabilty",
 			session: "/auth/session",
 			playlist: "/playlist",
+			playlistUpdate: "/playlist/:id",
 			playlistOrder: "/playlist/:id/order",
 			playlistSong: "/playlist/:id/songs",
+			getSoundCloudPlaylists: "/playlist/soundcloud",
+			importYoutubePlaylist: "/playlist/import/youtube",
+			importSoundcloudPlaylist: "/playlist/:id/import/soundcloud",
 			song: "/song",
 			songComments: "/song/:id/comments",
 			chat: "/chat/:id",
@@ -133,7 +140,7 @@ w.Dubtrack = {
 			setManagerUser: "/chat/5615fd84e596150061000003/:roomid/user/:id",
 			setVIPUser: "/chat/5615fe1ee596154fc2000001/:roomid/user/:id",
 			setOwnerUser: "/chat/5615fa9ae596154a5c000000/:roomid/user/:id",
-			skipSong: "/chat/skip/:id",
+			skipSong: "/chat/skip/:id/:songid",
 			userQueue: "/user/session/room/:id/queue",
 			userQueueOrder : "/user/session/room/:id/queue/order",
 			roomUserQueueOrder : "/room/:id/queue/order",
@@ -316,6 +323,8 @@ w.Dubtrack = {
 				userid == "52c8ef6037e22b0200000005" ||
 				userid == "52d24bff4cf9670200000515" ||
 				userid == "52c8efcf37e22b0200000008" ||
+				userid == "551d295433cd73030089d184" ||
+				userid == "53f7c199892b010200a98809" ||
 				userid == "52c8254ca7b7260200000001"){
 				return true;
 			}else{
@@ -448,10 +457,13 @@ w.Dubtrack = {
 
 			Dubtrack.views.user_popover.displayUser(id);
 
-			var offset = $(el).offset();
+			var offset = $(el).offset(),
+				left = offset.left - 200;
+
+			if(left < 0) left = 0;
 
 			Dubtrack.views.user_popover.$el.css({
-				'left': offset.left - 200,
+				'left': left,
 				'top': offset.top
 			}).show();
 
@@ -692,6 +704,18 @@ w.Dubtrack = {
 		},
 
 		text : {
+
+			shortenLink: function(displayLink, maxLimit) {
+				if(displayLink.length > maxLimit) {
+					displayLink = displayLink.substring(0, maxLimit) + "...";
+				}
+				return displayLink;
+			},
+
+			shortenMessage: function(text, maxLimit) {
+				return text.substring(0, maxLimit);
+			},
+
 			convertHtmltoTags: function(text, imagloadFun){
 				var imageRegex = /^(http|https)(.*)\.(png|jpg|jpeg|gif)$/;
 
@@ -702,7 +726,7 @@ w.Dubtrack = {
 							str = '<a href="' + str + '" class="autolink" target="_blank"><img src="' + str + '" alt="' + str + '" onload="' + imagloadFun + '" onerror="' + onErrorAction + '" /></a>';
 							return str;
 						} else {
-							str = '<a href="' + str + '" class="autolink" target="_blank">' + str + '</a>';
+							str = '<a href="' + str + '" class="autolink" target="_blank">' + Dubtrack.helpers.text.shortenLink(str, 60) + '</a>';
 							return str;
 						}
 				});

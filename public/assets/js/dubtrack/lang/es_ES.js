@@ -1,7 +1,7 @@
 // dubtrack languages
 
 var dubtrack_lang = {
-		
+
 		global : {
 			close			: 'Cerrar',
 			loading			: 'Cargando...',
@@ -13,17 +13,17 @@ var dubtrack_lang = {
 			loginFB			: 'con Facebook',
 			loginTW			: 'con Twitter',
 			login			: 'Entrar',
-			comingsoon		: 'Próximamente',	
+			comingsoon		: 'Próximamente',
 			edit			: 'Editar',
 			publicStr		: 'Pública',
-			privateStr		: 'Privada', 
-			online			: "En Línea",  
-			offline			: "Desconectado", 
+			privateStr		: 'Privada',
+			online			: "En Línea",
+			offline			: "Desconectado",
 			error			: "Error",
 			error_des		: "Lo sentimos, hubo un error procesando tu petición ",
 			refresh			: "Recargar"
 		},
-		
+
 		player : {
 			share_song		: 'Comparte esta cancion',
 			share_facebook	: 'Compartir en facebook',
@@ -44,9 +44,9 @@ var dubtrack_lang = {
 			became_dj		: ' became DJ',
 			join			: 'Inicia sesión para unirse a la fiesta: '
 		},
-		
+
 		room : {
-			joining			: 'Ingresando a la sala',	
+			joining			: 'Ingresando a la sala',
 			searching		: 'Buscando salas',
 			tune_in			: 'Sintonizar',
 			tuned_in		: 'Sintonizado',
@@ -67,25 +67,25 @@ var dubtrack_lang = {
 			twitterShare	: "Estoy escuchando <%= song %> en Dubtrack.fm. ¡Acompáñame!",
 			shareTitle		: "Comparte DubTrack.FM"
 		},
-		
+
 		roomForm : {
 			formLabel		: 'DUBTRACK.FM SALA',
-			roomNameLabel	: 'Nombre de la sala',	
+			roomNameLabel	: 'Nombre de la sala',
 			maxSongLabel	: 'Duración máxima de la cancion',
 			maxSongLabelDes	: 'Duración máxima de la cancion en segundos',
 			roomDescLabel	: 'Descipción de la sala',
 			roomDesc		: 'Acerca de tu sala...',
 			save			: 'Guardar'
 		},
-		
+
 		notification : {
 			loading			: 'Cargando notificaciones...',
 			following_you	: 'Te está siguiendo',
 			loadMore		: 'load more notifications',
-			//postedOn		: "Posted on <%= to.username %>'s wall", 
-			postedOn		: "@<%= to.username %>" 
+			//postedOn		: "Posted on <%= to.username %>'s wall",
+			postedOn		: "@<%= to.username %>"
 		},
-		
+
 		avatar : {
 			followers		: 'SEGUIDORES',
 			following		: 'SIGUIENDO',
@@ -102,9 +102,9 @@ var dubtrack_lang = {
 			offline			: 'desconectado',
 			profileNotfound : 'Perfil no encontrado',
 			profileNotfound_des : "El perfil que estas buscando no existe"	,
-			upload			: 'Cargar Música'	
+			upload			: 'Cargar Música'
 		},
-		
+
 		dubs : {
 			search			: 'Buscar...',
 			all_time		: 'Desde siempre',
@@ -123,7 +123,7 @@ var dubtrack_lang = {
 			song_notfound_des : 'Lo sentimos, no hemos podido encontrar la cancion que estabas buscando',
 			voted			: 'votó'
 		},
-		
+
 		comments : {
 			report			: 'Reportar como spam',
 			reported		: 'reportado',
@@ -133,10 +133,11 @@ var dubtrack_lang = {
 			load_more		: 'ver todos los comentarios',
 			login_to_post	: 'Por favor inicia sesión para poder comentar:'
 		},
-		
-		playlist : {	
+
+		playlist : {
 			loading_playlists : 'Cargando listas',
 			your_queue		: 'Mi cola de reproducción',
+			room_queue		: 'Sala cola de reproducción',
 			my_tracks		: 'Mis canciones',
 			preview			: 'Vista previa',
 			addToQueue		: 'Añadir a la lista',
@@ -157,21 +158,21 @@ var dubtrack_lang = {
 			deletedByUser	: 'Suprimido por el usuario',
 			history			: 'historial'
 		},
-		
+
 		chat	: {
 			sound_on		: 'ENCENDIDO',
 			sound_off		: 'APAGADO',
 			sound_mention	: '@mención',
 			type_message	: 'Únete a la conversación',
 			login_message	: 'Por favor inicia sesión para sumarte a la conversación',
-			loadingHistory	: 'Cargando Historial' 
+			loadingHistory	: 'Cargando Historial'
 		},
-		
+
 		messages : {
 			reply			: 'Reply...',
-			send			: 'Send'	
+			send			: 'Send'
 		},
-		
+
 		profile : {
 			follow			: 'Seguir',
 			unfollow		: 'Dejar de seguir',
@@ -204,23 +205,23 @@ var dubtrack_lang = {
 			is_taken		: 'está ocupado ',
 			is_available	: 'está disponible'
 		},
-		
+
 		titles : {
 			topdubs			: 'Top dubs',
 			lobby			: 'Lobby',
 			notifications	: 'Notifications'
 		},
-		
+
 		errors : {
 			roomLimit		: 'Lo Sentimos, Puedes crear únicamente 5 salas'
 		},
-		
+
 		menu : {
 			topdubs			: 'Las mas votadas',
 			help			: 'Ayuda',
-			lobby			: 'Sala de espera'	
+			lobby			: 'Sala de espera'
 		},
-		
+
 		help : {
 			how_to_play		: '¿Como reproducir tus canciones?',
 			how_to_play_des : 'Para reproducir una cancion da clic en el botón Play (►) ',
@@ -239,7 +240,7 @@ var dubtrack_lang = {
 			upvote			: 'Vota positivo/Vota negativo',
 			upvote_des		: 'Usa los botones Arriba & Abajo para dar un voto positivo o negativo a la cancion que esta sonando, en la mitad de los botones veras el total de votos ',
 			lobby			: 'Sala de espera',
-			lobby_des		: 'Encuentra nuevas salas y gente diferente. También puedes crear tu propia sala y promoverla en Twitter o Facebook para atraer gente a ella ',	
+			lobby_des		: 'Encuentra nuevas salas y gente diferente. También puedes crear tu propia sala y promoverla en Twitter o Facebook para atraer gente a ella ',
 			top_dubs		: 'Canciones mas votadas',
 			top_dubs_des	: 'Encuentra las canciones mas votadas ordenadas según sus votos diarios, mensuales o de todos los tiempos',
 			profile			: 'Tu perfil',
@@ -266,5 +267,5 @@ var dubtrack_lang = {
 			remove_dj		: 'Quitar a @username de DJ',
 			up_next			: "¡Eres el siguiente!",
 			up_next_des		: "Tu cancion va a sonar a continuación, preparate :) <button class='btn btn-small btn-close'>Entendido</button>"
-		}		
+		}
 }

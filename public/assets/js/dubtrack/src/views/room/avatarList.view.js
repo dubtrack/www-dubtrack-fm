@@ -41,11 +41,9 @@ Dubtrack.View.roomUsersItem = Backbone.View.extend({
 				if(Dubtrack.room && Dubtrack.room.player) Dubtrack.room.player.skipElBtn.show();
 
 				if(Dubtrack.room.users.getIfOwner(this.model.get("userid"))){
-					$("#create-room-div").hide();
-					$("#edit-room-div").show();
+					$("#main_player .edit-room").show();
 				}else{
-					$("#create-room-div").show();
-					$("#edit-room-div").hide();
+					$("#main_player .edit-room").hide();
 				}
 			}
 		}
@@ -57,6 +55,10 @@ Dubtrack.View.roomUsersItem = Backbone.View.extend({
 				this.$el.addClass('currentDJ');
 
 				if(Dubtrack.room && Dubtrack.room.player) Dubtrack.room.player.skipElBtn.show();
+			}
+
+			if(Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || Dubtrack.room.users.getIfRoleHasPermission(Dubtrack.session.id, 'ban')){
+				$("#main_player .display-mods-controls").show();
 			}
 		}
 

@@ -1,0 +1,151 @@
+#profileMainSection
+	display none
+	position absolute
+	margin 0 auto
+	left 0
+	top 0
+	min-height 100%
+	width 100%
+	background rgba(0, 0, 0, 0.5)
+
+	#profileSidebar
+	.profileWrapper
+		text-align center
+		width 30rem
+		max-width 100%
+		margin 10rem auto 1rem auto
+
+	#profileSidebar
+		margin-top 0
+
+	.profileView
+		.rewindProfile
+			position fixed
+			right 2rem
+			top 7rem
+
+			@media screen and (min-width: $desktop-breakpoint)
+				top 5rem
+
+			a
+				font-size 1.5rem
+
+		.infoProfile
+			.edit_username
+				.saveUsername
+				.cancelUsername
+					display inline-block
+
+				.editUsername
+					display none
+
+				.usernameContainer
+					display none
+
+				.check_username_info
+				input
+					display block
+
+			.edit-btn
+			.follow-btn
+				text-transform uppercase
+				background none
+				color #fff
+				padding 0.5rem 1rem
+				border-radius 1rem
+				border 1px solid #fff
+				margin 0 0.5rem
+				font-size 0.85rem
+				cursor pointer
+				display inline-block
+
+			.saveUsername
+			.cancelUsername
+			.follow-btn.unfollow
+				display none
+
+			input
+				display none
+				text-align center
+				border-bottom 1px solid #fff
+				padding 0.2rem
+				font-size 1.5rem
+
+			.usernameContainer
+			input
+				margin-bottom 1rem
+
+			.usernameContainer
+				display block
+
+			.check_username_info
+				display none
+				margin-bottom 1rem
+				color $meta-color
+				font-size 0.85rem
+
+				&.error
+					color $accent-other-color
+
+		.header
+			.pictureContainer
+				display inline-block
+				width 10rem
+				height 10rem
+				border-radius 100%
+				overflow hidden
+				margin-bottom 2rem
+				position relative
+
+				&:hover
+					.updatePictureGif
+							 opacity 0.8
+
+				.updatePictureGif
+					position absolute
+					padding-top 2.6rem
+					opacity 0
+					width 100%
+					height 100%
+					border-radius 100%
+					background #fff
+					transition opacity 0.3s
+					-webkit-filter blur(0)
+					filter blur(0)
+					backface-visibility hidden
+
+					.icon-camera
+						font-size 4rem
+						color #000
+
+				img
+					width 100%
+
+	#followersEl
+		margin-top 2rem
+		margin-bottom 15rem
+
+		.followingContainer
+			.followers-counter
+				text-align center
+				display inline-block
+				font-size 0.85rem
+				text-transform uppercase
+				line-height 1
+
+				.total-followers
+					display block
+					font-size 2rem
+
+			.avatarFollower
+				margin-top 2rem
+				list-style none
+
+				li
+					width 4rem
+					height 4rem
+					border-radius 100%
+					display inline-block
+					overflow hidden
+					margin 1rem
+					cursor pointer

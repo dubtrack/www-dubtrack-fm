@@ -1,5 +1,3 @@
-var user_rejoin_count = 0;
-
 Dubtrack.View.roomUsers = Backbone.View.extend({
 
 	el: $('#avatar'),
@@ -50,13 +48,8 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 			self.autoLoad();
 		}, 720000);
 
-		//this.featureUsersEl = $('#avatar_feature ul.avatar-list');
-		//this.totalFeatureUsers = 0;
-
 		this.uuids = [];
 		this.rt_users = [];
-
-		this.autoLoad();
 
 		//set list container
 		this.avatarContainer = this.$el.find('ul#avatar-list');
@@ -67,16 +60,6 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 		this.avatarModsEl = this.$el.find(".modsElAvatar");
 
 		this.loadingEl = this.$el.find(".loadingAva");
-
-		this.$('a.loadRoomAva').html('<span>chat</span><div title="' + this.model.get('name') + '">&nbsp;</div>');
-
-		this.currentTabEl.css("width", "100%");
-
-		$(window).resize(function(){
-			self.resize();
-		});
-
-		this.resize();
 
 		this.setTotalUsersDebouce = _.debounce(this.setTotalUsers.bind(this), 2000);
 
@@ -154,13 +137,6 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 		this.$('#main-user-list-room').perfectScrollbar('update');
 	},
 
-	resize: function(){
-		var $h = parseInt( $(window).height(), 10 ) - 230;
-		this.$('#main-user-list-room').css('height', $h);
-
-		this.$('#main-user-list-room').perfectScrollbar('update');
-	},
-
 	userJoin: function(r){
 			if(r && r.user){
 				var itemModel = new Dubtrack.Model.RoomUser( r.roomUser );
@@ -212,17 +188,24 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 
 	removeEl : function(item){
 		item.viewEl.close();
-		//if(item.featureEl) item.featureEl.close();
 
 		var join_cookie = Dubtrack.helpers.cookie.get('dubtrack-room-id');
 
-		if( Dubtrack.loggedIn && item.get("userid") == Dubtrack.session.id && (user_rejoin_count > 10 || ( Dubtrack.room && Dubtrack.room.model.get("_id") != join_cookie ) )) {
-			this.timeoutErrorUserLeave = setTimeout( function(){
-				Dubtrack.helpers.displayError(dubtrack_lang.global.error, "You were removed from this room, simply refresh this page to rejoin :)<br><br>Opening multiple tabs of this site can trigger this error, email us if you have any questions at support@dubtrack.fm", true);
-			}, 5000);
-		}else{
-			user_rejoin_count++;
-			if(Dubtrack.room) Dubtrack.room.joinRoom();
+		if(Dubtrack.loggedIn && item.get("userid") == Dubtrack.session.id) {
+			this.collection.fetch({
+				update: true,
+				success: function(){
+					var itemModel = this.collection.findWhere({
+						userid: Dubtrack.session.id
+					});
+
+					if(!itemModel){
+						this.timeoutErrorUserLeave = setTimeout( function(){
+							Dubtrack.helpers.displayError("Warning", "You were removed from this room, simply refresh this page to rejoin :)<br><br>Opening multiple tabs of this site can trigger this error, email us if you have any questions at support@dubtrack.fm", true);
+						}, 5000);
+					}
+				}.bind(this)
+			});
 		}
 
 		this.setTotalUsersDebouce.call(this);
@@ -481,6 +464,18 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 		}
 
 		return false;
+	},
+
+	getDubs: function(userid){
+		var itemModel = this.collection.findWhere({
+			userid: userid
+		});
+
+		if(itemModel){
+			return itemModel.get("dubs");
+		}
+
+		return 0;
 	},
 
 	autoLoad : function(){

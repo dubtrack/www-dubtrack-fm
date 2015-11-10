@@ -11,6 +11,7 @@ Dubtrack.View.chatItem = Backbone.View.extend({
 	initialize:function () {
 		this.model.set( 'message', Dubtrack.helpers.text.convertHtmltoTags( this.model.get('message'), "Dubtrack.room.chat.scollBottomChat();" ));
 		this.model.set( 'message', Dubtrack.helpers.text.convertAttoLink( this.model.get('message') ));
+		this.model.set( 'message', Dubtrack.helpers.text.shortenMessage( this.model.get('message'), 300));
 		this.model.bind('change', this.setId, this);
 
 		var modelJson = this.model.toJSON();

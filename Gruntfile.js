@@ -1,3 +1,7 @@
+var postcss = function(){
+	return require('poststylus')(['rucksack-css', 'lost']);
+}
+
 module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
@@ -17,18 +21,16 @@ module.exports = function(grunt) {
 			}
 		},
 
-		compass: {
-			dubtrack: {
+		stylus: {
+			compile: {
 				options: {
-					basePath: 'public/assets/',
-					config: 'public/assets/config.rb',
-				}
-			},
-			dubtrack_production: {
-				options: {
-					basePath: 'public/assets/',
-					config: 'public/assets/config.rb',
-					environment: 'production',
+					use: [postcss],
+					import: [
+						'nib/*',
+					]
+				},
+				files : {
+					'public/assets/css/main.css' : 'public/assets/styl/dubtrack.styl'
 				}
 			}
 		},
@@ -121,13 +123,14 @@ module.exports = function(grunt) {
 	});
 
 	require('load-grunt-tasks')(grunt);
+	grunt.loadNpmTasks('grunt-contrib-stylus');
 
 	grunt.registerTask('dev', [
 		'clean:dubtrack',
 		'concat:dubtrack_plugins',
 		'concat',
 		'wrap:dubtrack',
-		'compass:dubtrack',
+		'stylus:compile',
 		'watch'
 	]);
 
@@ -140,7 +143,7 @@ module.exports = function(grunt) {
 		'uglify',
 		'cssnano',
 		'clean:dubtrack_production',
-		'compass:dubtrack_production',
+		'stylus:compile',
 		'clean:dubtrack_after'
 	]);
 };

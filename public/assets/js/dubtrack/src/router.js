@@ -6,22 +6,9 @@
  */
 
 DubtrackRoute = Backbone.Router.extend({
-
 	initialize : function () {
-		//load google's api asynchronously
-		var tag = document.createElement('script');
-		tag.src = "https://www.youtube.com/iframe_api";
-		var firstScriptTag = document.getElementsByTagName('script')[0];
-		firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
 		$.backstretch("destroy", false);
-		$.backstretch("https://mediadubtrackfm.s3.amazonaws.com/assets/images/backgrounds/2048.jpg");
-
-		//$join_cookie = ntlp_get_cookie('djroom_join');
-		//if($join_cookie) this.join($join_cookie);
-
-		//this.dtPLayer = new playerView( { model : new playlistModel( { id : this.idroom } ) } );
-
+		$.backstretch("https://dubtrack-fm.s3.amazonaws.com/assets/images/backgrounds/2048.jpg");
 		Dubtrack.helpers.navigateHistoryTags($('body'));
 
 		console.log("DUBTRACK app initialized");
@@ -305,6 +292,12 @@ DubtrackRoute = Backbone.Router.extend({
 
 				if(callback) callback.call(self);
 			}
+		}else{
+			Dubtrack.els.mainLoading.hide();
+
+			return Dubtrack.app.navigate('/login', {
+				trigger: true
+			});
 		}
 	},
 
@@ -406,6 +399,7 @@ DubtrackRoute = Backbone.Router.extend({
 
 	join : function(id, callbackJoin, hide){
 		$('.dubtrack-section').hide();
+		$('#login-model-window').hide();
 		$("html").removeClass("menu-left-in").removeClass('menu-right-in');
 
 		if (Dubtrack.room && Dubtrack.room.model){
@@ -469,14 +463,7 @@ DubtrackRoute = Backbone.Router.extend({
 		var self = this;
 
 		$('.dubtrack-section').hide();
-
-		/*$dj_new_user = Dubtrack.helpers.cookie.get('dj_new_user');
-
-		if( ! $dj_new_user && Dubtrack.user.loggedIn ){
-
-			this.help();
-			ntlp_set_cookie('dj_new_user', true, 60);
-		}*/
+		$('#login-model-window').hide();
 
 		$("html").removeClass("menu-left-in").removeClass('menu-right-in');
 

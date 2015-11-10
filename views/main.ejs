@@ -5,8 +5,10 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Dubtrack.fm</title>
 	<meta name="description" content="Dubtrack.FM is a social DJ site where users can share and discover the latest and greatest by tuning in to user-generated playlist">
-	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="mobile-web-app-capable" content="yes">
 
 	<meta property="og:image" content="https://mediadubtrackfm.s3.amazonaws.com/assets/images/media/pic_notfound.jpg"/>
 	<meta property="og:title" content="Dubtrack.fm"/>
@@ -40,16 +42,15 @@
 	<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
 	<meta name="msapplication-TileColor" content="#9f00a7">
 	<meta name="msapplication-TileImage" content="/mstile-144x144.png">
-	<!--[if lt IE 9]><script src="http://cdnjs.cloudflare.com/ajax/libs/es5-shim/2.0.8/es5-shim.min.js"></script><![endif]-->
 
 <% if(process.env.ENVIRONMENT == 'production'){ %>
-	<link rel="stylesheet" href="//mediadubtrackfm.s3.amazonaws.com/assets/css/main.css?v=<%= cache_busting %>" />
+	<link rel="stylesheet" href="//dubtrack-fm.s3.amazonaws.com/assets/css/main.css?v=<%= cache_busting %>" />
 <% } else if(process.env.ENVIRONMENT == 'staging') { %>
-	<link rel="stylesheet" href="//mediadubtrackfm.s3.amazonaws.com/assets/css/main.beta.css" />
+	<link rel="stylesheet" href="//dubtrack-fm.s3.amazonaws.com/assets/css/main.beta.css?v=<%= cache_busting %>" />
 <% } else { %>
 	<link rel="stylesheet" href="/assets/css/main.css" />
 <% } %>
-	<script type="text/javascript" src="//mediadubtrackfm.s3.amazonaws.com/assets/js/lib/modernizr-2.5.3.min.js"></script>
+	<script type="text/javascript" src="//dubtrack-fm.s3.amazonaws.com/assets/js/lib/modernizr-2.5.3.min.js"></script>
 	<script type="text/javascript" src="//use.typekit.net/lpm1tnb.js"></script>
 	<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 	<script>
@@ -62,7 +63,12 @@
 	ga('send', 'pageview');
 	</script>
 </head>
-<body>
+<body class="no-song-playing">
+	<menu id="mobile-room-menu">
+		<a href="#" class="player-button active" data-display="player">Player</a>
+		<a href="#" class="chat-button" data-display="chat">Chat</a>
+	</menu>
+
 	<nav id="main-menu-right">
 		<a href="#" class="close-menu">
 			<span class="icon-close"></span>
@@ -119,25 +125,39 @@
 		<a href="#" class="close-menu">
 			<span class="icon-close"></span>
 		</a>
-		<a href="#" class="navigate room-active-link" id="main-room-active-link"><span class="current-room"></span> <i class="icon-play"></i></a>
 		<a href="/lobby" class="navigate lobby-link">Lobby</a>
-		<a href="#" class="topdubs-link">Top Dubs (coming soon)</a>
-		<a href="mailto:support@dubtrack.fm" target="_blank">Need help? contact us</a>
-		<a href="/login/logout" class="logout-link">Log out <span class="icon-logout"></span></a>
+		<a href="#" class="navigate room-active-link"><span class="current-room"></span></a>
+		<a href="mailto:support@dubtrack.fm" target="_blank">Contact</a>
+		<div class="social-links">
+			<a href="https://www.facebook.com/dubtrackfm" class="facebook" target="blank"><span class="icon-facebook"></span></a>
+			<a href="https://twitter.com/dubtrack_fm" class="twitter" target="blank"><span class="icon-twitter"></span></a>
+		</div>
+		<a href="/login/logout" class="logout-link"><span class="icon-logout"></span> Log out</a>
 	</nav>
-	<!--[if lt IE 8]>
-		<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-	<![endif]-->
 
 	<header id="header-global">
-		<button id="mobile-login">login</button>
-		<h1><span>Dubtrack.fm</span></h1>
+		<div class="header-left-navigation">
+			<h1><span>Dubtrack.fm</span></h1>
+			<a href="/lobby" class="navigate lobby-link">Lobby</a>
+			<a href="#" class="navigate room-active-link" id="main-room-active-link"><span class="icon-chevron"></span><span class="room-name"></span></a>
+		</div>
 	</header>
 
 	<section class="main-page-container">
 		<section id="main-section">
 			<%-body -%>
 			<section id="room-list" class="dubtrack-section">
+				<div class="room-loby-header">
+					<div class="room-search">
+						<input type="text" id="room-search" placeholder="Search for a room..." />
+						<i class="icon-search"></i>
+					</div>
+					<div class="links-container">
+						<a href="#" class="create-room">Create room</a>
+						<a href="https://www.facebook.com/dubtrackfm" class="facebook" target="blank"><span class="icon-facebook"></span></a>
+						<a href="https://twitter.com/dubtrack_fm" class="twitter" target="blank"><span class="icon-twitter"></span></a>
+					</div>
+				</div>
 				<div id="container-room-list">
 				</div>
 			</section>
@@ -145,75 +165,187 @@
 			</section>
 
 			<section id="main-room" class="dubtrack-section">
-				<menu id="mobile-room-menu">
-					<a href="#" class="player-button active" data-display="player">Player</a>
-					<a href="#" class="chat-button" data-display="chat">Chat<!--<span class="info-counter"></span>//--></a>
-					<a href="#" class="users-button" data-display="users">Users<span class="info-counter mobile-users-counter"></span></a>
-				</menu>
-				<section class="left_section">
-					<section id="main_player">
-						<div class="player_container">
-							<div id="custom_iframe_embed">
-							</div>
-							<div id="custom_iframe_embed_error">
-								Invalid embed url
-							</div>
-							<div id="room-main-player-container"></div>
-							<div class="loading loading-el">
-							</div>
-							<div class="loading buferring-el">
-							</div>
-							<div class="loading videoquality-el">
-								Auto
-							</div>
-							<div class="loading hideVideo-el">
-								Hide Video
-							</div>
-							<div class="loading refresh-el">
-								Refresh
-							</div>
-							<div class="loading skip-el">
-								Skip song
-							</div>
-							<div class="loading playbtn-el">
-								Play song
-							</div>
-							<div class="loading error-el"></div>
-							<div class="placeholder">
-								<h5>Click on the <span>play <i class="icon-play"></i></span> button to begin</h5>
-							</div>
+				<div class="main-room-wrapper">
+					<section class="left_section">
+						<div class="main-player-wrapper">
+							<section id="main_player">
+								<div class="player_header">
+									<span class="skip-el">Skip</span>
+									<span class="displayVideo-el active">Video</span>
+									<span class="display-queue">Queue</span>
+									<span class="room-info-display">Info</span>
+									<span class="display-mods-controls">Mod</span>
+									<span class="edit-room"><i class="icon-chatsettings"></i></span>
+								</div>
+								<div id="room-info-display">
+									<div class="room-info-display-wrapper">
+									</div>
+								</div>
+								<div id="mods-controllers">
+									<div class="mods-controllers-main-wrapper">
+										<div class="mod-controllers-headers">
+											<a href="#" class="active display-mods-controls">Controls</a>
+											<a href="#" class="display-ban-list">Ban list</a>
+											<a href="#" class="display-mute-list">Mute list</a>
+										</div>
+										<div class="mods-controllers-wrapper">
+											<div class="mods-controllers-commands-list show-controller">
+												<div class="mods-controller-container">
+													<h2>Song controls</h2>
+													<div class="skip-el">
+														<i class="icon-skip"></i> Skip current song
+													</div>
+
+													<h2>User controls <span>Type command into the chat field</span></h2>
+
+													<ul class="chat-command-list">
+														<li>
+															Skip current song
+															<span class="actions">/skip</span>
+														</li>
+														<li>
+															Ban someone
+															<span class="actions">/ban @username</span>
+														</li>
+														<li>
+															Unban someone
+															<span class="actions">/unban @username</span>
+														</li>
+														<li>
+															Kick someone out
+															<span class="actions">/kick @username</span>
+														</li>
+														<li>
+															Ban someone temporarily
+															<span class="actions">/ban @username x</span>
+														</li>
+														<li>
+															Mute quitely someone
+															<span class="actions">/mute @username</span>
+														</li>
+														<li>
+															Unmute quitely someone
+															<span class="actions">/unmute @username</span>
+														</li>
+														<li>
+															Set someone as co-owner
+															<span class="actions">/setowner @username</span>
+														</li>
+														<li>
+															Remove someone as co-owner
+															<span class="actions">/unsetowner @username</span>
+														</li>
+														<li>
+															Set someone as moderator
+															<span class="actions">/setmod @username</span>
+														</li>
+														<li>
+															Remove someone as moderator
+															<span class="actions">/unsetmod @username</span>
+														</li>
+														<li>
+															Set someone as manager
+															<span class="actions">/setmanager @username</span>
+														</li>
+														<li>
+															Remove someone as manager
+															<span class="actions">/unsetmanager @username</span>
+														</li>
+														<li>
+															Set someone as resident dj
+															<span class="actions">/setdj @username</span>
+														</li>
+														<li>
+															Remove someone as resident dj
+															<span class="actions">/unsetdj @username</span>
+														</li>
+														<li>
+															Set someone as VIP
+															<span class="actions">/setvip @username</span>
+														</li>
+														<li>
+															Remove someone as VIP
+															<span class="actions">/unsetvip @username</span>
+														</li>
+													</ul>
+												</div>
+											</div>
+											<div class="mods-controllers-ban-list">
+												<div class="mods-controller-container">
+													<ul class="user-list">
+													</ul>
+												</div>
+											</div>
+											<div class="mods-controllers-mute-list">
+												<div class="mods-controller-container">
+													<ul class="user-list">
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="player_container">
+									<div id="custom_iframe_embed">
+									</div>
+									<div id="custom_iframe_embed_error">
+										Invalid embed url
+									</div>
+									<div id="room-main-player-container">
+										<div id="room-main-player-container-youtube"></div>
+										<div id="room-main-player-container-soundcloud"></div>
+									</div>
+									<div class="loading loading-el">
+										<div class="loading-el-wrapper">
+											<svg width='188px' height='188px' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="uil-spin"><rect x="0" y="0" width="100" height="100" fill="none" class="bk"></rect><g transform="translate(50 50)"><g transform="rotate(0) translate(34 0)"><circle cx="0" cy="0" r="8" fill="#00ffff"><animate attributeName="opacity" from="1" to="0.1" begin="0s" dur="1s" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="scale" from="1.5" to="1" begin="0s" dur="1s" repeatCount="indefinite"></animateTransform></circle></g><g transform="rotate(45) translate(34 0)"><circle cx="0" cy="0" r="8" fill="#00ffff"><animate attributeName="opacity" from="1" to="0.1" begin="0.12s" dur="1s" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="scale" from="1.5" to="1" begin="0.12s" dur="1s" repeatCount="indefinite"></animateTransform></circle></g><g transform="rotate(90) translate(34 0)"><circle cx="0" cy="0" r="8" fill="#00ffff"><animate attributeName="opacity" from="1" to="0.1" begin="0.25s" dur="1s" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="scale" from="1.5" to="1" begin="0.25s" dur="1s" repeatCount="indefinite"></animateTransform></circle></g><g transform="rotate(135) translate(34 0)"><circle cx="0" cy="0" r="8" fill="#00ffff"><animate attributeName="opacity" from="1" to="0.1" begin="0.37s" dur="1s" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="scale" from="1.5" to="1" begin="0.37s" dur="1s" repeatCount="indefinite"></animateTransform></circle></g><g transform="rotate(180) translate(34 0)"><circle cx="0" cy="0" r="8" fill="#00ffff"><animate attributeName="opacity" from="1" to="0.1" begin="0.5s" dur="1s" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="scale" from="1.5" to="1" begin="0.5s" dur="1s" repeatCount="indefinite"></animateTransform></circle></g><g transform="rotate(225) translate(34 0)"><circle cx="0" cy="0" r="8" fill="#00ffff"><animate attributeName="opacity" from="1" to="0.1" begin="0.62s" dur="1s" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="scale" from="1.5" to="1" begin="0.62s" dur="1s" repeatCount="indefinite"></animateTransform></circle></g><g transform="rotate(270) translate(34 0)"><circle cx="0" cy="0" r="8" fill="#00ffff"><animate attributeName="opacity" from="1" to="0.1" begin="0.75s" dur="1s" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="scale" from="1.5" to="1" begin="0.75s" dur="1s" repeatCount="indefinite"></animateTransform></circle></g><g transform="rotate(315) translate(34 0)"><circle cx="0" cy="0" r="8" fill="#00ffff"><animate attributeName="opacity" from="1" to="0.1" begin="0.87s" dur="1s" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="scale" from="1.5" to="1" begin="0.87s" dur="1s" repeatCount="indefinite"></animateTransform></circle></g></g></svg>
+											<span>Loading...</span>
+										</div>
+									</div>
+									<div class="loading playbtn-el">
+										Play song
+									</div>
+									<div class="placeholder">
+										<h5>Click on the <span>play <i class="icon-play"></i></span> button to begin</h5>
+									</div>
+								</div>
+								<section class="player_sharing">
+									<div class="player-controller-container">
+										<div class="hideVideo-el">
+											<span class="icon-eye-blocked"></span>
+											<span class="icon-eye-unblocked"></span>
+										</div>
+										<div class="mute">
+											<span class="icon-mute"></span>
+											<span class="icon-sound-alt"></span>
+										</div>
+										<div class="volume-controller-container">
+											<div id="volume-div"></div>
+										</div>
+										<span class="icon-reload refresh-el"></span>
+										<span class="videoquality-el">HD</span>
+									</div>
+
+									<span class="icon-facebook" onclick="Dubtrack.playerController.shareFacebook();"></span>
+									<span class="icon-twitter" onclick=Dubtrack.playerController.shareTwitter();></span>
+								</section>
+								<div class="play-song-link"><i class="icon-play"></i> Queue a song <span class="queue-info"></span></div>
+							</section>
+							<section id="room-comments">
+							</section>
 						</div>
-						<section class="player_sharing">
-							<span class="icon-facebook" onclick="Dubtrack.playerController.shareFacebook();"></span>
-							<span class="icon-twitter" onclick=Dubtrack.playerController.shareTwitter();></span>
+					</section>
+					<section class="right_section">
+						<div id="main_avatar_room">
+							<section id="avatar"></section>
+						</div>
+
+						<section id="chat">
 						</section>
 					</section>
-					<!--<section id="avatar_feature">
-						<div class="room-feautre-title">
-							<span></span>
-							<button class="view-users">
-								View all room users
-							</button>
-						</div>
-						<ul class="avatar-list">
-						</ul>
-					</section>//-->
-					<section id="room-comments">
-					</section>
-				</section>
-				<section class="right_section">
-					<div id="main_avatar_room">
-						<section id="avatar"></section>
-					</div>
-
-					<section id="chat">
-					</section>
-				</section>
+				</div>
 			</section>
 
 			<section id="player-controller">
-			</section>
-			<section id="browser">
 			</section>
 
 			<div id="main-loading">
@@ -224,105 +356,119 @@
 	</section>
 
 	<section id="login-model-window">
-
 		<div class="login-model-container" id="login-window">
-			<span class="icon-remove-circle close-login-window"></span>
-			<h1>LOGIN</h1>
+			<div class="login-model-container-wrapper">
+				<span class="icon-remove-circle close-login-window"></span>
+				<h1>LOGIN</h1>
+				<h2>Join the Party</h2>
 
-			<form action="/auth/dubtrack" method="post">
-				<input type="text" id="login-input-username" name="username" value="" placeholder="Email or username" required maxlength="250" />
-				<input type="password" value="" id="login-input-password" name="password" placeholder="password" required maxlength="250" />
-				<div class="err-message"></div>
-				<input type="submit" value="login" />
-			</form>
+				<a href="/login/facebook" class="facebook-login"><i class="icon-facebook"></i>Sign in with Facebook</a>
+				<a href="/login/twitter" class="twitter-login"><i class="icon-twitter"></i>Sign in with Twitter</a>
+				<a href="/login/soundcloud" class="soudcloud-login"><i class="icon-soundcloud"></i>Sign in with soundcloud</a>
 
-			<div class="success-message"></div>
+				<form action="/auth/dubtrack" method="post">
+					<h3>Or enter your email</h3>
+					<input type="text" id="login-input-username" name="username" value="" placeholder="Email or username" required maxlength="250" />
+					<input type="password" value="" id="login-input-password" name="password" placeholder="password" required maxlength="250" />
+					<div class="err-message"></div>
+					<input type="submit" value="Sign in" />
+				</form>
 
-			<div class="account-actions">
-				<a href="/forgot">Forgot password?</a>
-				<a href="/signup">Don't have an account?</a>
+				<div class="success-message"></div>
+
+				<div class="account-actions">
+					<a href="/forgot">Forgot password?</a>
+					<a href="/signup">Need an account?</a>
+				</div>
 			</div>
-
-			<hr />
-
-			<a href="/login/facebook" class="facebook-login"><i class="icon-facebook"></i>Login with facebook</a>
-			<a href="/login/twitter" class="twitter-login"><i class="icon-twitter"></i>Login with twitter</a>
 		</div>
 
 		<div class="login-model-container" id="login-create-window">
-			<span class="icon-remove-circle close-login-window"></span>
-			<h1>CREATE ACCOUNT</h1>
+			<div class="login-model-container-wrapper">
+				<span class="icon-remove-circle close-login-window"></span>
+				<h1>CREATE ACCOUNT</h1>
+				<h2>Join the Party</h2>
 
-			<form action="/auth/signup">
-				<input type="email" autocomplete="off" id="login-create-input-email" name="email" value="" placeholder="Email" required maxlength="250" />
-				<input type="text" id="login-create-input-username" name="username" value="" placeholder="username" required maxlength="250" />
-				<div class="err-message"></div>
-				<div class="captcha-loading">LOADING reCAPTCHA....</div>
-				<div id="g-recaptcha" data-sitekey="6LdxrQ0TAAAAABwuFOi89IV76oDnS5CFe7U5B1Er"></div>
-				<input type="submit" value="create an account" />
-			</form>
+				<a href="/login/facebook" class="facebook-login"><i class="icon-facebook"></i>Sign up with facebook</a>
+				<a href="/login/twitter" class="twitter-login"><i class="icon-twitter"></i>Sign up with twitter</a>
+				<a href="/login/soundcloud" class="soudcloud-login"><i class="icon-soundcloud"></i>Sign up with soundcloud</a>
 
-			<div class="success-message"></div>
+				<form action="/auth/signup">
+					<h3>Or register with your email</h3>
+					<input type="email" autocomplete="off" id="login-create-input-email" name="email" value="" placeholder="Email" required maxlength="250" />
+					<input type="text" id="login-create-input-username" name="username" value="" placeholder="username" required maxlength="250" />
+					<div class="err-message"></div>
+					<div class="captcha-loading">LOADING reCAPTCHA....</div>
+					<div id="g-recaptcha" data-sitekey="6LdxrQ0TAAAAABwuFOi89IV76oDnS5CFe7U5B1Er"></div>
+					<input type="submit" value="create an account" />
+				</form>
 
-			<div class="account-actions">
-				<a href="/login">Have an account?</a>
+				<div class="success-message"></div>
+
+				<div class="account-actions account-actions-single">
+					<a href="/login">Have an account?</a>
+				</div>
 			</div>
-
-			<hr />
-
-			<a href="/login/facebook" class="facebook-login"><i class="icon-facebook"></i>Login with facebook</a>
-			<a href="/login/twitter" class="twitter-login"><i class="icon-twitter"></i>Login with twitter</a>
 		</div>
 
 		<div class="login-model-container" id="login-forgot-window">
-			<span class="icon-remove-circle close-login-window"></span>
-			<h1>FORGOT PASSWORD</h1>
+			<div class="login-model-container-wrapper">
+				<span class="icon-remove-circle close-login-window"></span>
+				<h1>FORGOT PASSWORD</h1>
+				<h2>Join the Party</h2>
 
-			<form action="/auth/reset" method="post">
-				<input type="email" autocomplete="off" id="login-forgot-input-email" name="email" value="" placeholder="Email" required maxlength="250" />
-				<div class="err-message"></div>
-				<input type="submit" value="reset password" />
-			</form>
+				<form action="/auth/reset" method="post">
+					<input type="email" autocomplete="off" id="login-forgot-input-email" name="email" value="" placeholder="Email" required maxlength="250" />
+					<div class="err-message"></div>
+					<input type="submit" value="reset password" />
+				</form>
 
-			<div class="success-message"></div>
+				<div class="success-message"></div>
 
-			<div class="account-actions">
-				<a href="/login">Have an account?</a>
+				<div class="account-actions account-actions-single">
+					<a href="/login">Have an account?</a>
+				</div>
 			</div>
 		</div>
 
 		<div class="login-model-container" id="login-chage-password-window">
-			<span class="icon-remove-circle close-login-window"></span>
-			<h1>SET PASSWORD</h1>
+			<div class="login-model-container-wrapper">
+				<span class="icon-remove-circle close-login-window"></span>
+				<h1>SET PASSWORD</h1>
+				<h2>Join the Party</h2>
 
-			<form action="/auth/change-password" method="post">
-				<input type="password" id="login-change-input-password" name="password" value="" placeholder="password" required maxlength="250" />
-				<input type="password" id="login-change-input-password2" name="password2" value="" placeholder="repeat password" required maxlength="250" />
-				<div class="err-message"></div>
-				<input type="submit" value="set password" />
-				<input type="hidden" name="token" value="" />
-			</form>
+				<form action="/auth/change-password" method="post">
+					<input type="password" id="login-change-input-password" name="password" value="" placeholder="password" required maxlength="250" />
+					<input type="password" id="login-change-input-password2" name="password2" value="" placeholder="repeat password" required maxlength="250" />
+					<div class="err-message"></div>
+					<input type="submit" value="set password" />
+					<input type="hidden" name="token" value="" />
+				</form>
 
-			<div class="success-message"></div>
+				<div class="success-message"></div>
 
-			<div class="account-actions">
-				<a href="/login">Have an account?</a>
+				<div class="account-actions account-actions-single">
+					<a href="/login">Have an account?</a>
+				</div>
 			</div>
 		</div>
 	</section>
 
-	<div class="dubtrack_overlay"></div>
+	<section id="browser"></section>
 
-	<script type="text/javascript" src="//www.google.com/jsapi"></script>
+	<div class="dubtrack_overlay"></div>
 	<script src="//cdn.pubnub.com/pubnub.min.js"></script>
 <% if(process.env.ENVIRONMENT == 'production'){ %>
-	<script type="text/javascript" src="//mediadubtrackfm.s3.amazonaws.com/assets/js/includes.min.js?v=<%= cache_busting %>"></script>
-	<script type="text/javascript" src="//mediadubtrackfm.s3.amazonaws.com/assets/js/dubtrack/lang/en_US.js?v=<%= cache_busting %>"></script>
-	<script type="text/javascript" src="//mediadubtrackfm.s3.amazonaws.com/assets/js/dubtrack.min.js?v=<%= cache_busting %>"></script>
+	<script type="text/javascript" src="//dubtrack-fm.s3.amazonaws.com/assets/js/includes.min.js?v=<%= cache_busting %>"></script>
+	<script type="text/javascript" src="//dubtrack-fm.s3.amazonaws.com/assets/js/dubtrack/lang/en_US.js?v=<%= cache_busting %>"></script>
+	<script type="text/javascript" src="//dubtrack-fm.s3.amazonaws.com/assets/js/dubtrack.min.js?v=<%= cache_busting %>"></script>
 <% } else if(process.env.ENVIRONMENT == 'staging') { %>
-	<script type="text/javascript" src="//mediadubtrackfm.s3.amazonaws.com/assets/js/includes.beta.min.js"></script>
-	<script type="text/javascript" src="//mediadubtrackfm.s3.amazonaws.com/assets/js/dubtrack/lang/en_US.js"></script>
-	<script type="text/javascript" src="//mediadubtrackfm.s3.amazonaws.com/assets/js/dubtrack.beta.min.js"></script>
+	<script type="text/javascript">
+		window.DUBTRACK_API_URL = "//origin-api.dubtrack.fm";
+	</script>
+	<script type="text/javascript" src="//dubtrack-fm.s3.amazonaws.com/assets/js/includes.beta.min.js?v=<%= cache_busting %>"></script>
+	<script type="text/javascript" src="//dubtrack-fm.s3.amazonaws.com/assets/js/dubtrack/lang/en_US.js?v=<%= cache_busting %>"></script>
+	<script type="text/javascript" src="//dubtrack-fm.s3.amazonaws.com/assets/js/dubtrack.beta.min.js?v=<%= cache_busting %>"></script>
 <% } else { %>
 	<script type="text/javascript">
 		window.DUBTRACK_API_URL = "<%= api_url %>";
@@ -340,10 +486,13 @@
 			$('.captcha-loading').remove();
 		}
 
-		(function() {
-			Dubtrack.init();
-		}(jQuery, Dubtrack));
+		function onYouTubeIframeAPIReady() {
+			(function() {
+				Dubtrack.init();
+			}(jQuery, Dubtrack));
+		}
 	</script>
+	<script type="text/javascript" src="//www.youtube.com/iframe_api" async></script>
 	<!-- Start Alexa Certify Javascript -->
 	<script type="text/javascript">
 	_atrk_opts = { atrk_acct:"GBF5m1aQpne1bm", domain:"dubtrack.fm",dynamic: true};
@@ -352,4 +501,5 @@
 	<noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=GBF5m1aQpne1bm" style="display:none" height="1" width="1" alt="" /></noscript>
 	<!-- End Alexa Certify Javascript -->
 </body>
+
 </html>

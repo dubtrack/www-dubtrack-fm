@@ -1,0 +1,59 @@
+normalize-text()
+
+body
+	font 1rem/1.5 $base-font-stack
+	color $primary-color
+	font-smooth always
+	font-smoothing antialiased
+	-moz-font-smoothing antialiased
+	-webkit-font-smoothing: antialiased
+	-moz-osx-font-smoothing grayscale
+	text-shadow 0 1px 0 rgba(0, 0, 0, 0.01)
+	-webkit-text-stroke 1px transparent
+
+input
+textarea
+select
+button
+	font 1rem/1.5 $base-font-stack
+	color $primary-color
+	font-smooth always
+	font-smoothing antialiased
+	-moz-font-smoothing antialiased
+	-webkit-font-smoothing: antialiased
+	-moz-osx-font-smoothing grayscale
+	text-shadow 0 1px 0 rgba(0, 0, 0, 0.01)
+	-webkit-text-stroke 1px transparent
+
+h1
+h2
+h3
+h4
+h5
+h6
+	font 1.5rem/1.25 $base-font-stack
+	margin 0 0 1rem
+
+p
+	margin: 0 0 1rem
+
+a
+	color $white
+	text-decoration none
+	&:active
+	&:focus
+	&:hover
+		color $accent-color
+		outline none
+
+i
+	font 1rem/1.5 $base-font-stack
+
+hr
+	border-bottom 1px solid $white
+	margin 1rem 0
+
+img
+picture
+	margin 0
+	max-width 100%

@@ -23,7 +23,7 @@ Dubtrack.View.SoundCloudPlayer = Backbone.View.extend({
 		//create canvas
 		this.canvasContEl = $('<div/>', {
 			id: this.id
-		}).html('<img src="https://res.cloudinary.com/hhberclba/image/upload/c_fill,h_460,w_900/tiqxlzynh3rxrkwvzeak.jpg" alt="" />')
+		}).html('<img src="https://d3byct92ei5n7c.cloudfront.net/hhberclba/image/upload/c_fill,h_460,w_900/tiqxlzynh3rxrkwvzeak.jpg" alt="" />')
 		.css({
 			'position': 'absolute',
 			'top': 0,

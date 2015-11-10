@@ -1,0 +1,612 @@
+#browser
+	position fixed
+	z-index 9999999
+	bottom -100%
+	overflow hidden
+	width 100%
+	height 100%
+	padding-top 5rem
+	transition bottom 0.3s
+	text-align left
+
+	&.display-browser-sidebar
+		.browser-content
+			.browser-content-main
+				.sidebar
+					left 0
+
+	&.display-create-form
+		.browser-content
+			.browser-content-main
+				.sidebar
+					.create-playlist
+						.create-playlist-display
+							display none
+
+						.create-playlist-form
+							display block
+
+	&.animate
+		bottom 0
+
+	.browser-content
+		border-radius 1rem 1rem 0 0
+		background rgba(0, 0, 0, 0.7)
+		width 100%
+		height 100%
+		max-width 80rem
+		margin 0 auto
+		overflow hidden
+		position relative
+		z-index 999999
+
+		#import-playlist-container
+			display none
+			position absolute
+			z-index 999999
+			background $main-body-background
+			top 50%
+			left 50%
+			transform translate3D(-50%, -50%, 0)
+			transform-style preserve-3d
+			backface-visibility hidden
+			padding: 1.5rem 3rem
+			text-align center
+			width 25rem
+			max-width 100%
+
+			h3
+				font-size 1.3rem
+				margin 0 0 1.8rem 0
+				font-weight bold
+				text-transform uppercase
+
+			.close-import-playlist
+				cursor pointer
+				position absolute
+				top 0
+				right 0
+				padding 0.5rem
+				background $accent-color
+				color $background-dark-color
+
+			.playlist-type-select
+			.import-playlist-soundcloud
+			.import-playlist-youtube
+				&.playlist-tab-import-active
+					display block
+
+					&.importing
+						.loading-import
+							display block
+
+						.playlist-container
+						.err-message
+						input
+						select
+						span
+							display none
+
+			.playlist-type-select
+				text-align center
+				display none
+
+				span
+					font-size 1.7rem
+					margin 0 1.3rem
+					cursor pointer
+
+					&:hover
+						color $accent-color
+
+			.loading-import
+			.err-message
+				font-weight bold
+				color $accent-color
+				font-style italic
+				margin-bottom 1rem
+				display none
+
+			.err-message
+				color $accent-other-color
+
+			.import-playlist-youtube
+			.import-playlist-soundcloud
+				display none
+				position relative
+
+				input
+				select
+					width 100%
+					padding 0.2rem 3rem 0.2rem 0
+					border-bottom 1px solid $meta-color
+
+				select
+					border 0
+					margin 1rem 0
+					color $background-dark-color
+
+				span
+					background $accent-color
+					color $background-dark-color
+					position static
+					display block
+					font-weight bold
+					text-transform uppercase
+					padding 0.5rem 1rem
+					cursor pointer
+
+					&:before
+						margin-right 0.5rem
+
+				.playlist-container
+					max-height 10rem
+					overflow-y hidden
+					margin 1.5rem 0 0 0
+					position relative
+					padding 0 1rem 0 0
+
+					ul
+						list-style none
+						text-align left
+
+						li
+							position relative
+							display block
+							padding-right 2rem
+							border-bottom 1px solid $meta-color
+							padding 0.2rem 2rem 0.2rem 0
+							cursor pointer
+							font-weight bold
+							opacity 0.3
+
+							&:hover
+								opacity 0.75
+
+							&.selected
+								opacity 1
+
+							&:last-child
+								border-bottom 0
+
+							i
+								position absolute
+								color $meta-color
+								right 0
+								top 0.2rem
+
+		.browser-content-header
+			background $dark-gray
+			position absolute
+			width 100%
+			top 0
+			z-index 9999
+			padding-right 4rem
+
+			.close-browser
+				display block
+				position absolute
+				width 3.5rem
+				height 3.5rem
+				text-align center
+				font-size 1.3rem
+				padding 1.1rem 0
+				cursor pointer
+				background $accent-color
+				color $background-dark-color
+				z-index 999
+				right 0
+				top 0
+
+			.form
+				position relative
+				padding 0.5rem 6.6rem 0.5rem 0.5rem
+
+				input
+					background $background-primary-color
+
+				.music-type-select
+					position absolute
+					right 0.5rem
+					top 0.5rem
+					width 6rem
+					background $background-primary-color
+					padding: 0 0 0 0.5rem
+					z-index 100
+					height 2.5rem
+
+					&:hover
+						.music-type-dropdown
+							display block
+
+					.current-music-type-selection
+						width 3.9rem
+						text-align center
+
+					span
+						display inline-block
+						font-size 1.4rem
+						cursor pointer
+						margin-right 0.2rem
+						height 2.1rem
+						overflow hidden
+						padding-top 0.4rem
+
+						&.icon-arrow-dropdown
+							margin-right 0
+
+						i
+							font-size 1.4rem
+
+					.music-type-dropdown
+						position absolute
+						display none
+						top 0
+						left 0
+						width 100%
+						margin-top 2.5rem
+						background $background-primary-color
+						text-align center
+
+						span
+							border-top 1px solid $dark-gray
+							margin-right 0
+							padding: 0.5rem 0
+							display block
+
+		.browser-content-main
+			position relative
+			height 100%
+			padding-top 3.5rem
+			border-radius 1rem 1rem 0 0
+			z-index 9998
+
+			.sidebar
+				background $background-primary-color
+				width 15rem
+				padding-top 4rem
+				padding-bottom 5.5rem
+				position absolute
+				height 100%
+				top 0
+				left -15rem
+				z-index 99
+				transition left 0.3s
+
+				@media screen and (min-width: $desktop-breakpoint)
+					left 0
+					padding-top 7.5rem
+
+				.display-sidebar
+					position absolute
+					bottom 0
+					display block
+					background $accent-color
+					color $background-dark-color
+					padding 0.8rem 1rem
+					right -3.1rem
+					cursor pointer
+
+					@media screen and (min-width: $desktop-breakpoint)
+						display none
+
+				.title
+					position absolute
+					top 0
+					left 0
+					width 100%
+					display block
+					font-size 1.5rem
+					text-transform uppercase
+					padding 0.4rem 1rem
+					margin-top 4.5rem
+					color $meta-color
+					display none
+
+					@media screen and (min-width: $desktop-breakpoint)
+						display block
+
+				.create-playlist
+				.import-playlist
+					position absolute
+					bottom 0
+					left 0
+					width 100%
+					padding 0.5rem 1rem
+					font-weight bold
+					background $dark-gray
+					text-align center
+					color white
+					z-index 999
+					border-top 1px solid $background-primary-color
+
+					.create-playlist-display
+						cursor pointer
+
+						span
+							color $accent-color
+							margin-right 0.5rem
+							font-size 0.85rem
+
+					.create-playlist-form
+						position relative
+						display none
+						padding 0
+
+						input
+							padding 0.2rem 3rem 0.2rem 0
+							border-bottom 1px solid $meta-color
+							height 1.5rem
+
+						.icon-createplaylist
+							position absolute
+							right 0
+							top 0.15rem
+							background $accent-color
+							padding 0.2rem
+							cursor pointer
+
+				.import-playlist
+					bottom 2.5rem
+					cursor pointer
+
+					span
+						color $accent-color
+						margin-right 0.5rem
+						font-size 0.85rem
+
+				#playlists-scroll
+					height 100%
+					overflow hidden
+					position relative
+
+					.playlist-style
+						li
+							cursor pointer
+							padding 0.4rem 1rem
+							font-weight bold
+
+							&.selected
+								background $accent-color
+								color $dark-gray
+
+							span
+								color $meta-color
+								margin-right 0.5rem
+								font-size 0.85rem
+
+			.nano
+				z-index 98
+				position relative
+				padding-left 0
+				height 100%
+				position relative
+
+				@media screen and (min-width: $desktop-breakpoint)
+					padding-left 15rem
+
+				.loading
+					position absolute
+					top 0
+					left 50%
+					text-align center
+					padding 0.5rem 1.5rem
+					background $accent-color
+					color #000
+					font-size 0.9rem
+					font-weight bold
+					text-transform uppercase
+					transform translate(-50%, 0)
+					transform-style preserve-3d
+					backface-visibility hidden
+
+				.content-videos
+					position relative
+					width 100%
+					height 100%
+					overflow hidden
+					background $background-dark-color
+
+					.playlist_info
+					.queue_info
+						position relative
+						padding-bottom 2px
+						padding-right 16rem
+						border-bottom 1px solid $background-primary-color
+						clearfix()
+
+						&.displayEdit
+							.save-playlistname
+								display block
+
+							input
+								display none
+
+								&.editplaylist_name
+									display block
+
+						.playlist_type_private
+							display none
+
+						input
+							padding 0
+
+							&.editplaylist_name
+								display none
+
+						.save-playlistname
+							cursor pointer
+							display none
+							position absolute
+							right 1rem
+							top 1rem
+							color $meta-color
+							font-size 1.3rem
+
+						.description
+							position relative
+							padding 0.9rem 1rem
+
+							.icon-search
+								margin-right 0.5rem
+								font-size 0.75rem
+								color $meta-color
+
+						.right
+							position absolute
+							right 0
+							top 0
+
+							a
+								float right
+								padding 1.2rem 1rem
+								background $background-primary-color
+								border-right 1px solid $background-dark-color
+
+								&.text-button
+									background none
+									padding 0.2rem 1rem
+									border 1px solid $background-primary-color
+									margin 0.7rem 0.5rem 0.7rem 0
+
+					#results_video_api
+						.queue-locked-info
+							padding 1rem
+							font-weight bold
+							background $accent-color
+							color $background-dark-color
+
+						.browserPlaylistItems
+							padding-bottom 5rem
+
+							&.display-mod-controls
+								.room-queue-item
+									.actions
+										.set_song_to_top_queue
+										.remove_dj
+											display block
+
+						.playlist-item
+						.queue-item
+						.search-item
+						.history-item
+							position relative
+							display block
+							padding 0.5rem 1rem
+							cursor pointer
+							background $background-dark-color
+							border 1px solid $background-dark-color
+							border-bottom 1px solid $background-primary-color
+
+							&.selected
+								border 1px solid $accent-color
+
+							&:hover
+								.actions
+									display block
+
+								.timeDisplay
+									display none
+
+							.display-error
+							.display-success
+								display none
+								position absolute
+								background $accent-color
+								top 0
+								right 2rem
+								padding 0.2rem 0.5rem
+								color #000
+								font-size 0.75rem
+								font-weight bold
+								z-index 99
+
+							.display-error
+								background $accent-other-color
+
+							figure
+								margin 0
+								padding 0
+								width 4.5rem
+								height 3rem
+								position absolute
+								left 1rem
+								top 0.5rem
+								overflow hidden
+
+								img
+									position absolute
+									top 0
+									left 0
+									width 100%
+
+							.description
+								padding 1rem 8rem 0 5.5rem
+								font-size 0.9rem
+								font-weight bold
+
+								p
+									margin 0
+
+								.preview
+								.playedby
+								.dubs-display
+									font-size 0.8rem
+									color $accent-color
+									margin-right 0.5rem
+
+								.playedby
+								.dubs-display
+									cursor default
+
+								h2
+									font-size 0.9rem
+									margin 0
+									padding 0
+
+							.actions
+								display block
+								position absolute
+								right 0
+								top 0.5rem
+								clearfix()
+
+								@media screen and (min-width: $desktop-breakpoint)
+									display none
+
+								a
+									display block
+									float left
+									margin 0.3rem 0.5rem 0 0
+									padding 0.5rem 0.8rem
+									border 1px solid $background-primary-color
+									background $background-dark-color
+
+							.timeDisplay
+								display none;
+								position absolute
+								right 1rem
+								top 1.5rem
+								font-weight bold
+								font-size 0.85rem
+
+								@media screen and (min-width: $desktop-breakpoint)
+									display block;
+
+						.search-item
+						.history-item
+							.actions
+								.set_song_to_top_queue
+								.remove_icon
+									display none
+
+						.queue-item
+							.actions
+								.add_to_queue
+									display none
+
+						.room-queue-item
+							.actions
+								.set_song_to_top_queue
+								.remove_dj
+									display none
