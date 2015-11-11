@@ -7,6 +7,18 @@ Dubtrack.View.SoundCloudPlayer = Backbone.View.extend({
 	events : {},
 
 	initialize : function(){},
+    
+    renderSC: function () {
+        var SCurl;
+        $.ajax({
+            url: Dubtrack.room.player.activeSong.url,
+            success: function (f) {
+                SCurl = f.data.songInfo.images.thumbnail.replace('large','original');
+            },
+            async: false
+        });
+        return SCurl
+    },
 
 	render : function( url, start, onEnd, object, loadBg ){
 		var self = this;
@@ -21,9 +33,12 @@ Dubtrack.View.SoundCloudPlayer = Backbone.View.extend({
 		if(loadBg) this.$el.addClass('hiddenPlayer');
 
 		//create canvas
+        
 		this.canvasContEl = $('<div/>', {
 			id: this.id
-		}).html('<img src="https://d3byct92ei5n7c.cloudfront.net/hhberclba/image/upload/c_fill,h_460,w_900/tiqxlzynh3rxrkwvzeak.jpg" alt="" />')
+            
+            
+		}).html('<img src="'+this.renderSC()+'" alt="" />')
 		.css({
 			'position': 'absolute',
 			'top': 0,
@@ -31,7 +46,7 @@ Dubtrack.View.SoundCloudPlayer = Backbone.View.extend({
 			'width': '100%',
 			'height': '100%'
 		}).appendTo( this.$el );
-
+        
 		(url.indexOf("secret_token") == -1) ? url = url + '?' : url = url + '&';
 		url = url + 'consumer_key=' + Dubtrack.config.keys.soundcloud;
 
