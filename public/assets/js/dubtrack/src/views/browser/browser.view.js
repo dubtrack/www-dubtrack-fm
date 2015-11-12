@@ -901,7 +901,7 @@ Dubtrack.View.MyQueueInfo = Backbone.View.extend({
 				}).always(function(){
 					this.$('.clear-queue').text('clear');
 					this.$('.clear-queue-browser-bth').text('Clear');
-					this.displayDetails("queue");
+					this.parent_browser.displayDetails("queue");
 				}.bind(this));
 			}
 		}
@@ -1051,6 +1051,7 @@ Dubtrack.View.BrowserPlaylistItem = Backbone.View.extend({
 		"click .remove_queue": "removeFromQueue",
 		"click .remove_track": "removeTrack",
 		"click .remove_dj": "removeDJFromQueue",
+		"click .remove_dj_all": "removeDJAllFromQueue",
 		"click .preview": "preview",
 		"click a.editBtn": "focusInput",
 		"blur input.track_name_input": "updateTrackName",
@@ -1188,6 +1189,10 @@ Dubtrack.View.BrowserPlaylistItem = Backbone.View.extend({
 		return false;
 	},
 
+	removeDJAllFromQueue : function(){
+		return false;
+	},
+
 	removeTrack : function(){
 
 		var r=confirm(dubtrack_lang.playlist.confirmRemoveTrack);
@@ -1233,7 +1238,7 @@ Dubtrack.View.BrowserPlaylistItem = Backbone.View.extend({
 			if(err){
 				try{
 					if(err && err.data && err.data.err && err.data.err.details && err.data.err.details && err.data.err.details.message){
-						self.$('.display-error').show().html('Song already in queue or played in the last hour');
+						self.$('.display-error').show().html(err.data.err.details.message);
 					}else{
 						self.$('.display-error').show().html('Song already in queue or played in the last hour');
 					}
@@ -1405,6 +1410,24 @@ Dubtrack.View.BrowserRoomQueuePlaylisttItem = Dubtrack.View.BrowserPlaylisHistor
 			this.$('.display-error').show().html('You don\'t have permissions to do this');
 		}.bind(this)).always(function(){
 			this.$('.remove_dj').removeClass('loading-action');
+		}.bind(this));
+
+		return false;
+	},
+
+	removeDJAllFromQueue : function(){
+		this.$('.remove_dj_all').addClass('loading-action');
+
+		$.ajax({
+			url: Dubtrack.config.apiUrl + '/room/' + Dubtrack.room.model.get('_id') + '/queue/user/' + this.queue.get('userid') + '/all',
+			async: false,
+			type: 'delete'
+		}).success(function(response){
+				this.$el.remove();
+		}.bind(this)).error(function(){
+			this.$('.display-error').show().html('You don\'t have permissions to do this');
+		}.bind(this)).always(function(){
+			this.$('.remove_dj_all').removeClass('loading-action');
 		}.bind(this));
 
 		return false;

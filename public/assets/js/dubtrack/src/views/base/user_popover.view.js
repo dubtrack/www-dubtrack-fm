@@ -74,6 +74,14 @@ dt.global.userPopover = Backbone.View.extend({
 						}
 
 						if(Dubtrack.room.users.getIfResidentDJ(id)){
+							this.$('.actions a.setresdj').hide();
+							this.$('.actions a.unsetresdj').show();
+						}else{
+							this.$('.actions a.setresdj').show();
+							this.$('.actions a.unsetresdj').hide();
+						}
+
+						if(Dubtrack.room.users.getIfDJ(id)){
 							this.$('.actions a.setdj').hide();
 							this.$('.actions a.unsetdj').show();
 						}else{

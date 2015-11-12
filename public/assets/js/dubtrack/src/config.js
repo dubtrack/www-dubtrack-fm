@@ -124,7 +124,7 @@ w.Dubtrack = {
 			playlistSong: "/playlist/:id/songs",
 			getSoundCloudPlaylists: "/playlist/soundcloud",
 			importYoutubePlaylist: "/playlist/import/youtube",
-			importSoundcloudPlaylist: "/playlist/:id/import/soundcloud",
+			importSoundcloudPlaylist: "/playlist/import/soundcloud",
 			song: "/song",
 			songComments: "/song/:id/comments",
 			chat: "/chat/:id",
@@ -140,6 +140,7 @@ w.Dubtrack = {
 			setManagerUser: "/chat/5615fd84e596150061000003/:roomid/user/:id",
 			setVIPUser: "/chat/5615fe1ee596154fc2000001/:roomid/user/:id",
 			setOwnerUser: "/chat/5615fa9ae596154a5c000000/:roomid/user/:id",
+			setRoomDJUser: "/chat/564435423f6ba174d2000001/:roomid/user/:id",
 			skipSong: "/chat/skip/:id/:songid",
 			userQueue: "/user/session/room/:id/queue",
 			userQueueOrder : "/user/session/room/:id/queue/order",
@@ -458,20 +459,28 @@ w.Dubtrack = {
 			Dubtrack.views.user_popover.displayUser(id);
 
 			var offset = $(el).offset(),
-				left = offset.left - 200;
+				left = offset.left - 200,
+				top = offset.top;
 
 			if(left < 0) left = 0;
+			if(top < 0) top = 0;
+
+			console.log('test!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', top);
 
 			Dubtrack.views.user_popover.$el.css({
 				'left': left,
-				'top': offset.top
+				'top': top
 			}).show();
 
 			//setTop
 			Dubtrack.views.user_popover.offset_top = offset.top;
 			if($(window).height() < offset.top + Dubtrack.views.user_popover.$el.height()){
+				top = offset.top - Dubtrack.views.user_popover.$el.height();
+
+				if(top < 0) top = 0;
+
 				Dubtrack.views.user_popover.$el.css({
-					top: offset.top - Dubtrack.views.user_popover.$el.height()
+					top: top
 				});
 			}
 		},
@@ -704,7 +713,6 @@ w.Dubtrack = {
 		},
 
 		text : {
-
 			shortenLink: function(displayLink, maxLimit) {
 				if(displayLink.length > maxLimit) {
 					displayLink = displayLink.substring(0, maxLimit) + "...";
@@ -722,7 +730,7 @@ w.Dubtrack = {
 				text = text.replace(/(\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%()[\]?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|])/gim,
 					function(str) {
 						if (!Dubtrack.HideImages && str.match(imageRegex)) {
-							var onErrorAction = "Dubtrack.helpers.image.imageError(this, '/assets/images/media/chat_image_load_error.png');" + imagloadFun;
+							var onErrorAction = "Dubtrack.helpers.image.imageError(this, '/assets/images/media/chat_image_load_error.png');";
 							str = '<a href="' + str + '" class="autolink" target="_blank"><img src="' + str + '" alt="' + str + '" onload="' + imagloadFun + '" onerror="' + onErrorAction + '" /></a>';
 							return str;
 						} else {

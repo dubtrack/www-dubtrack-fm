@@ -46,6 +46,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		Dubtrack.Events.bind('realtime:user-mute', this.muteUserRealtime, this);
 		Dubtrack.Events.bind('realtime:user-unmute', this.unmuteUserRealtime, this);
 		Dubtrack.Events.bind('realtime:room_playlist-queue-remove-user-song', this.receiveMessage, this);
+		Dubtrack.Events.bind('realtime:room_playlist-queue-remove-user', this.receiveMessage, this);
 		Dubtrack.Events.bind('realtime:room_playlist-queue-reorder', this.receiveMessage, this);
 		Dubtrack.Events.bind('realtime:room-lock-queue', this.receiveMessage, this);
 		Dubtrack.Events.bind('realtime:delete-chat-message', this.deleteChatItem, this);
@@ -504,6 +505,19 @@ Dubtrack.View.chat = Backbone.View.extend({
 
 				this.playSound(false);
 				break;
+			case "room_playlist-queue-remove-user":
+				this.lastItemChatUser = false;
+				this.lastItemEl = false;
+
+				chatItem = new Dubtrack.View.removedFromQueueItem({
+					model: chatModel
+				});
+
+				chatItem.$el.appendTo( this._messagesEl );
+
+				this.playSound(false);
+				break;
+
 			case "room_playlist-queue-reorder":
 				this.lastItemChatUser = false;
 				this.lastItemEl = false;
@@ -749,7 +763,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 			return;
 		}
 
-		if(message.indexOf("/setdj @") === 0){
+		if(message.indexOf("/setresdj @") === 0){
 			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
 				username = str.replace("@", "");
 				return str;
@@ -759,13 +773,33 @@ Dubtrack.View.chat = Backbone.View.extend({
 			return;
 		}
 
-		if(message.indexOf("/unsetdj @") === 0){
+		if(message.indexOf("/unsetresdj @") === 0){
 			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
 				username = str.replace("@", "");
 				return str;
 			});
 
 			this.unsetRole(username, 'setDJUser');
+			return;
+		}
+
+		if(message.indexOf("/setdj @") === 0){
+			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
+				username = str.replace("@", "");
+				return str;
+			});
+
+			this.setRole(username, 'setRoomDJUser');
+			return;
+		}
+
+		if(message.indexOf("/unsetdj @") === 0){
+			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
+				username = str.replace("@", "");
+				return str;
+			});
+
+			this.unsetRole(username, 'setRoomDJUser');
 			return;
 		}
 

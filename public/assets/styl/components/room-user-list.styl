@@ -47,6 +47,7 @@
 				&.co-owner
 				&.vip
 				&.resident-dj
+				&.dj
 				&.manager
 					p.username
 						&:after
@@ -76,6 +77,11 @@
 						&:after
 							content " Resident DJ"
 
+				&.dj
+					p.username
+						&:after
+							content " DJ"
+
 				&.manager
 					p.username
 						&:after
@@ -89,7 +95,7 @@
 				&.currentDJ
 					p.username
 						&:after
-							content " DJ" !important
+							content " current DJ" !important
 
 				p
 					display inline-block
