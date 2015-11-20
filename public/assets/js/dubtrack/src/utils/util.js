@@ -110,8 +110,10 @@ Dubtrack.els.templates = {
 							'<a href="#" class="unsetmod unsetrole" data-roleref="setModUser">Unset mod</a>' +
 							'<a href="#" class="setvip setrole" data-roleref="setVIPUser">Set VIP</a>' +
 							'<a href="#" class="unsetvip unsetrole" data-roleref="setVIPUser">Unset VIP</a>' +
-							'<a href="#" class="setdj setrole" data-roleref="setDJUser">Set Resident DJ</a>' +
-							'<a href="#" class="unsetdj unsetrole" data-roleref="setDJUser">Unset Resident DJ</a>' +
+							'<a href="#" class="setresdj setrole" data-roleref="setDJUser">Set Resident DJ</a>' +
+							'<a href="#" class="unsetresdj unsetrole" data-roleref="setDJUser">Unset Resident DJ</a>' +
+							'<a href="#" class="setdj setrole" data-roleref="setRoomDJUser">Set DJ</a>' +
+							'<a href="#" class="unsetdj unsetrole" data-roleref="setRoomDJUser">Unset DJ</a>' +
 						'</div>',
 
 		'popover_user': '<figure>' +
@@ -614,11 +616,14 @@ Dubtrack.els.templates = {
 									'<a href="#" class="set_song_to_top_queue">' +
 										'<span class="icon-angle-double-up"></span>' +
 									'</a>' +
-									'<a href="#" class="img_bg remove_dj">' +
-										'<span class="icon-trash"></span>' +
+									'<a href="#" class="text-button remove_dj_all">' +
+										'Remove DJ' +
 									'</a>' +
 									'<a class="img_bg add_to_playlist" href="#">' +
 										'<span class="icon-heart"></span>' +
+									'</a>' +
+									'<a href="#" class="img_bg remove_dj">' +
+										'<span class="icon-trash"></span>' +
 									'</a>' +
 								'</div>',
 	},

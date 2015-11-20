@@ -25,6 +25,7 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 		Dubtrack.Events.bind('realtime:room_playlist-dub', this.realTimeDub, this);
 		Dubtrack.Events.bind('realtime:user-mute', this.setMuted, this);
 		Dubtrack.Events.bind('realtime:user-unmute', this.setunMuted, this);
+		Dubtrack.Events.bind('realtime:room-lock-queue', this.removeAllDJs, this);
 
 		Dubtrack.Events.bind('realtime:user-setrole', this.receiveMessage, this);
 		Dubtrack.Events.bind('realtime:user-unsetrole', this.receiveMessage, this);
@@ -290,6 +291,10 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 		}
 	},
 
+	removeAllDJs: function(){
+		this.$('li.dj').removeClass('dj');
+	},
+
 	setRole: function(r){
 		var id = (r.modUser && "_id" in r.modUser) ? r.modUser._id : false;
 
@@ -372,6 +377,19 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 		if(itemModel){
 			var roleid = itemModel.get('roleid');
 			if(roleid && roleid._id == "5615feb8e596154fc2000002") return true;
+		}
+
+		return false;
+	},
+
+	getIfDJ: function(userid){
+		var itemModel = this.collection.findWhere({
+			userid: userid
+		});
+
+		if(itemModel){
+			var roleid = itemModel.get('roleid');
+			if(roleid && roleid._id == "564435423f6ba174d2000001") return true;
 		}
 
 		return false;

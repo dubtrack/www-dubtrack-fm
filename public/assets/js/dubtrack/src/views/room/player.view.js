@@ -482,20 +482,10 @@ Dubtrack.View.Player = Backbone.View.extend({
 	},
 
 	videoEnd: function(){
-		this.refresh();
+		this.reloadVideo();
 		this.skipElBtn.hide();
 
 		this.playing = false;
-		if(this.refreshTimeout) clearTimeout(this.refreshTimeout);
-
-		this.refreshTimeout = setTimeout(function(){
-				this.loadingEl.hide();
-				$('body').addClass('no-song-playing');
-				Dubtrack.playerController.$('.currentSong').html( dubtrack_lang.player.no_one_is_playing );
-				this.placeHolder.show();
-				this.pictureEl.hide();
-				this.currentDjName.hide();
-		}.bind(this), 15000);
 	},
 
 	fetchSong : function(){
