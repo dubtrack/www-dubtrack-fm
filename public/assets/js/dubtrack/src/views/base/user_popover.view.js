@@ -6,6 +6,7 @@ dt.global.userPopover = Backbone.View.extend({
 	events: {
 		'click a.kick' : 'kickuser',
 		'click a.ban' : 'banuser',
+		'change a.ban select' : 'banuserSelect',
 		'keydown a.ban input': 'banuserKeydown',
 		'click a.mute' : 'muteuser',
 		'click a.unmute' : 'unmuteuser',
@@ -187,8 +188,10 @@ dt.global.userPopover = Backbone.View.extend({
 
 	banuser: function(e){
 		if(e && e.target){
-			if(!$(e.target).is('input')){
-				var value_input = this.$('a.ban input').val();
+			if(!$(e.target).is('input') && !$(e.target).is('select') && !$(e.target).is('option')){
+				if(this.$('a.ban select').val().length <= 0) return false;
+
+				var value_input = this.$('a.ban select').val() !== 'custom' ? this.$('a.ban select').val() : this.$('a.ban input').val();
 				if(value_input.length > 0){
 					Dubtrack.room.chat.banUser(this.user.get('username'), parseInt(value_input, 10));
 				}else{
@@ -197,6 +200,32 @@ dt.global.userPopover = Backbone.View.extend({
 
 				Dubtrack.views.user_popover.$el.hide();
 			}
+		}
+
+		return;
+	},
+
+	banuserSelect: function(e){
+		console.log(e);
+		var value_input = this.$('a.ban select').val();
+
+		if(value_input.length <= 0) return false;
+
+		if(value_input !== 'custom'){
+
+			this.$('a.ban input').remove(); //remove custom input if exist
+
+			console.log('banning for ' + parseInt(value_input, 10) + ' minutes');
+
+			Dubtrack.helpers.displayError(
+			'Ban ' + this.user.get('username') + '?',
+			'Ban ' + this.user.get('username') + ' for ' + this.$('a.ban select option:selected').text() + '?',
+			false, 
+			"Dubtrack.room.chat.banUser('" + this.user.get('username') + "'," + parseInt(value_input, 10) + ");$('#warning').remove();Dubtrack.views.user_popover.$el.hide();",
+			true);
+		}
+		else{
+			this.$('a.ban').append('<input value="" maxlength="3"/>');
 		}
 
 		return false;
