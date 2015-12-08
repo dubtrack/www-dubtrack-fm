@@ -420,6 +420,10 @@ Dubtrack.els.templates = {
 									'<span class="setMentionChatNotifications"><i class="icon-volume-high"></i> @Mention</span>' +
 									'<span class="setOffChatNotifications"><i class="icon-volume-mute"></i> Off</span>' +
 								'</div>' +
+                                '<span class="chat-option-header">Video Display</span>' +
+								'<div style="width: 100%" class="chat-option-buttons chat-option-buttons-video">' +
+									'<span class="disableVideo-el">Disable Video</span>' +
+								'</div>' +
 							'</div>' +
 							'<div class="chat-container">' +
 								'<div class="chatLoading">' + dubtrack_lang.chat.loadingHistory + '</div>' +

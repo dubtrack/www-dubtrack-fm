@@ -17,6 +17,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		"click .setOnChatNotifications" : "setSoundOn",
 		"click .setOffChatNotifications" : "setSoundOff",
 		"click .setMentionChatNotifications" : "setSoundMention",
+        "click .disableVideo-el": "disableVideo",
 		"click a.chat-commands": "displayChatHelp",
 		"click #new-messages-counter": "clickChatCounter",
 		"click .display-room-users": "displayRoomUsers",
@@ -35,6 +36,8 @@ Dubtrack.View.chat = Backbone.View.extend({
 		this.model = new Dubtrack.Collection.chat();
 		this.model.url = this.chatEndPointUrl;
 		this.model.bind("add", this.appendItem, this);
+        
+        this.disableVideoElBtn = this.$('.disableVideo-el');
 
 		Dubtrack.Events.bind('realtime:chat-message', this.receiveMessage, this);
 		Dubtrack.Events.bind('realtime:chat-skip', this.receiveMessage, this);
@@ -101,7 +104,22 @@ Dubtrack.View.chat = Backbone.View.extend({
 		this.$('.chat-messages').scrollTop(height);
 		this.$('.chat-messages').perfectScrollbar('update');
 	},
-
+    disableVideo: function(){
+		var isOn;
+		if (!this.isdisableVideo) {
+			this.isdisableVideo = true;
+			$('.playerElement').remove();
+            $('.chat-option-buttons-video span').css('color','white');
+			this.disableVideoElBtn.addClass('active');
+			isOn = "on";
+		} else {
+			this.isdisableVideo = false;
+			Dubtrack.room.player.reloadVideo();
+            $('.chat-option-buttons-video span').css('color','#878c8e');
+			this.disableVideoElBtn.removeClass('active');
+			isOn = "off";
+		}
+	},
 	clearChat : function(){
 		this.model.reset({});
 		Dubtrack.room.chat._messagesEl.find('li').remove();
