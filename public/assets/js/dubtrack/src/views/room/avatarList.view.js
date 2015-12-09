@@ -58,7 +58,7 @@ Dubtrack.View.roomUsersItem = Backbone.View.extend({
 			}
 
 			if(Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || Dubtrack.room.users.getIfRoleHasPermission(Dubtrack.session.id, 'ban')){
-				$("#main_player .display-mods-controls").show();
+				$("#main_player .display-mods-controls").css('display', 'inline-block');
 			}
 		}
 
