@@ -78,6 +78,10 @@ Dubtrack.View.Player = Backbone.View.extend({
 			this.$('.display-mods-controls').css('display', 'inline-block');
 		}
 
+		//Reset volume slider
+		if(Dubtrack.helpers.cookie.get('dubtrack-room-volume')) 
+			this.setVolume(Dubtrack.helpers.cookie.get('dubtrack-room-volume'));
+
 		//fetch new song
 		this.fetchSong();
 	},
