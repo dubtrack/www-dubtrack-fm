@@ -75,7 +75,7 @@ Dubtrack.View.Player = Backbone.View.extend({
 		this.modsViewEl = new Dubtrack.View.ModsView();
 
 		if(Dubtrack.session && Dubtrack.room && Dubtrack.room.users && (Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || Dubtrack.room.users.getIfRoleHasPermission(Dubtrack.session.id, 'ban'))){
-			this.$('.display-mods-controls').show();
+			this.$('.display-mods-controls').css('display', 'inline-block');
 		}
 
 		//fetch new song
