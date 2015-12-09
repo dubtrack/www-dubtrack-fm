@@ -2,8 +2,8 @@ Dubtrack.View.RoomList = Backbone.View.extend({
 	el : $('#room-list'),
 
 	events  : {
-		"keyup .room-loby-header .room-search input": "triggerSearch",
-		"click .room-loby-header .create-room" : "createRoom"
+		"keyup .room-lobby-header .room-search input": "triggerSearch",
+		"click .room-lobby-header .create-room" : "createRoom"
 	},
 
 	initialize : function(){
@@ -35,7 +35,7 @@ Dubtrack.View.RoomList = Backbone.View.extend({
 	fetchUserRooms: function(){},
 
 	triggerSearch : function(e){
-		var query = $.trim(this.$('.room-loby-header .room-search input').val());
+		var query = $.trim(this.$('.room-lobby-header .room-search input').val());
 
 		if(this.searchTimeoutTrigger) clearTimeout(this.searchTimeoutTrigger);
 
