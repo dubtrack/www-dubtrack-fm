@@ -546,14 +546,14 @@ Dubtrack.els.templates = {
 									'</p>' +
 								'</div>' +
 								'<div class="actions">' +
-									'<a href="#" class="set_song_to_top_queue">' +
-										'<span class="icon-angle-double-up"></span>' +
-									'</a>' +
 									'<a href="#" class="img_bg add_to_queue">' +
 										'<span class="icon-play"></span>' +
 									'</a>' +
 									'<a class="img_bg add_to_playlist" href="#">' +
 										'<span class="icon-heart"></span>' +
+									'</a>' +
+									'<a href="#" class="set_song_to_top_queue">' +
+										'<span class="icon-angle-double-up"></span>' +
 									'</a>' +
 									'<a href="#" class="img_bg remove_icon">' +
 										'<span class="icon-trash"></span>' +
