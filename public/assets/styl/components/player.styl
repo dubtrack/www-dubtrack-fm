@@ -16,17 +16,21 @@
 
 		span
 			cursor pointer
-			border-radius 1.5rem
+			border-radius .3rem
 			padding 0.5rem 1rem
-			background #fff
+			background rgba(0, 0, 0, 0.9)
 			font-weight bold
 			font-size 0.85rem
 			text-transform uppercase
 			margin-right 0.5rem
-			color #000
+			color $meta-color
 			display inline-block
 			opacity 0.8
 			text-align center
+			
+			&:hover
+				background: rgba(0, 0, 0, 1)
+				color: #fff
 
 			&.display-queue
 				display none
@@ -61,6 +65,7 @@
 
 			&.active
 				background $accent-color
+				color: #fff
 
 	.play-song-link
 		position absolute
@@ -259,17 +264,18 @@
 
 			span
 				display inline-block
-				margin-left 1.3rem
+				margin-left 0.75rem
 				margin-right 0
 
 				&.videoquality-el
-					font-size 1.2rem
+					font-size 1.4rem
 					text-transform uppercase
 					font-weight bold
-					top -0.3rem
+					top -0.2rem
 					position relative
 					color $meta-color
 					display none
+					margin-left: .5rem;
 
 					&.active-hd
 						color $primary-color
@@ -281,9 +287,8 @@
 			.volume-controller-container
 				width 6rem
 				vertical-align middle
-				margin-left 0.8rem
+				margin 0.6rem 0.75rem 0 0.8rem
 				float left
-				margin-top 0.6rem
 				display none
 
 				@media screen and (min-width: $tablet-breakpoint)
@@ -318,3 +323,8 @@
 						border-radius 1rem
 						height 0.3rem
 						background $accent-color
+				
+			.refresh-el
+				font-size: 1.3rem
+				position: relative
+				top: -0.15rem
