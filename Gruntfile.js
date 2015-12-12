@@ -112,6 +112,13 @@ module.exports = function(grunt) {
 					spawn: false,
 				}
 			},
+			dubtrack_stylus: {
+				files: ['public/assets/styl/**/*.styl'],
+				tasks: ['stylus:compile', ],
+				options: {
+					spawn: false,
+				}
+			},
 			dev_scripts: {
 				files: ['Gruntfile.js', 'public/assets/js/dubtrack/src/**/*.js', 'public/assets/js/lib/*'],
 				tasks: ['clean:dubtrack', 'clean:dubtrack_includes', 'concat', 'wrap:dubtrack'],
