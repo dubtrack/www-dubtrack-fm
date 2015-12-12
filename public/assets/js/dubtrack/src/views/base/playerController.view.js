@@ -27,8 +27,13 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 		this.voteUpCounter = $('.dubup .dub-counter');
 		this.voteDown = $('.dubdown');
 		this.voteDownCounter = $('.dubdown .dub-counter');
+		this.queuePosition = this.$('.queue-position');
+		this.queuePositionSplit = this.$('.queue-position-split');
+		this.queueTotal = this.$('.queue-total');
+		this.inQueue = false;
 
 		this.updateVote();
+		this.fetchQueueInfo();
 
 		return false;
 	},
@@ -58,6 +63,53 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 		Dubtrack.app.navigate("/browser/queue", {
 			trigger: true
 		});
+	},
+
+	fetchQueueInfo : function(){
+		if(this.queue_timeout) clearTimeout(this.queue_timeout);
+
+		if(!Dubtrack.room.player.activeQueueCollection.any()) {
+			console.log('no active queue');
+			return this.queue_timeout = setTimeout(function(){
+					this.fetchQueueInfo();
+			}.bind(this), 10000);
+		}
+
+		if(this.queueTotal.html() != Dubtrack.room.player.activeQueueCollection.length)
+			this.queueTotal.html(Dubtrack.room.player.activeQueueCollection.length);	
+
+		//get room active queue
+		Dubtrack.room.player.activeQueueCollection.fetch({
+			reset: true,
+
+			success : function(){
+				var queueCounter = 0;
+				var tempInQueue = false;
+				_.each(Dubtrack.room.player.activeQueueCollection.models, function(activeQueueItem){
+					queueCounter++;
+
+					if(Dubtrack.session.id == activeQueueItem.get('userid')){
+						this.inQueue = true;
+						tempInQueue = true;
+						this.queuePositionSplit.show();
+						this.queuePosition.html(queueCounter);
+					}
+				}, this);
+
+				if(!tempInQueue){
+					this.inQueue = false;
+
+					//empty html
+					this.queuePosition.empty();
+					this.queuePositionSplit.hide();
+				}
+
+				this.queue_timeout = setTimeout(function(){
+					this.fetchQueueInfo();
+				}.bind(this), 5000);
+			}.bind(this)
+		});
+
 	},
 
 	voteUpAction : function(){

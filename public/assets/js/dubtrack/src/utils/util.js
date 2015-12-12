@@ -746,6 +746,9 @@ Dubtrack.els.templates = {
 										'<li class="display-browser remove-if-banned">' +
 											'<a class="display-browser">' +
 												'<span class="icon-playlist"></span>' +
+												'<span class="queue-position"></span>' +
+												'<span class="queue-position-split">/</span>' +
+												'<span class="queue-total"></span>' +
 											'</a>' +
 										'</li>' +
 										'<li class="add-to-playlist remove-if-banned remove-if-iframe">' +
