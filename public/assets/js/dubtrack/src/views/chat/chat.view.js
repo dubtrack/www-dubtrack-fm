@@ -154,6 +154,8 @@ Dubtrack.View.chat = Backbone.View.extend({
 	displayRoomUsers: function(){
 		if(Dubtrack.room && Dubtrack.room.$el){
 			Dubtrack.room.$el.removeClass('display-chat-settings').addClass('display-users-rooms');
+			Dubtrack.room.$el.find('.chat_tools').find('.active').removeClass('active');
+			Dubtrack.room.$el.find('.icon-people').addClass('active');
 
 			if(Dubtrack.room && Dubtrack.room.users) Dubtrack.room.users.resetEl();
 		}
@@ -164,6 +166,8 @@ Dubtrack.View.chat = Backbone.View.extend({
 	displayChat: function(){
 		if(Dubtrack.room && Dubtrack.room.$el){
 			Dubtrack.room.$el.removeClass('display-users-rooms display-chat-settings');
+			Dubtrack.room.$el.find('.chat_tools').find('.active').removeClass('active');
+			Dubtrack.room.$el.find('.icon-chat').addClass('active');
 		}
 
 		return false;
@@ -172,6 +176,8 @@ Dubtrack.View.chat = Backbone.View.extend({
 	displayChatOptions: function(){
 		if(Dubtrack.room && Dubtrack.room.$el){
 			Dubtrack.room.$el.removeClass('display-users-rooms').addClass('display-chat-settings');
+			Dubtrack.room.$el.find('.chat_tools').find('.active').removeClass('active');
+			Dubtrack.room.$el.find('.icon-chatsettings').addClass('active');
 		}
 
 		return false;
@@ -947,6 +953,11 @@ Dubtrack.View.chat = Backbone.View.extend({
 	setUserCount: function(users){
 		this.$('.room-user-counter').html(users);
 		$('.mobile-users-counter').html(users);
+	},
+
+	setGuestCount: function(users){
+		this.$('.room-guest-counter').html(users);
+		$('.mobile-guests-counter').html(users);
 	},
 
 	skipSong: function(){

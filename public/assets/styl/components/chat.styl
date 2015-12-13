@@ -35,14 +35,12 @@
 			color $meta-color
 			position relative
 
-			&:after
-				content ""
-				position absolute
-				border 1px solid $primary-color
-				bottom 0
-				left 0
-				width 100%
-				display none
+			&.active
+				border-bottom 1px solid $primary-color
+				
+				&.icon-people
+					.room-guest-counter
+						color: $meta-color !important
 
 			&.display-chat
 				color $primary-color
@@ -51,7 +49,11 @@
 					display block
 
 			&:hover
-				color $primary-color
+				color $primary-color !important
+				
+				&.icon-people
+					.room-guest-counter
+						color $meta-color
 
 			&.icon-chatsettings
 				font-size 2.5rem
@@ -59,13 +61,20 @@
 
 			&.icon-people
 				i
-					font-size 0.85rem
+					font-size 0.95rem
 					line-height 0.8
 					font-style normal
 					font-weight bold
 					margin-left 0.4rem
-					top -0.3rem
+					top: -0.75rem;
+					left: 0.1rem;
 					position relative
+					
+					&.room-guest-counter
+						top: 0.1rem;
+						left: -0.7rem;
+						font-size: 0.85rem;
+						color: $dark-gray
 
 	.chatLoading
 		display none

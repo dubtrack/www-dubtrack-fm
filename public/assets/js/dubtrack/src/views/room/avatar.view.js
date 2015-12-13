@@ -90,6 +90,8 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 
 			if(Dubtrack.room && Dubtrack.room.chat){
 				Dubtrack.room.chat.setUserCount(this.rt_users.length);
+				var guestCount = this.uuids.length - this.rt_users.length;
+				Dubtrack.room.chat.setGuestCount(guestCount >= 0 ? guestCount : 0);
 			}
 		});
 	},

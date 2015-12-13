@@ -405,7 +405,10 @@ Dubtrack.els.templates = {
 		'chatContainer': //'	<a href="#" class="chat-commands">?</a>' +
 							'<div class="chat_tools">' +
 								'<span class="display-chat icon-chat active"></span>' +
-								'<span class="display-room-users icon-people"><i class="room-user-counter"></i></span>' +
+								'<span class="display-room-users icon-people">' +
+									'<i class="room-user-counter"></i>' +
+									'<i class="room-guest-counter"></i>' +
+								'</span>' +
 								'<span class="display-chat-settings icon-chatsettings"></span>' +
 							'</div>' +
 							'<div class="chat-options">' +
