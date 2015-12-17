@@ -106,8 +106,8 @@ module.exports = function(grunt) {
 
 		watch: {
 			dubtrack_css: {
-				files: ['public/assets/scss/**/*.scss'],
-				tasks: ['compass:dubtrack', ],
+				files: ['public/assets/styl/**/*.styl'],
+				tasks: ['stylus:compile', ],
 				options: {
 					spawn: false,
 				}
