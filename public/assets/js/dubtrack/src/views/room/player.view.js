@@ -46,8 +46,8 @@ Dubtrack.View.Player = Backbone.View.extend({
 		this.customEmbedIframeErrorDiv = this.$('#custom_iframe_embed_error');
 
 		var activeQueueUrl = Dubtrack.config.urls.roomPlaylist.replace( ":id", this.model.id );
-		this.actveQueueCollection = new Dubtrack.Collection.RoomActiveQueue();
-		this.actveQueueCollection.url = Dubtrack.config.apiUrl + activeQueueUrl;
+		this.activeQueueCollection = new Dubtrack.Collection.RoomActiveQueue();
+		this.activeQueueCollection.url = Dubtrack.config.apiUrl + activeQueueUrl;
 
 		Dubtrack.Events.bind('realtime:room-update', this.roomUpdate, this);
 
@@ -432,12 +432,12 @@ Dubtrack.View.Player = Backbone.View.extend({
 		this.queueInfo.empty().removeClass('queue-active');
 
 		//get room active queu
-		this.actveQueueCollection.fetch({
+		this.activeQueueCollection.fetch({
 			reset: true,
 
 			success : function(){
 				var queueCounter = 0;
-				_.each(this.actveQueueCollection.models, function(activeQueueItem){
+				_.each(this.activeQueueCollection.models, function(activeQueueItem){
 					queueCounter++;
 
 					if(Dubtrack.session.id == activeQueueItem.get('userid')){

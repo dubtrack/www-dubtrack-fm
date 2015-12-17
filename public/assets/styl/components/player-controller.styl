@@ -20,8 +20,8 @@
 		background $background-primary-color
 
 		@media screen and (min-width: $desktop-breakpoint)
+			width 80%
 			top 3rem
-			padding-right 20.7rem
 			position static
 
 		.custom-embed-info
@@ -91,7 +91,7 @@
 		width 100%
 
 		@media screen and (min-width: $desktop-breakpoint)
-			width auto
+			width 20% //TODO: May need to up this to 25% when grab count is added
 
 		ul
 			li
@@ -102,14 +102,37 @@
 				font-weight bold
 				cursor pointer
 				width 25%
+			
+				//TODO: Remove when grab count is added
+				&.add-to-playlist
+					@media screen and (min-width: $desktop-breakpoint)
+						width 16%
+						text-align center
 
 				@media screen and (min-width: $desktop-breakpoint)
-					width auto
+					 width 28%
+				//end remove
 
 				a
-					padding 1rem 1.5rem
+					padding 1rem 1rem
 					display block
 					text-align center
+					
+					&.display-browser
+						
+						span
+							margin 0 .1rem
+							
+							&.icon-playlist
+								margin-right 0.3rem
+
+							&.queue-position-split
+								display none
+						
+						[class^="queue-"]
+						[class*=" queue-"]
+							position relative
+							top -0.1rem
 
 				&:before
 					font-size 1.2rem
@@ -117,6 +140,8 @@
 				.dub-counter
 					margin-left 0.5rem
 					display inline-block
+					position relative
+					top -0.1rem
 
 				.dubdown
 				.dubup
