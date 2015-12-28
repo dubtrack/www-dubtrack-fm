@@ -46,8 +46,8 @@ Dubtrack.View.Player = Backbone.View.extend({
 		this.customEmbedIframeErrorDiv = this.$('#custom_iframe_embed_error');
 
 		var activeQueueUrl = Dubtrack.config.urls.roomPlaylist.replace( ":id", this.model.id );
-		this.actveQueueCollection = new Dubtrack.Collection.RoomActiveQueue();
-		this.actveQueueCollection.url = Dubtrack.config.apiUrl + activeQueueUrl;
+		this.activeQueueCollection = new Dubtrack.Collection.RoomActiveQueue();
+		this.activeQueueCollection.url = Dubtrack.config.apiUrl + activeQueueUrl;
 
 		Dubtrack.Events.bind('realtime:room-update', this.roomUpdate, this);
 
@@ -75,8 +75,12 @@ Dubtrack.View.Player = Backbone.View.extend({
 		this.modsViewEl = new Dubtrack.View.ModsView();
 
 		if(Dubtrack.session && Dubtrack.room && Dubtrack.room.users && (Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || Dubtrack.room.users.getIfRoleHasPermission(Dubtrack.session.id, 'ban'))){
-			this.$('.display-mods-controls').show();
+			this.$('.display-mods-controls').css('display', 'inline-block');
 		}
+
+		//Reset volume slider
+		if(Dubtrack.helpers.cookie.get('dubtrack-room-volume')) 
+			this.setVolume(Dubtrack.helpers.cookie.get('dubtrack-room-volume'));
 
 		//fetch new song
 		this.fetchSong();
@@ -428,12 +432,12 @@ Dubtrack.View.Player = Backbone.View.extend({
 		this.queueInfo.empty().removeClass('queue-active');
 
 		//get room active queu
-		this.actveQueueCollection.fetch({
+		this.activeQueueCollection.fetch({
 			reset: true,
 
 			success : function(){
 				var queueCounter = 0;
-				_.each(this.actveQueueCollection.models, function(activeQueueItem){
+				_.each(this.activeQueueCollection.models, function(activeQueueItem){
 					queueCounter++;
 
 					if(Dubtrack.session.id == activeQueueItem.get('userid')){
@@ -482,20 +486,10 @@ Dubtrack.View.Player = Backbone.View.extend({
 	},
 
 	videoEnd: function(){
-		this.refresh();
+		this.reloadVideo();
 		this.skipElBtn.hide();
 
 		this.playing = false;
-		if(this.refreshTimeout) clearTimeout(this.refreshTimeout);
-
-		this.refreshTimeout = setTimeout(function(){
-				this.loadingEl.hide();
-				$('body').addClass('no-song-playing');
-				Dubtrack.playerController.$('.currentSong').html( dubtrack_lang.player.no_one_is_playing );
-				this.placeHolder.show();
-				this.pictureEl.hide();
-				this.currentDjName.hide();
-		}.bind(this), 15000);
 	},
 
 	fetchSong : function(){

@@ -110,8 +110,10 @@ Dubtrack.els.templates = {
 							'<a href="#" class="unsetmod unsetrole" data-roleref="setModUser">Unset mod</a>' +
 							'<a href="#" class="setvip setrole" data-roleref="setVIPUser">Set VIP</a>' +
 							'<a href="#" class="unsetvip unsetrole" data-roleref="setVIPUser">Unset VIP</a>' +
-							'<a href="#" class="setdj setrole" data-roleref="setDJUser">Set Resident DJ</a>' +
-							'<a href="#" class="unsetdj unsetrole" data-roleref="setDJUser">Unset Resident DJ</a>' +
+							'<a href="#" class="setresdj setrole" data-roleref="setDJUser">Set Resident DJ</a>' +
+							'<a href="#" class="unsetresdj unsetrole" data-roleref="setDJUser">Unset Resident DJ</a>' +
+							'<a href="#" class="setdj setrole" data-roleref="setRoomDJUser">Set DJ</a>' +
+							'<a href="#" class="unsetdj unsetrole" data-roleref="setRoomDJUser">Unset DJ</a>' +
 						'</div>',
 
 		'popover_user': '<figure>' +
@@ -403,7 +405,10 @@ Dubtrack.els.templates = {
 		'chatContainer': //'	<a href="#" class="chat-commands">?</a>' +
 							'<div class="chat_tools">' +
 								'<span class="display-chat icon-chat active"></span>' +
-								'<span class="display-room-users icon-people"><i class="room-user-counter"></i></span>' +
+								'<span class="display-room-users icon-people">' +
+									'<i class="room-user-counter"></i>' +
+									'<i class="room-guest-counter"></i>' +
+								'</span>' +
 								'<span class="display-chat-settings icon-chatsettings"></span>' +
 							'</div>' +
 							'<div class="chat-options">' +
@@ -544,14 +549,14 @@ Dubtrack.els.templates = {
 									'</p>' +
 								'</div>' +
 								'<div class="actions">' +
-									'<a href="#" class="set_song_to_top_queue">' +
-										'<span class="icon-angle-double-up"></span>' +
-									'</a>' +
 									'<a href="#" class="img_bg add_to_queue">' +
 										'<span class="icon-play"></span>' +
 									'</a>' +
 									'<a class="img_bg add_to_playlist" href="#">' +
 										'<span class="icon-heart"></span>' +
+									'</a>' +
+									'<a href="#" class="set_song_to_top_queue">' +
+										'<span class="icon-angle-double-up"></span>' +
 									'</a>' +
 									'<a href="#" class="img_bg remove_icon">' +
 										'<span class="icon-trash"></span>' +
@@ -618,11 +623,14 @@ Dubtrack.els.templates = {
 									'<a href="#" class="set_song_to_top_queue">' +
 										'<span class="icon-angle-double-up"></span>' +
 									'</a>' +
-									'<a href="#" class="img_bg remove_dj">' +
-										'<span class="icon-trash"></span>' +
+									'<a href="#" class="text-button remove_dj_all">' +
+										'Remove DJ' +
 									'</a>' +
 									'<a class="img_bg add_to_playlist" href="#">' +
 										'<span class="icon-heart"></span>' +
+									'</a>' +
+									'<a href="#" class="img_bg remove_dj">' +
+										'<span class="icon-trash"></span>' +
 									'</a>' +
 								'</div>',
 	},
@@ -741,6 +749,9 @@ Dubtrack.els.templates = {
 										'<li class="display-browser remove-if-banned">' +
 											'<a class="display-browser">' +
 												'<span class="icon-playlist"></span>' +
+												'<span class="queue-position"></span>' +
+												'<span class="queue-position-split">/</span>' +
+												'<span class="queue-total"></span>' +
 											'</a>' +
 										'</li>' +
 										'<li class="add-to-playlist remove-if-banned remove-if-iframe">' +

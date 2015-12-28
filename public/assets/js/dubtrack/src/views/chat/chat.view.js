@@ -49,6 +49,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		Dubtrack.Events.bind('realtime:user-mute', this.muteUserRealtime, this);
 		Dubtrack.Events.bind('realtime:user-unmute', this.unmuteUserRealtime, this);
 		Dubtrack.Events.bind('realtime:room_playlist-queue-remove-user-song', this.receiveMessage, this);
+		Dubtrack.Events.bind('realtime:room_playlist-queue-remove-user', this.receiveMessage, this);
 		Dubtrack.Events.bind('realtime:room_playlist-queue-reorder', this.receiveMessage, this);
 		Dubtrack.Events.bind('realtime:room-lock-queue', this.receiveMessage, this);
 		Dubtrack.Events.bind('realtime:delete-chat-message', this.deleteChatItem, this);
@@ -153,6 +154,8 @@ Dubtrack.View.chat = Backbone.View.extend({
 	displayRoomUsers: function(){
 		if(Dubtrack.room && Dubtrack.room.$el){
 			Dubtrack.room.$el.removeClass('display-chat-settings').addClass('display-users-rooms');
+			Dubtrack.room.$el.find('.chat_tools').find('.active').removeClass('active');
+			Dubtrack.room.$el.find('.icon-people').addClass('active');
 
 			if(Dubtrack.room && Dubtrack.room.users) Dubtrack.room.users.resetEl();
 		}
@@ -163,6 +166,8 @@ Dubtrack.View.chat = Backbone.View.extend({
 	displayChat: function(){
 		if(Dubtrack.room && Dubtrack.room.$el){
 			Dubtrack.room.$el.removeClass('display-users-rooms display-chat-settings');
+			Dubtrack.room.$el.find('.chat_tools').find('.active').removeClass('active');
+			Dubtrack.room.$el.find('.icon-chat').addClass('active');
 		}
 
 		return false;
@@ -171,6 +176,8 @@ Dubtrack.View.chat = Backbone.View.extend({
 	displayChatOptions: function(){
 		if(Dubtrack.room && Dubtrack.room.$el){
 			Dubtrack.room.$el.removeClass('display-users-rooms').addClass('display-chat-settings');
+			Dubtrack.room.$el.find('.chat_tools').find('.active').removeClass('active');
+			Dubtrack.room.$el.find('.icon-chatsettings').addClass('active');
 		}
 
 		return false;
@@ -522,6 +529,19 @@ Dubtrack.View.chat = Backbone.View.extend({
 
 				this.playSound(false);
 				break;
+			case "room_playlist-queue-remove-user":
+				this.lastItemChatUser = false;
+				this.lastItemEl = false;
+
+				chatItem = new Dubtrack.View.removedFromQueueItem({
+					model: chatModel
+				});
+
+				chatItem.$el.appendTo( this._messagesEl );
+
+				this.playSound(false);
+				break;
+
 			case "room_playlist-queue-reorder":
 				this.lastItemChatUser = false;
 				this.lastItemEl = false;
@@ -767,7 +787,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 			return;
 		}
 
-		if(message.indexOf("/setdj @") === 0){
+		if(message.indexOf("/setresdj @") === 0){
 			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
 				username = str.replace("@", "");
 				return str;
@@ -777,13 +797,33 @@ Dubtrack.View.chat = Backbone.View.extend({
 			return;
 		}
 
-		if(message.indexOf("/unsetdj @") === 0){
+		if(message.indexOf("/unsetresdj @") === 0){
 			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
 				username = str.replace("@", "");
 				return str;
 			});
 
 			this.unsetRole(username, 'setDJUser');
+			return;
+		}
+
+		if(message.indexOf("/setdj @") === 0){
+			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
+				username = str.replace("@", "");
+				return str;
+			});
+
+			this.setRole(username, 'setRoomDJUser');
+			return;
+		}
+
+		if(message.indexOf("/unsetdj @") === 0){
+			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
+				username = str.replace("@", "");
+				return str;
+			});
+
+			this.unsetRole(username, 'setRoomDJUser');
 			return;
 		}
 
@@ -913,6 +953,11 @@ Dubtrack.View.chat = Backbone.View.extend({
 	setUserCount: function(users){
 		this.$('.room-user-counter').html(users);
 		$('.mobile-users-counter').html(users);
+	},
+
+	setGuestCount: function(users){
+		this.$('.room-guest-counter').html(users);
+		$('.mobile-guests-counter').html(users);
 	},
 
 	skipSong: function(){
