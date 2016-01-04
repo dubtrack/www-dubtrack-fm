@@ -10,10 +10,13 @@ dt.global.userPopover = Backbone.View.extend({
 		'click a.mute' : 'muteuser',
 		'click a.unmute' : 'unmuteuser',
 		'click .usercontent': 'navigateUser',
+		'click .followMini' : 'follow',
 		'click a.unsetrole' : 'unsetRole',
 		'click a.setrole' : 'setRole',
 		'click a.chat-mention' : 'mentionUserInChat',
-		'click a.send-pm-message' : 'sendPersonalMessage'
+		'click a.send-pm-message' : 'sendPersonalMessage',
+		'click a.follow-user' : 'follow',
+		'click a.unfollow-user' : 'unfollow'
 	},
 
 	initialize: function(){
@@ -23,7 +26,9 @@ dt.global.userPopover = Backbone.View.extend({
 
 	displayUser: function(id){
 		Dubtrack.cache.users.get(id, this.renderUser, this);
+	
 		this.userActive = false;
+
 
 		if(Dubtrack.session && Dubtrack.room && Dubtrack.room.users){
 			if(Dubtrack.session.get('_id') == id){
@@ -36,7 +41,36 @@ dt.global.userPopover = Backbone.View.extend({
 				if(Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || Dubtrack.room.users.getIfHasRole(Dubtrack.session.id) || Dubtrack.room.model.get('userid') == Dubtrack.session.id) {
 					 this.$('.actions').show();
 					 this.$('.actions a.send-pm-message').show();
+					 this.$('.follow-user').show();
+					 this.$('.unfollow-user').hide();
+					 var that = this;
+					 // Check if the user is following the one they are clicking on.. if yes -- show unfollow button, if no .. follow button.
+					 var url = Dubtrack.config.apiUrl + Dubtrack.config.urls.userFollowing.replace( ":id", this.user.get('_id') );
+					 var isFollowing;
+					 $.ajax({
+					 	url: url,
+					 	data: {},
+					 	success: function(data){
+					 	
+					 		$.each(data,function(index, item) {
+					 			
+					 			var followers = _(item).toArray();
 
+					 			$.each(followers, function(index, follower) {
+					 				if(follower.userid == Dubtrack.session.id)
+					 				{
+					 					that.$('.follow-user').hide();
+					 					that.$('.unfollow-user').show();
+					 					
+					 					
+					 				}
+					 			});
+					 				
+
+					 		});
+					 	}
+					 });
+					
 					if(Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || Dubtrack.room.users.getIfOwner(Dubtrack.session.id) || Dubtrack.room.users.getIfMod(Dubtrack.session.id) || Dubtrack.room.users.getIfVIP(Dubtrack.session.id) || Dubtrack.room.users.getIfResidentDJ(Dubtrack.session.id) || Dubtrack.room.users.getIfManager(Dubtrack.session.id)){
 					}
 
@@ -146,6 +180,7 @@ dt.global.userPopover = Backbone.View.extend({
 
 	renderUser: function(err, user){
 		this.user = user;
+		
 		this.$('.usercontent').html( _.template(Dubtrack.els.templates.profile.popover_user, user.toJSON()) );
 
 		if(Dubtrack.session && Dubtrack.room && Dubtrack.room.users){
@@ -159,6 +194,38 @@ dt.global.userPopover = Backbone.View.extend({
 		user_arr.push(this.user.get('_id'));
 
 		Dubtrack.layout.menu_right.message_view.createMessageIds(user_arr);
+		Dubtrack.views.user_popover.$el.hide();
+
+		return false;
+	},
+	
+	follow : function(e){
+	
+	
+		var url = Dubtrack.config.apiUrl + Dubtrack.config.urls.userFollowing.replace( ":id", this.user.get('_id') );
+
+		Dubtrack.helpers.sendRequest( url, {}, 'post', function(err){
+			
+		}.bind(this));
+
+		this.$('.follow-user').hide();
+		this.$('.unfollow-user').show();
+
+		
+		Dubtrack.views.user_popover.$el.hide();
+		return false;
+	},
+	unfollow : function(e){
+		var url = Dubtrack.config.apiUrl + Dubtrack.config.urls.userFollowing.replace( ":id", this.user.get('_id') );
+
+		
+		this.$('.unfollow-user').hide();
+		this.$('.follow-user').show();
+		Dubtrack.helpers.sendRequest( url, {}, 'delete', function(err){
+			
+		}.bind(this));
+
+		
 		Dubtrack.views.user_popover.$el.hide();
 
 		return false;
