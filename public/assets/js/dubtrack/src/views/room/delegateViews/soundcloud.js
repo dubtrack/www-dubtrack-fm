@@ -38,7 +38,7 @@ Dubtrack.View.SoundCloudPlayer = Backbone.View.extend({
 			id: this.id
             
             
-		}).html('<img src="'+this.renderSC()+'" alt="" />')
+		}).html('<img class="artwork" src="'+this.renderSC()+'" alt="" />')
 		.css({
 			'position': 'absolute',
 			'top': 0,
@@ -95,6 +95,20 @@ Dubtrack.View.SoundCloudPlayer = Backbone.View.extend({
 				});
 			}
 		});
+
+		var $el = this.$el, req = new XMLHttpRequest();
+		req.open(
+			'GET',
+			'https://api.soundcloud.com/tracks/' + Dubtrack.room.player.activeSong.get('songInfo').fkid + '?consumer_key=' + Dubtrack.config.keys.soundcloud,
+			false
+		);
+		req.onreadystatechange = function() {
+			if(req.readyState !== 4) return;
+			var permalink = req.responseText.match(/"permalink_url":"(.[^"]+)"/g);
+				permalink = permalink[1].match(/http(s|)\:\/\/.+/);
+			$('<a href="' + permalink + '" target="_blank"><span class="soundcloud_watermark icon-soundcloud"></span></a>').appendTo($el);
+		};
+		req.send();
 
 		return this;
 	},
