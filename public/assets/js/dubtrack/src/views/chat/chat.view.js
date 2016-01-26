@@ -637,7 +637,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 				}
 
 				if(Dubtrack.session && Dubtrack.session.get('username')){
-					var regex = new RegExp("@" + Dubtrack.session.get('username') + "\\b", 'g');
+					var regex = new RegExp("@" + Dubtrack.session.get('username') + "\\b", 'i');
 					var mention = regex.test(chatModel.get('message'));
 					this.playSound(mention);
 				}else{
