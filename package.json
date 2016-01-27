@@ -40,5 +40,8 @@
   },
   "scripts": {
     "start": "node web.js"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5"
   }
 }
