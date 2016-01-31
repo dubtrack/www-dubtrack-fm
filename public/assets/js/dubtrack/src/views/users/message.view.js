@@ -535,6 +535,8 @@ Dubtrack.View.Message.MainListDetailsItem = Dubtrack.View.Message.MainListItem.e
 		this.$('.message-time').html('<time class="timeago" datetime="' + currentDate.toISOString() + '">' + currentDate.toLocaleString() + '</time>');
 
 		this.$(".timeago").timeago();
+
+		emojify.run(this.el);
 	},
 
 	appendText : function(created, text, prepend){
