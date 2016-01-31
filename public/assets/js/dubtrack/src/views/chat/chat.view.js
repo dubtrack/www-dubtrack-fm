@@ -136,7 +136,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 
 		return false;
 	},
-
+    
 	muteUserRealtime: function(r){
 		if(Dubtrack.session && Dubtrack.session.id == r.mutedUser._id) this.user_muted = true;
 	},
@@ -252,11 +252,14 @@ Dubtrack.View.chat = Backbone.View.extend({
 			this.newMessageCounter = 0;
 		}
 	},
-
 	receiveMessage: function(r){
 		var id = (r.user && "_id" in r.user) ? r.user._id : false;
 
 		if(Dubtrack.session && id && r.type === "chat-message" && r.user._id === Dubtrack.session.get("_id") ) return;
+        
+        if (document.querySelector('.chat-main').children.length > 200) {
+            document.querySelector('.chat-main').firstChild.remove();
+        };
 
 		var chatModel = new Dubtrack.Model.chat(r);
 		this.model.add(chatModel);
@@ -269,7 +272,6 @@ Dubtrack.View.chat = Backbone.View.extend({
 			}
 		}
 	},
-
 	userJoin: function(r){
 		var id = (r.user && "_id" in r.user) ? r.user._id : false;
 
