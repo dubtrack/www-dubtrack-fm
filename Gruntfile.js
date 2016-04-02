@@ -53,6 +53,7 @@ module.exports = function(grunt) {
 			},
 			dubtrack: {
 				src: [
+					'public/assets/js/dubtrack/src/APRIL-WRAPPER.js',
 					'public/assets/js/dubtrack/src/config.js',
 					'public/assets/js/dubtrack/src/utils/*.js',
 					'public/assets/js/dubtrack/src/models/**/*.js',
