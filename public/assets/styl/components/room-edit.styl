@@ -1,0 +1,51 @@
+#room-edit-display
+	.room-edit-display-wrapper
+		height 100%
+		width 100%
+		position absolute
+		top 0
+		left 0
+		overflow hidden
+		padding 0 1rem 0 0
+
+		h2
+			word-break break-word
+			font-size 1.8rem
+			margin 2rem 0 3rem 0
+			font-weight bold
+			text-align center
+
+		.room-options-list
+			text-align left
+			list-style none
+			padding-right 1rem
+
+			li
+				display block
+				padding 0.5rem 0
+				border-bottom 1px solid $meta-color
+				color $meta-color
+				clearfix()
+
+				&:last-child
+					border-bottom 0
+
+				&.room-url
+					.actions
+						width 20rem
+
+						i
+							color $meta-color
+
+						input
+							width 10.2rem
+							display inline-block
+							padding 0
+							border-bottom 1px solid $meta-color
+
+				.actions
+					float right
+					text-transform uppercase
+					color $primary-color
+					font-weight bold
+					cursor pointer

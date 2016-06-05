@@ -23,6 +23,9 @@ Dubtrack.View.LoginMainWindowView = Backbone.View.extend({
 		this.change_window = new Dubtrack.View.LoginWindowView({
 			el : this.$('#login-chage-password-window'),
 		});
+		this.login_password_window = new Dubtrack.View.LoginWindowView({
+			el : this.$('#login-passwordupdate-window'),
+		});
 
 		this.signup_window.formSuccess = function(){
 			this.sucess_el.text("Thanks for signing up! We sent you a verification email");
@@ -35,11 +38,21 @@ Dubtrack.View.LoginMainWindowView = Backbone.View.extend({
 		};
 
 		this.change_window.formSuccess = function(){
-			this.sucess_el.text("Password successfully updated");
-			this.sucess_el.show();
-		};
+			this.displayWindow('login_password_window');
+		}.bind(this);
 
 		this.login_window.formSuccess = function(){
+			this.sucess_el.text("Login successful");
+			this.sucess_el.show();
+
+			if(Dubtrack.room && Dubtrack.room.model){
+				location.href = "/join/" + Dubtrack.room.model.get('roomUrl');
+			}else{
+				location.href = "/";
+			}
+		};
+
+		this.login_password_window.formSuccess = function(){
 			this.sucess_el.text("Login successful");
 			this.sucess_el.show();
 

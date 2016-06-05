@@ -15,9 +15,9 @@ Dubtrack.View.ImportPlaylistBrowser = Backbone.View.extend({
 		this.soundCloudPlaylistList = this.$('.import-playlist-soundcloud ul');
 
 		this.$('.playlist-container').perfectScrollbar({
-			wheelSpeed: 20,
 			suppressScrollX: true,
-			wheelPropagation: false
+			wheelPropagation: false,
+			minScrollbarLength: 40
 		});
 
 		return this;

@@ -12,6 +12,7 @@
 		padding 1rem
 		text-align center
 		overflow hidden
+		z-index 2
 
 		@media screen and (min-width: $desktop-breakpoint)
 			background $background-primary-color
@@ -54,6 +55,26 @@
 					@media screen and (min-width: $desktop-breakpoint)
 						display inline-block
 
+	#room-scroll-container-outer
+		position absolute
+		height 100%
+		width 100%
+		top 0
+		left 0
+		z-index 1
+		padding-top 9rem
+		padding-bottom 7rem
+
+		@media screen and (min-width: $desktop-breakpoint)
+			padding-top 7rem
+			padding-bottom 3.5rem
+
+		#room-scroll-container
+			position relative
+			height 100%
+			overflow hidden
+			padding-top 1.5rem
+
 	#container-room-list
 		position relative
 		width 100%
@@ -94,6 +115,17 @@
 
 				@media screen and (min-width: $tablet-breakpoint)
 					display block
+
+				.icon-lock
+					position absolute
+					font-size 4.5rem
+					top 50%
+					left 50%
+					transform translate3D(-50%, -50%, 0)
+					transform-style preserve-3d
+					backface-visibility hidden
+					opacity 0.8
+					margin-left 0.5rem
 
 				.join
 					display none

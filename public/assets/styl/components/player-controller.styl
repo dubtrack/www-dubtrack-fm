@@ -6,23 +6,25 @@
 	width 100%
 	height 3.5rem
 	overflow visible
-	background $background-primary-color-trans
-	z-index 99999
+	background rgba(47,47,47,1)
+	z-index 1
 
 	@media screen and (min-width: $desktop-breakpoint)
 		overflow hidden
+		background $background-primary-color-trans
 
 	.left
 		display block
 		width 100%
 		position relative
 		top -3.5rem
-		background $background-primary-color-trans
+		background rgba(47,47,47,1)
 
 		@media screen and (min-width: $desktop-breakpoint)
-			width 80%
 			top 3rem
+			padding-right 24rem
 			position static
+			background $background-primary-color-trans
 
 		.custom-embed-info
 			display none
@@ -91,7 +93,7 @@
 		width 100%
 
 		@media screen and (min-width: $desktop-breakpoint)
-			width 20% //TODO: May need to up this to 25% when grab count is added
+			width 24rem
 
 		ul
 			li
@@ -102,33 +104,31 @@
 				font-weight bold
 				cursor pointer
 				width 25%
-			
-				//TODO: Remove when grab count is added
-				&.add-to-playlist
-					@media screen and (min-width: $desktop-breakpoint)
-						width 16%
-						text-align center
 
-				@media screen and (min-width: $desktop-breakpoint)
-					 width 28%
-				//end remove
+				&.display-browser
+					 @media screen and (min-width: $desktop-breakpoint)
+						 width 28%
+						 text-align center
+
+				 @media screen and (min-width: $desktop-breakpoint)
+						width 24%
 
 				a
 					padding 1rem 1rem
 					display block
 					text-align center
-					
+
 					&.display-browser
-						
+
 						span
 							margin 0 .1rem
-							
+
 							&.icon-playlist
 								margin-right 0.3rem
 
 							&.queue-position-split
 								display none
-						
+
 						[class^="queue-"]
 						[class*=" queue-"]
 							position relative
@@ -138,6 +138,7 @@
 					font-size 1.2rem
 
 				.dub-counter
+				.grab-counter
 					margin-left 0.5rem
 					display inline-block
 					position relative
@@ -145,6 +146,7 @@
 
 				.dubdown
 				.dubup
+				.add-to-playlist-button
 					min-width 6rem
 					padding-right 0.5rem
 					padding-left 0.5rem
@@ -156,11 +158,17 @@
 							color inherit
 
 				.dubdown
+				.add-to-playlist-button
+					&.grabbed
 					&.voted
 						background $accent-other-color
 
 						span
 							color $dark-gray
+
+						.icon-heart
+							&:before
+								color $dark-gray
 
 					.icon-arrow-down
 						color $accent-other-color
@@ -194,7 +202,7 @@
 
 		.left
 			@media screen and (min-width: $desktop-breakpoint)
-				padding-right 12rem
+				padding-right 24rem
 
 .no-song-playing
 	#player-controller

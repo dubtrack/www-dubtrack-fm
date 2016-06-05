@@ -3,8 +3,8 @@
 	margin 0 auto
 	width 100%
 	height 100%
-	padding 7rem 1rem 8rem 1rem
-	display block
+	padding 5.7rem 0rem 7rem
+	display none
 	text-align center
 	position relative
 
@@ -21,11 +21,8 @@
 	@media screen and (min-height: 80em) and (min-width: $desktop-breakpoint)
 		max-width 120rem
 
-	@media screen and (min-height: 100em) and (min-width: $desktop-breakpoint)
-		max-width 140rem
-
 	@media screen and (min-height: 120em) and (min-width: $desktop-breakpoint)
-		max-width 160rem
+		max-width 140rem
 
 	&.display-users-rooms
 		#main_avatar_room
@@ -100,7 +97,18 @@
 
 	.left_section
 		width 100%
-		margin-top 3rem
+		margin-top 4.5rem
+		min-height 45rem
+
+		@media screen and (min-height: 30em)
+			min-height 60rem
+
+		@media screen and (min-height: 50em)
+			min-height 80rem
+
+		@media screen and (min-width: $desktop-breakpoint)
+			margin-top 3rem
+			min-height 0
 
 		@media screen and (min-height: 41em) and (min-width: $desktop-breakpoint)
 			display table
@@ -115,7 +123,6 @@
 				vertical-align middle
 
 	.right_section
-		border-radius 1rem
 		background rgba(0, 0, 0, 0.7)
 		width 100%
 		left auto
@@ -123,6 +130,7 @@
 		right 0
 
 		@media screen and (min-width: $desktop-breakpoint)
+			border-radius 1rem
 			display block
 			width 30rem
 
@@ -139,3 +147,9 @@
 
 		.right_section
 			display block
+
+
+.room-password-required
+	#main-room
+		.main-room-wrapper
+			display none !important

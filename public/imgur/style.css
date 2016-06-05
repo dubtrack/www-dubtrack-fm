@@ -52,6 +52,12 @@ h2{
 	width: 100%;
 }
 
+.image-limits {
+    color: #FFF;
+    text-align: center;
+    padding: 5px 0;
+}
+
 .container {
   padding-left: 0;
   padding-right: 0;

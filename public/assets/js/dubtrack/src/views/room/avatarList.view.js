@@ -86,6 +86,7 @@ Dubtrack.View.roomUsersItem = Backbone.View.extend({
 
 			//set username for search
 			this.$el.addClass('user-' + this.user.get('username').toLowerCase());
+			this.$el.addClass('userid-' + this.user.id);
 		}catch(ex){
 			this.$el.remove();
 		}

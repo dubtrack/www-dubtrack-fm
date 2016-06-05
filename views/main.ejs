@@ -10,7 +10,7 @@
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="mobile-web-app-capable" content="yes">
 
-	<meta property="og:image" content="https://mediadubtrackfm.s3.amazonaws.com/assets/images/media/pic_notfound.jpg"/>
+	<meta property="og:image" content="https://www.dubtrack.fm/assets/images/media/pic_notfound.jpg"/>
 	<meta property="og:title" content="Dubtrack.fm"/>
 	<meta property="og:url" content="http://www.dubtrack.fm/"/>
 	<meta property="og:site_name" content="Dubtrack.fm"/>
@@ -22,7 +22,7 @@
 	<meta name="twitter:title" content="Dubtrack.fm">
 	<meta name="twitter:description" content="Dubtrack.FM is a social DJ site where users can share and discover the latest and greatest by tuning in to user-generated playlist">
 	<meta name="twitter:creator" content="@dubtrack_fm">
-	<meta name="twitter:image:src" content="https://mediadubtrackfm.s3.amazonaws.com/assets/images/media/pic_notfound.jpg">
+	<meta name="twitter:image:src" content="https://www.dubtrack.fm/assets/images/media/pic_notfound.jpg">
 	<meta name="twitter:domain" content="Dubtrack.fm">
 
 	<meta name="google-site-verification" content="lI-Y7fjpZEb8XdvcsAaVIrZIETcYLuvokxdhKQbFwbo" />
@@ -44,15 +44,12 @@
 	<meta name="msapplication-TileImage" content="/mstile-144x144.png">
 
 <% if(process.env.ENVIRONMENT == 'production'){ %>
-	<link rel="stylesheet" href="//dubtrack-fm.s3.amazonaws.com/assets/css/main.css?v=<%= cache_busting %>" />
+	<link rel="stylesheet" href="//www.dubtrack.fm/assets/css/main.css?v=<%= cache_busting %>" />
 <% } else if(process.env.ENVIRONMENT == 'staging') { %>
-	<link rel="stylesheet" href="//dubtrack-fm.s3.amazonaws.com/assets/css/main.beta.css?v=<%= cache_busting %>" />
+	<link rel="stylesheet" href="//www.dubtrack.fm/assets/css/main.beta.css?v=<%= cache_busting %>" />
 <% } else { %>
 	<link rel="stylesheet" href="/assets/css/main.css" />
 <% } %>
-	<script type="text/javascript" src="//dubtrack-fm.s3.amazonaws.com/assets/js/lib/modernizr-2.5.3.min.js"></script>
-	<script type="text/javascript" src="//use.typekit.net/lpm1tnb.js"></script>
-	<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 	<script>
 	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -158,7 +155,11 @@
 						<a href="https://twitter.com/dubtrack_fm" class="twitter" target="blank"><span class="icon-twitter"></span></a>
 					</div>
 				</div>
-				<div id="container-room-list">
+				<div id="room-scroll-container-outer">
+					<div id="room-scroll-container">
+						<div id="container-room-list">
+						</div>
+					</div>
 				</div>
 			</section>
 			<section id="profileMainSection" class="dubtrack-section">
@@ -187,8 +188,10 @@
 											<a href="#" class="active display-mods-controls">Controls</a>
 											<a href="#" class="display-ban-list">Ban list</a>
 											<a href="#" class="display-mute-list">Mute list</a>
+											<a href="#" class="display-staff-list">Staff List</a>
 										</div>
 										<div class="mods-controllers-wrapper">
+											<div class="loading">Loading...</div>
 											<div class="mods-controllers-commands-list show-controller">
 												<div class="mods-controller-container">
 													<h2>Song controls</h2>
@@ -253,10 +256,18 @@
 														</li>
 														<li>
 															Set someone as resident dj
-															<span class="actions">/setdj @username</span>
+															<span class="actions">/setresdj @username</span>
 														</li>
 														<li>
 															Remove someone as resident dj
+															<span class="actions">/unsetresdj @username</span>
+														</li>
+														<li>
+															Set someone as dj
+															<span class="actions">/setdj @username</span>
+														</li>
+														<li>
+															Remove someone as dj
 															<span class="actions">/unsetdj @username</span>
 														</li>
 														<li>
@@ -277,6 +288,12 @@
 												</div>
 											</div>
 											<div class="mods-controllers-mute-list">
+												<div class="mods-controller-container">
+													<ul class="user-list">
+													</ul>
+												</div>
+											</div>
+											<div class="mods-controllers-staff-list">
 												<div class="mods-controller-container">
 													<ul class="user-list">
 													</ul>
@@ -328,7 +345,10 @@
 									<span class="icon-facebook" onclick="Dubtrack.playerController.shareFacebook();"></span>
 									<span class="icon-twitter" onclick=Dubtrack.playerController.shareTwitter();></span>
 								</section>
-								<div class="play-song-link"><i class="icon-play"></i> Queue a song <span class="queue-info"></span></div>
+								<div class="play-song-link-container">
+									<div class="play-song-link-browser"><i class="icon-play"></i> Queue a song <span class="queue-info"></span></div>
+									<div class="play-song-link"></div>
+								</div>
 							</section>
 							<section id="room-comments">
 							</section>
@@ -365,9 +385,34 @@
 				<a href="/login/facebook" class="facebook-login"><i class="icon-facebook"></i>Sign in with Facebook</a>
 				<a href="/login/twitter" class="twitter-login"><i class="icon-twitter"></i>Sign in with Twitter</a>
 				<a href="/login/soundcloud" class="soudcloud-login"><i class="icon-soundcloud"></i>Sign in with soundcloud</a>
+				<a href="/login/twitch" class="twitch-login"><i class="icon-twitch"></i>Sign in with twitch</a>
 
 				<form action="/auth/dubtrack" method="post">
 					<h3>Or enter your email</h3>
+					<input type="text" id="login-input-username" name="username" value="" placeholder="Email or username" required maxlength="250" />
+					<input type="password" value="" id="login-input-password" name="password" placeholder="password" required maxlength="250" />
+					<div class="err-message"></div>
+					<input type="submit" value="Sign in" />
+				</form>
+
+				<div class="success-message"></div>
+
+				<div class="account-actions">
+					<a href="/forgot">Forgot password?</a>
+					<a href="/signup">Need an account?</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="login-model-container" id="login-passwordupdate-window">
+			<div class="login-model-container-wrapper">
+				<span class="icon-remove-circle close-login-window"></span>
+				<h1>LOGIN</h1>
+				<h2>Join the Party</h2>
+
+				<p class="login-info"><b>Password updated successfully, please login below</b></p>
+
+				<form action="/auth/dubtrack" method="post">
 					<input type="text" id="login-input-username" name="username" value="" placeholder="Email or username" required maxlength="250" />
 					<input type="password" value="" id="login-input-password" name="password" placeholder="password" required maxlength="250" />
 					<div class="err-message"></div>
@@ -392,6 +437,7 @@
 				<a href="/login/facebook" class="facebook-login"><i class="icon-facebook"></i>Sign up with facebook</a>
 				<a href="/login/twitter" class="twitter-login"><i class="icon-twitter"></i>Sign up with twitter</a>
 				<a href="/login/soundcloud" class="soudcloud-login"><i class="icon-soundcloud"></i>Sign up with soundcloud</a>
+				<a href="/login/twitch" class="twitch-login"><i class="icon-twitch"></i>Sign up with twitch</a>
 
 				<form action="/auth/signup">
 					<h3>Or register with your email</h3>
@@ -454,21 +500,55 @@
 		</div>
 	</section>
 
+	<section id="donate-modal-window">
+		<div class="modal-container">
+			<div class="modal-wrapper">
+				<h4>Hey everyone it's Joe (IAmBubbles)</h4>
+				<p>
+					As many of you know, dubtrack.fm is NOT a company and I've been self-funding it since we began.
+					The site makes no money at all and it has gotten quite expensive to host. Each month, hosting is
+					costing anywhere from $7,000-$10,000.
+				</p>
+				<p>
+					The website is NOT in jeopardy of shutting down. I am still able to fund it, but with hosting costs
+					being as high as they are, it's time I ask for some help. Ultimately, if donations/subscriptions
+					cover most or all of the hosting costs, that would would take a huge load off me and would enable
+					me to put my money into developing the site further. I really want to get a full time developer so
+					we can get things moving again as well as get mobile apps out.
+				</p>
+				<p>
+					I hate to be doing this without being able to offer any kind of perks to donators/subscribers, but
+					I just don't have anything I can offer right now until things further develop. With that being said,
+					when the site is more developed and things are back on track, those who donated/subscribed will get
+					perks.
+				</p>
+				<p>
+					If any of you have any questions, you can PM me IAmBubbles or email me
+					<a href="mailto:joe@dubtrack.fm">joe@dubtrack.fm</a>
+				</p>
+				<p>
+					Thanks for all your support <img class="emoji" src="/assets/emoji/images/emoji/smiley.png" title=":smiley:" alt=":smiley:" align="absmiddle"></img>
+				</p>
+			</div>
+			<div class="close-window">
+				<a href="#"><span class="icon-close"></span></a>
+			</div>
+		</div>
+	</section>
+
 	<section id="browser"></section>
 
 	<div class="dubtrack_overlay"></div>
-	<script src="//cdn.pubnub.com/pubnub.min.js"></script>
+	<script src="//cdn.pubnub.com/pubnub-3.7.18.min.js"></script>
 <% if(process.env.ENVIRONMENT == 'production'){ %>
-	<script type="text/javascript" src="//dubtrack-fm.s3.amazonaws.com/assets/js/includes.min.js?v=<%= cache_busting %>"></script>
-	<script type="text/javascript" src="//dubtrack-fm.s3.amazonaws.com/assets/js/dubtrack/lang/en_US.js?v=<%= cache_busting %>"></script>
-	<script type="text/javascript" src="//dubtrack-fm.s3.amazonaws.com/assets/js/dubtrack.min.js?v=<%= cache_busting %>"></script>
+	<script type="text/javascript" src="/assets/js/dubtrack/lang/en_US.js?v=<%= cache_busting %>"></script>
+	<script type="text/javascript" src="/assets/js/bundle.min.js?v=<%= cache_busting %>"></script>
 <% } else if(process.env.ENVIRONMENT == 'staging') { %>
 	<script type="text/javascript">
-		window.DUBTRACK_API_URL = "//origin-api.dubtrack.fm";
+		window.DUBTRACK_API_URL = "//staging-api.dubtrack.fm";
 	</script>
-	<script type="text/javascript" src="//dubtrack-fm.s3.amazonaws.com/assets/js/includes.beta.min.js?v=<%= cache_busting %>"></script>
-	<script type="text/javascript" src="//dubtrack-fm.s3.amazonaws.com/assets/js/dubtrack/lang/en_US.js?v=<%= cache_busting %>"></script>
-	<script type="text/javascript" src="//dubtrack-fm.s3.amazonaws.com/assets/js/dubtrack.beta.min.js?v=<%= cache_busting %>"></script>
+	<script type="text/javascript" src="/assets/js/dubtrack/lang/en_US.js?v=<%= cache_busting %>"></script>
+	<script type="text/javascript" src="/assets/js/bundle.min.js?v=<%= cache_busting %>"></script>
 <% } else { %>
 	<script type="text/javascript">
 		window.DUBTRACK_API_URL = "<%= api_url %>";
@@ -501,5 +581,4 @@
 	<noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=GBF5m1aQpne1bm" style="display:none" height="1" width="1" alt="" /></noscript>
 	<!-- End Alexa Certify Javascript -->
 </body>
-
 </html>

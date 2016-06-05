@@ -47,6 +47,10 @@ if(!w.DUBTRACK_API_URL) w.DUBTRACK_API_URL = "https://api.dubtrack.fm";
 
 w.Dubtrack = {
 	init: function(){
+		if(Dubtrack.initialized) return;
+
+		Dubtrack.initialized = true;
+
 		// Load default global values
 		var hide_images = Dubtrack.helpers.cookie.get('dubtrack-hide-images');
 		if(hide_images && hide_images == 'hide') Dubtrack.HideImages = true;
@@ -60,6 +64,10 @@ w.Dubtrack = {
 			});
 		});
 	},
+
+	player_initialized : false,
+
+	initialized : false,
 
 	//placeholders
 	chat: {},
@@ -98,7 +106,7 @@ w.Dubtrack = {
 		apiUrl: w.DUBTRACK_API_URL,
 
 		urls: {
-			mediaBaseUrl: "https://dubtrack-fm.s3.amazonaws.com",
+			mediaBaseUrl: "https://www.dubtrack.fm",
 			commentsDubs: "/comments/:id/dubs",
 			commentsFlag: "/comments/:id/flag",
 			room: "/room",
@@ -107,9 +115,11 @@ w.Dubtrack = {
 			roomUsers: "/room/{id}/users",
 			roomBanUsers: "/room/:id/users/ban",
 			roomMuteUsers: "/room/:id/users/mute",
+			roomStaffUsers: "/room/:id/users/staff",
 			roomBeacon: "/room/beacon/:id/:userid",
 			roomQueue: "/room/{id}/playlist",
 			roomQueueDetails: "/room/:id/playlist/details",
+			roomQueueWaitlist: "/room/:id/playlist/waitlist",
 			roomHistory: "/room/:id/playlist/history",
 			roomLockQueue: "/room/:id/lockQueue",
 			userQueuePause: "/room/:id/queue/pause",
@@ -121,6 +131,7 @@ w.Dubtrack = {
 			playlist: "/playlist",
 			playlistUpdate: "/playlist/:id",
 			playlistOrder: "/playlist/:id/order",
+			playlistRandomize: "/playlist/:id/order/randomize",
 			playlistSong: "/playlist/:id/songs",
 			getSoundCloudPlaylists: "/playlist/soundcloud",
 			importYoutubePlaylist: "/playlist/import/youtube",
@@ -130,8 +141,9 @@ w.Dubtrack = {
 			chat: "/chat/:id",
 			deleteChat: "/chat/:id/:chatid",
 			roomPlaylist: "/room/:id/playlist",
+			roomQueuePlaylist: '/room/:id/queueplaylist/:playlistid',
 			roomPlaylistActive: "/room/:id/playlist/active",
-			dubsPlaylistActive: "/room/:id/playlist/active/dubs",
+			dubsPlaylistActive: "/room/:id/playlist/:playlistid/dubs",
 			kickUser: "/chat/kick/:roomid/user/:id",
 			banUser: "/chat/ban/:roomid/user/:id",
 			muteUser: "/chat/mute/:roomid/user/:id",
@@ -157,7 +169,7 @@ w.Dubtrack = {
 
 		keys: {
 			pubunub: 'sub-c-2b40f72a-6b59-11e3-ab46-02ee2ddab7fe',
-			soundcloud: '801facf61770a4cbf5566eb15b59e7a0',
+			soundcloud: '56443d7e9ca2ddae92e9261a309e8792',
 		},
 
 		player: {
@@ -325,8 +337,10 @@ w.Dubtrack = {
 				userid == "52d24bff4cf9670200000515" ||
 				userid == "52c8efcf37e22b0200000008" ||
 				userid == "551d295433cd73030089d184" ||
-				userid == "53f7c199892b010200a98809" ||
-				userid == "52c8254ca7b7260200000001"){
+				userid == "5620a1978ea6e75f00252f7a" ||
+				userid == "560892bf8e9cb60300550aa2" ||
+				userid == "52c8254ca7b7260200000001" ||
+				userid == "5609c279425d2903003faec4"){
 				return true;
 			}else{
 				return false;
@@ -464,8 +478,6 @@ w.Dubtrack = {
 
 			if(left < 0) left = 0;
 			if(top < 0) top = 0;
-
-			console.log('test!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', top);
 
 			Dubtrack.views.user_popover.$el.css({
 				'left': left,
@@ -726,12 +738,13 @@ w.Dubtrack = {
 
 			convertHtmltoTags: function(text, imagloadFun){
 				var imageRegex = /^(http|https)(.*)\.(png|jpg|jpeg|gif)$/;
+				var functionOnLoad = imagloadFun;
 
 				text = text.replace(/(\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%()[\]?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|])/gim,
 					function(str) {
 						if (!Dubtrack.HideImages && str.match(imageRegex)) {
 							var onErrorAction = "Dubtrack.helpers.image.imageError(this, '/assets/images/media/chat_image_load_error.png');";
-							str = '<a href="' + str + '" class="autolink" target="_blank"><img src="' + str + '" alt="' + str + '" onload="' + imagloadFun + '" onerror="' + onErrorAction + '" /></a>';
+							str = '<a href="' + str + '" class="autolink" target="_blank"><img src="https://dubtrack-app-images.herokuapp.com/chat?url=' + str + '" /></a>';
 							return str;
 						} else {
 							str = '<a href="' + str + '" class="autolink" target="_blank">' + Dubtrack.helpers.text.shortenLink(str, 60) + '</a>';
@@ -753,7 +766,7 @@ w.Dubtrack = {
 			},
 
 			convertAttoLink: function(text){
-				return text.replace(/(@[A-Za-z0-9_.]+)/g, '<span class="username-handle">$&</span>');
+				return text.replace(/(@[A-Za-z0-9\.\-\_]+)/g, '<span class="username-handle">$&</span>');
 			},
 		}
 	},

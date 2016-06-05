@@ -17,14 +17,24 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 
 		this.volumeSliderEl = $('#volume-div');
 
+		this.fetchQueueInfoThrottled = _.debounce(this.fetchQueueInfo.bind(this), 1000);
+
 		Dubtrack.Events.bind('realtime:room_playlist-dub', this.realTimeDub, this);
+		Dubtrack.Events.bind('realtime:room_playlist-queue-update-grabs', this.realTimeGrab, this);
+		Dubtrack.Events.bind('realtime:room_playlist-update', this.realTimeUpdate, this);
+		Dubtrack.Events.bind('realtime:room_playlist-queue-reorder', this.fetchQueueInfoThrottled, this);
+		Dubtrack.Events.bind('realtime:room_playlist-queue-update-dub', this.fetchQueueInfoThrottled, this);
+		Dubtrack.Events.bind('realtime:room_playlist-queue-remove-user', this.fetchQueueInfoThrottled, this);
+		Dubtrack.Events.bind('realtime:user-leave', this.fetchQueueInfoThrottled, this);
 
 		this.volumeControl();
 	},
 
 	update : function(){
+		this.addToPlaylistButton = this.$('.add-to-playlist-button');
 		this.voteUp = $('.dubup');
 		this.voteUpCounter = $('.dubup .dub-counter');
+		this.grabCounter = $('.add-to-playlist-button .grab-counter');
 		this.voteDown = $('.dubdown');
 		this.voteDownCounter = $('.dubdown .dub-counter');
 		this.queuePosition = this.$('.queue-position');
@@ -36,6 +46,13 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 		this.fetchQueueInfo();
 
 		return false;
+	},
+
+	realTimeUpdate : function(e){
+		Dubtrack.helpers.cookie.delete('dub-' + Dubtrack.room.model.get("_id"));
+		Dubtrack.helpers.cookie.delete('grab-' + Dubtrack.room.model.get("_id"));
+
+		this.fetchQueueInfoThrottled.call();
 	},
 
 	addToPlaylist : function(e){
@@ -53,8 +70,6 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 		Dubtrack.helpers.genPlaylistContainer( $('body'), position, song.songid, false, 'playerBottomFixed' );
 
 		$("html, body").scrollTop(0);
-        
-        this.vote('updub');
 
 		return false;
 	},
@@ -66,47 +81,56 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 	},
 
 	fetchQueueInfo : function(){
-		if(this.queue_timeout) clearTimeout(this.queue_timeout);
-
-		if(!Dubtrack.room.player.activeQueueCollection.any()) {
-			console.log('no active queue');
-			return this.queue_timeout = setTimeout(function(){
-					this.fetchQueueInfo();
-			}.bind(this), 10000);
-		}
-
-		if(this.queueTotal.html() != Dubtrack.room.player.activeQueueCollection.length)
-			this.queueTotal.html(Dubtrack.room.player.activeQueueCollection.length);	
+		if(! Dubtrack.room || ! Dubtrack.room.player || ! Dubtrack.room.player.activeQueueCollection) return;
 
 		//get room active queue
 		Dubtrack.room.player.activeQueueCollection.fetch({
 			reset: true,
 
-			success : function(){
+			success : function(a, b, c){
 				var queueCounter = 0;
 				var tempInQueue = false;
+
+				if(this.queueTotal && this.queueTotal.html() != Dubtrack.room.player.activeQueueCollection.length) this.queueTotal.html(Dubtrack.room.player.activeQueueCollection.length);
+				if(Dubtrack.app.browserView) Dubtrack.app.browserView.$('#playlists-scroll .current_room_queue .playlist-items-count').text(Dubtrack.room.player.activeQueueCollection.length);
+
 				_.each(Dubtrack.room.player.activeQueueCollection.models, function(activeQueueItem){
 					queueCounter++;
+
+					var userQueueRooms = Dubtrack.room.users.collection.findWhere({
+						"userid" : activeQueueItem.get('userid')
+					});
+
+					if(userQueueRooms) {
+						userQueueRooms.set({
+							'songsInQueue' : activeQueueItem.get('songsInQueue'),
+							'queuePaused' : activeQueueItem.get('queuePaused')
+						});
+					}
 
 					if(Dubtrack.session.id == activeQueueItem.get('userid')){
 						this.inQueue = true;
 						tempInQueue = true;
 						this.queuePositionSplit.show();
 						this.queuePosition.html(queueCounter);
+
+						if(Dubtrack.app.browserView) {
+							Dubtrack.app.browserView.$('#playlists-scroll .current_queue .playlist-items-count').text(activeQueueItem.get('songsInQueue'));
+						}
 					}
 				}, this);
 
 				if(!tempInQueue){
 					this.inQueue = false;
 
+					if(Dubtrack.app.browserView) Dubtrack.app.browserView.$('#playlists-scroll .current_queue .playlist-items-count').text(0);
+
 					//empty html
 					this.queuePosition.empty();
 					this.queuePositionSplit.hide();
 				}
 
-				this.queue_timeout = setTimeout(function(){
-					this.fetchQueueInfo();
-				}.bind(this), 5000);
+				Dubtrack.room.player.displayQueueSongRealtimeUpdate();
 			}.bind(this)
 		});
 
@@ -131,10 +155,22 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 
 		this.voteUpCounter.text(r.playlist.updubs);
 		this.voteDownCounter.text(r.playlist.downdubs);
+		this.grabCounter.text(r.playlist.grabs);
 
 		Dubtrack.room.player.activeSong.set({
 			song: r.playlist
 		});
+	},
+
+	realTimeGrab : function(r){
+		if(r && r.playlist && r.playlist.grabs){
+			this.grabCounter.text(r.playlist.grabs);
+
+			if(Dubtrack.session && Dubtrack.session.id == r.user._id){
+				this.addToPlaylistButton.addClass('grabbed');
+				Dubtrack.helpers.cookie.set('grab-' + Dubtrack.room.model.get("_id"), "grab", 30);
+			}
+		}
 	},
 
 	shareFacebook : function(){
@@ -189,7 +225,8 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 
 		var song = Dubtrack.room.player.activeSong.get('song');
 		if( !Dubtrack.room ||  song === null) return;
-		var url = Dubtrack.config.urls.dubsPlaylistActive.replace(":id", Dubtrack.room.model.get("_id"));
+
+		var url = Dubtrack.config.urls.dubsPlaylistActive.replace(":id", Dubtrack.room.model.get("_id")).replace(":playlistid", song._id);
 
 		var cookie = Dubtrack.helpers.cookie.get('dub-' + Dubtrack.room.model.get("_id")),
 			dubsong = Dubtrack.helpers.cookie.get('dub-song'),
@@ -207,10 +244,26 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 			Dubtrack.helpers.cookie.set('dub-song', song.songid, 30);
 
 			if(voteType === "updub"){
-				if(cookie) totalVoted = totalVoted + 1;
+				var currentUpDubs = parseInt(this.voteUpCounter.text(), 10);
+				var currentDownDubs = parseInt(this.voteDownCounter.text(), 10);
+
+				if (cookie) {
+					this.voteDownCounter.text(currentDownDubs - 1);
+					totalVoted = totalVoted + 1;
+				}
+
+				this.voteUpCounter.text(currentUpDubs + 1);
 				totalVoted = totalVoted + 1;
 			}else{
-				if(cookie) totalVoted = totalVoted - 1;
+				var currentUpDubs = parseInt(this.voteUpCounter.text(), 10);
+				var currentDownDubs = parseInt(this.voteDownCounter.text(), 10);
+
+				if (cookie) {
+					this.voteUpCounter.text(currentUpDubs - 1);
+					totalVoted = totalVoted - 1;
+				}
+
+				this.voteDownCounter.text(currentDownDubs + 1);
 				totalVoted = totalVoted - 1;
 			}
 		}
@@ -225,7 +278,9 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 	updateVote : function(){
 		//reset els
 		$(".voted").removeClass("voted");
+		this.addToPlaylistButton.removeClass('grabbed');
 
+		this.grabCounter.text(0);
 		this.voteUpCounter.text(0);
 		this.voteDownCounter.text(0);
 
@@ -235,6 +290,7 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 
 		var	totalVoted = song.updubs - song.downdubs,
 			cookie = Dubtrack.helpers.cookie.get('dub-' + Dubtrack.room.model.get("_id")),
+			cookieGrab = Dubtrack.helpers.cookie.get('grab-' + Dubtrack.room.model.get("_id")),
 			dubsong = Dubtrack.helpers.cookie.get('dub-song'),
 			addsign = "";
 
@@ -247,8 +303,13 @@ Dubtrack.View.PlayerController = Backbone.View.extend({
 			else this.voteDown.addClass("voted");
 		}
 
+		if(cookieGrab){
+			this.addToPlaylistButton.addClass('grabbed');
+		}
+
 		this.voteUpCounter.text(song.updubs);
 		this.voteDownCounter.text(song.downdubs);
+		if(song.grabs) this.grabCounter.text(song.grabs);
 	},
 
 	volumeControl : function(){

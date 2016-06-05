@@ -6,7 +6,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 
 	el : $('#chat'),
 
-	chatSoundFilter : 'none',
+	chatSoundFilter : 'off',
 
 	_type_message : null,
 
@@ -17,7 +17,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		"click .setOnChatNotifications" : "setSoundOn",
 		"click .setOffChatNotifications" : "setSoundOff",
 		"click .setMentionChatNotifications" : "setSoundMention",
-        "click .disableVideo-el": "disableVideo",
+		"click .disableVideo-el": "disableVideo",
 		"click a.chat-commands": "displayChatHelp",
 		"click #new-messages-counter": "clickChatCounter",
 		"click .display-room-users": "displayRoomUsers",
@@ -36,9 +36,50 @@ Dubtrack.View.chat = Backbone.View.extend({
 		this.model = new Dubtrack.Collection.chat();
 		this.model.url = this.chatEndPointUrl;
 		this.model.bind("add", this.appendItem, this);
-        
-        this.disableVideoElBtn = this.$('.disableVideo-el');
 
+		this.disableVideoElBtn = this.$('.disableVideo-el');
+
+		//holder for last chat user item
+		this.lastItemChatUser = false;
+		this.lastItemEl = false;
+		this.user_muted = false;
+
+		this.chatMessageWarningCounter = 0;
+		this.lastSentChatMessage = 0;
+
+		this.render();
+
+		Dubtrack.helpers.sendRequest(this.chatEndPointUrl, {}, "get", function(err, r){
+			this.bindRealtimeEvents();
+
+			//display welcome message
+			this.model.add(new Dubtrack.Model.chat({
+				time: Date.now(),
+				type: 'room-welcome-message'
+			}));
+
+			if(!err && r && r.data){
+				_.each(r.data, function(chat_item){
+					if(chat_item.type == "chat-message"){
+						var chatModel = new Dubtrack.Model.chat(chat_item);
+						this.model.add(chatModel);
+					}else if(chat_item.type == "delete-chat-message"){
+						this.deleteChatItem(chat_item);
+					}else if(chat_item.type == "delete-chat-message-global"){
+						this.deleteUserChat(chat_item);
+					}else if(chat_item.type == "user-ban"){
+						this.removeBanUserChat(chat_item);
+					}
+				}.bind(this));
+
+				this.setSoundMention();
+			}
+		}.bind(this), this);
+
+		if(Dubtrack.HideImages) this.hideImageToggle();
+	},
+
+	bindRealtimeEvents : function(){
 		Dubtrack.Events.bind('realtime:chat-message', this.receiveMessage, this);
 		Dubtrack.Events.bind('realtime:chat-skip', this.receiveMessage, this);
 		Dubtrack.Events.bind('realtime:user-kick', this.receiveMessage, this);
@@ -53,29 +94,14 @@ Dubtrack.View.chat = Backbone.View.extend({
 		Dubtrack.Events.bind('realtime:room_playlist-queue-reorder', this.receiveMessage, this);
 		Dubtrack.Events.bind('realtime:room-lock-queue', this.receiveMessage, this);
 		Dubtrack.Events.bind('realtime:delete-chat-message', this.deleteChatItem, this);
-		//Dubtrack.Events.bind('realtime:user-pause-queue', this.receiveMessage, this);
+		Dubtrack.Events.bind('realtime:delete-chat-message-global', this.deleteUserChat, this);
+		Dubtrack.Events.bind('realtime:room_playlist-queue-update-grabs', this.playlistSongGrabs, this);
+		Dubtrack.Events.bind('realtime:user-pause-queue-mod', this.receiveMessage, this);
 
-		//subscribe after 2s
-		setTimeout(function(){
-			Dubtrack.Events.bind('realtime:user-join', this.userJoin, this);
-		}, 5000);
+		Dubtrack.Events.bind('realtime:user-join', this.userJoin, this);
+		Dubtrack.Events.bind('realtime:user-leave', this.userLeave, this);
 
 		Dubtrack.Events.bind('realtime:user-update-' + Dubtrack.session.id, this.updateImage, this);
-
-		//holder for last chat user item
-		this.lastItemChatUser = false;
-		this.lastItemEl = false;
-		this.user_muted = false;
-
-		this.render();
-
-		//display welcome message
-		this.model.add(new Dubtrack.Model.chat({
-			time: Date.now(),
-			type: 'room-welcome-message'
-		}));
-
-		if(Dubtrack.HideImages) this.hideImageToggle();
 	},
 
 	hideImageToggleClick : function(){
@@ -104,22 +130,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		this.$('.chat-messages').scrollTop(height);
 		this.$('.chat-messages').perfectScrollbar('update');
 	},
-    disableVideo: function(){
-		var isOn;
-		if (!this.isdisableVideo) {
-			this.isdisableVideo = true;
-			$('.playerElement').remove();
-            $('.chat-option-buttons-video span').css('color','white');
-			this.disableVideoElBtn.addClass('active');
-			isOn = "on";
-		} else {
-			this.isdisableVideo = false;
-			Dubtrack.room.player.reloadVideo();
-            $('.chat-option-buttons-video span').css('color','#878c8e');
-			this.disableVideoElBtn.removeClass('active');
-			isOn = "off";
-		}
-	},
+
 	clearChat : function(){
 		this.model.reset({});
 		Dubtrack.room.chat._messagesEl.find('li').remove();
@@ -135,6 +146,28 @@ Dubtrack.View.chat = Backbone.View.extend({
 		this.displayChat();
 
 		return false;
+	},
+
+	disableVideo: function(){
+		var isOn;
+		if (!this.isdisableVideo) {
+			this.isdisableVideo = true;
+			if(Dubtrack.room.player.YTplayerDelegate) Dubtrack.room.player.YTplayerDelegate.close();
+			if(Dubtrack.room.player.SCplayerDelegate) Dubtrack.room.player.SCplayerDelegate.close();
+			Dubtrack.room.player.YTplayerDelegate = null;
+			Dubtrack.room.player.SCplayerDelegate = null;
+
+			$('.playerElement').remove();
+			$('.chat-option-buttons-video span').css('color','white');
+			this.disableVideoElBtn.addClass('active');
+			isOn = "on";
+		} else {
+			this.isdisableVideo = false;
+			Dubtrack.room.player.reloadVideo();
+			$('.chat-option-buttons-video span').css('color','#878c8e');
+			this.disableVideoElBtn.removeClass('active');
+			isOn = "off";
+		}
 	},
 
 	muteUserRealtime: function(r){
@@ -154,10 +187,11 @@ Dubtrack.View.chat = Backbone.View.extend({
 	displayRoomUsers: function(){
 		if(Dubtrack.room && Dubtrack.room.$el){
 			Dubtrack.room.$el.removeClass('display-chat-settings').addClass('display-users-rooms');
-			Dubtrack.room.$el.find('.chat_tools').find('.active').removeClass('active');
-			Dubtrack.room.$el.find('.icon-people').addClass('active');
 
-			if(Dubtrack.room && Dubtrack.room.users) Dubtrack.room.users.resetEl();
+			if(Dubtrack.room && Dubtrack.room.users){
+				Dubtrack.room.users.resetEl();
+				Dubtrack.room.users.displayActiveUsers();
+			}
 		}
 
 		return false;
@@ -166,9 +200,9 @@ Dubtrack.View.chat = Backbone.View.extend({
 	displayChat: function(){
 		if(Dubtrack.room && Dubtrack.room.$el){
 			Dubtrack.room.$el.removeClass('display-users-rooms display-chat-settings');
-			Dubtrack.room.$el.find('.chat_tools').find('.active').removeClass('active');
-			Dubtrack.room.$el.find('.icon-chat').addClass('active');
 		}
+
+		this.clickChatCounter();
 
 		return false;
 	},
@@ -176,64 +210,66 @@ Dubtrack.View.chat = Backbone.View.extend({
 	displayChatOptions: function(){
 		if(Dubtrack.room && Dubtrack.room.$el){
 			Dubtrack.room.$el.removeClass('display-users-rooms').addClass('display-chat-settings');
-			Dubtrack.room.$el.find('.chat_tools').find('.active').removeClass('active');
-			Dubtrack.room.$el.find('.icon-chatsettings').addClass('active');
 		}
 
 		return false;
 	},
 
-	updateImage: function(r){
+	updateImage: function(r) {
 		this.refreshImage = new Date().getTime();
 
-		$.each(this.$("ul.chat-main li:regex(class, .*user-" +  r.user._id.toLowerCase() + ".*)"), function(){
-			$(this).find('.image_row img').attr('src', r.img);
-		});
+		if (r && r.img && r.img.version) {
+			var imageUrl = Dubtrack.config.apiUrl + Dubtrack.config.urls.userImage.replace(':id', Dubtrack.session.id);
+			this.$('ul.chat-main li.user-' + r.user._id + ' .image_row img').attr('src', imageUrl);
+		}
 	},
 
 	render : function(){
-		var self = this;
-
-		//this.$el.attr( "id", "pusher_chat_widget" );
-
 		this.$el.html( _.template( Dubtrack.els.templates.chat.chatContainer, {} ) );
+		this.$('#new-messages-counter').hide();
 
 		this._messageInputEl = this.$('input#chat-txt-message');
 		this._messagesEl = this.$('ul.chat-main');
 		this.chatSoundHtmlEl = this.$('a.chatSound');
 
 		this.renderSound = false;
-		this.chatSoundFilter = false;
 
 		this.chatCmdEl = this.$(".chat-commands");
 
 		this.loadingHistory = this.$(".chatLoading");
 
 		this.globalNotificationsEl = this.$("ul.globalNotifications");
-		/*
-		$.each(history, function(){
-			if(this.type == "chat-message")
-				Chat.messageReceived(this);
-		});*/
 
 		this.renderSound = true;
 		this.isScrolling = false;
 
 		this.newMessageCounter = 0;
 
-		self.createSound();
-		this.setSoundMention();
+		this.createSound();
 
 		this.$('.chat-messages').perfectScrollbar({
-			wheelSpeed: 50,
 			suppressScrollX: true,
 			wheelPropagation: false,
-			onscrollCallback: function(scrollY, height){
-				self.onChatScroll(scrollY, height);
-			}
+			minScrollbarLength: 40
 		});
 
+		this.$('.chat-messages').on('ps-scroll-y', function (e) {
+			if(!e || !e.target) return;
+
+			this.onChatScroll((e.target.scrollTop + e.target.offsetHeight), e.target.scrollHeight);
+		}.bind(this));
+
 		return this;
+	},
+
+	onChatScroll: function(scrollY, scrollHeight){
+		if( scrollHeight - 250 > scrollY ){
+			this.scrollToBottom = false;
+		}else{
+			this.scrollToBottom = true;
+			this.$('#new-messages-counter').hide();
+			this.newMessageCounter = 0;
+		}
 	},
 
 	clickChatCounter: function(){
@@ -243,18 +279,10 @@ Dubtrack.View.chat = Backbone.View.extend({
 		return false;
 	},
 
-	onChatScroll: function(scrollY, height){
-		if( height - 200 > scrollY ){
-			this.scrollToBottom = false;
-		}else{
-			this.scrollToBottom = true;
-			this.$('#new-messages-counter').hide();
-			this.newMessageCounter = 0;
-		}
-	},
-
 	receiveMessage: function(r){
 		var id = (r.user && "_id" in r.user) ? r.user._id : false;
+
+		if(r.type === 'user-ban') this.removeBanUserChat(r);
 
 		if(Dubtrack.session && id && r.type === "chat-message" && r.user._id === Dubtrack.session.get("_id") ) return;
 
@@ -282,6 +310,26 @@ Dubtrack.View.chat = Backbone.View.extend({
 		if(user) return;
 
 		Dubtrack.AvatarUsersRegistered.add(r.user);
+
+		var chatModel = new Dubtrack.Model.chat(r);
+		this.model.add(chatModel);
+	},
+
+	playlistSongGrabs: function(r){
+		var chatModel = new Dubtrack.Model.chat(r);
+		this.model.add(chatModel);
+	},
+
+	userLeave: function(r){
+		var id = (r.user && "_id" in r.user) ? r.user._id : false;
+
+		if(Dubtrack.session && id && r.user._id === Dubtrack.session.get("_id") ) return;
+
+		var user = Dubtrack.room.users.collection.findWhere({
+			"userid" : r.user._id
+		});
+
+		if(!user) return;
 
 		var chatModel = new Dubtrack.Model.chat(r);
 		this.model.add(chatModel);
@@ -422,15 +470,22 @@ Dubtrack.View.chat = Backbone.View.extend({
 	appendItem: function(chatModel){
 		var chatItem;
 
-		if(!this.scrollToBottom){
-			this.$('#new-messages-counter').show();
-			this.newMessageCounter++;
-			if(this.newMessageCounter > 1){
-				this.$('#new-messages-counter .messages-display').html(this.newMessageCounter + " new messages");
-			}else{
-				this.$('#new-messages-counter .messages-display').html(this.newMessageCounter + " new message");
+		/*if(this.model.models.length > 1000){
+			var model = this.model.at(0);
+
+			if(model){
+				this._messagesEl.find("#" + model.get('chatid')).remove();
+				this.model.remove(model);
+
+				try{
+					this.$('.chat-messages').scrollTop(0);
+					this.$('.chat-messages').perfectScrollbar('update');
+					var height = this.$('.chat-messages')[0].scrollHeight;
+					this.$('.chat-messages').scrollTop(height);
+					this.$('.chat-messages').perfectScrollbar('update');
+				}catch(ex){}
 			}
-		}
+		}*/
 
 		switch(chatModel.get('type')){
 			case "chat-skip":
@@ -446,17 +501,33 @@ Dubtrack.View.chat = Backbone.View.extend({
 				this.playSound(false);
 			break;
 			case "user-join":
-				this.lastItemChatUser = false;
-				this.lastItemEl = false;
+				if(Dubtrack.room.model.get('displayUserJoin')){
+					this.lastItemChatUser = false;
+					this.lastItemEl = false;
 
-				chatItem = new Dubtrack.View.chatJoinItem({
-					model: chatModel
-				});
+					chatItem = new Dubtrack.View.chatJoinItem({
+						model: chatModel
+					});
 
-				chatItem.$el.appendTo( this._messagesEl );
+					chatItem.$el.appendTo( this._messagesEl );
 
-				this.playSound(false);
-			break;
+					this.playSound(false);
+				}
+				break;
+			case "user-leave":
+				if(Dubtrack.room.model.get('displayUserLeave')){
+					this.lastItemChatUser = false;
+					this.lastItemEl = false;
+
+					chatItem = new Dubtrack.View.chatLeaveItem({
+						model: chatModel
+					});
+
+					chatItem.$el.appendTo( this._messagesEl );
+
+					this.playSound(false);
+				}
+				break;
 			case "user-kick":
 				this.lastItemChatUser = false;
 				this.lastItemEl = false;
@@ -541,6 +612,20 @@ Dubtrack.View.chat = Backbone.View.extend({
 
 				this.playSound(false);
 				break;
+			case "room_playlist-queue-update-grabs":
+				if(Dubtrack.room.model.get('displayUserGrab')){
+					this.lastItemChatUser = false;
+					this.lastItemEl = false;
+
+					chatItem = new Dubtrack.View.grabbedPlaylistRoom({
+						model: chatModel
+					});
+
+					chatItem.$el.appendTo( this._messagesEl );
+
+					this.playSound(false);
+				}
+				break;
 
 			case "room_playlist-queue-reorder":
 				this.lastItemChatUser = false;
@@ -566,7 +651,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 
 				this.playSound(false);
 				break;
-			case "user-pause-queue":
+			case "user-pause-queue-mod":
 				this.lastItemChatUser = false;
 				this.lastItemEl = false;
 
@@ -628,6 +713,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 					this.lastItemEl.$('.text').append('<p>' + chatModel.get('message') + '</p>');
 					this.lastItemEl.model.set('id', chatModel.get('chatid'));
 					this.lastItemEl.updateTime(chatModel.get('time'));
+					this.lastItemEl.$el.removeClass('deleted-message');
 				}else{
 					this.lastItemChatUser = user;
 					this.lastItemEl = chatItem;
@@ -636,13 +722,33 @@ Dubtrack.View.chat = Backbone.View.extend({
 					chatItem.render();
 				}
 
-				if(Dubtrack.session && Dubtrack.session.get('username')){
-					var regex = new RegExp("@" + Dubtrack.session.get('username') + "\\b", 'i');
-					var mention = regex.test(chatModel.get('message'));
-					this.playSound(mention);
+				var regex_chat_text_all = new RegExp("@everyone\\b", 'g');
+				var regex_chat_text_staff = new RegExp("@mods\\b", 'g');
+				var regex_chat_text_djs = new RegExp("@djs\\b", 'g');
+
+				if(Dubtrack.loggedIn){
+					try{
+						var regex = new RegExp("@" + Dubtrack.session.get('username') + "\\b", 'ig');
+						var mention = regex.test(chatModel.get('message'));
+						var mentionAll = regex_chat_text_all.test(chatModel.get('message')) && (Dubtrack.helpers.isDubtrackAdmin(user._id) || Dubtrack.room.users.getIfRoleHasPermission(user._id, 'chat-mention'));
+						var mentionStaff = regex_chat_text_staff.test(chatModel.get('message')) && (Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || Dubtrack.room.users.getIfRoleHasPermission(Dubtrack.session.id, 'chat-mention'));
+						var djmentionStaff = regex_chat_text_djs.test(chatModel.get('message')) && (Dubtrack.helpers.isDubtrackAdmin(user._id) || Dubtrack.room.users.getIfRoleHasPermission(user._id, 'chat-mention')) && (Dubtrack.room.player && Dubtrack.room.player.activeQueueCollection && Dubtrack.room.player.activeQueueCollection.findWhere({userid : Dubtrack.session.id}));
+
+						this.playSound(mention || mentionAll || mentionStaff || djmentionStaff);
+					}catch(ex){}
 				}else{
 					this.playSound(false);
 				}
+		}
+
+		if(!this.scrollToBottom){
+			this.$('#new-messages-counter').show();
+			this.newMessageCounter++;
+			if(this.newMessageCounter > 1){
+				this.$('#new-messages-counter .messages-display').html(this.newMessageCounter + " new messages");
+			}else{
+				this.$('#new-messages-counter .messages-display').html(this.newMessageCounter + " new message");
+			}
 		}
 	},
 
@@ -702,7 +808,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 				}
 			}
 
-			if(mention){
+			if(this.chatSoundFilter != "off" && mention){
 				try{
 					if(this.mentionChatSound) this.mentionChatSound.play();
 				}catch(ex){
@@ -738,7 +844,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 
 
 		if(message.indexOf("/kick @") === 0){
-			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
+			tmpstr = message.replace(/(@[A-Za-z0-9\.\-\_]+)/g, function(str){
 				username = str.replace("@", "");
 				return str;
 			});
@@ -748,7 +854,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		}
 
 		if(message.indexOf("/ban @") === 0){
-			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
+			tmpstr = message.replace(/(@[A-Za-z0-9\.\-\_]+)/g, function(str){
 				username = str.replace("@", "");
 				return str;
 			});
@@ -758,7 +864,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		}
 
 		if(message.indexOf("/unban @") === 0){
-			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
+			tmpstr = message.replace(/(@[A-Za-z0-9\.\-\_]+)/g, function(str){
 				username = str.replace("@", "");
 				return str;
 			});
@@ -768,7 +874,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		}
 
 		if(message.indexOf("/setmod @") === 0){
-			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
+			tmpstr = message.replace(/(@[A-Za-z0-9\.\-\_]+)/g, function(str){
 				username = str.replace("@", "");
 				return str;
 			});
@@ -778,7 +884,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		}
 
 		if(message.indexOf("/unsetmod @") === 0){
-			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
+			tmpstr = message.replace(/(@[A-Za-z0-9\.\-\_]+)/g, function(str){
 				username = str.replace("@", "");
 				return str;
 			});
@@ -788,7 +894,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		}
 
 		if(message.indexOf("/setresdj @") === 0){
-			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
+			tmpstr = message.replace(/(@[A-Za-z0-9\.\-\_]+)/g, function(str){
 				username = str.replace("@", "");
 				return str;
 			});
@@ -798,7 +904,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		}
 
 		if(message.indexOf("/unsetresdj @") === 0){
-			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
+			tmpstr = message.replace(/(@[A-Za-z0-9\.\-\_]+)/g, function(str){
 				username = str.replace("@", "");
 				return str;
 			});
@@ -808,7 +914,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		}
 
 		if(message.indexOf("/setdj @") === 0){
-			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
+			tmpstr = message.replace(/(@[A-Za-z0-9\.\-\_]+)/g, function(str){
 				username = str.replace("@", "");
 				return str;
 			});
@@ -818,7 +924,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		}
 
 		if(message.indexOf("/unsetdj @") === 0){
-			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
+			tmpstr = message.replace(/(@[A-Za-z0-9\.\-\_]+)/g, function(str){
 				username = str.replace("@", "");
 				return str;
 			});
@@ -828,7 +934,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		}
 
 		if(message.indexOf("/setvip @") === 0){
-			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
+			tmpstr = message.replace(/(@[A-Za-z0-9\.\-\_]+)/g, function(str){
 				username = str.replace("@", "");
 				return str;
 			});
@@ -838,7 +944,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		}
 
 		if(message.indexOf("/unsetvip @") === 0){
-			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
+			tmpstr = message.replace(/(@[A-Za-z0-9\.\-\_]+)/g, function(str){
 				username = str.replace("@", "");
 				return str;
 			});
@@ -848,7 +954,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		}
 
 		if(message.indexOf("/setmanager @") === 0){
-			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
+			tmpstr = message.replace(/(@[A-Za-z0-9\.\-\_]+)/g, function(str){
 				username = str.replace("@", "");
 				return str;
 			});
@@ -858,7 +964,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		}
 
 		if(message.indexOf("/unsetmanager @") === 0){
-			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
+			tmpstr = message.replace(/(@[A-Za-z0-9\.\-\_]+)/g, function(str){
 				username = str.replace("@", "");
 				return str;
 			});
@@ -868,7 +974,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		}
 
 		if(message.indexOf("/setowner @") === 0){
-			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
+			tmpstr = message.replace(/(@[A-Za-z0-9\.\-\_]+)/g, function(str){
 				username = str.replace("@", "");
 				return str;
 			});
@@ -878,7 +984,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		}
 
 		if(message.indexOf("/unsetowner @") === 0){
-			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
+			tmpstr = message.replace(/(@[A-Za-z0-9\.\-\_]+)/g, function(str){
 				username = str.replace("@", "");
 				return str;
 			});
@@ -888,7 +994,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		}
 
 		if(message.indexOf("/unmute @") === 0){
-			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
+			tmpstr = message.replace(/(@[A-Za-z0-9\.\-\_]+)/g, function(str){
 				username = str.replace("@", "");
 				return str;
 			});
@@ -898,7 +1004,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		}
 
 		if(message.indexOf("/mute @") === 0){
-			tmpstr = message.replace(/(@[A-Za-z0-9_.]+)/g, function(str){
+			tmpstr = message.replace(/(@[A-Za-z0-9\.\-\_]+)/g, function(str){
 				username = str.replace("@", "");
 				return str;
 			});
@@ -911,6 +1017,40 @@ Dubtrack.View.chat = Backbone.View.extend({
 			this.skipSong();
 			return;
 		}
+
+		if(Date.now() - this.lastSentChatMessage < 1500){
+			this.chatMessageWarningCounter++;
+
+			if(this.chatMessageWarningCounter > 4){
+				this.model.add(new Dubtrack.Model.chat({
+					user: {
+						_force_updated: 1448781184094,
+						userInfo: {
+							_id: "565aa52e6fe207830052f580",
+							userid: "565aa52e6fe207830052f57f",
+							__v: 0
+						},
+						_id: "565aa52e6fe207830052f57f",
+						username: "dubtrack_bot",
+						status: 1,
+						roleid: 1,
+						dubs: 0,
+						created: 1448781102432,
+						__v: 0
+					},
+					message: 'whoa @' + Dubtrack.session.get('username') + '! slow down or you will be temporarily blocked from chatting',
+					time: Date.now(),
+					realTimeChannel: Dubtrack.room.model.get('realTimeChannel'),
+					type: 'chat-message'
+				}));
+
+				this.chatMessageWarningCounter = 0;
+			}
+		}else{
+			this.chatMessageWarningCounter = 0;
+		}
+
+		this.lastSentChatMessage = Date.now();
 
 		chatModel = new Dubtrack.Model.chat({
 			user: Dubtrack.session.toJSON(),
@@ -931,10 +1071,27 @@ Dubtrack.View.chat = Backbone.View.extend({
 					var chatItem = new Dubtrack.View.chatLoadingItem();
 					chatItem.$el.appendTo( this._messagesEl );
 					if(r && r.status && r.status == 429){
-						chatItem.$el.addClass('system-error').html('You reached chat quota limit, please wait 15 mins before retrying');
+						try{
+							var status_text = JSON.parse(r.responseText);
+							if(status_text && status_text.data && status_text.data.details && status_text.data.details.message){
+								chatItem.$el.addClass('system-error').html('You reached chat quota limit, please wait ' + status_text.data.details.message + ' before retrying');
+							}else{
+								chatItem.$el.addClass('system-error').html('You reached chat quota limit, please wait 10 mins before retrying');
+							}
+						}catch(ex){
+							chatItem.$el.addClass('system-error').html('You reached chat quota limit, please wait 10 mins before retrying');
+						}
 					}else{
 						chatItem.$el.addClass('system-error').html('An error occurred sending chat message');
 					}
+
+					try{
+						this.$('.chat-messages').scrollTop(0);
+						this.$('.chat-messages').perfectScrollbar('update');
+						var height = this.$('.chat-messages')[0].scrollHeight;
+						this.$('.chat-messages').scrollTop(height);
+						this.$('.chat-messages').perfectScrollbar('update');
+					}catch(ex){}
 				}.bind(this)
 			});
 		}
@@ -945,8 +1102,46 @@ Dubtrack.View.chat = Backbone.View.extend({
 
 	deleteChatItem: function(r){
 		if(r.chatid && r.user && r.user.username){
-			this.$('.chat-main li#' + r.chatid + ' .text').html('<p class="deleted">chat message deleted by @' + r.user.username + '</p>');
-			this.$('.chat-main li#' + r.chatid).attr('id', '').find('.chatDelete').remove();
+			this.$('.chat-main li.chat-id-' + r.chatid + ' .text').html('<p class="deleted">chat message deleted by @' + r.user.username + '</p>');
+			this.$('.chat-main li.chat-id-' + r.chatid).addClass('deleted-message')
+
+			try{
+				this.$('.chat-messages').scrollTop(0);
+				this.$('.chat-messages').perfectScrollbar('update');
+				var height = this.$('.chat-messages')[0].scrollHeight;
+				this.$('.chat-messages').scrollTop(height);
+				this.$('.chat-messages').perfectScrollbar('update');
+			}catch(ex){}
+		}
+	},
+
+	deleteUserChat: function(r){
+		if(r.userdid && r.user && r.user.username){
+			this.$('.chat-main li.user-' + r.userdid + ' .text').html('<p class="deleted">chat message deleted by @' + r.user.username + '</p>');
+			this.$('.chat-main li.user-' + r.userdid).addClass('deleted-message')
+
+			try{
+				this.$('.chat-messages').scrollTop(0);
+				this.$('.chat-messages').perfectScrollbar('update');
+				var height = this.$('.chat-messages')[0].scrollHeight;
+				this.$('.chat-messages').scrollTop(height);
+				this.$('.chat-messages').perfectScrollbar('update');
+			}catch(ex){}
+		}
+	},
+
+	removeBanUserChat: function(r){
+		if(r.user && r.user.username && r.kickedUser){
+			this.$('.chat-main li.user-' + r.kickedUser._id + ' .text').html('<p class="deleted">user was banned by @' + r.user.username + '</p>');
+			this.$('.chat-main li.user-' + r.kickedUser._id).addClass('deleted-message');
+
+			try{
+				this.$('.chat-messages').scrollTop(0);
+				this.$('.chat-messages').perfectScrollbar('update');
+				var height = this.$('.chat-messages')[0].scrollHeight;
+				this.$('.chat-messages').scrollTop(height);
+				this.$('.chat-messages').perfectScrollbar('update');
+			}catch(ex){}
 		}
 	},
 
@@ -956,8 +1151,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 	},
 
 	setGuestCount: function(users){
-		this.$('.room-guest-counter').html(users);
-		$('.mobile-guests-counter').html(users);
+		this.$('.room-guest-counter').html("+" + users);
 	},
 
 	skipSong: function(){
@@ -1005,6 +1199,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		Dubtrack.cache.users.getByUsername(username, function(err, user){
 			if(err || !user){
 				chatItem.$el.addClass('system-error').html('Invalid user: @' + username);
+				return;
 			}
 
 			var url = Dubtrack.config.apiUrl + Dubtrack.config.urls[role].replace(":roomid", Dubtrack.room.model.id);
@@ -1067,6 +1262,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		Dubtrack.cache.users.getByUsername(username, function(err, user){
 			if(err || !user){
 				chatItem.$el.addClass('system-error').html('Invalid user: @' + username);
+				return;
 			}
 
 			var url = Dubtrack.config.apiUrl + Dubtrack.config.urls.muteUser.replace(":roomid", Dubtrack.room.model.id);
@@ -1099,6 +1295,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		Dubtrack.cache.users.getByUsername(username, function(err, user){
 			if(err || !user){
 				chatItem.$el.addClass('system-error').html('Invalid user: @' + username);
+				return;
 			}
 
 			var url = Dubtrack.config.apiUrl + Dubtrack.config.urls.muteUser.replace(":roomid", Dubtrack.room.model.id);
@@ -1130,6 +1327,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		Dubtrack.cache.users.getByUsername(username, function(err, user){
 			if(err || !user){
 				chatItem.$el.addClass('system-error').html('Invalid user: @' + username);
+				return;
 			}
 
 			var url = Dubtrack.config.apiUrl + Dubtrack.config.urls.banUser.replace(":roomid", Dubtrack.room.model.id);
@@ -1158,6 +1356,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		Dubtrack.cache.users.getByUsername(username, function(err, user){
 			if(err || !user){
 				chatItem.$el.addClass('system-error').html('Invalid user: @' + username);
+				return;
 			}
 
 			var url = Dubtrack.config.apiUrl + Dubtrack.config.urls.banUser.replace(":roomid", Dubtrack.room.model.id);
@@ -1189,6 +1388,7 @@ Dubtrack.View.chat = Backbone.View.extend({
 		Dubtrack.cache.users.getByUsername(username, function(err, user){
 			if(err || !user){
 				chatItem.$el.addClass('system-error').html('Invalid user: @' + username);
+				return;
 			}
 
 			var url = Dubtrack.config.apiUrl + Dubtrack.config.urls.kickUser.replace(":roomid", Dubtrack.room.model.id);

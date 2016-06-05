@@ -12,7 +12,6 @@ Dubtrack.View.RoomInfo  = Backbone.View.extend({
 		this.$('.room-info-display-wrapper').html( _.template( Dubtrack.els.templates.rooms.roomModalView, room_data));
 
 		this.$('.room-info-display-wrapper').perfectScrollbar({
-			wheelSpeed: 30,
 			suppressScrollX: true,
 			wheelPropagation: false
 		});

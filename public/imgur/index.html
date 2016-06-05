@@ -19,13 +19,17 @@
 	<body>
 		<div class="container">
 			<div class="dubtrack-logo"><img src="http://www.dubtrack.fm/assets/images/media/pic_notfound.jpg" alt="Dubtrack.fm" /></div>
-		
+
+			<div class="image-limits">
+				Recommended resolution: 500x500<br>Max size: 1 MB
+			</div>
+
 			<div class="image_upload">
 				<div class="fileinput-button">
-					<input id="fileupload" type="file" name="image" data-url="https://api.dubtrack.fm/user/image">
+					<input id="fileupload" type="file" name="image" accept=".jpg, .jpeg, image/jpeg, .png, image/png, .gif, image/gif, .bmp, image/bmp" data-url="https://api.dubtrack.fm/user/image">
 					<button class="btn btn-default btn-lg btn-block">
 						<i class="glyphicon glyphicon-plus"></i>
-						Upload a file...
+						Upload an image...
 					</button>
 				</div>
 
@@ -47,21 +51,21 @@
 				<div id="error" class="alert alert-danger">
 					gifie does not work with your browser
 				</div>
-				
+
 				<button id="record" type="button" class="btn btn-default btn-lg btn-block">
 					<span class="glyphicon glyphicon-facetime-video"></span>
 					<span class="info">Record</span>
 				</button>
-			
+
 				<input id="countdown" type="text" data-max="200" data-displayInput="false" data-readOnly="true">
 				<input id="loader" type="text" data-cursor="true" data-displayInput="false" data-readOnly="true">
-			
+
 				<div>
 					<a id="gifLink" target="_blank">
 						<img id="gif" class="img-rounded">
 					</a>
 				</div>
-			
+
 				<div id="imgur">
 					<a class="btn btn-default" href="#">
 						<span class="glyphicon glyphicon-cloud-upload"></span>

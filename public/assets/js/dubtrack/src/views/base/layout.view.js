@@ -9,6 +9,7 @@ Dubtrack.View.LayoutView = Backbone.View.extend({
 		"mouseenter #header-global .header-left-navigation h1" : "setActiveMenu",
 		"click #header-global #header_login #login-link" : "displayLogin",
 		"click #header-global #header_login #signup-link" : "displaySignup",
+		"click #header-global .header-donate a" : "displayDonate",
 		"click #header-global .user-messages" : "setActiveMenuRight",
 		"click #mobile-room-menu .chat-button" : "diplayChatLayout",
 		"click #mobile-room-menu .player-button" : "diplayPlayerLayout"
@@ -26,6 +27,14 @@ Dubtrack.View.LayoutView = Backbone.View.extend({
 		e.preventDefault();
 
 		Dubtrack.app.navigate('/signup', {
+			trigger: true
+		});
+	},
+
+	displayDonate : function(e){
+		e.preventDefault();
+
+		Dubtrack.app.navigate('/donate', {
 			trigger: true
 		});
 	},
@@ -61,11 +70,11 @@ Dubtrack.View.LayoutView = Backbone.View.extend({
 		this.menu_left = new Dubtrack.View.MainLeftMenuView();
 
 		$('body').bind('click', function(e){
-			if($(e.target).parents("#main-menu-left").length === 0){
+			if($(e.target).parents("#main-menu-left").length === 0 && !$(e.target).is("#main-menu-left")){
 				$("html").removeClass("menu-left-in");
 			}
 
-			if($(e.target).parents("#main-menu-right").length === 0){
+			if($(e.target).parents("#main-menu-right").length === 0 && !$(e.target).is("#main-menu-right")){
 				$("html").removeClass("menu-right-in");
 				Dubtrack.layout.menu_right.message_view.$el.removeClass('view-message-details');
 			}
@@ -76,6 +85,8 @@ Dubtrack.View.LayoutView = Backbone.View.extend({
 		});
 
 		this.main_login_window = new Dubtrack.View.LoginMainWindowView();
+
+		this.donate_window = new Dubtrack.View.DonateWindow();
 
 		this.getNewMessages();
 	},
@@ -123,9 +134,13 @@ Dubtrack.View.LayoutView = Backbone.View.extend({
 		});
 	},
 
-	updateImage: function(r){
-		if(r && r.img && r.img.url){
-			this.$('figure.user-image img').attr('src', r.img.url);
+	updateImage: function(r) {
+		if (r && r.img && r.img.version) {
+			var imageUrl = Dubtrack.config.apiUrl + Dubtrack.config.urls.userImage.replace(':id', Dubtrack.session.id);
+
+			imageUrl += '?v=' + r.img.version;
+
+			this.$('figure.user-image img').attr('src', imageUrl);
 		}
 	},
 

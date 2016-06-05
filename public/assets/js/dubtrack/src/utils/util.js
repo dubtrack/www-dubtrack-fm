@@ -237,6 +237,45 @@ Dubtrack.els.templates = {
 											'<input class="input" name="name" id="roomName" placeholder="' + dubtrack_lang.roomForm.roomNameLabel + '" type="text" value="<%- name %>" maxlength="100">' +
 										'</div>' +
 									'</div>' +
+									'<div class="control-group">' +
+										'<label class="control-label display-block">' +
+											'Room display' +
+										'</label>' +
+										'<div class="controls textarea">' +
+											'<select name="roomDisplay" id="roomDisplaySelect">' +
+												'<option value="public"<% if(roomDisplay == "public"){%> selected<%}%>>Public</option>' +
+												'<option value="private"<% if(roomDisplay == "private"){%> selected<%}%>>Private (Beta)</option>' +
+											'</select>' +
+										'</div>' +
+									'</div>' +
+									'<div class="control-group" id="room-password-control-group">' +
+										'<label class="control-label display-block">' +
+											'Room password' +
+										'</label>' +
+										'<div class="controls">' +
+											'<input class="input" name="room-password" id="roomPassword" placeholder="Room password" type="password" maxlength="100">' +
+										'</div>' +
+									'</div>' +
+									'<div class="control-group">' +
+										'<label class="control-label display-block">' +
+											'Display in search' +
+										'</label>' +
+										'<div class="controls textarea">' +
+											'<select name="displayInSearch" id="displayInSearchSelect">' +
+												'<option value="1"<% if(displayInSearch){%> selected<%}%>>Yes</option>' +
+												'<option value="0"<% if(!displayInSearch){%> selected<%}%>>No</option>' +
+											'</select>' +
+										'</div>' +
+										'<label class="control-label display-block">' +
+											'Display in lobby' +
+										'</label>' +
+										'<div class="controls textarea">' +
+											'<select name="displayInLobby" id="displayInLobbySelect">' +
+												'<option value="1"<% if(displayInLobby){%> selected<%}%>>Yes</option>' +
+												'<option value="0"<% if(!displayInLobby){%> selected<%}%>>No</option>' +
+											'</select>' +
+										'</div>' +
+									'</div>' +
 									/*'<div class="control-group">' +
 										'<label class="control-label" for="">' +
 											'Room url' +
@@ -245,24 +284,87 @@ Dubtrack.els.templates = {
 											'<span class="label_description">dubtrack.fm/join/<%- roomUrl %></span>' +
 											'<input class="input" name="newUrl" placeholder="Room url" type="text" value="<%- roomUrl %>">' +
 										'</div>' +
+									'</div>' +*/
+									'<div class="control-group">' +
+										'<label class="control-label display-block">' +
+											dubtrack_lang.roomForm.maxSongLabel + " (minutes)" +
+										'</label>' +
+										'<div class="controls">' +
+											'<input class="input-small" id="maxLengthSongName" name="maxLengthSongValue" placeholder"' + dubtrack_lang.roomForm.maxSongLabel + '" type="number" min="1" max="100000000000000" value="<%- maxLengthSong %>">' +
+										'</div>' +
 									'</div>' +
 									'<div class="control-group">' +
-										'<label class="control-label">' +
-											dubtrack_lang.roomForm.maxSongLabel +
-										'</label>' +
+										'<label class="control-label display-block">Don\'t allow same song to be played until (minutes)</label>' +
 										'<div class="controls">' +
-											'<p class="help-block">' +
-												dubtrack_lang.roomForm.maxSongLabelDes +
-											'</p>' +
-											'<input class="input-small" id="maxLengthSongName" name="max_length_song" placeholder"' + dubtrack_lang.roomForm.maxSongLabel + '" type="text" value="<%- maxLengthSong %>">' +
+											'<input class="input-small" id="timeSongQueueRepeat" name="timeSongQueueRepeat" min="0" max="100000000000000" type="number" value="<%- timeSongQueueRepeat %>">' +
 										'</div>' +
-									'</div>' +*/
+									'</div>' +
+									'<div class="control-group">' +
+										'<label class="control-label display-block">Limit queue length</label>' +
+										'<div class="controls">' +
+											'<select name="limitQueueLength" id="limitQueueLength">' +
+												'<option value="1"<% if(limitQueueLength){%> selected<%}%>>Yes</option>' +
+												'<option value="0"<% if(!limitQueueLength){%> selected<%}%>>No</option>' +
+											'</select>' +
+										'</div>' +
+									'</div>' +
+									'<div class="control-group" id="maxSongQueueLengthContainer">' +
+										'<label class="control-label display-block">Max users in queue</label>' +
+										'<div class="controls">' +
+											'<input class="input-small" id="maxSongQueueLength" name="maxSongQueueLength" min="1" max="100000000000000" type="number" value="<%- maxSongQueueLength %>">' +
+										'</div>' +
+									'</div>' +
+									'<div class="control-group">' +
+										'<label class="control-label display-block">Show Dj\'s songs in queue list</label>' +
+										'<div class="controls">' +
+											'<select name="displayDJinQueue" id="displayDJinQueue">' +
+												'<option value="1"<% if(displayDJinQueue){%> selected<%}%>>Yes</option>' +
+												'<option value="0"<% if(!displayDJinQueue){%> selected<%}%>>No</option>' +
+											'</select>' +
+										'</div>' +
+									'</div>' +
+									'<div class="control-group">' +
+										'<label class="control-label display-block">Show message when someone enters</label>' +
+										'<div class="controls">' +
+											'<select name="displayUserJoin" id="displayUserJoin">' +
+												'<option value="1"<% if(displayUserJoin){%> selected<%}%>>Yes</option>' +
+												'<option value="0"<% if(!displayUserJoin){%> selected<%}%>>No</option>' +
+											'</select>' +
+										'</div>' +
+									'</div>' +
+									'<div class="control-group">' +
+										'<label class="control-label display-block">Show message when someone leaves</label>' +
+										'<div class="controls">' +
+											'<select name="displayUserLeave" id="displayUserLeave">' +
+												'<option value="1"<% if(displayUserLeave){%> selected<%}%>>Yes</option>' +
+												'<option value="0"<% if(!displayUserLeave){%> selected<%}%>>No</option>' +
+											'</select>' +
+										'</div>' +
+									'</div>' +
+									'<div class="control-group">' +
+										'<label class="control-label display-block">Show when someone grabs the current song</label>' +
+										'<div class="controls">' +
+											'<select name="displayUserGrab" id="displayUserGrab">' +
+												'<option value="1"<% if(displayUserGrab){%> selected<%}%>>Yes</option>' +
+												'<option value="0"<% if(!displayUserGrab){%> selected<%}%>>No</option>' +
+											'</select>' +
+										'</div>' +
+									'</div>' +
+									'<div class="control-group">' +
+										'<label class="control-label display-block">Re-queue DJs after play</label>' +
+										'<div class="controls">' +
+											'<select name="recycleDJ" id="recycleDJ">' +
+												'<option value="1"<% if(recycleDJ){%> selected<%}%>>Yes</option>' +
+												'<option value="0"<% if(!recycleDJ){%> selected<%}%>>No</option>' +
+											'</select>' +
+										'</div>' +
+									'</div>' +
 									'<div class="control-group" id="background-room-update">' +
 										'<label class="control-label display-block">' +
-											'Room background' +
+											'Room background (Max size: 2 MB)' +
 										'</label>' +
 										'<div class="controls">' +
-											'<input id="fileupload" type="file" name="room_bg">' +
+											'<input id="fileupload" type="file" name="room_bg" accept=".jpg, .jpeg, image/jpeg, .png, image/png, .gif, image/gif, .bmp, image/bmp">' +
 											'<div id="progress"><div class="bar" style="width: 0%;"></div></div>' +
 										'</div>' +
 									'</div>' +
@@ -271,7 +373,7 @@ Dubtrack.els.templates = {
 											dubtrack_lang.roomForm.roomDescLabel +
 										'</label>' +
 										'<div class="controls textarea">' +
-											'<textarea class="textarea" id="roomDescription" name="description" placeholder="' + dubtrack_lang.roomForm.roomDesc + '" maxlength="1000">' +
+											'<textarea class="textarea" id="roomDescription" name="description" placeholder="' + dubtrack_lang.roomForm.roomDesc + '" maxlength="2000">' +
 												'<%- description %>' +
 											'</textarea>' +
 										'</div>' +
@@ -288,7 +390,7 @@ Dubtrack.els.templates = {
 									'</div>' +
 									'<div class="larger control-group">' +
 										'<label class="control-label display-block">' +
-											'Metadata description (this will be shown on social media sites and google search engines)' +
+											'Metadata description (this will be shown on social media sites and search engines)' +
 										'</label>' +
 										'<div class="controls textarea">' +
 											'<textarea class="textarea mid-textarea" id="metaDescription" name="metaDescription" placeholder="Metadata description" maxlength="255">' +
@@ -340,14 +442,19 @@ Dubtrack.els.templates = {
 							'</form>',
 
 		'roomListItem': '<figure class="roomImage">' +
-							'<% if(currentSong && currentSong.songid){ %>' +
-								'<img src="' + Dubtrack.config.apiUrl + '/song/<%- currentSong.songid %>/image/large" alt="" />' +
+							'<% if(currentSong && currentSong.type == "youtube" && currentSong.fkid){ %>' +
+								'<img src="https://i.ytimg.com/vi/<%- currentSong.fkid %>/mqdefault.jpg" alt="" />' +
+							'<% } else if(currentSong && currentSong.type == "soundcloud"){ %>' +
+								'<img src="https://res.cloudinary.com/hhberclba/image/upload/c_fill,fl_lossy,f_auto,w_320,h_180/default.png" alt="" />' +
 							'<% } else { %>' +
 								'<img src="' + Dubtrack.config.apiUrl + '/room/<%- _id %>/image/thumbnail" alt="" />' +
 							'<% } %>' +
 							'<a class="join" href="/join/<%- roomUrl %>">' +
 								'<span>' + dubtrack_lang.room.tune_in + '</span>' +
 							'</a>' +
+							'<% if(roomDisplay && roomDisplay == "private"){ %>' +
+								'<span class="icon-lock"></span>' +
+							'<% } %>' +
 						'</figure>' +
 						'<div class="user-count">' +
 							'<% if(activeUsers) { %>' +
@@ -360,7 +467,6 @@ Dubtrack.els.templates = {
 								'<span class="name"><%- name %></span>' +
 							'</div>' +
 							'<div class="user-info">' +
-								'<figure></figure>' +
 								'<div class="room-user">' +
 									dubtrack_lang.room.hosted_by +
 									'<a href="/<%- userid %>" class="navigate"></a>' +
@@ -398,7 +504,9 @@ Dubtrack.els.templates = {
 
 		'roomBanListItem' : '<%- _user.username %><span class="actions">unban</span>',
 
-		'roomMuteListItem' : '<%- _user.username %><span class="actions">unmute</span>'
+		'roomMuteListItem' : '<%- _user.username %><span class="actions">unmute</span>',
+
+		'roomStaffListItem' : '<%- _user.username %> - <%- roleid.label %><% if (Dubtrack.room.model.get("userid") != _user._id) { %><span class="actions">remove role</span><% } %>'
 	},
 
 	'chat': {
@@ -423,10 +531,10 @@ Dubtrack.els.templates = {
 									'<span class="setMentionChatNotifications"><i class="icon-volume-high"></i> @Mention</span>' +
 									'<span class="setOffChatNotifications"><i class="icon-volume-mute"></i> Off</span>' +
 								'</div>' +
-                                '<span class="chat-option-header">Video Display</span>' +
-								'<div style="width: 100%" class="chat-option-buttons chat-option-buttons-video">' +
-									'<span class="disableVideo-el">Disable Video</span>' +
-								'</div>' +
+								//'<span class="chat-option-header">Video Display</span>' +
+								//'<div style="width: 100%" class="chat-option-buttons chat-option-buttons-video">' +
+								//	'<span class="disableVideo-el">Disable Video</span>' +
+								//'</div>' +
 							'</div>' +
 							'<div class="chat-container">' +
 								'<div class="chatLoading">' + dubtrack_lang.chat.loadingHistory + '</div>' +
@@ -474,7 +582,7 @@ Dubtrack.els.templates = {
 	},
 
 	'playlist': {
-		'previewContainer' : '<div class="close"><span class="icon-close"></span></div><div class="playerDubContainer"></div><div class="comments-container"></div>',
+		'previewContainer' : '<div class="player-preview-container-wrapper"><div class="close"><span class="icon-close"></span></div><div class="playerDubContainer"></div><div class="comments-container"></div></div>',
 
 		'playlistContainer': '<div class="create-playlist-header">' +
 								'Add to playlist <span class="icon-close"></span>' +
@@ -485,7 +593,7 @@ Dubtrack.els.templates = {
 								'</div>' +
 							'<ul class="playlist-list-action"></ul>',
 
-		'playlistBrowser': '<%- name %>',
+		'playlistBrowser': '<%- name %> <span class="playlist-items-count"><%- totalItems %></span>',
 
 		'playlistSearchBrowser': '<div class="description">' +
 									'<span><i class="icon-search"></i> <%- name %></span>' +
@@ -509,7 +617,7 @@ Dubtrack.els.templates = {
 						'</div>',
 
 		'roomQueueInfo': '<div class="description">' +
-							'<span>Room queue</span>' +
+							'<input type="text" class="playlist_filter" placeholder="Filter queue" value="" />' +
 						'</div>' +
 						'<div class="right">' +
 							'<a href="#" class="icon-lock room-queue-lock tt-wrapper"></a>' +
@@ -517,9 +625,10 @@ Dubtrack.els.templates = {
 						'</div>',
 
 		'myQueueInfo': '<div class="description">' +
-							'<span>My queue</span>' +
+							'<input type="text" class="playlist_filter" placeholder="Filter queue" value="" />' +
 						'</div>' +
 						'<div class="right">' +
+							'<a href="#" class="icon-shuffle shuffle-playlist tt-wrapper"></a>' +
 							'<a href="#" class="text-button clear-queue clear-queue-browser-bth">Clear</a>' +
 							'<a href="#" class="text-button pause-queue pause-queue-browser-bth">Pause</a>' +
 						'</div>',
@@ -583,8 +692,12 @@ Dubtrack.els.templates = {
 										'<span class="preview">' +
 											dubtrack_lang.playlist.preview +
 										'</span>' +
-										'<span class="playedby">Played by <b><%- _user.username %></b></span>' +
-										'<span class="dubs-display">updubs <b><%- updubs %></b>  |  downdubs <b><%- downdubs %></b></span>' +
+										'<% if (_user) { %>' +
+											'<span class="playedby">Played by <b><%- _user.username %></b></span>' +
+											'<span class="dubs-display">updubs <b><%- updubs %></b>  |  downdubs <b><%- downdubs %></b> |  grabs <b><%- grabs %></b></span>' +
+											'<span class="timeinfo"></span>' +
+											'<% if(skipped) { %><span class="skipped">skipped</span><% } %>' +
+										'<% } %>' +
 									'</p>' +
 								'</div>' +
 								'<div class="actions">' +
@@ -596,7 +709,15 @@ Dubtrack.els.templates = {
 									'</a>' +
 								'</div>',
 
-		'playlistRoomQueueItem': '<span class="display-error">' +
+		'playlistRoomQueueItem': '<figure>' +
+										'<%= Dubtrack.helpers.image.getImage(_user._id, _user.username, false, true) %>' +
+								'</figure>' +
+								'<div class="description">' +
+									'<h2><%- _user.username %></h2>' +
+									'<p>&nbsp;</p>' +
+								'</div>',
+
+		'playlistRoomQueueItemDJinQueue': '<span class="display-error">' +
 								'</span>' +
 								'<span class="timeDisplay">' +
 									'<%- minute %>' +
@@ -623,8 +744,11 @@ Dubtrack.els.templates = {
 									'<a href="#" class="set_song_to_top_queue">' +
 										'<span class="icon-angle-double-up"></span>' +
 									'</a>' +
+									'<a href="#" class="text-button pause_dj_all">' +
+										'Remove Dj From Queue' +
+									'</a>' +
 									'<a href="#" class="text-button remove_dj_all">' +
-										'Remove DJ' +
+										'Clear All Dj\'s Songs' +
 									'</a>' +
 									'<a class="img_bg add_to_playlist" href="#">' +
 										'<span class="icon-heart"></span>' +
@@ -656,7 +780,10 @@ Dubtrack.els.templates = {
 							'<span class="icon-message"></span>' +
 						'</div>' +
 					'</div>' +
-					'<% } %>',
+					'<% } %>' +
+					'<div class="header-donate">' +
+						'<a href="/donate">DONATE</a>' +
+					'</div>',
 
 		'soundCloudImportItem' : '<%- title %><i class="total-items"><%- total_tracks %></i>',
 
@@ -721,8 +848,9 @@ Dubtrack.els.templates = {
 								'<span class="title">Your playlists</span>' +
 								'<div id="playlists-scroll">' +
 									'<ul class="playlist-style">' +
-										'<li class="current_queue"><span class="icon-play"></span>' + dubtrack_lang.playlist.your_queue + '</li>' +
-										'<li class="current_room_queue"><span class="icon-playlist"></span> ' + dubtrack_lang.playlist.room_queue + '</li>' +
+										'<li class="current_queue"><span class="icon-play"></span>' + dubtrack_lang.playlist.your_queue + '<span class="playlist-items-count"></span></li>' +
+										'<li class="current_room_queue"><span class="icon-playlist"></span> ' + dubtrack_lang.playlist.room_queue + '<span class="playlist-items-count"></span></li>' +
+										'<li class="current_room_waitlist"><span class="icon-playlist"></span>Room waitlist<span class="playlist-items-count"></span></li>' +
 										'<li class="room_history"><span class="icon-history"></span>Room history</li>' +
 									'</ul>' +
 									'<div>' +
@@ -755,15 +883,16 @@ Dubtrack.els.templates = {
 											'</a>' +
 										'</li>' +
 										'<li class="add-to-playlist remove-if-banned remove-if-iframe">' +
-											'<a class="add-to-playlist">' +
+											'<a class="add-to-playlist-button">' +
 												'<span class="icon-heart"></span>' +
+												'<span class="grab-counter">0</span>' +
 											'</a>' +
 										'</li>' +
 									'<% } %>' +
 									'<li class="remove-if-banned remove-if-iframe">' +
 										'<a class="dubup">' +
 											'<span class="icon-arrow-up"></span>' +
-												'<span class="dub-counter">0</span>' +
+											'<span class="dub-counter">0</span>' +
 										'</a>' +
 									'</li>' +
 									'<li class="remove-if-banned remove-if-iframe">' +

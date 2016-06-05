@@ -7,8 +7,9 @@
 
 DubtrackRoute = Backbone.Router.extend({
 	initialize : function () {
-		$.backstretch("destroy", false);
-		$.backstretch("https://dubtrack-fm.s3.amazonaws.com/assets/images/backgrounds/2048.jpg");
+		if ($('body').data('backstretch')) $.backstretch('destroy', false);
+		//$.backstretch("https://cdn.dubtrack.fm/assets/images/backgrounds/2048.jpg");
+
 		Dubtrack.helpers.navigateHistoryTags($('body'));
 
 		console.log("DUBTRACK app initialized");
@@ -22,12 +23,12 @@ DubtrackRoute = Backbone.Router.extend({
 		"browser/search(/)": "browser",
 		"browser/queue(/)": "browserQueue",
 		"browser/room-queue(/)": "browserRoomQueue",
+		"browser/room-waitlist(/)": "browserRoomWaitlist",
 		"browser/history(/)": "browserHistory",
 		"browser/tracks(/)": "browserTracks",
 		"browser/upload(/)": "browserUpload",
 		"browser/:function/:id": "browserFunction",
 		"join/:id(/)": "join",
-		"dubs(/)": "dubsLoader",
 		"dubs/:type(/)": "dubsLoader",
 		"avatar/:id(/)": "avatarDisplay",
 		"avatar/:id/edit(/)": "avatarEdit",
@@ -36,6 +37,7 @@ DubtrackRoute = Backbone.Router.extend({
 		"forgot(/)" : "forgotPassword",
 		"password(/)" : "forgotPassword",
 		"signup(/)" : "createAccount",
+		"donate(/)": "donate",
 		":user(/)": "emptyRoute",
 
 		'*notFound': 'notFound'
@@ -173,6 +175,13 @@ DubtrackRoute = Backbone.Router.extend({
 		});
 	},
 
+	browserRoomWaitlist : function(){
+		var self = this;
+		this.browser(function(){
+			self.browserView.displayDetails("room_waitlist");
+		});
+	},
+
 	browserHistory : function(){
 		var self = this;
 		this.browser(function(){
@@ -263,15 +272,25 @@ DubtrackRoute = Backbone.Router.extend({
 		});
 	},
 
+	donate: function() {
+		this.before(function() {
+			Dubtrack.layout.donate_window.displayWindow();
+		});
+	},
+
 	browser : function(callback, skipLoadRoom){
 		if(Dubtrack.loggedIn){
 			var self = this;
 
 			if(!Dubtrack.room.model && !skipLoadRoom){
 				var join_cookie = Dubtrack.helpers.cookie.get('dubtrack-room');
-				if(join_cookie) this.join(join_cookie, function(){
+				if(join_cookie) {
+					this.join(join_cookie, function(){
+						self.browser.call(self, callback, true);
+					});
+				}else{
 					self.browser.call(self, callback, true);
-				});
+				}
 
 				return;
 			}
@@ -400,6 +419,7 @@ DubtrackRoute = Backbone.Router.extend({
 	join : function(id, callbackJoin, hide){
 		$('.dubtrack-section').hide();
 		$('#login-model-window').hide();
+		$('#donate-modal-window').hide();
 		$("html").removeClass("menu-left-in").removeClass('menu-right-in');
 
 		if (Dubtrack.room && Dubtrack.room.model){
@@ -442,7 +462,9 @@ DubtrackRoute = Backbone.Router.extend({
 						document.title = Dubtrack.room.model.get('name') + " | Dubtrack.fm";
 					}
 
-					if(callbackJoin) callbackJoin.call(self);
+					Dubtrack.room.callBackAfterRoomJoin = function(){
+						if(callbackJoin) callbackJoin.call(self);
+					}.bind(self);
 				},
 
 				error: function(){
@@ -453,7 +475,9 @@ DubtrackRoute = Backbone.Router.extend({
 						trigger: true
 					});
 
-					if(callbackJoin) callbackJoin.call(self);
+					Dubtrack.room.callBackAfterRoomJoin = function(){
+						if(callbackJoin) callbackJoin.call(self);
+					}.bind(self);
 				}
 			});
 		}
@@ -464,6 +488,7 @@ DubtrackRoute = Backbone.Router.extend({
 
 		$('.dubtrack-section').hide();
 		$('#login-model-window').hide();
+		$('#donate-modal-window').hide();
 
 		$("html").removeClass("menu-left-in").removeClass('menu-right-in');
 

@@ -15,11 +15,29 @@ Dubtrack.View.RoomList = Backbone.View.extend({
 
 		this.roomListEl = this.$('#container-room-list');
 
+		this.$('#room-scroll-container').perfectScrollbar({
+			suppressScrollX: true,
+			wheelPropagation: false,
+			minScrollbarLength: 40
+		});
+
+		this.$('#room-scroll-container').on('ps-scroll-down', function (e) {
+			if(!e || !e.target) return;
+
+			if (e.target.scrollHeight - (e.target.scrollTop + e.target.offsetHeight) < (e.target.offsetHeight * 2)) {
+				this.loadMoreItems();
+			}
+		}.bind(this));
+
 		this.render();
 	},
 
 	render : function() {
 		this.roomListEl.empty();
+
+		this.offsetSearchItems = 0;
+		this.moreItemsToLoad = false;
+		this.loadingMoreItems = false;
 
 		// loop through each item
 		_.each(this.model.models, function (item) {
@@ -50,9 +68,49 @@ Dubtrack.View.RoomList = Backbone.View.extend({
 		}
 	},
 
-	search : function(query){
+	loadMoreItems : function(){
+		if(this.loadingMoreItems || !Dubtrack.roomList.collection) return;
+
+		this.loadingMoreItems = true;
+
+		var collection = new Dubtrack.Collection.Room();
+		if(this.query && this.query.length > 0) collection.url = Dubtrack.config.apiUrl + Dubtrack.config.urls.roomSearch.replace(':term', this.query.replace(/[^a-zA-Z 0-9]+/g,''));
+		else collection.url = Dubtrack.config.apiUrl + Dubtrack.config.urls.room;
+
 		//display loading
 		Dubtrack.els.displayloading(dubtrack_lang.room.searching);
+		this.offsetSearchItems = this.offsetSearchItems + 20;
+
+		collection.fetch({
+			data: {
+				offset : this.offsetSearchItems
+			},
+			success: function(){
+				_.each(collection.models, function(roomModel){
+					this.model.add(roomModel);
+				}.bind(this));
+
+				Dubtrack.els.mainLoading.hide();
+				this.loadingMoreItems = false;
+			}.bind(this),
+
+			error: function(){
+				this.loadingMoreItems = false;
+
+				Dubtrack.els.mainLoading.hide();
+			}.bind(this)
+		});
+	},
+
+	search : function(query){
+		if(this.loadingMoreItems) return;
+		this.$('#room-scroll-container').scrollTop(0);
+
+		//display loading
+		Dubtrack.els.displayloading(dubtrack_lang.room.searching);
+
+		this.offsetSearchItems = 0;
+		this.moreItemsToLoad = false;
 
 		if(this.userRoomsCollection) this.userRoomsCollection.reset();
 		this.model.reset();
@@ -60,8 +118,9 @@ Dubtrack.View.RoomList = Backbone.View.extend({
 		this.roomListEl.empty();
 
 		this.userRoomsCollection = new Dubtrack.Collection.Room();
+		this.query = query;
 
-		if(query.length > 0) this.userRoomsCollection.url = Dubtrack.config.apiUrl + Dubtrack.config.urls.roomSearch.replace(':term', query.replace(/[^a-zA-Z 0-9]+/g,''));
+		if(this.query && this.query.length > 0) this.userRoomsCollection.url = Dubtrack.config.apiUrl + Dubtrack.config.urls.roomSearch.replace(':term', this.query.replace(/[^a-zA-Z 0-9]+/g,''));
 		else this.userRoomsCollection.url = Dubtrack.config.apiUrl + Dubtrack.config.urls.room;
 
 		this.userRoomsCollection.fetch({
@@ -71,11 +130,14 @@ Dubtrack.View.RoomList = Backbone.View.extend({
 				}.bind(this));
 
 				Dubtrack.els.mainLoading.hide();
+				this.loadingMoreItems = false;
 			}.bind(this),
 
 			error: function(){
+				this.loadingMoreItems = false;
+
 				Dubtrack.els.mainLoading.hide();
-			}
+			}.bind(this)
 		});
 	},
 
@@ -107,6 +169,8 @@ Dubtrack.View.RoomList = Backbone.View.extend({
 		}else{
 			itemViewEl.$el.appendTo( this.roomListEl );
 		}
+
+		this.$('#room-scroll-container').perfectScrollbar('update');
 	},
 
 	beforeClose : function(){

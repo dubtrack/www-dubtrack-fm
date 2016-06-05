@@ -8,12 +8,16 @@ dt.room.roomFormUpdateViewUpdate = Backbone.View.extend({
 		"click .cancel"	: "closeAction",
 		"click .closebtn" : "closeAction",
 		"change select#roomTypeSelect" : "roomTypeChange",
+		"change select#roomDisplaySelect" : "roomDisplayChange",
+		"change select#limitQueueLength" : "limitQueueLengthChange",
 		"submit form": "saveForm",
 		"keyup #roomEmbedInput" : "replaceIframe"
 	},
 
 	render : function(){
 		this.$el.html( _.template( Dubtrack.els.templates.rooms.roomFormUpdate, this.model.toJSON() ));
+
+		this.loadingForm = false;
 
 		$(".dubtrack_overlay").show();
 		this.create_form = this.model.isNew();
@@ -48,6 +52,18 @@ dt.room.roomFormUpdateViewUpdate = Backbone.View.extend({
 					self.$('#progress .bar').css({
 						'width' : progress + '%'
 					});
+				},
+
+				error: function(jqXHR) {
+					var message;
+
+					try {
+						message = JSON.parse(jqXHR.responseText).data.details.message;
+					} catch (err) {
+						//Do nothing
+					}
+
+					Dubtrack.helpers.displayError('Error', message || 'Failed to upload image');
 				}
 			});
 		}else{
@@ -55,6 +71,8 @@ dt.room.roomFormUpdateViewUpdate = Backbone.View.extend({
 		}
 
 		this.roomTypeChange();
+		this.roomDisplayChange();
+		this.limitQueueLengthChange();
 
 		return this;
 	},
@@ -81,13 +99,29 @@ dt.room.roomFormUpdateViewUpdate = Backbone.View.extend({
 	saveForm : function(e){
 		e.preventDefault();
 
+		if(this.loadingForm) return;
+
+		this.loadingForm = true;
+
 		var value = this.$('input#roomName').val(),
 			maxLengthSongValue = this.$('input#maxLengthSongName').val(),
 			roomType = this.$('#roomTypeSelect').val(),
-			lockQueue = this.$('#lockQueueSelect').val()
+			lockQueue = this.$('#lockQueueSelect').val(),
+			displayInSearch = this.$('#displayInSearchSelect').val(),
+			displayInLobby = this.$('#displayInLobbySelect').val(),
 			description = this.$('#roomDescription').val(),
 			roomEmbed = this.$('#roomEmbedInput').val(),
+			timeSongQueueRepeat = this.$('input#timeSongQueueRepeat').val()
 			welcomeMessage = this.$('#welcomeMessage').val(),
+			recycleDJ = this.$('#recycleDJ').val(),
+			maxSongQueueLength = this.$('#maxSongQueueLength').val(),
+			roomDisplay = this.$('#roomDisplaySelect').val(),
+			roomPassword = this.$('#roomPassword').val(),
+			limitQueueLength = this.$('#limitQueueLength').val(),
+			displayDJinQueue = this.$('#displayDJinQueue').val(),
+			displayUserJoin = this.$('#displayUserJoin').val(),
+			displayUserLeave = this.$('#displayUserLeave').val(),
+			displayUserGrab = this.$('#displayUserGrab').val(),
 			metaDescription = this.$('#metaDescription').val();
 
 		if( value && value !== " "){
@@ -96,29 +130,43 @@ dt.room.roomFormUpdateViewUpdate = Backbone.View.extend({
 
 			this.model.save({
 				name: value,
+				roomDisplay: roomDisplay,
 				maxLengthSong: maxLengthSongValue,
 				roomType: roomType,
 				roomEmbed: roomEmbed,
 				description: description,
 				lockQueue: lockQueue,
+				displayInLobby: displayInLobby,
+				timeSongQueueRepeat: timeSongQueueRepeat,
+				maxSongQueueLength: maxSongQueueLength,
+				displayDJinQueue: displayDJinQueue,
+				displayUserJoin: displayUserJoin,
+				displayUserLeave: displayUserLeave,
+				displayUserGrab: displayUserGrab,
+				recycleDJ: recycleDJ,
+				limitQueueLength: limitQueueLength,
+				displayInSearch: displayInSearch,
 				welcomeMessage: welcomeMessage,
-				metaDescription: metaDescription
+				metaDescription: metaDescription,
+				roomPassword: roomPassword
 			},{
 				success: function(m, r){
-					if(r.code === 200){
-						if(self.create_form){
-							var url = self.model.get('roomUrl');
+					self.loadingForm = false;
 
-							if(url){
-								window.location = "/join/" + url;
-							}
-						}else{
-							self.close();
+					if(self.create_form){
+						var url = self.model.get('roomUrl');
+
+						if(url){
+							window.location = "/join/" + url;
 						}
+					}else{
+						self.close();
 					}
 				},
 
 				error: function(){
+					self.loadingForm = false;
+
 					if(!self.create_form){
 						self.$('.btn-primary').html('an unexpected error occurred, please try again later');
 					}else{
@@ -133,11 +181,23 @@ dt.room.roomFormUpdateViewUpdate = Backbone.View.extend({
 
 	displayCustomIframe : function(){
 		var roomEmbedUrl = this.$('#roomEmbedInput').val(),
-			regexp = /(http:\/\/|https:\/\/|\/\/)(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+			regexp = /(http:\/\/|https:\/\/|\/\/)(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/,
+			regexpTwitch = /(twitch\.tv)\/([^\&\?\/]+)/;
 
 		if(roomEmbedUrl && regexp.test(roomEmbedUrl)){
-			roomEmbedUrl = roomEmbedUrl.replace('http:', 'https:');
-			this.$('#iframe-embed-preview').html('<iframe width="100%" height="100%" src="' + roomEmbedUrl + '" frameborder="0" allowfullscreen></iframe>');
+			if(regexpTwitch.test(roomEmbedUrl)){
+				var match = roomEmbedUrl.match(regexpTwitch);
+				try{
+					if(match[2]){
+						var twitch_channel = match[2];
+
+						this.$('#iframe-embed-preview').html('<object type="application/x-shockwave-flash" data="https://www-cdn.jtvnw.net/swflibs/TwitchPlayer.swff?channel=' + twitch_channel + '" width="100%" height="100%"> <param name="movie" value="https://www-cdn.jtvnw.net/swflibs/TwitchPlayer.swff?channel=' + twitch_channel + '"> <param name="quality" value="high"> <param name="allowFullScreen" value="true"> <param name="allowScriptAccess" value="always"> <param name="pluginspage" value="http://www.macromedia.com/go/getflashplayer"> <param name="autoplay" value="true"> <param name="autostart" value="true"> <param name="flashvars" value="hostname=www.twitch.tv&amp;start_volume=25&amp;channel=' + twitch_channel + '&amp;auto_play=true"> <embed src="https://www-cdn.jtvnw.net/swflibs/TwitchPlayer.swff?channel=' + twitch_channel + '" flashvars="hostname=www.twitch.tv&amp;start_volume=25&amp;channel=' + twitch_channel + '&amp;auto_play=true" width="100%" height="100%" type="application/x-shockwave-flash"> </object>');
+					}
+				}catch(ex){}
+			}else{
+				roomEmbedUrl = roomEmbedUrl.replace('http:', 'https:');
+				this.$('#iframe-embed-preview').html('<iframe width="100%" height="100%" src="' + roomEmbedUrl + '" frameborder="0" allowfullscreen></iframe>');
+			}
 		}else{
 			this.$('#iframe-embed-preview').html('<h3>Invalid iframe url</h3>');
 		}
@@ -150,6 +210,24 @@ dt.room.roomFormUpdateViewUpdate = Backbone.View.extend({
 		}else{
 			this.$('#iframeEmbedField').hide();
 			this.$('#iframe-embed-preview').empty();
+		}
+	},
+
+	roomDisplayChange : function(){
+		if(this.$('#roomDisplaySelect').val() == 'private'){
+			this.$('#room-password-control-group').show();
+			this.displayCustomIframe();
+		}else{
+			this.$('#room-password-control-group').hide();
+		}
+	},
+
+	limitQueueLengthChange : function(){
+		if(this.$('#limitQueueLength').val() == '1'){
+			this.$('#maxSongQueueLengthContainer').show();
+			this.displayCustomIframe();
+		}else{
+			this.$('#maxSongQueueLengthContainer').hide();
 		}
 	},
 

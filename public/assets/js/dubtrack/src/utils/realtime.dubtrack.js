@@ -10,7 +10,7 @@ Dubtrack.realtime = {
 	init : function(){
 		var uuid = null;
 
-		if(Dubtrack.session){
+		if(Dubtrack.loggedIn){
 			uuid = Dubtrack.session.get("_id");
 		}else{
 			uuid = PUBNUB.uuid();
@@ -35,6 +35,7 @@ Dubtrack.realtime = {
 		});
 
 		Dubtrack.realtime.channel = null;
+		Dubtrack.realtime.dtPubNub = null;
 	},
 
 	channelPresence: function(callback){
@@ -48,10 +49,10 @@ Dubtrack.realtime = {
 			channel : Dubtrack.realtime.channel,
 			callback : callback
 		});
-		
+
 	},
 
-	subscribe: function(channel, callback){
+	subscribe: function(channel, callback, forceGuest){
 		//create instance or disconnect from previous channel
 		if( Dubtrack.realtime.dtPubNub === null){
 			Dubtrack.realtime.init();
@@ -64,40 +65,41 @@ Dubtrack.realtime = {
 
 		Dubtrack.realtime.channel = channel;
 
-		if(Dubtrack.session){
-			channel = ['dubtrackuser-' + Dubtrack.session.get('_id'), Dubtrack.realtime.channel];
+		if(Dubtrack.loggedIn){
+			channel = Dubtrack.realtime.channel + ',dubtrackuser-' + Dubtrack.session.get('_id');
 		}
-
-		console.log(channel);
 
 		Dubtrack.realtime.dtPubNub.subscribe({
 			channel: channel,
 
 			callback: function(r){
-				console.log("DUBTRACK real time respose ", r);
+				//console.log("DUBTRACK real time respose ", r);
+				Dubtrack.realtime.callback(r);
+			},
+
+			presence: function(r){
+				r.type = 'pubnub-' + (r.type ? r.type : 'presence');
+				//console.log("DUBTRACK presence real time respose ", r);
+
 				Dubtrack.realtime.callback(r);
 			},
 
 			disconnect: function(){
-
 			},
 
 			reconnect: function(){
-
 			},
 
 			connect: function(){
 				if(callback) callback();
-				console.log('DUBTRACK connected to real channel ' + Dubtrack.realtime.channel);
+				//console.log('DUBTRACK connected to real channel ' + Dubtrack.realtime.channel);
 			},
 
 			error: function(e) {
 				// Do not call subscribe() here!
 				// PUBNUB will auto-reconnect.
 				console.log("DUBTRACK RT error ", e);
-			},
-
-			restore: true
+			}
 		});
 	},
 

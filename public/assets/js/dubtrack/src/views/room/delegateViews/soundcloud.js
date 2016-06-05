@@ -4,41 +4,35 @@ Dubtrack.View.SoundCloudPlayer = Backbone.View.extend({
 	id: null,
 	url: null,
 
+	scPlayer: null,
+
+	scRebuildTries: 0,
+
 	events : {},
 
-	initialize : function(){},
-    
-    renderSC: function () {
-        var SCurl;
-        $.ajax({
-            url: Dubtrack.room.player.activeSong.url,
-            success: function (f) {
-                SCurl = f.data.songInfo.images.thumbnail.replace('large','original');
-            },
-            async: false
-        });
-        return SCurl
-    },
-
-	render : function( url, start, onEnd, object, loadBg ){
-		var self = this;
+	initialize : function(){
+		this.$el.addClass('playerElement soundcloud');
 
 		//set id and url
 		this.id = "playeryt-" + Date.now();
-		this.url = url;
+	},
 
-		this.loadBg = loadBg;
+	render : function(url, start, onEnd, object){
+		this.$el.empty();
 
-		this.$el.addClass('playerElement soundcloud');
-		if(loadBg) this.$el.addClass('hiddenPlayer');
+		var img_src = "https://res.cloudinary.com/hhberclba/image/upload/c_fill,fl_lossy,f_auto,w_900,h_460/default.png";
+		try{
+			var songInfo = Dubtrack.room.player.activeSong.get('songInfo');
+
+			if(songInfo && songInfo.images && songInfo.images.thumbnail){
+				img_src= songInfo.images.thumbnail.replace('large','original');
+			}
+		}catch(ex){}
 
 		//create canvas
-        
 		this.canvasContEl = $('<div/>', {
 			id: this.id
-            
-            
-		}).html('<img class="artwork" src="'+this.renderSC()+'" alt="" />')
+		}).html('<img src="' + img_src + '" alt="" onerror="this.src=\'https://res.cloudinary.com/hhberclba/image/upload/c_fill,fl_lossy,f_auto,w_900,h_460/default.png\'" class="artwork" />')
 		.css({
 			'position': 'absolute',
 			'top': 0,
@@ -46,77 +40,76 @@ Dubtrack.View.SoundCloudPlayer = Backbone.View.extend({
 			'width': '100%',
 			'height': '100%'
 		}).appendTo( this.$el );
-        
+
+		this.$el.append('<a href="https://api.dubtrack.fm/song/' + songInfo._id + '/redirect" class="redirect-link" target="_blank"><span class="soundcloud_watermark icon-soundcloud"></span></a>');
+
 		(url.indexOf("secret_token") == -1) ? url = url + '?' : url = url + '&';
 		url = url + 'consumer_key=' + Dubtrack.config.keys.soundcloud;
 
-		soundManager.setup({
-			url: '/assets/swf/',
-			preferFlash: false,
-			onready: function() {
-				//create sound with sound manager
-				self.scPlayer = soundManager.createSound({
-					id: 'dubtrack_main_player',
-					url: url,
-					autoLoad: true,
-					autoPlay: self.loadBg ? false : true,
-					stream: true,
-					from: start * 1000,
-					position : start * 1000,
-					usePeakData : true,
-					volume : self.loadBg ? 0 : Dubtrack.playerController.volume,
+		this.url = url;
 
-					onplay: function(){
-						self.setVolume( Dubtrack.playerController.volume, true );
-						object.loadingEl.hide();
-						object.bufferingEl.hide();
-						object.errorElBtn.hide();
-						object.playing = true;
-					},
+		soundManager.stop('dubtrack_main_player');
 
-					onload: function() {
-						//self.scPlayer.setPosition( start * 1000 );
-						self.setVolume( Dubtrack.playerController.volume )
-					},
+		if(!this.scPlayer){
+			//create sound with sound manager
+			this.scPlayer = soundManager.createSound({
+				id: 'dubtrack_main_player',
+				stream: true,
+				autoLoad: true,
+				autoPlay: true,
 
-					onerror: function(){
-						object.loadingEl.hide();
-						object.bufferingEl.hide();
-						object.errorElBtn.show();
-						this.playing = false;
-					},
+				onplay: function(){
+					this.setVolume( Dubtrack.playerController.volume );
+					object.loadingEl.hide();
+					object.bufferingEl.hide();
+					object.errorElBtn.hide();
+					object.playing = true;
+				}.bind(this),
 
-					onfinish : function() {
-						if(onEnd) onEnd.call();
-					},
+				onload: function() {
+				}.bind(this),
 
-					onbufferchange : function(){
-					}
-				});
+				onerror: function(){
+					object.loadingEl.hide();
+					object.bufferingEl.hide();
+					object.errorElBtn.show();
+					this.playing = false;
+				}.bind(this),
+
+				onfinish : function() {
+					if(onEnd) onEnd.call();
+
+					this.stop();
+				}.bind(this),
+
+				onbufferchange : function(){
+				}
+			});
+		}
+
+		try{
+			this.scPlayer.load({
+				url: url,
+				from: start * 1000,
+				position : start * 1000
+			});
+
+			this.scPlayer.setPosition(start * 1000);
+			this.scPlayer.play();
+			this.setVolume( Dubtrack.playerController.volume);
+		}catch(ex){
+			this.scRebuildTries++;
+
+			if(this.scRebuildTries < 10){
+				this.scPlayer = null;
+				this.render(url, start, onEnd, object);
 			}
-		});
-
-		var $el = this.$el, req = new XMLHttpRequest();
-		req.open(
-			'GET',
-			'https://api.soundcloud.com/tracks/' + Dubtrack.room.player.activeSong.get('songInfo').fkid + '?consumer_key=' + Dubtrack.config.keys.soundcloud,
-			false
-		);
-		req.onreadystatechange = function() {
-			if(req.readyState !== 4) return;
-			var permalink = req.responseText.match(/"permalink_url":"(.[^"]+)"/g);
-				permalink = permalink[1].match(/http(s|)\:\/\/.+/);
-			$('<a href="' + permalink + '" target="_blank"><span class="soundcloud_watermark icon-soundcloud"></span></a>').appendTo($el);
-		};
-		req.send();
+		}
 
 		return this;
 	},
 
 	play: function(){
-		this.loadBg = false;
-
-		this.$el.removeClass('hiddenPlayer');
 		if( this.scPlayer ) this.scPlayer.play();
 		this.setVolume( Dubtrack.playerController.volume );
 	},
@@ -149,8 +142,12 @@ Dubtrack.View.SoundCloudPlayer = Backbone.View.extend({
 
 	stop : function() {
 		try{
-			if(this.scPlayer) return this.scPlayer.stop();
+			if(this.scPlayer){
+				return this.scPlayer.stop();
+			}
 		}catch(ex){}
+
+		soundManager.stop('dubtrack_main_player');
 	},
 
 	setVolume : function (volume){

@@ -35,12 +35,14 @@
 			color $meta-color
 			position relative
 
-			&.active
-				border-bottom 1px solid $primary-color
-				
-				&.icon-people
-					.room-guest-counter
-						color: $meta-color !important
+			&:after
+				content ""
+				position absolute
+				border 1px solid $primary-color
+				bottom 0
+				left 0
+				width 100%
+				display none
 
 			&.display-chat
 				color $primary-color
@@ -49,11 +51,7 @@
 					display block
 
 			&:hover
-				color $primary-color !important
-				
-				&.icon-people
-					.room-guest-counter
-						color $meta-color
+				color $primary-color
 
 			&.icon-chatsettings
 				font-size 2.5rem
@@ -66,15 +64,12 @@
 					font-style normal
 					font-weight bold
 					margin-left 0.4rem
-					top: -0.75rem;
-					left: 0.1rem;
+					top -0.3rem
 					position relative
-					
+
 					&.room-guest-counter
-						top: 0.1rem;
-						left: -0.7rem;
-						font-size: 0.85rem;
-						color: $dark-gray
+						font-size 0.85rem
+						color $dark-gray
 
 	.chatLoading
 		display none
@@ -90,16 +85,21 @@
 			height 100%
 
 			.chat-main
-				padding 1rem 1rem
-				overflow none
+				padding 1rem 1.5rem 1rem 1rem
+				overflow hidden
 
 				li
 					position relative
 					font-size 0.9rem
-					padding 0 0 1rem 0
+					padding 0 0 1.5rem 0
 					overflow hidden
 					min-height 3.3rem
 					clearfix()
+
+					&.deleted-message
+						&:hover
+							.chatDelete
+								display none
 
 					&:hover
 						.meta-info .timeinfo
@@ -109,7 +109,10 @@
 					&.chat-welcome-message
 					&.system
 					&.system-error
+					&.chat-system-joined
 					&.chat-system-loading
+					&.chat-system-left
+					&.chat-system-grabbed
 						color $meta-color
 						font-weight bold
 						min-height 1rem
@@ -118,7 +121,14 @@
 						color $accent-other-color
 						min-height 1rem
 
+					&.system
+						color $accent-color
+						text-align center
+
 					&.chat-me-command-joined
+					&.chat-system-joined
+					&.chat-system-left
+					&.chat-system-grabbed
 						color $meta-color
 						font-style italic
 						font-weight bold
@@ -245,7 +255,7 @@
 
 		.chat-option-buttons
 			clearfix()
-            
+
 			span
 				display block
 				float left
@@ -276,8 +286,8 @@
 				span
 					width 33.33%
 					color $meta-color
-                    
-            .chat-option-buttons-video
-				span
-					width 100% !important
-					color $meta-color
+
+		.chat-option-buttons-video
+			span
+				width 100% !important
+				color $meta-color

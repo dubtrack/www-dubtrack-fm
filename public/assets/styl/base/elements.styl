@@ -31,7 +31,7 @@ textarea
 #main-loading
 	opacity 0.7
 	border-radius 1rem
-	padding 3.5rem 1rem 1rem 1rem
+	padding 7rem 1rem 1rem
 	text-align center
 	display block
 	position fixed
@@ -39,7 +39,7 @@ textarea
 	color #000
 	font-weight bold
 	font-size 1rem
-	top 3rem
+	top -0.5rem
 	left 50%
 	width 18rem
 	overflow hidden
@@ -50,7 +50,7 @@ textarea
 	backface-visibility hidden
 
 	@media screen and (min-width: $desktop-breakpoint)
-		top 1.5rem
+		padding-top 4.8rem
 
 	.spinner
 		opacity 0.5
@@ -83,6 +83,19 @@ textarea
 	backface-visibility hidden
 	border-radius 1rem
 
+	&.form-join-password-input
+		p
+			font-weight normal
+
+		button
+		input
+			font-style normal
+			font-weight bold
+
+		.error-message
+			color red
+			font-weight bold
+
 	h3
 		font-size 1.4rem
 		margin 0
@@ -95,6 +108,7 @@ textarea
 		font-weight bold
 
 	button
+	input
 		cursor pointer
 		color #000
 		background none

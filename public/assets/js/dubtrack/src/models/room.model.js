@@ -3,6 +3,7 @@ Dubtrack.Model.Room = Backbone.Model.extend({
 
 	defaults:{
 		name:  null,
+		roomDisplay: 'public',
 		description: null,
 		roomUrl: null,
 		status: null,
@@ -18,30 +19,41 @@ Dubtrack.Model.Room = Backbone.Model.extend({
 		allowedDjs: null,
 		currentSong: null,
 		realTimeChannel : null,
-		maxLengthSong: null,
+		timeSongQueueRepeat : 120,
+		displayDJinQueue: true,
+		displayUserJoin: null,
+		displayUserLeave: null,
+		displayUserGrab: null,
+		maxSongQueueLength : 0,
+		limitQueueLength : null,
+		recycleDJ: true,
+		maxLengthSong: 120,
 		displayQueue: null,
 		background: null,
 		roomEmbed: null,
 		created: null,
 		updated: null,
-		userid: null
+		userid: null,
+		displayInSearch: true,
+		displayInLobby: true
 	}
 });
 
 Dubtrack.Model.UserQueue = Backbone.Model.extend({
 	defaults: {
-		songLength: Number,
-		isActive: Boolean,
-		isPlayed: Boolean,
-		skipped: Boolean,
-		created: Number,
-		played: Number,
-		updubs: Number,
-		downdubs: Number,
-		order: Number,
-		songid: String,
-		roomid: String,
-		userid: String
+		songLength: 0,
+		isActive: false,
+		isPlayed: false,
+		skipped: false,
+		created: 0,
+		played: 0,
+		updubs: 0,
+		downdubs: 0,
+		grabs: 0,
+		order: 0,
+		songid: null,
+		roomid: null,
+		userid: null
 	}
 });
 

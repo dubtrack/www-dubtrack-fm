@@ -25,9 +25,23 @@
 			height 100%
 			width 100%
 
+			.loading
+				position absolute
+				top 50%
+				left 0
+				width 100%
+				text-align center
+				text-transform uppercase
+				font-weight bold
+				font-size 1.5rem
+				margin-top -1rem
+				color $meta-color
+				display none
+
 			.mods-controllers-commands-list
 			.mods-controllers-mute-list
 			.mods-controllers-ban-list
+			.mods-controllers-staff-list
 				display none
 				top 0
 				left 0
@@ -100,3 +114,41 @@
 			.mods-controllers-commands-list
 				margin-top 1rem
 				text-align center
+
+			.mods-controllers-staff-list
+				&.creator
+					.user-list
+						li.co-owner
+							.actions
+								display block
+
+				&.co-owner
+				&.creator
+					.user-list
+						li.manager
+							.actions
+								display block
+
+				&.manager
+				&.co-owner
+				&.creator
+					.user-list
+						li.mod
+							.actions
+								display block
+
+				&.mod
+				&.manager
+				&.co-owner
+				&.creator
+					.user-list
+						li.dj
+						li.vip
+						li.resident-dj
+							.actions
+								display block
+
+				.user-list
+					li
+						.actions
+							display none

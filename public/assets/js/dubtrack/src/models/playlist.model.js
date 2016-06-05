@@ -5,6 +5,7 @@ Dubtrack.Model.Playlist = Backbone.Model.extend({
 		name:  null,
 		status: null,
 		isPublic: false,
+		totalItems: 0,
 		created: null,
 		userid: null
 	}

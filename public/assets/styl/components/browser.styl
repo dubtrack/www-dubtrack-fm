@@ -363,8 +363,10 @@
 					.playlist-style
 						li
 							cursor pointer
-							padding 0.4rem 1rem
+							padding 0.4rem 5rem 0.4rem 1rem
 							font-weight bold
+							position relative
+							word-wrap break-word
 
 							&.selected
 								background $accent-color
@@ -374,6 +376,16 @@
 								color $meta-color
 								margin-right 0.5rem
 								font-size 0.85rem
+
+								&.playlist-items-count
+									position absolute
+									right 0
+									top 50%
+									margin 0
+									padding 0 1rem
+									transform translate(0, -50%)
+									transform-style preserve-3d
+									backface-visibility hidden
 
 			.nano
 				z-index 98
@@ -414,6 +426,9 @@
 						padding-right 16rem
 						border-bottom 1px solid $background-primary-color
 						clearfix()
+
+						&.queue-info-contains-notice
+							padding-bottom 3.5rem
 
 						&.displayEdit
 							.save-playlistname
@@ -471,10 +486,17 @@
 
 					#results_video_api
 						.queue-locked-info
+						.queue-join-info
 							padding 1rem
 							font-weight bold
 							background $accent-color
 							color $background-dark-color
+							position absolute
+							bottom 0
+							width 100%
+
+						.queue-join-info
+							cursor pointer
 
 						.browserPlaylistItems
 							padding-bottom 5rem
@@ -484,6 +506,7 @@
 									.actions
 										.set_song_to_top_queue
 										.remove_dj
+										.pause_dj_all
 										.remove_dj_all
 											display block
 
@@ -493,7 +516,7 @@
 						.history-item
 							position relative
 							display block
-							padding 0.5rem 1rem
+							padding 0.5rem 1.5rem 0.5rem 1rem
 							cursor pointer
 							background $background-dark-color
 							border 1px solid $background-dark-color
@@ -552,6 +575,8 @@
 								.preview
 								.playedby
 								.dubs-display
+								.timeinfo
+								.skipped
 									font-size 0.8rem
 									color $accent-color
 									margin-right 0.5rem
@@ -559,6 +584,17 @@
 								.playedby
 								.dubs-display
 									cursor default
+
+								.timeinfo
+								.skipped
+									color $meta-color
+
+									&:before
+										content "- ";
+
+								.skipped
+									text-transform uppercase
+									color $accent-other-color
 
 								h2
 									font-size 0.9rem
@@ -568,7 +604,7 @@
 							.actions
 								display block
 								position absolute
-								right 0
+								right 1rem
 								top 0.5rem
 								clearfix()
 
@@ -586,7 +622,7 @@
 							.timeDisplay
 								display none;
 								position absolute
-								right 1rem
+								right 1.5rem
 								top 1.5rem
 								font-weight bold
 								font-size 0.85rem
@@ -611,4 +647,5 @@
 								.set_song_to_top_queue
 								.remove_dj
 								.remove_dj_all
+								.pause_dj_all
 									display none

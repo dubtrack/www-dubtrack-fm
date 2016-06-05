@@ -1,0 +1,39 @@
+#donate-modal-window
+    display none
+    width 100%
+    height 100%
+    position absolute
+    display table
+    top 0
+    left 0
+    background rgba(0, 0, 0, 0.5)
+
+    .close-window
+        position fixed
+        right 2rem
+        top 7rem
+        font-size 1.5rem
+
+        @media screen and (min-width: $desktop-breakpoint)
+            top 5rem
+
+    .modal-container
+        display none
+        width 100%
+        padding 0 1rem
+        margin 9rem 0 9rem 0
+
+        &.show
+            display block
+
+    .modal-wrapper
+        max-width 50rem
+        margin 0 auto
+        padding 0 1rem
+        position relative
+
+    form
+        text-align center
+
+        input
+            width initial

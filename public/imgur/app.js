@@ -34,9 +34,9 @@ $(function() {
   $record.hide();
 
   if(params.action == "chat"){
-  	$('footer').show();
-  	$('.fileinput-button').hide();
-  	$('#imgur a').html('<span class="glyphicon glyphicon-cloud-upload"></span> Post anonymously to imgur');
+	$('footer').show();
+	$('.fileinput-button').hide();
+	$('#imgur a').html('<span class="glyphicon glyphicon-cloud-upload"></span> Post anonymously to imgur');
   }else{
 	  //image upload
 	  $('#fileupload').fileupload({
@@ -60,9 +60,18 @@ $(function() {
 			window.opener.Dubtrack.app.profileView.updateImageWithSource(data.result.data.profileImage.url);
 			window.close();
 		},
-		error: function(){
+		error: function(jqXHR){
 			$loader2.knob().hide();
-			alert('error uploading image');
+
+			var message;
+
+			try {
+				message = JSON.parse(jqXHR.responseText).data.details.message;
+			} catch (err) {
+				//Do nothing
+			}
+
+			alert(message || 'Failed to upload image');
 		}
 	  });
   }
@@ -118,7 +127,7 @@ $(function() {
 
 	$.ajax({
 		url: url,
-		
+
 		method: 'POST',
 
 		xhrFields : xhrFields,
@@ -145,17 +154,17 @@ $(function() {
 					data: {
 						message: result.data.link
 					},
-					
+
 					type: "post",
-					
+
 					xhrFields: {
 						withCredentials: true
 					},
-					
+
 					success: function(r){
 						window.close();
 					},
-					
+
 					error: function(r, xhr, message){
 						alert("error updating image!");
 						window.close();

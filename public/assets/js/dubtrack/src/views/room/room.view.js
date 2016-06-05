@@ -10,15 +10,37 @@ Dubtrack.View.Room = Backbone.View.extend({
 
 	initialize: function(){
 		this.currentMobileClass = "";
-
-		var self = this;
-		$("#dubtrack-video-realtime .toggle_videos").bind("click", function(){
-			self.toggleVideos();
-		});
-
 		this.roomInfoView = null;
 
 		Dubtrack.Events.bind('realtime:room-update', this.roomUpdate, this);
+		Dubtrack.Events.bind('realtime:user-kick', this.userKickedOut, this);
+		Dubtrack.Events.bind('realtime:user-ban', this.userBannedOut, this);
+		Dubtrack.helpers.cookie.set('dubtrack-room', this.model.get("roomUrl"), 60);
+		Dubtrack.helpers.cookie.set('dubtrack-room-id', this.model.get("_id"), 60);
+
+		this.callBackAfterRoomJoin = null;
+
+		if(Dubtrack.loggedIn){
+			var leaveUrl = Dubtrack.config.apiUrl + Dubtrack.config.urls.roomBeacon.replace( ":id", this.model.id ).replace( ":userid", Dubtrack.session.id);
+
+			$(window).bind('beforeunload', function () {
+				$.ajax({
+					url: leaveUrl,
+					async: false
+				});
+			});
+
+			$(window).bind("unload", function () {
+				$.ajax({
+					url: leaveUrl,
+					async: false
+				});
+			});
+		}
+	},
+
+	joinQueue : function(){
+		if(this.player) this.player.displayBrowserSearch();
 	},
 
 	setMenuActive : function(e){
@@ -48,12 +70,13 @@ Dubtrack.View.Room = Backbone.View.extend({
 		return false;
 	},
 
-	roomUpdate : function(r){
-		if(r && r.room){
-			var currentBackground = this.model.get("background");
+	roomUpdate: function(r) {
+		if(r && r.room) {
+			var currBg = this.model.get('background'),
+				newBg = r.room.background;
 
-			if(r.room.background && r.room.background.public_id && currentBackground && currentBackground.public_id && currentBackground.public_id != r.room.background.public_id){
-				this.updateBackground(true);
+			if (newBg && currBg && (newBg.version !== currBg.version || newBg.public_id !== currBg.public_id)) {
+				this.updateBackground(newBg, true);
 			}
 
 			$("#roomNameMenu").html(r.room.name);
@@ -61,32 +84,34 @@ Dubtrack.View.Room = Backbone.View.extend({
 			//update local model
 			this.model.set(r.room);
 		}
+
+		if(r && r.passwordUpdated){
+			if(Dubtrack.session && Dubtrack.room.users && Dubtrack.room.users.getIfHasRole(Dubtrack.session.get("_id"))){
+			}else{
+				location.reload();
+			}
+		}
 	},
 
-	updateBackground : function(force){
-		$.backstretch("destroy", false);
-		var url = Dubtrack.config.urls.roomImage;
-		url = Dubtrack.config.apiUrl + url.replace(":id", this.model.get("_id"));
+	updateBackground : function(background, force){
+		if ($('body').data('backstretch')) $.backstretch('destroy', false);
+
+		var imageUrl = Dubtrack.config.apiUrl + Dubtrack.config.urls.roomImage.replace(':id', this.model.get('_id'));
 
 		//cache busting
-		if(force) url += "?v" + Date.now();
+		if (force) imageUrl += '?v=' + background.version;
 
-		$.backstretch(url);
+		$.backstretch(imageUrl);
 	},
 
 	render: function(){
 		var self = this;
 
-		/*this.roomInfo = new Dubtrack.View.RoomInfo({
-			model: this.model
-		});*/
-
-		this.player = new Dubtrack.View.Player({
-			model: this.model
-		});
-
 		var url = Dubtrack.config.urls.roomUsers.replace( "{id}", this.model.id );
 		this.urlUsersRoom = Dubtrack.config.apiUrl + url;
+
+		//join room
+		this.joinRoom();
 
 		if(!Dubtrack.loggedIn){
 			$("#create-room-div").hide();
@@ -103,25 +128,10 @@ Dubtrack.View.Room = Backbone.View.extend({
 		}
 
 		var background = this.model.get("background");
-		if(background){
-			this.updateBackground(false);
+
+		if (background) {
+			this.updateBackground(background, false);
 		}
-
-		//join room
-		this.renderChat();
-		this.joinRoom();
-
-		//subscribe to real time channel
-		Dubtrack.realtime.subscribe(this.model.get('realTimeChannel').toLowerCase(), function(){
-			if(!self.users){
-				//users
-				self.users = new Dubtrack.View.roomUsers({
-					model: self.model
-				});
-			}else{
-				self.users.autoLoad();
-			}
-		});
 
 		//set feature users title
 		this.$('.room-feautre-title span').html('Top users in ' + this.model.get('name'));
@@ -133,34 +143,12 @@ Dubtrack.View.Room = Backbone.View.extend({
 		$(".rewindProfile a").attr("href", "/join/" + this.model.get("roomUrl"));
 		//Clsoing #Browser
 		$(".close").attr("href", "/join/" + this.model.get("roomUrl"));
-
-		Dubtrack.helpers.cookie.set('dubtrack-room', this.model.get("roomUrl"), 60);
-		Dubtrack.helpers.cookie.set('dubtrack-room-id', this.model.get("_id"), 60);
-
-		Dubtrack.Events.bind('realtime:user-kick', this.userKickedOut, this);
-		Dubtrack.Events.bind('realtime:user-ban', this.userBannedOut, this);
-
-		if(Dubtrack.loggedIn){
-			var leaveUrl = Dubtrack.config.apiUrl + Dubtrack.config.urls.roomBeacon.replace( ":id", this.model.id ).replace( ":userid", Dubtrack.session.id);
-
-			$(window).bind('beforeunload', function () {
-				$.ajax({
-					url: leaveUrl,
-					async: false
-				});
-			});
-
-			$(window).bind("unload", function () {
-				$.ajax({
-					url: leaveUrl,
-					async: false
-				});
-			});
-		}
 	},
 
 	displayRoom: function(){
 		this.$el.show();
+
+		if(this.chat) this.chat.clickChatCounter();
 	},
 
 	userKickedOut: function(r){
@@ -169,11 +157,17 @@ Dubtrack.View.Room = Backbone.View.extend({
 		if(Dubtrack.session && id && id === Dubtrack.session.get("_id") ){
 			var message = "You were kicked out of the room";
 
-			if(r.message !== "" || r.message !== " ") message += "\n" + r.message;
+			//if(r.message !== "" || r.message !== " ") message += "\n" + r.message;
 
-			alert(message);
+			Dubtrack.helpers.displayError("Warning", message, false, "Dubtrack.room.leaveRoom();");
 
-			this.leaveRoom();
+			setTimeout(function(){
+				this.leaveRoom();
+			}.bind(this), 30000);
+
+			try{
+				if(Dubtrack.room.chat.mentionChatSound) Dubtrack.room.chat.mentionChatSound.play();
+			}catch(ex){}
 		}
 	},
 
@@ -187,9 +181,15 @@ Dubtrack.View.Room = Backbone.View.extend({
 			var time = parseInt(r.time, 10);
 			if(time && time !== 0) message += " for " + time + " minutes";
 
-			alert(message);
+			Dubtrack.helpers.displayError("Warning", message, false, "Dubtrack.room.leaveRoom();");
 
-			this.leaveRoom();
+			setTimeout(function(){
+				this.leaveRoom();
+			}.bind(this), 30000);
+
+			try{
+				if(Dubtrack.room.chat.mentionChatSound) Dubtrack.room.chat.mentionChatSound.play();
+			}catch(ex){}
 		}
 	},
 
@@ -208,191 +208,160 @@ Dubtrack.View.Room = Backbone.View.extend({
 
 
 	renderChat: function(){
-		this.chat = new Dubtrack.View.chat();
-	},
-
-	joinRoom: function(){
-		var self = this;
-		if(Dubtrack.loggedIn){
-			//join room
-			Dubtrack.helpers.sendRequest(this.urlUsersRoom, {}, "post", function(err, r){
-				if(err){
-					Dubtrack.playerController.$('.remove-if-banned').remove();
-					$('body').addClass('not-logged-in');
-					self.chat.$('.pusher-chat-widget-input').html('');
-
-					switch(err.code){
-						case 401:
-							try{
-								self.chat.$('.pusher-chat-widget-input').html('<p>' + err.data.err.details.message + '</p>');
-								Dubtrack.helpers.displayError("[" + err.code + "] " + dubtrack_lang.global.error, err.data.err.details.message + ". <b><u>You won't be able to chat or play songs</u></b>", false);
-							}catch(ex){}
-						break;
-						default:
-							Dubtrack.helpers.displayError(dubtrack_lang.global.error, "An unexpected error occurred joining room", true);
-					}
-				}else{
-					if(r && r.data && r.data.user && r.data.user.muted){
-						self.chat.user_muted = true;
-					}
-
-					if(r && r.data && r.data.user && r.data.user.ot_token && r.data.room && r.data.room.otSession){
-						//go instant token
-						self.ot_token = r.data.user.ot_token;
-						self.ot_session = r.data.room.otSession;
-
-						$("#dubtrack-video-realtime").show();
-					}
-				}
-			});
+		if(!this.chat){
+			this.chat = new Dubtrack.View.chat();
 		}
 	},
 
-	toggleVideos: function(){
-		$("#dubtrack-video-realtime").toggleClass('active');
-		$('body').toggleClass('videoActive');
+	joinRoom: function(params) {
+		if (this.joinedRoom) return;
 
-		if(! this.video_chat_loaded && this.ot_token && this.ot_session){
-			this.video_chat_loaded = true;
-			this.loadVideoChat(this.ot_token, this.ot_session);
-		}
+		this.joinedRoom = true;
 
 		var self = this;
-		this.chat.resize();
-		setTimeout(function(){
-			self.chat.$('.chat-messages').perfectScrollbar('update');
-			self.chat.$('.message-list-wrapper-inner').scrollTop(0);
-			self.chat.scollBottomChat();
-		}, 500);
+		if(!params) params = {};
 
-		return false;
-	},
-
-	/*loadVideoChat: function(token){
-		if(this.chat.user_muted || $(window).width() < 800) return;
-
-		if(Dubtrack.session && token){
-			var collapsedCookie = Dubtrack.helpers.cookie.get('dubtrack-videochat');
-
-			if(collapsedCookie) this.videoChatCollapsed = true;
-
-			// Connect URL
-			var url = 'https://goinstant.net/e6c16f2081be/Dubtrack.fm',
-				self = this;
-
-			//connect to go instant
-			this.goInstantConnection = new goinstant.Connection(url);
-
-			//connect user
-			this.goInstantConnection.connect(token, function(err, connectionObject){
-				if(err) return false;
-
-				var room = self.goInstantConnection.room(self.model.get("_id"));
-
+		if (Dubtrack.loggedIn) {
 				//join room
-				room.join(function(err){
-					if(err) return false;
+				Dubtrack.helpers.sendRequest(this.urlUsersRoom, params, "post", function(err, r) {
+						if (err) {
+								switch (err.code) {
+										case 401:
+											Dubtrack.loggedIn = false;
+											self.postJoinRoom();
+											Dubtrack.loggedIn = true;
+											self.users.user_is_banned = true;
 
-					self.webrtc = new goinstant.widgets.WebRTC({
-						room: room,
-						collapsed: self.videoChatCollapsed,
-						autoStart: false
-					});
+											Dubtrack.playerController.$('.remove-if-banned').remove();
+											$('body').addClass('not-logged-in');
+											self.chat.$('.pusher-chat-widget-input').html('');
 
-					// Initialize the WebRTC widget
-					self.webrtc.initialize(function(err) {
-						if (err) return false;
+											try {
+													self.chat.$('.pusher-chat-widget-input').html('<p>' + err.data.err.details.message + '</p>');
+													Dubtrack.helpers.displayError("[" + err.code + "] " + dubtrack_lang.global.error, err.data.err.details.message + ". <b><u>You won't be able to chat or play songs</u></b>", false);
+											} catch (ex) {}
 
-						//self.webrtc._controller._goRTC.on('localStream', function(){
-						if(!self.videoChatCollapsed){
-							$('body').addClass('videoActive');
-							//if(self.chat){
-								//$(window).resize();
-								self.chat.resize();
-								setTimeout(function(){
-									self.$('.chat-messages').perfectScrollbar('update');
-									self.chat.$('.chat-messages').scrollTop(0);
-								}, 500);
-							//}
+											break;
+										case 400:
+											$('body').addClass('room-password-required');
+											self.joinedRoom = false;
+
+											if(!self.passwordInput) self.passwordInput = new Dubtrack.View.RoomPassword().render("Room password", "Please enter the room password", self.$el);
+
+											if(err && err.data && err.data.err && err.data.err.details && err.data.err.details.message && err.data.err.details.message.err){
+												if(err.data.err.details.message.err == "invalidPassword"){
+													self.passwordInput.displayError("Invalid password");
+												}
+
+												if(err.data.err.details.message.err == "tooManyInvalidPassword"){
+													self.passwordInput.displayError("Too many invalid passwords entered, please wait 2 hours before trying");
+												}
+											}
+
+											self.passwordInput.$el.show();
+											self.passwordInput.resetFields();
+
+											break;
+										default:
+											Dubtrack.playerController.$('.remove-if-banned').remove();
+
+											Dubtrack.helpers.displayError(dubtrack_lang.global.error, "An unexpected error occurred joining room", true);
+								}
+						} else {
+								$('body').removeClass('room-password-required');
+
+								if (self.passwordInput) self.passwordInput.close();
+
+								self.postJoinRoom();
+
+								if (r && r.data && r.data.user && r.data.user.muted) {
+										self.chat.user_muted = true;
+								}
 						}
-
-						self.webrtc._controller._goRTC.on('localStream', function(){
-							$('.gi-user.gi-local video').hide();
-							$('.gi-user.gi-local .gi-stream-wrapper').append('<video id="localUserVideo" class="gi-stream"></video>');
-							var v = document.getElementById('localUserVideo');
-
-							navigator.getUserMedia = (navigator.getUserMedia ||
-														navigator.webkitGetUserMedia ||
-														navigator.mozGetUserMedia ||
-														navigator.msGetUserMedia);
-
-							navigator.getUserMedia({video: true}, function(stream) {
-								var url = window.URL || window.webkitURL;
-								v.src = url ? url.createObjectURL(stream) : stream;
-								v.play();
-							});
-
-						});
-
-						//
-						$('.gi-webrtc .gi-collapse').bind('click', function(){
-							$('body').toggleClass('videoActive');
-							$(window).resize();
-
-							if($('body').hasClass('videoActive')){
-								Dubtrack.helpers.cookie.delete('dubtrack-videochat');
-							}else{
-								Dubtrack.helpers.cookie.set('dubtrack-videochat', true, 60);
-							}
-						});
-					});
 				});
+		} else {
+				if (this.model.get('roomDisplay') == 'private') {
+					this.leaveRoom();
+					return;
+				}
+
+				this.postJoinRoom();
+		}
+	},
+
+	loadRoomUsers : function(){
+		if(!this.users){
+			//users
+			this.users = new Dubtrack.View.roomUsers({
+				model: this.model
 			});
+		}else{
+			this.users.autoLoad();
 		}
-	},*/
+	},
 
-	loadVideoChat: function(token, sessionId){
-		if(this.chat.user_muted || $(window).width() < 800) return;
+	postJoinRoom: function(){
+		this.joinedRoom = true;
 
-		if(Dubtrack.session && token && sessionId){
-			var apiKey = "44718392",
-				divid = 'dtrealtimechat_' + Math.random().toString(36).substr(2, 9);
+		//subscribe to real time channel
+		Dubtrack.realtime.subscribe(this.model.get('realTimeChannel').toLowerCase(), function(){
+		}.bind(this));
 
-			//create a new element
-			var div = $('<div/>', {
-				'id' : divid,
-				'class' : 'dtrealtime_videuser'
-			}).appendTo($('#dubtrack-video-realtime .realtime-videos-container'));
-
-			// Initialize session, set up event listeners, and connect
-			this.ot_session = OT.initSession(apiKey, sessionId);
-
-			this.ot_session.connect(token, function(error) {
-				this.ot_publisher = OT.initPublisher(divid, {
-					name: Dubtrack.session.get('username')
-				});
-
-				this.ot_session.publish(self.ot_publisher);
-			}.bind(this));
-
-			this.ot_session.on("streamCreated", function(event) {
-				//create a new element
-				divid = 'dtrealtimechat_' + Math.random().toString(36).substr(2, 9);
-				div = $('<div/>', {
-					'id' : divid,
-					'class' : 'dtrealtime_videuser'
-				}).appendTo($('#dubtrack-video-realtime .realtime-videos-container'));
-
-				this.ot_session.subscribe(event.stream, divid, {
-					insertMode: 'append'
-				}, function (err){
-					console.log(err);
-				}.bind(this));
-			}.bind(this));
-		}
+		Dubtrack.player_initialized = true;
+		this.player = new Dubtrack.View.Player({
+			model: this.model
+		});
+		this.loadRoomUsers();
+		this.renderChat();
 	},
 
 	setTopUsers: function(){
 
 	}
 });
+
+Dubtrack.View.RoomPassword = Backbone.View.extend({
+	attributes : {
+		id : 'warning'
+	},
+
+	events : {
+		"submit" : "submitForm"
+	},
+
+	render : function(title, message, el){
+		this.$el.html("<form><h3>" + title + "</h3><p>" + message + "<input type='password' name='warning-password' id='warning-password' /></p><span class='error-message'></span><input type='submit' id='warning-input-submit' value='Join room' /></form>").addClass('form-join-password-input');
+
+		this.$el.appendTo(el);
+
+		return this;
+	},
+
+	displayError : function(txt){
+		this.$('.error-message').text(txt);
+	},
+
+	resetFields : function(){
+		this.$('#warning-password').val('').focus();
+		this.$('#warning-input-submit').val('Join Room');
+	},
+
+	submitForm : function(){
+		this.$('#warning-input-submit').val('Loading...');
+		this.$('p .error-message').empty();
+		var password_val = this.$('#warning-password').val();
+
+		if(password_val && password_val.length > 0){
+			Dubtrack.room.joinRoom({
+				'password-room' : password_val
+			});
+
+			return false;
+		}
+
+		this.$('#warning-password').val('').focus();
+		this.$('#warning-input-submit').val('Join Room');
+
+		return false;
+	}
+})

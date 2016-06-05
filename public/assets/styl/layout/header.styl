@@ -45,6 +45,7 @@
 						margin-right 0.75rem
 
 	.header-right-navigation
+	.header-donate
 	#header_login
 		float right
 		margin-right 1rem
@@ -110,3 +111,20 @@
 			padding 0 1rem
 			font-weight bold
 			color $primary-color
+
+	.header-donate
+		margin-right 0
+		margin-top 0.2rem
+		display none
+
+		a
+			padding .1rem 1rem
+			font-weight bold
+			color $primary-color
+			text-shadow 1px 1px 0 rgba(0, 0, 0, 0.35)
+			background-color #F44336
+			border 2px solid #F44336
+			border-radius 4px
+
+		@media screen and (min-width: $tablet-breakpoint)
+			display inline-block

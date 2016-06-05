@@ -256,9 +256,9 @@ Dubtrack.View.Message.MainList = Backbone.View.extend({
 		this.$('.message-list-wrapper-inner').scrollTop(0);
 
 		this.$('.message-list-wrapper-inner').perfectScrollbar({
-			wheelSpeed: 50,
 			suppressScrollX: true,
-			wheelPropagation: false
+			wheelPropagation: false,
+			minScrollbarLength: 40
 		});
 	},
 
@@ -535,6 +535,14 @@ Dubtrack.View.Message.MainListDetailsItem = Dubtrack.View.Message.MainListItem.e
 		this.$('.message-time').html('<time class="timeago" datetime="' + currentDate.toISOString() + '">' + currentDate.toLocaleString() + '</time>');
 
 		this.$(".timeago").timeago();
+
+		this.$('img').load(function() {
+			Dubtrack.layout.menu_right.message_view.message_main_list_details.scollBottom();
+		});
+
+		this.$('img').error(function() {
+			$(this).attr( "src", "/assets/images/media/chat_image_load_error.png" );
+		});
 	},
 
 	appendText : function(created, text, prepend){
