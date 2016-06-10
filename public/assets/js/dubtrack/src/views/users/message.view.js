@@ -508,6 +508,8 @@ Dubtrack.View.Message.MainListItem = Backbone.View.extend({
 		this.$el.attr("data-messageid", this.model.get("_id"));
 		this.$el.html( _.template(this.template,  model_json));
 
+		emojify.run(this.el);
+
 		var currentDate = new Date(this.model.get('latest_message'));
 		this.$('.message-time').html('<time class="timeago" datetime="' + currentDate.toISOString() + '">' + currentDate.toLocaleString() + '</time>');
 
@@ -543,6 +545,8 @@ Dubtrack.View.Message.MainListDetailsItem = Dubtrack.View.Message.MainListItem.e
 		this.$('img').error(function() {
 			$(this).attr( "src", "/assets/images/media/chat_image_load_error.png" );
 		});
+
+		emojify.run(this.el);
 	},
 
 	appendText : function(created, text, prepend){
