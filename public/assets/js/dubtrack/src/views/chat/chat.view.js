@@ -25,7 +25,8 @@ Dubtrack.View.chat = Backbone.View.extend({
 		"click .display-chat-settings": "displayChatOptions",
 		"click .pusher-chat-widget-input .icon-camera": "openGifCreator",
 		"click .clearChatToggle" : "clearChat",
-		"click .hideImagesToggle" : "hideImageToggleClick"
+		"click .hideImagesToggle" : "hideImageToggleClick",
+		"click .roleColorToggle" : "disableRoleColorToggleClick"
 	},
 
 	initialize : function(){
@@ -77,6 +78,9 @@ Dubtrack.View.chat = Backbone.View.extend({
 		}.bind(this), this);
 
 		if(Dubtrack.HideImages) this.hideImageToggle();
+		if(Dubtrack.DisableRoleColors) {
+			this.disableRoleColorToggle();
+		}
 	},
 
 	bindRealtimeEvents : function(){
@@ -129,6 +133,28 @@ Dubtrack.View.chat = Backbone.View.extend({
 		var height = this.$('.chat-messages')[0].scrollHeight;
 		this.$('.chat-messages').scrollTop(height);
 		this.$('.chat-messages').perfectScrollbar('update');
+	},
+
+	disableRoleColorToggleClick: function () {
+		Dubtrack.DisableRoleColors = !Dubtrack.DisableRoleColors;
+		Dubtrack.helpers.cookie.set('dubtrack-disable-role-colors', Dubtrack.DisableRoleColors, 30);
+
+		this.disableRoleColorToggle();
+
+		this.displayChat();
+
+		return false;
+	},
+
+	disableRoleColorToggle: function () {
+		if(Dubtrack.DisableRoleColors){
+			this.$('.roleColorToggle').html('Enable Role Colors');
+			this.$el.addClass('role-colors-disabled');
+		}else{
+			this.$('.roleColorToggle').html('Disable Role Colors');
+			this.$el.removeClass('role-colors-disabled');
+		}
+		Dubtrack.room.users.disableRoleColorToggle();
 	},
 
 	clearChat : function(){

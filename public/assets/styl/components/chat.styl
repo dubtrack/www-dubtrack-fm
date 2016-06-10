@@ -14,6 +14,24 @@
 							img
 								display none
 
+	&.role-colors-disabled
+		.chat-messages
+			.chat-main
+				li
+					&.dj
+					&.resident-dj
+					&.vip
+					&.mod
+					&.manager
+					&.co-owner
+					&.creator
+					&.admin
+						.activity-row
+							.text
+								.user-role
+								.username
+									color $meta-color
+
 	.chat_tools
 		position absolute
 		width 100%
@@ -173,8 +191,27 @@
 								font-size 0.9rem
 								line-height 1.2
 								font-weight bold
-								color $meta-color
 								cursor pointer
+
+								.user-role
+									font-size smaller
+									margin-left 0.25rem
+									transition-property opacity
+									transition-duration 0.25s
+									opacity 0
+
+								.user-role-icon
+									text-indent -9999rem
+									width 1em
+									height 1em
+									background-size 1em 1em
+									margin-right 0.25rem
+
+								&:hover
+									.user-role
+										transition-property opacity
+										transition-duration 0.25s
+										opacity 0.8
 
 					.meta-info
 						.username
@@ -196,6 +233,15 @@
 						right 0
 						cursor pointer
 						display none
+
+					.user-role
+					.user-role-icon
+						display none
+
+					a.username
+						color $meta-color
+
+					user-roles()
 
 	.pusher-chat-widget-input
 		position absolute
@@ -261,10 +307,16 @@
 				float left
 				border 1px solid $meta-color
 				border-left 0
-				width 50%
 				text-align center
 				padding 1rem 0
 				cursor pointer
+
+				&.hideImagesToggle
+				&.clearChatToggle
+					width 30%
+
+				&.roleColorToggle
+					width 40%
 
 				&.active
 					color #fff !important

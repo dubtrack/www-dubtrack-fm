@@ -17,6 +17,13 @@ Dubtrack.View.chatItem = Backbone.View.extend({
 			this.model.set( 'message', this.model.get('message'));
 		}
 
+		// Set the user's role name to show in chat.
+		if (user) {
+			this.model.set('userRole', Dubtrack.helpers.text.getNameUserRoomRoleNameFromUserID(user._id));
+		} else {
+			this.model.set('userRole', '');
+		}
+
 		this.model.bind('change', this.setId, this);
 
 		var modelJson = this.model.toJSON();
@@ -32,8 +39,27 @@ Dubtrack.View.chatItem = Backbone.View.extend({
 
 		this.$el.addClass('user-' + modelJson.user._id);
 
+		// Tag the user's room role
+		if(modelJson.user._id == Dubtrack.room.model.get('userid')) {
+			this.$el.addClass('creator');
+		}
+		else if (Dubtrack.room.users.getRoleType(modelJson.user._id)) {
+			// Do not tag user as co-owner also!
+			this.$el.addClass(Dubtrack.room.users.getRoleType(modelJson.user._id));
+		}
+
+		// Tag the user as an admin if they are
+		if(Dubtrack.helpers.isDubtrackAdmin(modelJson.user._id)){
+			this.$el.addClass('admin');
+		}
+
 		if(Dubtrack.session && Dubtrack.session.id && Dubtrack.session.id == modelJson.user._id){
 			this.$el.addClass('current-chat-user');
+		}
+
+		var currentUserDJ = Dubtrack.room.player.activeSong.get('user');
+		if (currentUserDJ && currentUserDJ.id == modelJson.user._id) {
+			this.$el.addClass('currentDJ');
 		}
 
 		Dubtrack.Events.bind('realtime:user-update-' + modelJson.user._id, this.updateUser, this);

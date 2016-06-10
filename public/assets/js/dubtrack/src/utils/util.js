@@ -487,6 +487,7 @@ Dubtrack.els.templates = {
 							'<div class="avatar_tools">' +
 								'<div class="input-room-users-search">' +
 									'<input type="text" name="room-users-search" placeholder="Filter room users">' +
+									'<span class="filter-toggle">Order By Role</span>' +
 								'</div>' +
 							'</div>' +
 							'<div class="tabsContainer">' +
@@ -495,8 +496,9 @@ Dubtrack.els.templates = {
 								'</div>' +
 							'</div>',
 
-		'avatarsContainerItem':'<p class="username">' +
-								'</p>' +
+		'avatarsContainerItem': '<span class="user-role-icon"></span>' +
+								'<p class="username"></p>' +
+								'<span class="user-role"></span>' +
 								'<p class="dubs">' +
 									'<span><%- dubs %> </span>' +
 									' dubs' +
@@ -523,6 +525,7 @@ Dubtrack.els.templates = {
 								'<span class="chat-option-header">Chat display</span>' +
 								'<div class="chat-option-buttons chat-option-buttons-display">' +
 									'<span class="hideImagesToggle">Hide Images</span>' +
+									'<span class="roleColorToggle">Disable Role Colors</span>' +
 									'<span class="clearChatToggle">Clear chat</span>' +
 								'</div>' +
 								'<span class="chat-option-header">Sound notifications</span>' +
@@ -567,7 +570,14 @@ Dubtrack.els.templates = {
 							'</div>' +
 							'<div class="activity-row">' +
 								'<div class="text">' +
-									'<p><a href="#" class="username"><%- user.username %></a> <%= message %></p>' +
+									'<p>' +
+										'<a href="#" class="username">' +
+											'<span class="user-role-icon"></span>' +
+											'<%- user.username %>' +
+											'<span class="user-role"><%= userRole %></span>' +
+										'</a>' +
+										'<%= message %>' +
+									'</p>' +
 								'</div>' +
 								'<div class="meta-info">' +
 									'<span class="username">' +

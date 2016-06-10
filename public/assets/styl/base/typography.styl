@@ -1,11 +1,4 @@
 normalize-text()
-font-face('geomanist', '/assets/fonts/geomanist/geomanist-thin-webfont', lighter, normal);
-font-face('geomanist', '/assets/fonts/geomanist/geomanist-bold-webfont', bold, normal);
-font-face('geomanist', '/assets/fonts/geomanist/geomanist-regular-webfont', normal, normal);
-
-font-face('geomanist', '/assets/fonts/geomanist/geomanist-thin-italic-webfont', lighter, italic);
-font-face('geomanist', '/assets/fonts/geomanist/geomanist-regular-italic-webfont', normal, italic);
-font-face('geomanist', '/assets/fonts/geomanist/geomanist-book-italic-webfont', bold, italic);
 
 body
 	font 1rem/1.5 $base-font-stack
@@ -45,8 +38,10 @@ p
 	margin: 0 0 1rem
 
 a
-	color $white
 	text-decoration none
+
+a:not(.username)
+	color $white
 	&:active
 	&:focus
 	&:hover

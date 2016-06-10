@@ -10,10 +10,13 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 
 	roomId: false,
 
+	roleListOrderType: 0,
+
 	events  : {
 		"click a.loadRoomAva": "loadRoomAva",
 		"click a.modLink": "loadModsAva",
-		"keyup .input-room-users-search input": "filterRoomUsers"
+		"keyup .input-room-users-search input": "filterRoomUsers",
+		"click .filter-toggle": "userListOrderingToggleClick"
 	},
 
 	initialize : function(){
@@ -40,9 +43,7 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 
 		this.collection = new Dubtrack.Collection.RoomUser();
 		this.collection.url = Dubtrack.config.apiUrl + url;
-		this.collection.comparator = function(user){
-			return - ( parseInt( user.get('dubs'), 10 ) );
-		};
+		this.collection.comparator = this.filterUsersByRolePower;
 
 		//attach events to object
 		this.collection.bind("add", this.addUser, this);
@@ -75,6 +76,101 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 			wheelPropagation: false,
 			minScrollbarLength: 40
 		});
+
+		if(Dubtrack.DisableRoleColors) {
+			this.disableRoleColorToggle();
+		}
+	},
+
+	filterUsersByRolePower: function (user1, user2) {
+		var userId1 = user1.get('userid');
+		var userId2 = user2.get('userid');
+		var userAdmin1 = Dubtrack.helpers.isDubtrackAdmin(userId1);
+		var userAdmin2 = Dubtrack.helpers.isDubtrackAdmin(userId2);
+		if (userAdmin1 && !userAdmin2) {
+			return -1;
+		}
+		else if (userAdmin2 && !userAdmin1) {
+			return 1;
+		}
+		var userPower1 = 0, userPower2 = 0;
+		var userRoleid1 = user1.get('roleid');
+		var userRoleid2 = user2.get('roleid');
+		if (userRoleid1 && userRoleid1._id) {
+			userPower1 = userRoleid1.rights.length;
+			if(userId1 == Dubtrack.room.model.get('userid')) {
+				userPower1++;
+			}
+		}
+		if (userRoleid2 && userRoleid2._id) {
+			userPower2 = userRoleid2.rights.length;
+			if(userId2 == Dubtrack.room.model.get('userid')) {
+				userPower2++;
+			}
+		}
+		if (userPower1 > userPower2) {
+			return -1;
+		}
+		else if (userPower2 > userPower1) {
+			return 1;
+		}
+		return Dubtrack.room.users.filterUsersByDubs(user1, user2);
+	},
+
+	filterUsersByDubs: function (user1, user2) {
+		var userDubs1 = user1.get('dubs');
+		var userDubs2 = user2.get('dubs');
+		if (userDubs1 > userDubs2) {
+			return -1;
+		}
+		else if (userDubs2 > userDubs1) {
+			return 1;
+		}
+		return Dubtrack.room.users.filterUsersByName(user1, user2);
+	},
+
+	filterUsersByName: function (user1, user2) {
+		var username1 = user1.get('_user').username;
+		var username2 = user2.get('_user').username;
+		return username1.localeCompare(username2);
+	},
+
+	userListOrderingToggleClick: function () {
+		switch (this.roleListOrderType) {
+			case 0:
+				this.roleListOrderType = 1;
+				break;
+			case 1:
+				this.roleListOrderType = 2;
+				break;
+			case 2:
+			default:
+				this.roleListOrderType = 0;
+		}
+
+		this.userListOrderingToggle();
+
+		this.filterRoomUsers();
+
+		return false;
+	},
+
+	userListOrderingToggle: function () {
+		switch (this.roleListOrderType) {
+			case 0:
+				this.$('.filter-toggle').html('Order By Role');
+				this.collection.comparator = this.filterUsersByRolePower;
+				break;
+			case 1:
+				this.$('.filter-toggle').html('Order By Dubs');
+				this.collection.comparator = this.filterUsersByDubs;
+				break;
+			case 2:
+			default:
+				this.$('.filter-toggle').html('Order By Name');
+				this.collection.comparator = this.filterUsersByName;
+		}
+		this.resetEl();
 	},
 
 	setTotalUsers: function(){
@@ -611,6 +707,14 @@ Dubtrack.View.roomUsers = Backbone.View.extend({
 
 	beforeClose : function(){
 		if( this.intervalId ) clearInterval(this.intervalId);
+	},
+
+	disableRoleColorToggle: function () {
+		if(Dubtrack.DisableRoleColors){
+			this.$el.addClass('role-colors-disabled');
+		}else{
+			this.$el.removeClass('role-colors-disabled');
+		}
 	}
 
 });

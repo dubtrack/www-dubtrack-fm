@@ -141,9 +141,9 @@ module.exports = function(grunt) {
 		'wrap:dubtrack',
 		'removelogging',
 		'uglify',
+		'stylus:compile',
 		'cssnano',
 		'clean:dubtrack_production',
-		'stylus:compile',
 		'clean:dubtrack_after'
 	]);
 };

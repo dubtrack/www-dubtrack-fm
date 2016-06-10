@@ -44,6 +44,7 @@ var dubtrackMain = {
 };
 
 if(!w.DUBTRACK_API_URL) w.DUBTRACK_API_URL = "https://api.dubtrack.fm";
+if(!w.PUBNUB_SUB_KEY) w.PUBNUB_SUB_KEY = "sub-c-2b40f72a-6b59-11e3-ab46-02ee2ddab7fe";
 
 w.Dubtrack = {
 	init: function(){
@@ -55,6 +56,11 @@ w.Dubtrack = {
 		var hide_images = Dubtrack.helpers.cookie.get('dubtrack-hide-images');
 		if(hide_images && hide_images == 'hide') Dubtrack.HideImages = true;
 		soundManager.waitForWindowLoad = true;
+
+		var disable_role_colors = Dubtrack.helpers.cookie.get('dubtrack-disable-role-colors');
+		if (disable_role_colors && disable_role_colors == 'true') {
+			Dubtrack.DisableRoleColors = true;
+		}
 
 		Dubtrack.helpers.loadDependencies(function() {
 			Dubtrack.app = new DubtrackRoute();
@@ -96,6 +102,8 @@ w.Dubtrack = {
 	View: {},
 
 	HideImages : false,
+	
+	DisableRoleColors : false,
 
 	$: {
 		body: $('body'),
@@ -168,7 +176,7 @@ w.Dubtrack = {
 		},
 
 		keys: {
-			pubunub: 'sub-c-2b40f72a-6b59-11e3-ab46-02ee2ddab7fe',
+			pubunub: w.PUBNUB_SUB_KEY,
 			soundcloud: '56443d7e9ca2ddae92e9261a309e8792',
 		},
 
@@ -340,7 +348,8 @@ w.Dubtrack = {
 				userid == "5620a1978ea6e75f00252f7a" ||
 				userid == "560892bf8e9cb60300550aa2" ||
 				userid == "52c8254ca7b7260200000001" ||
-				userid == "5609c279425d2903003faec4"){
+				userid == "5609c279425d2903003faec4" ||
+				userid == "56083b920cd1cc03003fe8e2" ){
 				return true;
 			}else{
 				return false;
@@ -768,6 +777,32 @@ w.Dubtrack = {
 			convertAttoLink: function(text){
 				return text.replace(/(@[A-Za-z0-9\.\-\_]+)/g, '<span class="username-handle">$&</span>');
 			},
+
+			getNameUserRoomRoleNameFromUserID: function (userID) {
+				var roleName = '';
+				if (Dubtrack.helpers.isDubtrackAdmin(userID)) {
+					// For now admin over everything
+					roleName = 'admin';
+				}
+				else if (userID == Dubtrack.room.model.get('userid')) {
+					roleName = 'creator';
+				}
+				else if (Dubtrack.room.users.getRoleType(userID)) {
+					roleName = Dubtrack.room.users.getRoleType(userID);
+					switch (Dubtrack.room.users.getRoleType(userID)) {
+						case 'dj':
+							roleName = 'DJ';
+							break;
+						case 'resident-dj':
+							roleName = 'resident-DJ';
+							break;
+						case 'vip':
+							roleName = 'VIP';
+							break;
+					}
+				}
+				return roleName;
+			}
 		}
 	},
 

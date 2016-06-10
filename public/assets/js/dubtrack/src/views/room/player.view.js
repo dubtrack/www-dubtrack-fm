@@ -357,7 +357,7 @@ Dubtrack.View.Player = Backbone.View.extend({
 				}else{
 					this.customEmbedIframeErrorDiv.hide();
 					roomEmbedUrl = roomEmbedUrl.replace('http:', 'https:');
-					this.customEmbedIframeDiv.show().html('<div id="custom_iframe_overlay"></div><iframe src="' + roomEmbedUrl + '" width="100%" height="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>');
+					this.customEmbedIframeDiv.show().html('<div id="custom_iframe_overlay"></div><iframe src="' + roomEmbedUrl + '" width="100%" height="100%" frameborder="0" sandbox="allow-scripts allow-same-origin" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>');
 				}
 			}else{
 				this.customEmbedIframeErrorDiv.show();

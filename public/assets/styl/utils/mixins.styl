@@ -31,3 +31,108 @@ clearfix()
 		display table
 	&:after
 		clear both
+
+user-roles()
+	&.dj
+	&.resident-dj
+	&.vip
+	&.mod
+	&.manager
+	&.co-owner
+	&.creator
+	&.admin
+		.user-role
+			display inline-block
+
+	&.creator
+		.user-role
+		.username
+			color $creator-color
+
+		if $creator-icon is defined and $creator-icon
+			span.user-role-icon
+				display inline-block
+				background-image $creator-icon
+
+	&.co-owner
+		.user-role
+		.username
+			color $co-owner-color
+
+		if $co-owner-icon is defined and $co-owner-icon
+			span.user-role-icon
+				display inline-block
+				background-image $co-owner-icon
+
+	&.manager
+		.user-role
+		.username
+			color $manager-color
+
+		if $manager-icon is defined and $manager-icon
+			span.user-role-icon
+				display inline-block
+				background-image $manager-icon
+
+	&.mod
+		.user-role
+		.username
+			color $mod-color
+
+		if $mod-icon is defined and $mod-icon
+			span.user-role-icon
+				display inline-block
+				background-image $mod-icon
+
+	&.vip
+		.user-role
+		.username
+			color $vip-color
+
+		if $vip-icon is defined and $vip-icon
+			span.user-role-icon
+				display inline-block
+				background-image $vip-icon
+
+	&.resident-dj
+		.user-role
+		.username
+			color $resident-dj-color
+
+		if $resident-dj-icon is defined and $resident-dj-icon
+			span.user-role-icon
+				display inline-block
+				background-image $resident-dj-icon
+
+	&.dj
+		.user-role
+		.username
+			color $dj-color
+
+		if $dj-icon is defined
+			span.user-role-icon
+				display inline-block
+				background-image $dj-icon
+
+	&.admin
+		.user-role
+		.username
+			color $admin-color
+
+		if $admin-icon is defined and $admin-icon
+			span.user-role-icon
+				display inline-block
+				background-image $admin-icon
+
+	&.currentDJ
+		.username
+			&:before
+				content "DJ "
+				color $current-dj-color
+
+	/* Because Pikachu */
+	&.user-55ffae6a1564a403003f5132
+	&.userid-55ffae6a1564a403003f5132
+			.user-role
+			.username
+				color #caca00

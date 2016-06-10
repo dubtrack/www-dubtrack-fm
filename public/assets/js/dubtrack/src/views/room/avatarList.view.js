@@ -22,6 +22,7 @@ Dubtrack.View.roomUsersItem = Backbone.View.extend({
 
 		this.pictureEl = this.$('.picture');
 		this.usernameEl = this.$('p.username');
+		this.userroleEL = this.$('span.user-role');
 
 		var user = this.model.get("_user");
 
@@ -29,13 +30,18 @@ Dubtrack.View.roomUsersItem = Backbone.View.extend({
 			this.$el.addClass('admin');
 		}
 
+		var isCreator = false;
 		if( this.model.get("userid") == Dubtrack.room.model.get('userid')){
 			this.$el.addClass('creator');
+			isCreator = true;
 		}
 
 		var role = this.model.get("roleid");
 		if(role){
-			this.$el.addClass(role.type);
+			if (!isCreator) {
+				// Don't make us have to !important any of the room role
+				this.$el.addClass(role.type);
+			}
 
 			if(this.model.get("userid") == Dubtrack.session.id){
 				if(Dubtrack.room && Dubtrack.room.player) Dubtrack.room.player.skipElBtn.show();
@@ -49,11 +55,13 @@ Dubtrack.View.roomUsersItem = Backbone.View.extend({
 		}
 
 		//set current DJ
-		if(Dubtrack.session && this.model.get("userid") == Dubtrack.session.id){
-			var currentUserDJ = Dubtrack.room.player.activeSong.get('user');
-			if( currentUserDJ && currentUserDJ.id == this.model.get('userid')){
-				this.$el.addClass('currentDJ');
+		var currentUserDJ = Dubtrack.room.player.activeSong.get('user');
+		if (currentUserDJ && currentUserDJ.id == this.model.get('userid')) {
+			this.$el.addClass('currentDJ');
+		}
 
+		if(Dubtrack.session && this.model.get("userid") == Dubtrack.session.id){
+			if( currentUserDJ && currentUserDJ.id == this.model.get('userid')){
 				if(Dubtrack.room && Dubtrack.room.player) Dubtrack.room.player.skipElBtn.show();
 			}
 
@@ -76,11 +84,20 @@ Dubtrack.View.roomUsersItem = Backbone.View.extend({
 		this.$('.dubs span').html(r.user.dubs);
 	},
 
+	renderUserRole: function(err, user) {
+		var userRole = Dubtrack.helpers.text.getNameUserRoomRoleNameFromUserID(this.user.id);
+		if (userRole) {
+			this.userroleEL.html(userRole);
+		}
+	},
+
 	renderUser: function(err, user){
 		this.user = user;
 
 		try{
 			this.usernameEl.html( user.get("username") );
+
+			this.renderUserRole(err, user);
 
 			var userInfo = user.get('userInfo');
 

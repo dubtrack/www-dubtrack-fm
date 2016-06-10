@@ -196,7 +196,7 @@ dt.room.roomFormUpdateViewUpdate = Backbone.View.extend({
 				}catch(ex){}
 			}else{
 				roomEmbedUrl = roomEmbedUrl.replace('http:', 'https:');
-				this.$('#iframe-embed-preview').html('<iframe width="100%" height="100%" src="' + roomEmbedUrl + '" frameborder="0" allowfullscreen></iframe>');
+				this.$('#iframe-embed-preview').html('<iframe width="100%" height="100%" src="' + roomEmbedUrl + '" frameborder="0" sandbox="allow-scripts allow-same-origin" allowfullscreen></iframe>');
 			}
 		}else{
 			this.$('#iframe-embed-preview').html('<h3>Invalid iframe url</h3>');

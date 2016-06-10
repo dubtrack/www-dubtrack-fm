@@ -5,6 +5,22 @@
 	height 100%
 	padding: 6.5rem 0 1rem 0
 
+	.role-colors-disabled
+		#main-user-list-room
+			#avatar-list
+				li
+					&.dj
+					&.resident-dj
+					&.vip
+					&.mod
+					&.manager
+					&.co-owner
+					&.creator
+					&.admin
+						.username
+						.user-role
+							color $white
+
 	.avatar_tools
 		position absolute
 		padding: 0 1rem
@@ -17,6 +33,21 @@
 		input
 			border-bottom 1px solid $meta-color
 			padding 0
+			width 69%
+
+		.filter-toggle
+			position absolute
+			right 1rem
+			top -1px
+			border 1px solid $meta-color
+			width 28%
+			text-align center
+			cursor pointer
+			font-weight 600
+			user-select none
+
+			&:hover
+				color $accent-color
 
 	.loadingAva
 		display none
@@ -39,63 +70,35 @@
 				display block
 				margin-bottom 0.5rem
 				cursor pointer
+				animation fadein 0.5s
 
-				&.mod
-				&.creator
-				&.admin
-				&.currentDJ
-				&.co-owner
-				&.vip
-				&.resident-dj
-				&.dj
-				&.manager
-					p.username
-						&:after
-							content " Mod"
-							color $accent-color
-							font-weight bold
-							display inline-block
-							margin-left 0.5rem
+				@keyframes fadein {
+					from { opacity: 0 }
+					to   { opacity: 1 }
+				}
 
-				&.co-owner
-					p.username
-						&:after
-							content " Co-owner"
+				.user-role-icon
+					text-indent -9999rem
+					width 1em
+					height 1em
+					background-size 1em 1em
+					display none
+					margin-right 0.25rem
 
-				&.creator
-					p.username
-						&:after
-							content " Creator" !important
+				.user-role
+					display none
+					margin-left 0.25rem
+					transition-property opacity
+					transition-duration 0.5s
+					opacity 0.5
 
-				&.vip
-					p.username
-						&:after
-							content " VIP"
+				&:hover
+					.user-role
+						transition-property opacity
+						transition-duration 0.5s
+						opacity 1
 
-				&.resident-dj
-					p.username
-						&:after
-							content " Resident DJ"
-
-				&.dj
-					p.username
-						&:after
-							content " DJ"
-
-				&.manager
-					p.username
-						&:after
-							content " Manager"
-
-				&.admin
-					p.username
-						&:after
-							content " Admin" !important
-
-				&.currentDJ
-					p.username
-						&:after
-							content " current DJ" !important
+				user-roles()
 
 				p
 					display inline-block
