@@ -27,13 +27,22 @@ Dubtrack.View.BrowserPlaylistList = Backbone.View.extend({
 				update: function(event, ui){
 					order = [];
 					this.$('li').each(function(idx, elm) {
-						console.log($(elm));
-						order.push($(elm).attr(this.url_queue_order_data));
+						order.push(elm.getAttribute(this.url_queue_order_data));
+						var $place = $(elm).children('.place');
+						$place.attr('data-last', $place.html());
+						$place.html(idx + 1);
 					}.bind(this));
-					console.log(order, this.url_queue_order);
+
 					Dubtrack.helpers.sendRequest( this.url_queue_order, {
 						'order[]' : order
-					}, 'post');
+					}, 'post', function(err) {
+						if(!err) return;
+
+						this.$('li').each(function(idx, elm) {
+							var $place = $(elm).children('.place');
+							$place.html($place.attr('data-last'));
+						}.bind(this));
+					});
 				}.bind(this)
 			});
 		}
@@ -150,7 +159,9 @@ Dubtrack.View.BrowserRoomQueuePlaylistList = Dubtrack.View.BrowserPlaylistList.e
 	},
 
 	addItem : function(model){
-		var itemViewEl = new Dubtrack.View.BrowserRoomQueuePlaylisttItem()
+		var itemViewEl = new Dubtrack.View.BrowserRoomQueuePlaylisttItem({
+			model: { place: this.model.pluck('_id').indexOf(model.get('_id')) + 1 }
+		})
 		.fetchSong(model)
 		.setBrowser(this.browser)
 		.$el
@@ -206,7 +217,9 @@ Dubtrack.View.BrowserHistoryPlaylistList = Dubtrack.View.BrowserPlaylistList.ext
 		var function_el = "appendTo";
 		if(this.prependItems) function_el = "prependTo";
 
-		var itemViewEl = new Dubtrack.View.BrowserPlaylisHistorytItemWithDescription()
+		var itemViewEl = new Dubtrack.View.BrowserPlaylisHistorytItemWithDescription({
+			model: { place: this.model.pluck('_id').indexOf(model.get('_id')) + 1 }
+		})
 		.fetchSong(model)
 		.setBrowser(this.browser)
 		.$el[function_el](this.$el);
@@ -232,7 +245,9 @@ Dubtrack.View.BrowserUserQueuePlaylistList = Dubtrack.View.BrowserPlaylistList.e
 	},
 
 	addItem : function(model){
-		var itemViewEl = new Dubtrack.View.BrowserQueuePlaylisttItem()
+		var itemViewEl = new Dubtrack.View.BrowserQueuePlaylisttItem({
+			model: { place: this.model.pluck('_id').indexOf(model.get('_id')) + 1 }
+		})
 		.fetchSong(model)
 		.setBrowser(this.browser)
 		.$el

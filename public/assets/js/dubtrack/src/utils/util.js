@@ -643,7 +643,7 @@ Dubtrack.els.templates = {
 							'<a href="#" class="text-button pause-queue pause-queue-browser-bth">Pause</a>' +
 						'</div>',
 
-		'playlistSearchItem': '	<span class="display-error">' +
+		'playlistSearchItem': '<span class="display-error">' +
 								'</span>' +
 								'<span class="display-success">' +
 								'</span>' +
@@ -652,6 +652,7 @@ Dubtrack.els.templates = {
 									':' +
 									'<%- second %>' +
 								'</span>' +
+								'<% if(typeof place !== "undefined") {%><div class="place" data-last="<%- place %>"><%- place %></div><%}%>' +
 								'<figure>' +
 									'<% if(images.thumbnail) {%>' +
 										'<img src="<%- images.thumbnail %>" alt="" />' +
@@ -689,6 +690,7 @@ Dubtrack.els.templates = {
 									':' +
 									'<%- second %>' +
 								'</span>' +
+								'<div class="place" data-last="<%- place %>"><%- place %></div>' +
 								'<figure>' +
 									'<% if(images.thumbnail) {%>' +
 										'<img src="<%- images.thumbnail %>" alt="" />' +
@@ -719,7 +721,8 @@ Dubtrack.els.templates = {
 									'</a>' +
 								'</div>',
 
-		'playlistRoomQueueItem': '<figure>' +
+		'playlistRoomQueueItem': '<div class="place" data-last="<%- place %>"><%- place %></div>' +
+								'<figure>' +
 										'<%= Dubtrack.helpers.image.getImage(_user._id, _user.username, false, true) %>' +
 								'</figure>' +
 								'<div class="description">' +
@@ -734,6 +737,7 @@ Dubtrack.els.templates = {
 									':' +
 									'<%- second %>' +
 								'</span>' +
+								'<div class="place" data-last="<%- place %>"><%- place %></div>' +
 								'<figure>' +
 									'<% if(images.thumbnail) {%>' +
 										'<img src="<%- images.thumbnail %>" alt="" />' +
