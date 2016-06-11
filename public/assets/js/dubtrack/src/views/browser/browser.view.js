@@ -214,13 +214,22 @@ Dubtrack.View.Browser = Backbone.View.extend({
 	sortableUpdate : function(event, ui){
 		var order = [];
 		this.playlistDetailContainer.children('li').each(function(idx, elm) {
-			order.push($(elm).attr('data-id'));
-		});
+			order.push(elm.getAttribute(this.url_queue_order_data));
+			var $place = $(elm).children('.place');
+			$place.attr('data-last', $place.html());
+			$place.html(idx + 1);
+		}.bind(this));
 
 		Dubtrack.helpers.sendRequest( this.url_items_order, {
 			'order[]' : order
-		}, 'post', function(err){
-		}.bind(this));
+		}, 'post', function(err) {
+			if(!err) return;
+
+			this.playlistDetailContainer.children('li').each(function(idx, elm) {
+				var $place = $(elm).children('.place');
+				$place.html($place.attr('data-last'));
+			}.bind(this));
+		});
 	},
 
 	displayDetails : function(display, id){
@@ -1419,6 +1428,8 @@ Dubtrack.View.BrowserPlaylisHistorytItem = Dubtrack.View.BrowserPlaylistItem.ext
 	},
 
 	render : function(err, song){
+		var place = this.model ? this.model.place : undefined;
+
 		this.model = song;
 		this.queue.set("song", song.toJSON());
 
@@ -1427,7 +1438,11 @@ Dubtrack.View.BrowserPlaylisHistorytItem = Dubtrack.View.BrowserPlaylistItem.ext
 		});
 
 		this.setTime();
-		this.$el.html( _.template( Dubtrack.els.templates.playlist.playlistSearchItem , this.model.toJSON() ) ).show();
+
+		var template_data = this.model.toJSON();
+		template_data.place = place;
+
+		this.$el.html( _.template( Dubtrack.els.templates.playlist.playlistSearchItem , template_data ) ).show();
 		$('#browser .content-videos').perfectScrollbar('update');
 
 		return this;
@@ -1455,6 +1470,8 @@ Dubtrack.View.BrowserPlaylisHistorytItemWithDescription = Dubtrack.View.BrowserP
 	},
 
 	render : function(err, song){
+		var place = this.model.place;
+
 		this.model = song;
 		this.queue.set("song", song.toJSON());
 
@@ -1465,6 +1482,7 @@ Dubtrack.View.BrowserPlaylisHistorytItemWithDescription = Dubtrack.View.BrowserP
 		this.setTime();
 
 		var template_data = this.model.toJSON();
+		template_data.place = place;
 		template_data._user = this.queue.get('_user');
 		template_data.updubs = this.queue.get('updubs');
 		template_data.downdubs = this.queue.get('downdubs');
@@ -1610,6 +1628,8 @@ Dubtrack.View.BrowserRoomQueuePlaylisttItem = Dubtrack.View.BrowserPlaylisHistor
 	},
 
 	render : function(err, song){
+		var place = this.model.place;
+
 		this.model = song;
 		this.queue.set("song", song.toJSON());
 
@@ -1623,6 +1643,7 @@ Dubtrack.View.BrowserRoomQueuePlaylisttItem = Dubtrack.View.BrowserPlaylisHistor
 		this.setTime();
 
 		var template_data = this.model.toJSON();
+		template_data.place = place;
 		template_data._user = this.queue.get('_user');
 
 		if(Dubtrack.session && Dubtrack.session.id && (Dubtrack.room.model.get('displayDJinQueue') || (Dubtrack.helpers.isDubtrackAdmin(Dubtrack.session.id) || Dubtrack.room.users.getIfRoleHasPermission(Dubtrack.session.id, 'queue-order')))){
