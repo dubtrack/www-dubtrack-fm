@@ -22,6 +22,7 @@ var ytDubsPlayerView = Backbone.View.extend({
 		this.playerEl = $('<div/>', { id : id }).appendTo( el );
 		this.videoId = videoId;
 		this.replayEl.hide();
+		this.volume = 100;
 
 		this.mainYTimg = $('<div/>', {'class' : 'playerImage'}).html('<img src="http://img.youtube.com/vi/' + videoId + '/0.jpg" alt="">').appendTo( el );
 
@@ -58,7 +59,8 @@ var ytDubsPlayerView = Backbone.View.extend({
 								if(self.intervalLoaded) clearTimeout(self.intervalLoaded);
 								self.updateytplayerloaded();
 								self.pause();
-
+								self.player.setVolume(self.volume)
+								self.volumeContainer.find('.volume-control').slider('value', self.volume);
 								if(autoplay) self.play();
 							},
 				'onStateChange': function(newState){
@@ -231,8 +233,8 @@ var ytDubsPlayerView = Backbone.View.extend({
 	},
 
 	setVolume : function (newVolume) {
-		if(this.player){
-			this.player.unMute();
+		this.volume = newVolume;
+		if(this.player.setVolume){
 			this.player.setVolume( newVolume );
 		}
 	},

@@ -1844,6 +1844,7 @@ Dubtrack.View.PreivewEl = Backbone.View.extend({
 			default:
 			break;
 		}
+
 	},
 
 	closeAction : function(){
@@ -1853,8 +1854,10 @@ Dubtrack.View.PreivewEl = Backbone.View.extend({
 	buildYT : function(){
 		this.player = new ytDubsPlayerView();
 		this.player_container.append( this.player.render(this.id, this.id + "_video").$el );
-
 		this.player.buildPlayer(true);
+		if (Dubtrack.playerController.volume) {
+			this.player.setVolume(Dubtrack.playerController.volume);
+		}
 	},
 
 	buildSoundCloud : function(){
