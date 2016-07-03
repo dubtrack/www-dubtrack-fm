@@ -13,6 +13,7 @@ scDubsPlayerView = Backbone.View.extend({
 
 	initialize : function(){
 
+
 	},
 
 	render : function(url, id, type, autoPlay, $w, $h){
@@ -60,6 +61,7 @@ scDubsPlayerView = Backbone.View.extend({
 				self.loadingEl.hide();
 				self.playEl.css("display", "block");
 
+
 				//create sound with sound manager
 				self.scPlayer = soundManager.createSound({
 					id: id,
@@ -95,6 +97,7 @@ scDubsPlayerView = Backbone.View.extend({
 						}
 					}
 				});
+
 			}
 		});
 
@@ -152,9 +155,6 @@ scDubsPlayerView = Backbone.View.extend({
 			this.scPlayer.play();
 		}
 	},
-	setVolume : function(vol){
-		if(this.scPlayer) this.scPlayer.setVolume(parseInt(vol));
-	},
 
 	buildVolume : function(){
 		var slider  = this.volumeContainer.find('.volume-control'),
@@ -208,9 +208,11 @@ scDubsPlayerView = Backbone.View.extend({
 	},
 
 	setVolume : function (newVolume) {
+		var volume = parseInt(newVolume);
 		if(this.scPlayer){
 			this.scPlayer.unmute();
-			this.scPlayer.setVolume(parseInt(newVolume));
+			this.volumeContainer.find('.volume-control').slider('value', volume);
+			this.scPlayer.setVolume(volume);
 		}
 	},
 
