@@ -13,7 +13,6 @@ scDubsPlayerView = Backbone.View.extend({
 
 	initialize : function(){
 
-
 	},
 
 	render : function(url, id, type, autoPlay, $w, $h){
@@ -61,7 +60,6 @@ scDubsPlayerView = Backbone.View.extend({
 				self.loadingEl.hide();
 				self.playEl.css("display", "block");
 
-
 				//create sound with sound manager
 				self.scPlayer = soundManager.createSound({
 					id: id,
@@ -97,7 +95,6 @@ scDubsPlayerView = Backbone.View.extend({
 						}
 					}
 				});
-
 			}
 		});
 

@@ -1844,7 +1844,6 @@ Dubtrack.View.PreivewEl = Backbone.View.extend({
 			default:
 			break;
 		}
-
 	},
 
 	closeAction : function(){
