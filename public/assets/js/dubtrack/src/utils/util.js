@@ -922,7 +922,7 @@ Dubtrack.els.templates = {
 								'<ul>' +
 									'<% if(Dubtrack.loggedIn) {%>'+
 										'<li class="playlist remove-if-banned">' +
-											'<a href="/browser" class="navigate">' +
+											'<a href="/browser/room-queue" class="navigate">' +
 												'<span class="icon-list"></span>' +
 											'</a>' +
 										'</li>' +
