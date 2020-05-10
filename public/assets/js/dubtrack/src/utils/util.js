@@ -95,6 +95,8 @@ Dubtrack.els.templates = {
 						'</div>' +
 						'<div class="global-actions">' +
 							'<a href="#" class="send-pm-message" title="Send private message"><span class="icon-chat"></span></a>' +
+							'<a href="#" class="follow-user" title="Follow User">FOLLOW</a>' +
+							'<a href="#" class="unfollow-user" title="Follow User">UNFOLLOW</a>' +
 							'<a href="#" class="chat-mention" title="Mention in chat">@</a>' +
 						'</div>' +
 						'<div class="actions">' +
