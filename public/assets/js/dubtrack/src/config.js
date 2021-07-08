@@ -719,7 +719,7 @@ w.Dubtrack = {
 			});
 		},
 
-		displayError : function($title, $message, $refresh, onclick){
+		displayError : function($title, $message, $refresh, onclick, $cancel, oncancel){
 
 			$("#warning").remove();
 
@@ -730,6 +730,11 @@ w.Dubtrack = {
 			}else{
 				if(! onclick ) onclick = '$("#warning").remove();return false;';
 				$("<button onclick=" + onclick + ">Ok</button>").appendTo( $div );
+
+				if($cancel) {
+					if(! oncancel) oncancel = '$("#warning").remove();return false;';
+					$("<button onclick=" + oncancel + ">Cancel</button>").appendTo( $div );
+				}
 			}
 		},
 

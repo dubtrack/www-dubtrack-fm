@@ -99,7 +99,18 @@ Dubtrack.els.templates = {
 						'</div>' +
 						'<div class="actions">' +
 							'<a href="#" class="kick">Kick</a>' +
-							'<a href="#" class="ban">Ban for <input type="text" value="" maxlength="3" /> minutes</a>' +
+							'<a href="#" class="ban">Ban for' +
+								'<select>' +
+									'<option value="">Select One</option>' +
+									'<option value="10">10 minutes</option>' +
+									'<option value="30">30 minutes</option>' +
+									'<option value="60">1 hour</option>' +
+									'<option value="1440">1 day</option>' +
+									'<option value="10080">1 week</option>' +
+									'<option value="0">Eternity</option>' +
+									'<option value="custom">Custom</option>' +
+								'</select>' +
+							'</a>' +
 							'<a href="#" class="mute">Mute</a>' +
 							'<a href="#" class="unmute">Unmute</a>' +
 							'<a href="#" class="setowner setrole" data-roleref="setOwnerUser">Set co-owner</a>' +
