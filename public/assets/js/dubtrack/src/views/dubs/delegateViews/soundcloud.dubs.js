@@ -152,9 +152,6 @@ scDubsPlayerView = Backbone.View.extend({
 			this.scPlayer.play();
 		}
 	},
-	setVolume : function(vol){
-		if(this.scPlayer) this.scPlayer.setVolume(parseInt(vol));
-	},
 
 	buildVolume : function(){
 		var slider  = this.volumeContainer.find('.volume-control'),
@@ -208,9 +205,11 @@ scDubsPlayerView = Backbone.View.extend({
 	},
 
 	setVolume : function (newVolume) {
+		var volume = parseInt(newVolume);
 		if(this.scPlayer){
 			this.scPlayer.unmute();
-			this.scPlayer.setVolume(parseInt(newVolume));
+			this.volumeContainer.find('.volume-control').slider('value', volume);
+			this.scPlayer.setVolume(volume);
 		}
 	},
 

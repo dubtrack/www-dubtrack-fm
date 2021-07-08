@@ -1853,13 +1853,18 @@ Dubtrack.View.PreivewEl = Backbone.View.extend({
 	buildYT : function(){
 		this.player = new ytDubsPlayerView();
 		this.player_container.append( this.player.render(this.id, this.id + "_video").$el );
-
 		this.player.buildPlayer(true);
+		if (Dubtrack.playerController.volume) {
+			this.player.setVolume(Dubtrack.playerController.volume);
+		}
 	},
 
 	buildSoundCloud : function(){
 		this.player = new scDubsPlayerView();
 		this.player_container.append( this.player.render(this.model.get('streamUrl'), this.id + "_audio", this.model.get('type'), true ).$el );
+		if (Dubtrack.playerController.volume) {
+			this.player.setVolume(Dubtrack.playerController.volume);
+		}
 	},
 
 	loadComments : function(){},
